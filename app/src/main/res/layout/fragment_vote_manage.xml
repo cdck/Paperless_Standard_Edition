@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/vote_manage_rv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/textView9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/vote_manage_title"
+        android:textColor="@color/red"
+        app:layout_constraintBottom_toTopOf="@+id/vote_manage_register"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/vote_content_"
+        app:layout_constraintBaseline_toBaselineOf="@+id/vote_manage_register"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/vote_manage_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/shape_edt_vote"
+        android:padding="@dimen/dp_1"
+        android:textColor="@color/blue"
+        app:layout_constraintBaseline_toBaselineOf="@+id/vote_manage_delete"
+        app:layout_constraintEnd_toStartOf="@+id/vote_manage_register"
+        app:layout_constraintStart_toEndOf="@+id/textView10"
+        tools:text="的数量看风景上课来得及" />
+
+    <CheckBox
+        android:id="@+id/vote_manage_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="@string/register"
+        app:layout_constraintBaseline_toBaselineOf="@+id/vote_manage_delete"
+        app:layout_constraintEnd_toStartOf="@+id/vote_manage_add" />
+
+    <Button
+        android:id="@+id/vote_manage_add"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:text="@string/add"
+        app:layout_constraintBaseline_toBaselineOf="@+id/vote_manage_delete"
+        app:layout_constraintEnd_toStartOf="@+id/vote_manage_modify" />
+
+    <Button
+        android:id="@+id/vote_manage_modify"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:text="@string/modify"
+        app:layout_constraintBaseline_toBaselineOf="@+id/vote_manage_delete"
+        app:layout_constraintEnd_toStartOf="@+id/vote_manage_delete" />
+
+    <Button
+        android:id="@+id/vote_manage_delete"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/delete"
+        app:layout_constraintBottom_toTopOf="@+id/vote_manage_stop"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/vote_manage_export"
+        style="@style/btn_pressed_style"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/export_excel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/vote_manage_import"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/vote_manage_import"
+        style="@style/btn_pressed_style"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/import_excel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textView11"
+        app:layout_constraintStart_toEndOf="@+id/vote_manage_export" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="@string/count_down_"
+        app:layout_constraintBottom_toBottomOf="@+id/vote_manage_details"
+        app:layout_constraintEnd_toStartOf="@+id/vote_manage_time_sp"
+        app:layout_constraintTop_toTopOf="@+id/vote_manage_details" />
+
+    <Spinner
+        android:id="@+id/vote_manage_time_sp"
+        android:layout_width="@dimen/dp_90"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/vote_manage_details"
+        app:layout_constraintEnd_toStartOf="@+id/vote_manage_details"
+        app:layout_constraintTop_toTopOf="@+id/vote_manage_details" />
+
+    <Button
+        android:id="@+id/vote_manage_details"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/see_details"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/vote_manage_chart" />
+
+    <Button
+        android:id="@+id/vote_manage_chart"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/see_chart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/vote_manage_launch" />
+
+    <Button
+        android:id="@+id/vote_manage_launch"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/launch_vote"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/vote_manage_stop" />
+
+    <Button
+        android:id="@+id/vote_manage_stop"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/stop_vote"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</android.support.constraint.ConstraintLayout>

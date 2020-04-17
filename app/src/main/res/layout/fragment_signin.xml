@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <AbsoluteLayout
+        android:id="@+id/f_s_absolute"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_5">
+
+        <TextView
+            android:id="@+id/f_s_yd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:textSize="18sp"
+            tools:text="应到：31人" />
+
+        <TextView
+            android:id="@+id/f_s_yqd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:layout_toEndOf="@+id/f_s_yd"
+            android:textSize="18sp"
+            tools:text="已签到：6人" />
+
+        <TextView
+            android:id="@+id/f_s_wqd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:layout_toEndOf="@+id/f_s_yqd"
+            android:textSize="18sp"
+            tools:text="未签到：25人" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/dp_2"
+            android:layout_toStartOf="@+id/f_s_yqd_iv"
+            android:drawableStart="@drawable/shape_circle_black"
+            android:drawablePadding="@dimen/dp_5"
+            android:gravity="center"
+            android:text="@string/not_checked_in"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/f_s_yqd_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/dp_2"
+            android:drawableStart="@drawable/shape_circle_red"
+            android:drawablePadding="@dimen/dp_5"
+            android:gravity="center"
+            android:text="@string/checked_in"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+</LinearLayout>

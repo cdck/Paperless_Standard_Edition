@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/shape_wm_bg"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/wm_menu_note"
+            style="@style/btn_pressed_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:layout_weight="1"
+            android:text="会议笔记" />
+
+
+        <Button
+            android:id="@+id/wm_menu_soft"
+            style="@style/btn_pressed_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:layout_weight="1"
+            android:text="软键盘" />
+
+        <Button
+            android:id="@+id/wm_menu_hand"
+            style="@style/btn_pressed_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:layout_weight="1"
+            android:text="手写输入" />
+
+        <Button
+            android:id="@+id/wm_menu_service"
+            style="@style/btn_pressed_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:layout_weight="1"
+            android:text="呼叫服务" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/wm_menu_start_projection"
+            style="@style/btn_pressed_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:layout_weight="1"
+            android:text="发起投影" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/wm_menu_back"
+                style="@style/btn_pressed_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="返回" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/wm_menu_stop_projection"
+            style="@style/btn_pressed_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:layout_weight="1"
+            android:text="结束投影" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/wm_menu_start_screen"
+            style="@style/btn_pressed_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:layout_weight="1"
+            android:text="发起同屏" />
+
+        <Button
+            android:id="@+id/wm_menu_join_screen"
+            style="@style/btn_pressed_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:layout_weight="1"
+            android:text="加入同屏" />
+
+        <Button
+            android:id="@+id/wm_menu_stop_screen"
+            style="@style/btn_pressed_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:layout_weight="1"
+            android:text="结束同屏" />
+
+        <Button
+            android:id="@+id/wm_menu_screenshot"
+            style="@style/btn_pressed_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:layout_weight="1"
+            android:text="截图批注" />
+    </LinearLayout>
+</LinearLayout>

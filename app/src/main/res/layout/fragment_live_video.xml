@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="@dimen/dp_5">
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/f_l_v_rv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/f_l_v_stop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/f_l_v_watch"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <Button
+        android:id="@+id/f_l_v_watch"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:text="@string/watch_video"
+        app:layout_constraintBaseline_toBaselineOf="@+id/f_l_v_stop"
+        app:layout_constraintEnd_toStartOf="@+id/f_l_v_stop" />
+
+    <Button
+        android:id="@+id/f_l_v_stop"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/stop_watch"
+        app:layout_constraintBottom_toTopOf="@+id/f_l_v_stop_screen"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/f_l_v_stop_pro"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/stop_pro"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/f_l_v_start_pro"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:text="@string/pro_video"
+        android:visibility="gone"
+        app:layout_constraintBaseline_toBaselineOf="@+id/f_l_v_stop_pro"
+        app:layout_constraintEnd_toStartOf="@+id/f_l_v_stop_pro" />
+
+    <Button
+        android:id="@+id/f_l_v_stop_screen"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/stop_screen"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/f_l_v_stop_pro"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/f_l_v_start_screen"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:text="@string/screen_video"
+        android:visibility="gone"
+        app:layout_constraintBaseline_toBaselineOf="@+id/f_l_v_stop_screen"
+        app:layout_constraintEnd_toStartOf="@+id/f_l_v_stop_screen" />
+
+
+    <xlk.paperless.standard.ui.video.CustomVideoView
+        android:id="@+id/f_l_v_v"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/f_l_v_watch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>

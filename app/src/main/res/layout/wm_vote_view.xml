@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_blue_rect">
+
+    <TextView
+        android:id="@+id/wm_vote_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="测试投票" />
+
+    <TextView
+        android:id="@+id/wm_vote_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:textColor="@color/text_blue"
+        app:layout_constraintBaseline_toBaselineOf="@+id/wm_vote_title"
+        app:layout_constraintStart_toEndOf="@+id/wm_vote_title"
+        tools:text="(多选，记名)" />
+
+    <CheckBox
+        android:id="@+id/checkBox1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clickable="false"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/checkBox2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wm_vote_title"
+        tools:text="A" />
+
+    <CheckBox
+        android:id="@+id/checkBox2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:clickable="false"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/checkBox3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox1"
+        tools:text="B" />
+
+    <CheckBox
+        android:id="@+id/checkBox3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:clickable="false"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/checkBox4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox2"
+        tools:text="C" />
+
+    <CheckBox
+        android:id="@+id/checkBox4"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:clickable="false"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/checkBox5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox3"
+        tools:text="D" />
+
+    <CheckBox
+        android:id="@+id/checkBox5"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:clickable="false"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/wm_vote_chronometer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox4"
+        tools:text="E" />
+
+    <Chronometer
+        android:id="@+id/wm_vote_chronometer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="32dp"
+        android:format="00:00:00"
+        android:gravity="center"
+        android:textColor="@color/red"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintBottom_toTopOf="@+id/wm_vote_submit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/wm_vote_submit"
+        style="@style/btn_pressed_style"
+        android:layout_width="@dimen/dp_110"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</android.support.constraint.ConstraintLayout>

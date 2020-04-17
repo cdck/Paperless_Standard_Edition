@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_5"
+        android:gravity="center"
+        android:text="@string/create_member"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/company_" />
+
+            <EditText
+                android:id="@+id/pop_create_member_company"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/name_" />
+
+            <EditText
+                android:id="@+id/pop_create_member_name"
+                android:layout_width="0dp"
+                android:hint="@string/cannot_be_empty"
+                android:layout_height="wrap_content"
+                android:layout_weight="5" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/position_" />
+
+            <EditText
+                android:id="@+id/pop_create_member_position"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/phone_" />
+
+            <EditText
+                android:id="@+id/pop_create_member_phone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/email_" />
+
+            <EditText
+                android:id="@+id/pop_create_member_email"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/password_" />
+
+            <EditText
+                android:id="@+id/pop_create_member_password"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_5"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/pop_create_member_determine"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/determine" />
+
+        <Button
+            android:id="@+id/pop_create_member_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/cancel" />
+    </LinearLayout>
+</LinearLayout>

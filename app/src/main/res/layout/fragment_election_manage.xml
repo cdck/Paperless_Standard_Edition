@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/election_manage_rv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/textView14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/election_title"
+        app:layout_constraintBottom_toTopOf="@+id/textView17"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/election_manage_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/shape_edt_vote"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView14"
+        app:layout_constraintEnd_toStartOf="@+id/textView15"
+        app:layout_constraintStart_toEndOf="@+id/textView14" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="@string/election_type"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView14"
+        app:layout_constraintEnd_toStartOf="@+id/election_manage_type_sp" />
+
+    <Spinner
+        android:id="@+id/election_manage_type_sp"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView15"
+        app:layout_constraintEnd_toStartOf="@+id/textView16" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:visibility="gone"
+        android:text="@string/is_register"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView14"
+        app:layout_constraintEnd_toStartOf="@+id/election_manage_mode_cb" />
+
+    <CheckBox
+        android:id="@+id/election_manage_mode_cb"
+        android:text="@string/register"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView14"
+        app:layout_constraintBottom_toBottomOf="@+id/textView16"
+        app:layout_constraintEnd_toStartOf="@+id/election_manage_add" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/option1_"
+        app:layout_constraintBottom_toTopOf="@+id/election_manage_import"
+        app:layout_constraintEnd_toStartOf="@+id/election_manage_option1"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/election_manage_option1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/shape_edt_vote"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView17"
+        app:layout_constraintEnd_toStartOf="@+id/textView18"
+        app:layout_constraintStart_toEndOf="@+id/textView17" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/option2_"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView17"
+        app:layout_constraintEnd_toStartOf="@+id/election_manage_option2"
+        app:layout_constraintStart_toEndOf="@+id/election_manage_option1" />
+
+    <EditText
+        android:id="@+id/election_manage_option2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/shape_edt_vote"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView17"
+        app:layout_constraintEnd_toStartOf="@+id/textView19"
+        app:layout_constraintStart_toEndOf="@+id/textView18" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/option3_"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView17"
+        app:layout_constraintEnd_toStartOf="@+id/election_manage_option3"
+        app:layout_constraintStart_toEndOf="@+id/election_manage_option2" />
+
+    <EditText
+        android:id="@+id/election_manage_option3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/shape_edt_vote"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView17"
+        app:layout_constraintEnd_toStartOf="@+id/textView20"
+        app:layout_constraintStart_toEndOf="@+id/textView19" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/option4_"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView17"
+        app:layout_constraintEnd_toStartOf="@+id/election_manage_option4"
+        app:layout_constraintStart_toEndOf="@+id/election_manage_option3" />
+
+    <EditText
+        android:id="@+id/election_manage_option4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/shape_edt_vote"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView17"
+        app:layout_constraintEnd_toStartOf="@+id/textView21"
+        app:layout_constraintStart_toEndOf="@+id/textView20" />
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/option5_"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView17"
+        app:layout_constraintEnd_toStartOf="@+id/election_manage_option5"
+        app:layout_constraintStart_toEndOf="@+id/election_manage_option4" />
+
+    <EditText
+        android:id="@+id/election_manage_option5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/shape_edt_vote"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView17"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView21" />
+
+    <Button
+        android:id="@+id/election_manage_add"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:text="@string/add"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView14"
+        app:layout_constraintEnd_toStartOf="@+id/election_manage_modify"
+        tools:layout_editor_absoluteY="426dp" />
+
+    <Button
+        android:id="@+id/election_manage_modify"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:text="@string/modify"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView14"
+        app:layout_constraintEnd_toStartOf="@+id/election_manage_delete"
+        tools:layout_editor_absoluteY="433dp" />
+
+    <Button
+        android:id="@+id/election_manage_delete"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:text="@string/delete"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView14"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteY="444dp" />
+
+    <Button
+        android:id="@+id/election_manage_export"
+        style="@style/btn_pressed_style"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/export_excel"
+        app:layout_constraintBaseline_toBaselineOf="@+id/election_manage_import"
+        app:layout_constraintEnd_toStartOf="@+id/textView22"
+        app:layout_constraintStart_toEndOf="@+id/election_manage_import" />
+
+    <Button
+        android:id="@+id/election_manage_import"
+        style="@style/btn_pressed_style"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/import_excel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/election_manage_export"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="@string/count_down_"
+        app:layout_constraintBaseline_toBaselineOf="@+id/election_manage_import"
+        app:layout_constraintEnd_toStartOf="@+id/election_manage_countdown_sp" />
+
+    <Spinner
+        android:id="@+id/election_manage_countdown_sp"
+        android:layout_width="@dimen/dp_90"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView22"
+        app:layout_constraintEnd_toStartOf="@+id/election_manage_details"
+        app:layout_constraintTop_toTopOf="@+id/textView22" />
+
+    <Button
+        android:id="@+id/election_manage_details"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:text="@string/see_details"
+        app:layout_constraintBaseline_toBaselineOf="@+id/election_manage_import"
+        app:layout_constraintEnd_toStartOf="@+id/election_manage_chart"
+        tools:layout_editor_absoluteY="451dp" />
+
+    <Button
+        android:id="@+id/election_manage_chart"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:text="@string/see_chart"
+        app:layout_constraintBaseline_toBaselineOf="@+id/election_manage_import"
+        app:layout_constraintEnd_toStartOf="@+id/election_manage_launch"
+        tools:layout_editor_absoluteY="465dp" />
+
+    <Button
+        android:id="@+id/election_manage_launch"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:text="@string/launch_vote"
+        app:layout_constraintBaseline_toBaselineOf="@+id/election_manage_import"
+        app:layout_constraintEnd_toStartOf="@+id/election_manage_stop"
+        tools:layout_editor_absoluteY="451dp" />
+
+    <Button
+        android:id="@+id/election_manage_stop"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:text="@string/stop_vote"
+        app:layout_constraintBaseline_toBaselineOf="@+id/election_manage_import"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteY="386dp" />
+
+</android.support.constraint.ConstraintLayout>

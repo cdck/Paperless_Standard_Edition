@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/video_bottom"
+    android:layout_height="wrap_content">
+
+    <SeekBar
+        android:id="@+id/pop_video_seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:thumb="@drawable/shape_circle_red"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/pop_video_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintBaseline_toBaselineOf="@+id/pop_video_play"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="00:00:00 / 00:00:00" />
+
+    <Button
+        android:id="@+id/pop_video_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/play_pause"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/pop_video_stop"
+        app:layout_constraintTop_toBottomOf="@+id/pop_video_seekBar" />
+
+    <Button
+        android:id="@+id/pop_video_stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="@string/stop"
+        app:layout_constraintBaseline_toBaselineOf="@+id/pop_video_play"
+        app:layout_constraintEnd_toStartOf="@+id/pop_video_screen_shot" />
+
+    <Button
+        android:id="@+id/pop_video_screen_shot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="@string/screen_shot"
+        app:layout_constraintBaseline_toBaselineOf="@+id/pop_video_play"
+        app:layout_constraintEnd_toStartOf="@+id/pop_video_launch_screen" />
+
+    <Button
+        android:id="@+id/pop_video_launch_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="@string/launch_screen"
+        app:layout_constraintBaseline_toBaselineOf="@+id/pop_video_play"
+        app:layout_constraintEnd_toStartOf="@+id/pop_video_stop_screen" />
+
+    <Button
+        android:id="@+id/pop_video_stop_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:text="@string/stop_screen"
+        app:layout_constraintBaseline_toBaselineOf="@+id/pop_video_play"
+        app:layout_constraintEnd_toEndOf="parent" />
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/shape_wm_bg"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/call_service"
+        android:textColor="@color/meet_content"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/wm_service_close"
+        android:clickable="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/close_pressed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/wm_service_pen"
+        style="@style/btn_pressed_style"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/pen"
+        app:layout_constraintBottom_toTopOf="@+id/wm_service_calculate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.499"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <Button
+        android:id="@+id/wm_service_pager"
+        style="@style/btn_pressed_style"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/paper"
+        app:layout_constraintBaseline_toBaselineOf="@+id/wm_service_pen"
+        app:layout_constraintEnd_toStartOf="@+id/wm_service_pen"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/wm_service_tea"
+        style="@style/btn_pressed_style"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/tea"
+        app:layout_constraintBaseline_toBaselineOf="@+id/wm_service_pen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/wm_service_pen" />
+
+    <Button
+        android:id="@+id/wm_service_calculate"
+        style="@style/btn_pressed_style"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/calculate"
+        app:layout_constraintBaseline_toBaselineOf="@+id/wm_service_waiter"
+        app:layout_constraintEnd_toStartOf="@+id/wm_service_waiter"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/wm_service_waiter"
+        style="@style/btn_pressed_style"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/waiter"
+        app:layout_constraintBottom_toTopOf="@+id/wm_service_edt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wm_service_pen" />
+
+    <Button
+        android:id="@+id/wm_service_clean"
+        style="@style/btn_pressed_style"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/clean"
+        app:layout_constraintBaseline_toBaselineOf="@+id/wm_service_waiter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/wm_service_waiter" />
+
+    <EditText
+        android:id="@+id/wm_service_edt"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/shape_edt"
+        app:layout_constraintBottom_toBottomOf="@+id/wm_service_send"
+        app:layout_constraintEnd_toStartOf="@+id/wm_service_send"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/wm_service_send" />
+
+    <Button
+        android:id="@+id/wm_service_send"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/send"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</android.support.constraint.ConstraintLayout>

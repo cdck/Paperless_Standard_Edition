@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/i_m_c_l_message_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_5"
+        tools:text="参会人【16:40】" />
+
+    <TextView
+        android:layout_below="@+id/i_m_c_l_message_title"
+        android:id="@+id/i_m_c_l_message_content"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        tools:text="了开始的解放路可接受的了方块精灵盛典会计分录圣诞节福利控件的弗兰克姐夫的脸孔" />
+</RelativeLayout>

@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/dp_5"
+    android:orientation="vertical"
+    tools:context=".view.draw.DrawActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/draw_exit"
+                    style="@style/draw_tv_pressed"
+                    android:drawableEnd="@drawable/draw_exit_pressed"
+                    android:text="@string/exit" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/draw_save"
+                    style="@style/draw_tv_pressed"
+                    android:drawableEnd="@drawable/draw_save_pressed"
+                    android:text="@string/draw_save" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/draw_clear"
+                    style="@style/draw_tv_pressed"
+                    android:drawableEnd="@drawable/draw_clear_pressed"
+                    android:text="@string/draw_clear" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/draw_picture"
+                    style="@style/draw_tv_pressed"
+                    android:drawableEnd="@drawable/draw_pic_pressed"
+                    android:text="@string/draw_picture" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/draw_font"
+                    style="@style/draw_tv_pressed"
+                    android:drawableEnd="@drawable/draw_font_pressed"
+                    android:text="@string/draw_font" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/draw_color"
+                    style="@style/draw_tv_pressed"
+                    android:drawableEnd="@drawable/draw_color_pressed"
+                    android:text="@string/draw_color" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/draw_revoke"
+                    style="@style/draw_tv_pressed"
+                    android:drawableEnd="@drawable/draw_revoke_pressed"
+                    android:text="@string/draw_revoke" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/draw_fl"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/shape_rect_black" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/draw_round"
+                    style="@style/draw_tv_selected"
+                    android:drawableStart="@drawable/draw_selected_round"
+                    android:text="@string/draw_round" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/draw_rect"
+                    style="@style/draw_tv_selected"
+                    android:drawableStart="@drawable/draw_selected_rect"
+                    android:text="@string/draw_rect" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/draw_line"
+                    style="@style/draw_tv_selected"
+                    android:drawableStart="@drawable/draw_selected_line"
+                    android:text="@string/draw_line" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/draw_curve"
+                    style="@style/draw_tv_selected"
+                    android:drawableStart="@drawable/draw_selected_curve"
+                    android:text="@string/draw_curve" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/draw_pen"
+                    style="@style/draw_tv_selected"
+                    android:drawableStart="@drawable/draw_selected_pen"
+                    android:text="@string/draw_pen" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/draw_text"
+                    style="@style/draw_tv_selected"
+                    android:drawableStart="@drawable/draw_selected_text"
+                    android:text="@string/draw_text" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/draw_eraser"
+                    style="@style/draw_tv_selected"
+                    android:drawableStart="@drawable/draw_selected_eraser"
+                    android:text="@string/draw_eraser" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/draw_drag"
+                    style="@style/draw_tv_selected"
+                    android:drawableStart="@drawable/draw_selected_drag"
+                    android:text="@string/draw_drag" />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/draw_launch"
+            style="@style/btn_pressed_style"
+            android:layout_width="@dimen/dp_70"
+            android:padding="@dimen/dp_2"
+            android:text="@string/initiate_multi_person_comments" />
+
+        <Button
+            android:id="@+id/draw_stop"
+            style="@style/btn_pressed_style"
+            android:layout_width="@dimen/dp_70"
+            android:layout_marginStart="@dimen/dp_10"
+            android:padding="@dimen/dp_2"
+            android:text="@string/stop_multi_person_comments" />
+
+        <LinearLayout
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_50"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/draw_seekbar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:thumb="@drawable/shape_circle_red" />
+
+            <TextView
+                android:id="@+id/draw_seekbar_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/dp_5"
+                android:gravity="center"
+                android:text="10"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="video_bottom">#b8b8b8</color>
+
+    <color name="table_line_color">#c0dcf2</color>
+    <color name="table_selected">#55a1ec</color>
+    <color name="tv_color">#5b5c5e</color>
+
+    <color name="vote_selected">#5ad2fa</color>
+    <color name="text_blue">#0000fa</color>
+
+    <color name="red">#ce081c</color>
+    <color name="green">#08cc77</color>
+    <color name="yellow">#d8c81b</color>
+    <color name="white">#ffffff</color>
+    <color name="blue">#4ea7eb</color>
+    <color name="black">#28282d</color>
+    <color name="pink">#d931e8</color>
+    <color name="meet_fragment_bg">#cfcfcf</color>
+    <color name="wm_view_bg">#ebebeb</color>
+
+    <color name="enable_t">#a0a0a0</color>
+    <color name="enable_f">#b9d6d6d6</color>
+
+
+    <color name="btn_choosed_tv">#ffffff</color>
+    <color name="btn_normal_tv">#3e3e3e</color>
+    <color name="btn_choosed">#12e6fe</color>
+    <color name="btn_normal">#c6efee</color>
+
+    <color name="meet_top_bar">#3e58c9</color>
+
+    <color name="meet_content">#1467b0</color>
+    <color name="meet_content_t">#4ea7eb</color>
+
+    <color name="table_tv_out">#5ca2fb</color>
+    <color name="table_tv_content">#e6f4ff</color>
+
+    <color name="transparent">#00ffffff</color>
+
+    <drawable name="text_color_white">#ffffff</drawable>
+    <drawable name="text_color_black">#4a4a4a</drawable>
+
+    <color name="text_color_white">#ffffff</color>
+    <color name="text_color_black">#4a4a4a</color>
+
+    <color name="seat_bg">#2b8c8585</color>
+
+    <color name="bullet_select_t">#669eeaff</color>
+    <color name="bullet_select_f">#ffffff</color>
+
+    <color name="chart_title">#d63ac2</color>
+    <color name="chart_content">#0d68d8</color>
+    <color name="option_a">#e61878</color>
+    <color name="option_b">#1ac534</color>
+    <color name="option_c">#2367b9</color>
+    <color name="option_d">#dbd827</color>
+    <color name="option_e">#8a2eda</color>
+
+
+
+</resources>

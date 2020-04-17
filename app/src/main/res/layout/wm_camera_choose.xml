@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:background="@drawable/shape_wm_bg"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="100dp"
+        android:textColor="@color/pink"
+        android:text="@string/received_collect_camera"
+        android:textSize="@dimen/sp_12"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/wm_camera_pre"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/wm_camera_pre"
+        style="@style/btn_pressed_style"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/open_camera_0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/wm_camera_back"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/wm_camera_back"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/open_camera_1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/wm_camera_reject"
+        app:layout_constraintStart_toEndOf="@+id/wm_camera_pre" />
+
+    <Button
+        android:id="@+id/wm_camera_reject"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/reject"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/wm_camera_back" />
+</android.support.constraint.ConstraintLayout>

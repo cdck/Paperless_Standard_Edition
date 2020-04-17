@@ -1,0 +1,657 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/dp_5"
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/table_line_color"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/dp_1"
+                        android:layout_marginTop="@dimen/dp_1"
+                        android:layout_marginEnd="@dimen/dp_1"
+                        android:layout_marginBottom="@dimen/dp_1"
+                        android:layout_weight="3"
+                        android:background="@drawable/item_bg_select"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lines="2"
+                        android:text="@string/score_describe_"
+                        android:textColor="@color/tv_color"
+                        android:textSize="@dimen/sp_10"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/dp_1"
+                        android:layout_marginEnd="@dimen/dp_1"
+                        android:layout_marginBottom="@dimen/dp_1"
+                        android:layout_weight="3"
+                        android:background="@drawable/item_bg_select"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lines="2"
+                        android:text="@string/file"
+                        android:textColor="@color/tv_color"
+                        android:textSize="@dimen/sp_10"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/dp_1"
+                        android:layout_marginEnd="@dimen/dp_1"
+                        android:layout_marginBottom="@dimen/dp_1"
+                        android:layout_weight="2"
+                        android:background="@drawable/item_bg_select"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lines="2"
+                        android:text="@string/state"
+                        android:textColor="@color/tv_color"
+                        android:textSize="@dimen/sp_10"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/dp_1"
+                        android:layout_marginEnd="@dimen/dp_1"
+                        android:layout_marginBottom="@dimen/dp_1"
+                        android:layout_weight="2"
+                        android:background="@drawable/item_bg_select"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lines="2"
+                        android:text="@string/yd_sp"
+                        android:textColor="@color/tv_color"
+                        android:textSize="@dimen/sp_10"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/dp_1"
+                        android:layout_marginEnd="@dimen/dp_1"
+                        android:layout_marginBottom="@dimen/dp_1"
+                        android:layout_weight="1"
+                        android:background="@drawable/item_bg_select"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lines="2"
+                        android:text="@string/register"
+                        android:textColor="@color/tv_color"
+                        android:textSize="@dimen/sp_10"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/dp_1"
+                        android:layout_marginEnd="@dimen/dp_1"
+                        android:layout_marginBottom="@dimen/dp_1"
+                        android:layout_weight="2"
+                        android:background="@drawable/item_bg_select"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lines="2"
+                        android:text="@string/score1"
+                        android:textColor="@color/tv_color"
+                        android:textSize="@dimen/sp_10"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/dp_1"
+                        android:layout_marginEnd="@dimen/dp_1"
+                        android:layout_marginBottom="@dimen/dp_1"
+                        android:layout_weight="2"
+                        android:background="@drawable/item_bg_select"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lines="2"
+                        android:text="@string/score2"
+                        android:textColor="@color/tv_color"
+                        android:textSize="@dimen/sp_10"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/dp_1"
+                        android:layout_marginEnd="@dimen/dp_1"
+                        android:layout_marginBottom="@dimen/dp_1"
+                        android:layout_weight="2"
+                        android:background="@drawable/item_bg_select"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lines="2"
+                        android:text="@string/score3"
+                        android:textColor="@color/tv_color"
+                        android:textSize="@dimen/sp_10"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/dp_1"
+                        android:layout_marginEnd="@dimen/dp_1"
+                        android:layout_marginBottom="@dimen/dp_1"
+                        android:layout_weight="2"
+                        android:background="@drawable/item_bg_select"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lines="2"
+                        android:text="@string/score4"
+                        android:textColor="@color/tv_color"
+                        android:textSize="@dimen/sp_10"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/dp_1"
+                        android:layout_marginEnd="@dimen/dp_1"
+                        android:layout_marginBottom="@dimen/dp_1"
+                        android:layout_weight="1"
+                        android:background="@drawable/item_bg_select"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lines="2"
+                        android:text="@string/total"
+                        android:textColor="@color/tv_color"
+                        android:textSize="@dimen/sp_10"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/dp_1"
+                        android:layout_marginEnd="@dimen/dp_1"
+                        android:layout_marginBottom="@dimen/dp_1"
+                        android:layout_weight="2"
+                        android:background="@drawable/item_bg_select"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lines="2"
+                        android:text="@string/total_average"
+                        android:textColor="@color/tv_color"
+                        android:textSize="@dimen/sp_10"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/f_score_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:background="@color/white" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/f_score_start"
+                style="@style/btn_pressed_style"
+                android:layout_width="0dp"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_weight="1"
+                android:text="@string/launch_score" />
+
+            <Button
+                android:id="@+id/f_score_stop"
+                style="@style/btn_pressed_style"
+                android:layout_width="0dp"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_weight="1"
+                android:text="@string/stop_score" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/dp_5"
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/f_score_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/score_title"
+            android:textStyle="bold" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/f_score_state"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    tools:text="未发起" />
+
+                <TextView
+                    android:id="@+id/f_score_describe"
+                    style="@style/score_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/f_score_state"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:text="@string/score_describe" />
+
+                <EditText
+                    android:id="@+id/f_score_describe_edt"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_alignBaseline="@+id/f_score_describe"
+                    android:layout_toRightOf="@+id/f_score_describe"
+                    android:background="@drawable/shape_edt"
+                    android:ellipsize="end"
+                    android:focusable="false"
+                    android:gravity="start|top"
+                    android:lines="1"
+                    android:textSize="@dimen/sp_10" />
+
+                <TextView
+                    android:id="@+id/f_score_file"
+                    style="@style/score_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/f_score_describe_edt"
+                    android:layout_alignRight="@+id/f_score_describe"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:text="@string/score_file" />
+
+                <EditText
+                    android:id="@+id/f_score_file_edt"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_alignBaseline="@+id/f_score_file"
+                    android:layout_toRightOf="@+id/f_score_file"
+                    android:background="@drawable/shape_edt"
+                    android:ellipsize="end"
+                    android:focusable="false"
+                    android:gravity="start|top"
+                    android:lines="1"
+                    android:textSize="@dimen/sp_10" />
+
+                <TextView
+                    android:id="@+id/f_score_register"
+                    style="@style/score_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/f_score_file_edt"
+                    android:layout_alignRight="@+id/f_score_file"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:text="@string/is_register" />
+
+                <TextView
+                    android:id="@+id/f_score_register_tv"
+                    style="@style/score_tv"
+                    android:layout_width="@dimen/dp_25"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/f_score_register"
+                    android:layout_toRightOf="@+id/f_score_register"
+                    android:background="@color/btn_normal"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_5"
+                    tools:text="是" />
+
+                <TextView
+                    android:id="@+id/f_score_yd"
+                    style="@style/score_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/f_score_register"
+                    android:layout_alignRight="@+id/f_score_register"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:text="@string/yd_member" />
+
+                <TextView
+                    android:id="@+id/f_score_yd_tv"
+                    style="@style/score_tv"
+                    android:layout_width="@dimen/dp_50"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/f_score_yd"
+                    android:layout_toRightOf="@+id/f_score_yd"
+                    android:background="@color/btn_normal"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_5"
+                    tools:text="0个" />
+
+                <TextView
+                    android:id="@+id/f_score_yp"
+                    style="@style/score_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/f_score_yd"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:layout_toRightOf="@+id/f_score_yd_tv"
+                    android:text="@string/yp_member" />
+
+                <TextView
+                    android:id="@+id/f_score_yp_tv"
+                    style="@style/score_tv"
+                    android:layout_width="@dimen/dp_50"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/f_score_yp"
+                    android:layout_toRightOf="@+id/f_score_yp"
+                    android:background="@color/btn_normal"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_5"
+                    tools:text="0个" />
+
+                <!--总分和平均分-->
+                <TextView
+                    android:id="@+id/f_score_count"
+                    style="@style/score_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/f_score_yp"
+                    android:layout_alignRight="@+id/f_score_yp"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:text="@string/score_count" />
+
+                <TextView
+                    android:id="@+id/f_score_count_tv"
+                    style="@style/score_tv"
+                    android:layout_width="@dimen/dp_50"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/f_score_count"
+                    android:layout_toRightOf="@+id/f_score_count"
+                    android:background="@color/btn_normal"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_5"
+                    tools:text="100" />
+
+                <TextView
+                    android:id="@+id/f_score_average"
+                    style="@style/score_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/f_score_count"
+                    android:layout_alignRight="@+id/f_score_count"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:text="@string/score_average" />
+
+                <TextView
+                    android:id="@+id/f_score_average_tv"
+                    style="@style/score_tv"
+                    android:layout_width="@dimen/dp_50"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/f_score_average"
+                    android:layout_toRightOf="@+id/f_score_average"
+                    android:background="@color/btn_normal"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_5"
+                    tools:text="100" />
+
+
+                <!--评分选项-->
+                <TextView
+                    android:id="@+id/f_score_choose1_title"
+                    style="@style/score_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/f_score_yd"
+                    android:layout_alignRight="@+id/f_score_yd"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:text="选项一：" />
+
+                <TextView
+                    android:id="@+id/f_score_choose1"
+                    style="@style/score_tv"
+                    android:layout_width="@dimen/dp_50"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/f_score_choose1_title"
+                    android:layout_toRightOf="@+id/f_score_choose1_title"
+                    android:background="@color/btn_normal"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_5"
+                    tools:text="0个" />
+
+                <TextView
+                    android:id="@+id/f_score_choose2_title"
+                    style="@style/score_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/f_score_choose1_title"
+                    android:layout_alignRight="@+id/f_score_choose1_title"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:text="选项二：" />
+
+                <TextView
+                    android:id="@+id/f_score_choose2"
+                    style="@style/score_tv"
+                    android:layout_width="@dimen/dp_50"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/f_score_choose2_title"
+                    android:layout_toRightOf="@+id/f_score_choose2_title"
+                    android:background="@color/btn_normal"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_5"
+                    tools:text="0个" />
+
+                <TextView
+                    android:id="@+id/f_score_choose3_title"
+                    style="@style/score_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/f_score_choose2_title"
+                    android:layout_alignRight="@+id/f_score_choose2_title"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:text="选项三：" />
+
+                <TextView
+                    android:id="@+id/f_score_choose3"
+                    style="@style/score_tv"
+                    android:layout_width="@dimen/dp_50"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/f_score_choose3_title"
+                    android:layout_toRightOf="@+id/f_score_choose3_title"
+                    android:background="@color/btn_normal"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_5"
+                    tools:text="0个" />
+
+                <TextView
+                    android:id="@+id/f_score_choose4_title"
+                    style="@style/score_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/f_score_choose3_title"
+                    android:layout_alignRight="@+id/f_score_choose3_title"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:text="选项四：" />
+
+                <TextView
+                    android:id="@+id/f_score_choose4"
+                    style="@style/score_tv"
+                    android:layout_width="@dimen/dp_50"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/f_score_choose4_title"
+                    android:layout_toRightOf="@+id/f_score_choose4_title"
+                    android:background="@color/btn_normal"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_5"
+                    tools:text="0个" />
+            </RelativeLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/score_member_title"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/table_line_color"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/dp_1"
+                    android:layout_marginTop="@dimen/dp_1"
+                    android:layout_marginEnd="@dimen/dp_1"
+                    android:layout_marginBottom="@dimen/dp_1"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:text="@string/member"
+                    android:textSize="@dimen/sp_10"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dp_1"
+                    android:layout_marginEnd="@dimen/dp_1"
+                    android:layout_marginBottom="@dimen/dp_1"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:text="@string/option1"
+                    android:textSize="@dimen/sp_10"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dp_1"
+                    android:layout_marginEnd="@dimen/dp_1"
+                    android:layout_marginBottom="@dimen/dp_1"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:text="@string/option2"
+                    android:textSize="@dimen/sp_10"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dp_1"
+                    android:layout_marginEnd="@dimen/dp_1"
+                    android:layout_marginBottom="@dimen/dp_1"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:text="@string/option3"
+                    android:textSize="@dimen/sp_10"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dp_1"
+                    android:layout_marginEnd="@dimen/dp_1"
+                    android:layout_marginBottom="@dimen/dp_1"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:text="@string/option4"
+                    android:textSize="@dimen/sp_10"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dp_1"
+                    android:layout_marginEnd="@dimen/dp_1"
+                    android:layout_marginBottom="@dimen/dp_1"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:text="@string/total"
+                    android:textSize="@dimen/sp_10"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dp_1"
+                    android:layout_marginEnd="@dimen/dp_1"
+                    android:layout_marginBottom="@dimen/dp_1"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:text="@string/average"
+                    android:textSize="@dimen/sp_10"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/f_score_member_rv"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/white" />
+
+            <EditText
+                android:id="@+id/f_score_opinion"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/shape_edt"
+                android:focusable="false"
+                android:gravity="start|top"
+                android:textSize="@dimen/sp_10"
+                tools:text="评分意见：睡楼顶坑记录是可敬的弗兰克斯的方式来的控件凤就是大富科技收到了看风景" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/dp_5"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/dev_control_all_ab"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_1"
+            android:layout_marginBottom="@dimen/dp_1"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:text="@string/number" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/dp_1"
+            android:layout_marginTop="@dimen/dp_1"
+            android:layout_marginBottom="@dimen/dp_1"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="@string/name" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/dp_1"
+            android:layout_marginTop="@dimen/dp_1"
+            android:layout_marginBottom="@dimen/dp_1"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="@string/device_type" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/dp_1"
+            android:layout_marginTop="@dimen/dp_1"
+            android:layout_marginBottom="@dimen/dp_1"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="@string/device_id" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/dp_1"
+            android:layout_marginTop="@dimen/dp_1"
+            android:layout_marginBottom="@dimen/dp_1"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="@string/device_state" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/dp_1"
+            android:layout_marginTop="@dimen/dp_1"
+            android:layout_marginBottom="@dimen/dp_1"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="@string/member" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/dp_1"
+            android:layout_marginTop="@dimen/dp_1"
+            android:layout_marginBottom="@dimen/dp_1"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="@string/interface_state" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/dp_1"
+            android:layout_marginTop="@dimen/dp_1"
+            android:layout_marginEnd="@dimen/dp_1"
+            android:layout_marginBottom="@dimen/dp_1"
+            android:visibility="gone"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="@string/out_open" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/f_dev_control_rv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/dp_1"
+        app:layout_constraintBottom_toTopOf="@+id/dev_control_signin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <Button
+        android:id="@+id/dev_control_rise"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:text="@string/rise"
+        app:layout_constraintBaseline_toBaselineOf="@+id/dev_control_signin"
+        app:layout_constraintEnd_toStartOf="@+id/dev_control_stop" />
+
+    <Button
+        android:id="@+id/dev_control_stop"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:text="@string/stop"
+        app:layout_constraintBaseline_toBaselineOf="@+id/dev_control_signin"
+        app:layout_constraintEnd_toStartOf="@+id/dev_control_decline" />
+
+    <Button
+        android:id="@+id/dev_control_decline"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="16dp"
+        android:text="@string/decline"
+        app:layout_constraintBaseline_toBaselineOf="@+id/dev_control_signin"
+        app:layout_constraintEnd_toStartOf="@+id/dev_control_app_restart" />
+
+    <Button
+        android:id="@+id/dev_control_app_restart"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:text="@string/app_restart"
+        app:layout_constraintBaseline_toBaselineOf="@+id/dev_control_signin"
+        app:layout_constraintEnd_toStartOf="@+id/dev_control_terminal_restart" />
+
+    <Button
+        android:id="@+id/dev_control_terminal_restart"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:text="@string/terminal_restart"
+        app:layout_constraintBaseline_toBaselineOf="@+id/dev_control_signin"
+        app:layout_constraintStart_toStartOf="@+id/dev_control_set_role" />
+
+    <Button
+        android:id="@+id/dev_control_terminal_shoutdown"
+        style="@style/btn_pressed_style"
+        android:text="@string/terminal_shutdown"
+        app:layout_constraintBaseline_toBaselineOf="@+id/dev_control_signin"
+        app:layout_constraintStart_toStartOf="@+id/dev_control_wake_on"
+        tools:layout_editor_absoluteX="551dp" />
+
+    <Button
+        android:id="@+id/dev_control_wake_on"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:text="@string/wake_on_lan"
+        app:layout_constraintBaseline_toBaselineOf="@+id/dev_control_open_document"
+        app:layout_constraintEnd_toStartOf="@+id/dev_control_open_document" />
+
+    <Button
+        android:id="@+id/dev_control_open_document"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:visibility="invisible"
+        android:text="@string/open_document_externally"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/dev_control_signin"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/secondary_signin"
+        app:layout_constraintBottom_toTopOf="@+id/dev_control_open_document"
+        app:layout_constraintStart_toStartOf="@+id/dev_control_open_document" />
+
+    <Button
+        android:id="@+id/dev_control_set_role"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:text="@string/set_role"
+        app:layout_constraintBaseline_toBaselineOf="@+id/dev_control_open_document"
+        app:layout_constraintEnd_toStartOf="@+id/dev_control_wake_on" />
+
+    <CheckBox
+        android:id="@+id/dev_control_elevator_cb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:visibility="invisible"
+        android:text="@string/elevator"
+        app:layout_constraintBaseline_toBaselineOf="@+id/dev_control_signin"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <CheckBox
+        android:id="@+id/dev_control_microphone_cb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:visibility="invisible"
+        android:text="@string/microphone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dev_control_elevator_cb" />
+
+</android.support.constraint.ConstraintLayout>

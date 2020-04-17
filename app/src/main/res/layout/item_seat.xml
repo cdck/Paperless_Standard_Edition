@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/seat_bg"
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/item_seat_iv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_seat_bottom" />
+
+    <LinearLayout
+        android:id="@+id/item_seat_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_seat_iv"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_seat_device"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            tools:text="设备名称" />
+
+        <TextView
+            android:id="@+id/item_seat_member"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            tools:text="参会人名称" />
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_edt"
+    android:padding="@dimen/dp_5"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/dp_5"
+        android:text="@string/choose_member"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <CheckBox
+        android:id="@+id/pop_artboard_cb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:text="@string/check_all" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/pop_artboard_rv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/pop_artboard_launch"
+            style="@style/btn_pressed_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:layout_weight="1"
+            android:text="@string/initiate_multi_person_comments" />
+
+        <Button
+            android:id="@+id/pop_artboard_cancel"
+            style="@style/btn_pressed_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:layout_weight="1"
+            android:text="@string/cancel" />
+    </LinearLayout>
+</LinearLayout>

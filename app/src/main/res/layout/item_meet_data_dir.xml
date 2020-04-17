@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/dp_2"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/item_meet_data_dir_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/blue_white_s"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/item_meet_data_dir_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dp_5"
+            android:background="@drawable/file_s" />
+
+        <TextView
+            android:id="@+id/item_meet_data_dir_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="共享文件" />
+
+    </LinearLayout>
+</LinearLayout>

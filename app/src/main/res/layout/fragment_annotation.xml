@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="@dimen/dp_5">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/f_annotation_member_rv"
+        android:layout_width="0dp"
+        android:background="@color/white"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/dp_5"
+        android:layout_weight="7"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.5"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_weight="7"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/f_annotation_documentation"
+                    style="@style/btn_pressed_style"
+                    android:layout_marginEnd="@dimen/dp_5"
+                    android:text="@string/documentation" />
+
+                <Button
+                    android:id="@+id/f_annotation_picture"
+                    style="@style/btn_pressed_style"
+                    android:layout_marginEnd="@dimen/dp_5"
+                    android:text="@string/picture_file" />
+
+                <Button
+                    android:id="@+id/f_annotation_video"
+                    style="@style/btn_pressed_style"
+                    android:layout_marginEnd="@dimen/dp_5"
+                    android:text="@string/video_file" />
+
+                <Button
+                    android:id="@+id/f_annotation_other"
+                    style="@style/btn_pressed_style"
+                    android:text="@string/other_file" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_weight="3"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/f_annotation_push"
+                    style="@style/btn_pressed_style"
+                    android:layout_marginEnd="@dimen/dp_5"
+                    android:text="@string/push_file" />
+
+                <Button
+                    android:id="@+id/f_annotation_export"
+                    style="@style/btn_pressed_style"
+                    android:text="@string/export_file" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/f_annotation_file_rv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7"
+            android:background="@color/white" />
+    </LinearLayout>
+</LinearLayout>

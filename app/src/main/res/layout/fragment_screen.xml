@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/screen_source"
+        android:textColor="@color/blue"
+        android:textSize="@dimen/sp_16"
+        app:layout_constraintEnd_toEndOf="@+id/f_screen_rv_source"
+        app:layout_constraintStart_toStartOf="@+id/f_screen_rv_source"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/ssss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/target_screen"
+        android:textColor="@color/blue"
+        android:textSize="@dimen/sp_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView23"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/f_screen_rv_target"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/f_screen_preview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintStart_toEndOf="@+id/f_screen_rv_pro"
+        app:layout_constraintTop_toBottomOf="@+id/f_screen_pro_cb" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/f_screen_rv_pro"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/f_screen_preview"
+        app:layout_constraintEnd_toStartOf="@+id/f_screen_rv_target"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@+id/f_screen_rv_source"
+        app:layout_constraintTop_toBottomOf="@+id/f_screen_pro_cb" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/f_screen_rv_source"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/f_screen_preview"
+        app:layout_constraintEnd_toStartOf="@+id/f_screen_rv_pro"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/f_screen_pro_cb" />
+
+    <CheckBox
+        android:id="@+id/f_screen_pro_cb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/projection"
+        app:layout_constraintStart_toStartOf="@+id/f_screen_rv_pro"
+        app:layout_constraintTop_toBottomOf="@+id/textView23" />
+
+    <CheckBox
+        android:id="@+id/f_screen_target_cb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/target_screen"
+        app:layout_constraintStart_toStartOf="@+id/f_screen_rv_target"
+        app:layout_constraintTop_toBottomOf="@+id/textView23" />
+
+    <Button
+        android:id="@+id/f_screen_preview"
+        style="@style/btn_pressed_style"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/preview"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/f_screen_stop_preview"
+        app:layout_constraintStart_toStartOf="@+id/f_screen_rv_source" />
+
+    <Button
+        android:id="@+id/f_screen_stop_preview"
+        style="@style/btn_pressed_style"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
+        android:text="@string/stop_preview"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/f_screen_rv_source"
+        app:layout_constraintStart_toEndOf="@+id/f_screen_preview" />
+
+    <CheckBox
+        android:id="@+id/f_screen_mandatory_cb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/mandatory_screen"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/f_screen_rv_pro" />
+
+    <Button
+        android:id="@+id/f_screen_launch"
+        style="@style/btn_pressed_style"
+        android:layout_marginBottom="8dp"
+        android:text="@string/launch_screen"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/f_screen_stop"
+        app:layout_constraintStart_toEndOf="@+id/f_screen_mandatory_cb"
+        tools:layout_editor_absoluteX="574dp" />
+
+    <Button
+        android:id="@+id/f_screen_stop"
+        style="@style/btn_pressed_style"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/stop_screen"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/f_screen_launch" />
+</android.support.constraint.ConstraintLayout>

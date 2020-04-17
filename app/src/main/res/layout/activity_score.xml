@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/dp_110"
+    android:layout_marginEnd="@dimen/dp_110"
+    tools:context=".view.score.ScoreActivity">
+
+    <TextView
+        android:id="@+id/textView27"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/score_info_submit"
+        android:textSize="@dimen/sp_12"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/score_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/score_describe"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView27" />
+
+    <TextView
+        android:id="@+id/score_desc_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/score_desc"
+        app:layout_constraintStart_toEndOf="@+id/score_desc"
+        tools:text="测试评分3" />
+
+    <TextView
+        android:id="@+id/score_file"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/score_file"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/score_desc" />
+
+    <TextView
+        android:id="@+id/score_file_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/score_file"
+        app:layout_constraintStart_toEndOf="@+id/score_file"
+        tools:text="文件.xml" />
+
+    <TextView
+        android:id="@+id/score_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/is_register"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/score_file" />
+
+    <TextView
+        android:id="@+id/score_register_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/score_register"
+        app:layout_constraintStart_toEndOf="@+id/score_register"
+        tools:text="是" />
+
+    <TextView
+        android:id="@+id/score_option1_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/score_register"
+        app:layout_constraintTop_toBottomOf="@+id/score_register"
+        tools:text="答案一" />
+
+    <EditText
+        android:id="@+id/score_option1_edt"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/shape_edt"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="@+id/score_option1_tv"
+        app:layout_constraintStart_toEndOf="@+id/score_option1_tv"
+        app:layout_constraintTop_toTopOf="@+id/score_option1_tv" />
+
+    <TextView
+        android:id="@+id/scope1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/scope"
+        android:textColor="@color/red"
+        app:layout_constraintBottom_toBottomOf="@+id/score_option1_edt"
+        app:layout_constraintStart_toEndOf="@+id/score_option1_edt"
+        app:layout_constraintTop_toTopOf="@+id/score_option1_edt"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/score_option2_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/score_register"
+        app:layout_constraintTop_toBottomOf="@+id/score_option1_tv"
+        tools:text="答案二" />
+
+    <EditText
+        android:id="@+id/score_option2_edt"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/shape_edt"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="@+id/score_option2_tv"
+        app:layout_constraintStart_toEndOf="@+id/score_option2_tv"
+        app:layout_constraintTop_toTopOf="@+id/score_option2_tv" />
+
+    <TextView
+        android:id="@+id/scope2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/scope"
+        android:textColor="@color/red"
+        app:layout_constraintBottom_toBottomOf="@+id/score_option2_edt"
+        app:layout_constraintStart_toEndOf="@+id/score_option2_edt"
+        app:layout_constraintTop_toTopOf="@+id/score_option2_edt" />
+
+    <TextView
+        android:id="@+id/score_option3_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/score_register"
+        app:layout_constraintTop_toBottomOf="@+id/score_option2_tv"
+        tools:text="答案三" />
+
+    <EditText
+        android:id="@+id/score_option3_edt"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/shape_edt"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="@+id/score_option3_tv"
+        app:layout_constraintStart_toEndOf="@+id/score_option3_tv"
+        app:layout_constraintTop_toTopOf="@+id/score_option3_tv" />
+
+    <TextView
+        android:id="@+id/scope3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/scope"
+        android:textColor="@color/red"
+        app:layout_constraintBottom_toBottomOf="@+id/score_option3_edt"
+        app:layout_constraintStart_toEndOf="@+id/score_option3_edt"
+        app:layout_constraintTop_toTopOf="@+id/score_option3_edt" />
+
+    <TextView
+        android:id="@+id/score_option4_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/score_register"
+        app:layout_constraintTop_toBottomOf="@+id/score_option3_tv"
+        tools:text="答案四" />
+
+    <EditText
+        android:id="@+id/score_option4_edt"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/shape_edt"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="@+id/score_option4_tv"
+        app:layout_constraintStart_toEndOf="@+id/score_option4_tv"
+        app:layout_constraintTop_toTopOf="@+id/score_option4_tv" />
+
+    <TextView
+        android:id="@+id/scope4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/scope"
+        android:textColor="@color/red"
+        app:layout_constraintBottom_toBottomOf="@+id/score_option4_edt"
+        app:layout_constraintStart_toEndOf="@+id/score_option4_edt"
+        app:layout_constraintTop_toTopOf="@+id/score_option4_edt" />
+
+    <TextView
+        android:id="@+id/score_opinion_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/score_opinion"
+        app:layout_constraintBottom_toBottomOf="@+id/score_opinion_edt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/score_opinion_edt" />
+
+    <EditText
+        android:id="@+id/score_opinion_edt"
+        android:layout_width="@dimen/dp_300"
+        android:layout_height="@dimen/dp_110"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/shape_edt"
+        android:gravity="top|start"
+        app:layout_constraintBottom_toTopOf="@+id/score_submit"
+        app:layout_constraintStart_toEndOf="@+id/score_opinion_tv"
+        app:layout_constraintTop_toBottomOf="@+id/score_option4_tv" />
+
+    <Button
+        android:id="@+id/score_submit"
+        style="@style/btn_pressed_style"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/score_give_up"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/score_give_up"
+        style="@style/btn_pressed_style"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/give_up"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/score_submit" />
+</android.support.constraint.ConstraintLayout>

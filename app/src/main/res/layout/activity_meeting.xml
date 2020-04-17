@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/meet_root_id"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/meet_content"
+    android:orientation="vertical"
+    tools:context=".view.meet.MeetingActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!--android:adjustViewBounds="true"-->
+            <!--android:maxWidth="200dp"-->
+            <ImageView
+                android:id="@+id/meet_logo"
+                android:layout_width="@dimen/dp_110"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop" />
+
+            <TextView
+                android:id="@+id/meet_member"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                tools:text="参会人：张三" />
+
+            <ImageView
+                android:id="@+id/meet_chat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_10"
+                android:src="@drawable/icon_chat" />
+
+            <TextView
+                android:id="@+id/meet_online"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_10"
+                android:textColor="@color/white"
+                tools:text="在线" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_10">
+
+                <TextView
+                    android:id="@+id/meet_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dp_5"
+                    android:textColor="@color/white"
+                    tools:text="15:09" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/meet_time"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/meet_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        tools:text="3月13日" />
+
+                    <TextView
+                        android:id="@+id/meet_week"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        tools:text="星期五" />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/meet_min"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_min" />
+
+            <ImageView
+                android:id="@+id/meet_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_close" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:background="@color/meet_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/meet_meeting_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            tools:text="第一次人大代表大会" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"
+        android:background="@color/meet_content"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/meet_frame_layout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:background="@color/meet_fragment_bg" />
+
+        <LinearLayout
+            android:id="@+id/meet_fun_all_ll"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/meet_rv_functions"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/meet_fun_ll"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical" />
+
+            <LinearLayout
+                android:id="@+id/meet_others"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:layout_margin="@dimen/dp_10"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_fun_other" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_5"
+                    android:text="@string/meet_others"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

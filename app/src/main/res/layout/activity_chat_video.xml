@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_wm_bg">
+
+    <CheckBox
+        android:id="@+id/pop_video_chat_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/member"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pop_video_chat_close" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/pop_video_chat_rv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/pop_video_chat_launch"
+        app:layout_constraintEnd_toStartOf="@+id/video_chat_view"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pop_video_chat_all" />
+
+    <RadioGroup
+        android:id="@+id/pop_video_chat_radio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/pop_video_chat_rv"
+        app:layout_constraintTop_toBottomOf="@+id/pop_video_chat_close">
+
+        <RadioButton
+            android:id="@+id/pop_video_chat_paging"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/mode_paging" />
+
+        <RadioButton
+            android:id="@+id/pop_video_chat_intercom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/mode_intercom" />
+    </RadioGroup>
+
+    <ImageView
+        android:id="@+id/pop_video_chat_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/icon_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/video_chat_ask_cb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/is_ask"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/pop_video_chat_launch"
+        app:layout_constraintStart_toEndOf="@+id/pop_video_chat_rv" />
+
+    <Button
+        android:id="@+id/pop_video_chat_launch"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_20"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/shape_btn_pressed"
+        android:text="@string/launch"
+        android:textSize="@dimen/sp_10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/pop_video_chat_stop"
+        app:layout_constraintStart_toEndOf="@+id/video_chat_ask_cb" />
+
+    <Button
+        android:id="@+id/pop_video_chat_stop"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_20"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/shape_btn_pressed"
+        android:text="@string/stop"
+        android:textSize="@dimen/sp_10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/pop_video_chat_launch" />
+
+    <xlk.paperless.standard.ui.videochat.VideoChatView
+        android:id="@+id/video_chat_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/pop_video_chat_launch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="4"
+        app:layout_constraintStart_toEndOf="@+id/pop_video_chat_rv"
+        app:layout_constraintTop_toTopOf="@+id/pop_video_chat_rv" />
+</android.support.constraint.ConstraintLayout>

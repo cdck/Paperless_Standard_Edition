@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.main.MainActivity">
+
+    <TextView
+        android:id="@+id/seat_tv_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.01"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.8"
+        tools:text="席位：" />
+
+    <TextView
+        android:id="@+id/post_tv_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.01"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.9"
+        tools:text="职位：" />
+
+    <TextView
+        android:id="@+id/unit_tv_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.01"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.99"
+        tools:text="单位：" />
+
+    <TextView
+        android:id="@+id/meet_tv_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5"
+        tools:text="会议名称" />
+
+    <TextView
+        android:id="@+id/member_tv_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.6"
+        tools:text="参会人名称" />
+
+    <ImageView
+        android:id="@+id/logo_iv_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.01"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.01" />
+
+    <TextView
+        android:id="@+id/company_tv_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.01"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3"
+        tools:text="公司名称" />
+
+    <xlk.paperless.standard.ui.SlideView
+        android:id="@+id/slideview_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:bg_drawable="@drawable/ic_launcher_foreground"
+        app:bg_text="滑动开始确认"
+        app:bg_text_color="@color/white"
+        app:bg_text_complete="松开即可确认"
+        app:bg_text_size="18sp"
+        app:enable_when_full="true"
+        app:gradient_color1="#0a0a0a"
+        app:gradient_color2="#FFFFFF"
+        app:gradient_color3="#0a0a0a"
+        app:icon_drawable="@drawable/ic_launcher_foreground"
+        app:icon_ratio="0.15"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4"
+        app:min_height="48dp"
+        app:reset_not_full="true"
+        app:secondary_color="@color/yellow"
+
+        />
+
+    <Button
+        android:id="@+id/enter_btn_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/enterMeeting"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.9" />
+
+    <Button
+        android:id="@+id/set_btn_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/systemSetting"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.99"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.99" />
+
+
+    <RelativeLayout
+        android:id="@+id/date_relative_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.99"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.05">
+
+        <TextView
+            android:id="@+id/time_tv_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            tools:text="19:20" />
+
+        <LinearLayout
+            android:id="@+id/date_linear_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="3dp"
+            android:layout_toRightOf="@id/time_tv_main"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/date_tv_main"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                tools:text="12月20日"
+                tools:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/week_tv_main"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                tools:text="星期一"
+                tools:textSize="12sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <CheckBox
+        android:id="@+id/item_vote_member_number"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        tools:text="序号" />
+
+    <TextView
+        android:id="@+id/item_vote_member_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        tools:text="参会人" />
+
+    <TextView
+        android:id="@+id/item_vote_member_seat"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        tools:text="席位" />
+
+    <TextView
+        android:id="@+id/item_vote_member_state"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        tools:text="设备状态" />
+
+    <TextView
+        android:id="@+id/item_vote_member_permissions"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        tools:text="权限" />
+</LinearLayout>
