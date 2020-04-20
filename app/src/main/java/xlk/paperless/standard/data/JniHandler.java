@@ -261,6 +261,28 @@ public class JniHandler {
     }
 
     /**
+     * 查询参会人员属性
+     *
+     * @param propertyid   属性ID 参见 Pb_MemberPropertyID
+     * @param parameterval 传入参数 为0表示本机设置定的人员id
+     * @return
+     */
+    public InterfaceMember.pbui_Type_MeetMembeProperty queryMemberProperty(int propertyid, int parameterval) throws InvalidProtocolBufferException {
+        InterfaceMember.pbui_Type_MeetMemberQueryProperty build = InterfaceMember.pbui_Type_MeetMemberQueryProperty.newBuilder()
+                .setPropertyid(propertyid)
+                .setParameterval(parameterval)
+                .build();
+        byte[] bytes = jni.call_method(InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEMBER_VALUE,
+                InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_QUERYPROPERTY_VALUE, build.toByteArray());
+        if (bytes == null) {
+            LogUtil.e(TAG, "queryMemberProperty -->" + "查询参会人员属性失败");
+            return null;
+        }
+        LogUtil.d(TAG, "queryMemberProperty -->" + "查询参会人员属性成功");
+        return InterfaceMember.pbui_Type_MeetMembeProperty.parseFrom(bytes);
+    }
+
+    /**
      * 181.查询会议排位
      *
      * @return
@@ -373,7 +395,8 @@ public class JniHandler {
         builder.setParamterval(0);
         InterfaceDevice.pbui_MeetDeviceQueryProperty build = builder.build();
         byte[] bytes = build.toByteArray();
-        byte[] array = jni.call_method(InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEINFO.getNumber(), InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_QUERYPROPERTY.getNumber(), bytes);
+        byte[] array = jni.call_method(InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEINFO.getNumber(),
+                InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_QUERYPROPERTY.getNumber(), bytes);
         if (array == null) {
             LogUtil.e(TAG, "queryDevicePropertiesById :  按属性ID查询指定设备属性失败 --->>> ");
             return null;
@@ -382,6 +405,29 @@ public class JniHandler {
         return array;
     }
 
+    /**
+     * 查询会议属性
+     *
+     * @param propertyid Pb_MeetPropertyID
+     * @param val1
+     * @param val2
+     * @return pbui_CommonInt32uProperty\pbui_CommonInt64uProperty
+     */
+    public byte[] queryMeetingProperty(int propertyid, int val1, int val2) {
+        InterfaceBase.pbui_CommonQueryProperty build = InterfaceBase.pbui_CommonQueryProperty.newBuilder()
+                .setPropertyid(propertyid)
+                .setParameterval(val1)
+                .setParameterval2(val2)
+                .build();
+        byte[] bytes = jni.call_method(InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETINFO_VALUE,
+                InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_QUERYPROPERTY_VALUE, build.toByteArray());
+        if (bytes == null) {
+            LogUtil.e(TAG, "queryMeetingProperty -->" + "查询会议属性失败");
+            return null;
+        }
+        LogUtil.d(TAG, "queryMeetingProperty -->" + "查询会议属性成功");
+        return bytes;
+    }
 
     /**
      * 136.查询会议目录
@@ -648,7 +694,7 @@ public class JniHandler {
         builder.setRes(resValue);
         InterfacePlaymedia.pbui_Type_MeetDestroyPlayRes build = builder.build();
         jni.call_method(InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEDIAPLAY.getNumber(), InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_DESTORY.getNumber(), build.toByteArray());
-        LogUtil.e(TAG, "releaseVideoRes :  释放播放资源 --->>> resValue= "+resValue);
+        LogUtil.e(TAG, "releaseVideoRes :  释放播放资源 --->>> resValue= " + resValue);
     }
 
     /**

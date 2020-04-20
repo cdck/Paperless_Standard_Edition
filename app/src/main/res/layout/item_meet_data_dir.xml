@@ -19,13 +19,17 @@
             android:id="@+id/item_meet_data_dir_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/dp_5"
+            android:layout_marginEnd="@dimen/dp_2"
             android:background="@drawable/file_s" />
 
         <TextView
             android:id="@+id/item_meet_data_dir_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:lines="2"
+            android:textSize="@dimen/sp_10"
             tools:text="共享文件" />
 
     </LinearLayout>

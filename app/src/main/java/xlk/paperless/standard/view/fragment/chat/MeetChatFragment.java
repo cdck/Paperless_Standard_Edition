@@ -110,6 +110,7 @@ public class MeetChatFragment extends BaseFragment implements View.OnClickListen
         } else {
             memberAdapter.notifyDataSetChanged();
             memberAdapter.notifyCheck();
+            m_c_f_cb.setChecked(memberAdapter.isCheckAll());
         }
     }
 

@@ -344,6 +344,7 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
         for (int i = 0; i < functions.size(); i++) {
             InterfaceMeetfunction.pbui_Item_MeetFunConfigDetailInfo info = functions.get(i);
             int funcode = info.getFuncode();
+            if (funcode == 2 || funcode == 8) continue;
             if (i == 0) {
                 firstFunCode = funcode;
             }

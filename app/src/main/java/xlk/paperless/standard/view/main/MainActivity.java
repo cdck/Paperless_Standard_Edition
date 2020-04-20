@@ -77,19 +77,11 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
 
     private final String TAG = "MainActivity-->";
     private MainPresenter presenter;
-    private TextView seat_tv_main;
-    private TextView post_tv_main;
-    private TextView unit_tv_main;
-    private TextView meet_tv_main;
-    private TextView member_tv_main;
+    private TextView week_tv_main, date_tv_main, time_tv_main, company_tv_main, member_tv_main,
+            meet_tv_main, seat_tv_main, post_tv_main, unit_tv_main, member_role, app_version, meet_state, note_info;
+    private Button enter_btn_main, set_btn_main;
     private ImageView logo_iv_main;
-    private TextView company_tv_main;
-    private Button enter_btn_main;
     private SlideView slideview_main;
-    private Button set_btn_main;
-    private TextView time_tv_main;
-    private TextView date_tv_main;
-    private TextView week_tv_main;
     private LinearLayout date_linear_main;
     private RelativeLayout date_relative_main;
     private ConstraintLayout main_root_layout;
@@ -106,6 +98,18 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+        slideview_main.addSlideListener(new SlideView.OnSlideListener() {
+            @Override
+            public void onSlideSuccess() {
+                if (meet_tv_main.getText().toString().trim().isEmpty()) {
+                    jump2scan();
+                } else if (member_tv_main.getText().toString().trim().isEmpty()) {
+                    jump2bind();
+                } else {
+                    signIn();
+                }
+            }
+        });
         ((MyApplication) getApplication()).openBackstageService(true);
         presenter = new MainPresenter(this, this);
         presenter.register();
@@ -286,6 +290,12 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         time_tv_main = (TextView) findViewById(R.id.time_tv_main);
         date_tv_main = (TextView) findViewById(R.id.date_tv_main);
         week_tv_main = (TextView) findViewById(R.id.week_tv_main);
+
+        member_role = (TextView) findViewById(R.id.member_role);
+        meet_state = (TextView) findViewById(R.id.meet_state);
+        app_version = (TextView) findViewById(R.id.app_version);
+        note_info = (TextView) findViewById(R.id.note_info);
+
         date_linear_main = (LinearLayout) findViewById(R.id.date_linear_main);
         date_relative_main = (RelativeLayout) findViewById(R.id.date_relative_main);
         main_root_layout = (ConstraintLayout) findViewById(R.id.main_root_layout);
@@ -297,6 +307,36 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         presenter.setInterfaceState();
         presenter.initStream();
         presenter.queryContextProperty();
+    }
+
+    @Override
+    public void updateMeetingState(int state) {
+        switch (state) {//会议状态，0为未开始会议，1为已开始会议，2为已结束会议
+            case 0:
+                meet_state.setText(getString(R.string.state_meet_not));
+                break;
+            case 1:
+                meet_state.setText(getString(R.string.state_meet_start));
+                break;
+            case 2:
+                meet_state.setText(getString(R.string.state_meet_end));
+                break;
+        }
+    }
+
+    @Override
+    public void updateNote(String noteinfo) {
+        note_info.setText(getString(R.string.note_info_, noteinfo));
+    }
+
+    @Override
+    public void updateMemberRole(String role) {
+        member_role.setText(role);
+    }
+
+    @Override
+    public void updateVersion(String versionName) {
+        app_version.setText(getString(R.string.curr_version, versionName));
     }
 
     @Override
@@ -349,6 +389,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         meet_tv_main.setText(meetingName);
         company_tv_main.setText(devMeetInfo.getCompany().toStringUtf8());
         post_tv_main.setText(getString(R.string.job_name_, devMeetInfo.getJob().toStringUtf8()));
+        presenter.queryMeetingState(MyApplication.localMeetingId);
 //        if (meetingName.isEmpty()) {
 //            LogUtil.d(TAG, "updateUI -->meetingName= " + meetingName);
 //            jump2scan();
@@ -405,6 +446,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         int faceid = itemInfo.getFaceid();
         int flag = itemInfo.getFlag();
         boolean isShow = (InterfaceMacro.Pb_MeetFaceFlag.Pb_MEET_FACEFLAG_SHOW_VALUE == (flag & InterfaceMacro.Pb_MeetFaceFlag.Pb_MEET_FACEFLAG_SHOW_VALUE));
+        LogUtil.i(TAG, "updateTv -->" + faceid + ", isShow= " + isShow);
         int fontsize = itemInfo.getFontsize();
         int color = itemInfo.getColor();
         int align = itemInfo.getAlign();
@@ -426,9 +468,9 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         }
         //对齐方式
         if (align == InterfaceMacro.Pb_FontAlignFlag.Pb_MEET_FONTALIGNFLAG_LEFT.getNumber()) {//左对齐
-            tv.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+            tv.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
         } else if (align == InterfaceMacro.Pb_FontAlignFlag.Pb_MEET_FONTALIGNFLAG_RIGHT.getNumber()) {//右对齐
-            tv.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+            tv.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
         } else if (align == InterfaceMacro.Pb_FontAlignFlag.Pb_MEET_FONTALIGNFLAG_HCENTER.getNumber()) {//水平对齐
             tv.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
         } else if (align == InterfaceMacro.Pb_FontAlignFlag.Pb_MEET_FONTALIGNFLAG_TOP.getNumber()) {//上对齐
@@ -520,14 +562,15 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
     @Override
     public void updateEnterView(int resId, InterfaceFaceconfig.pbui_Item_FaceTextItemInfo itemInfo) {
         update(resId, itemInfo);
-        int faceid = itemInfo.getFaceid();
+//        int faceid = itemInfo.getFaceid();
         int flag = itemInfo.getFlag();
-        int fontsize = itemInfo.getFontsize();
-        int color = itemInfo.getColor();
-        int align = itemInfo.getAlign();
-        int fontflag = itemInfo.getFontflag();
-        String fontName = itemInfo.getFontname().toStringUtf8();
-        SlideView slideView = findViewById(resId);
+        boolean isShow = (InterfaceMacro.Pb_MeetFaceFlag.Pb_MEET_FACEFLAG_SHOW_VALUE == (flag & InterfaceMacro.Pb_MeetFaceFlag.Pb_MEET_FACEFLAG_SHOW_VALUE));
+//        int fontsize = itemInfo.getFontsize();
+//        int color = itemInfo.getColor();
+//        int align = itemInfo.getAlign();
+//        int fontflag = itemInfo.getFontflag();
+//        String fontName = itemInfo.getFontname().toStringUtf8();
+//        SlideView slideView = findViewById(resId);
 //        btn.setTextColor(color);
 //        btn.setTextSize(fontsize);
 //        //字体样式

@@ -162,6 +162,7 @@ public class MainPresenter extends BasePresenter {
         try {
             PackageInfo packageInfo = pm.getPackageInfo(cxt.getPackageName(), 0);
             LogUtil.d(TAG, "当前版本名称：" + packageInfo.versionName + ", 版本号：" + packageInfo.versionCode);
+            view.updateVersion(packageInfo.versionName);
             String hardver = "";
             String softver = "";
             if (packageInfo.versionName.contains(".")) {
@@ -269,6 +270,10 @@ public class MainPresenter extends BasePresenter {
                     view.jump2meet();
                 }
                 break;
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETSEAT_VALUE://会议排位变更通知
+                LogUtil.d(TAG, "BusEvent -->" + "会议排位变更通知");
+                queryLocalRole();
+                break;
         }
     }
 
@@ -329,15 +334,21 @@ public class MainPresenter extends BasePresenter {
                 InterfaceFaceconfig.pbui_Item_FaceOnlyTextItemInfo itemInfo = onlytextList.get(i);
                 int faceid = itemInfo.getFaceid();
                 String text = itemInfo.getText().toStringUtf8();
+                LogUtil.i(TAG, "queryInterFaceConfiguration onlytextList-->" + faceid + ", text= " + text);
                 if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_COLTDTEXT_VALUE) {//公司名称
                     view.updateCompany(text);
-                } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_MEMBERCOMPANY_VALUE) {//参会人单位
-                    view.updateUnit(text);
                 }
+//                else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_MEMBERCOMPANY_VALUE) {//参会人单位
+//                    view.updateUnit(text);
+//                }
+//                else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_PROJECTIVE_COLTDTEXT_VALUE) {//公司名称
+//                    view.updateUnit(text);
+//                }
             }
             for (int i = 0; i < textList.size(); i++) {
                 InterfaceFaceconfig.pbui_Item_FaceTextItemInfo itemInfo = textList.get(i);
                 int faceid = itemInfo.getFaceid();
+                LogUtil.i(TAG, "queryInterFaceConfiguration -->" + "faceid= " + faceid);
                 if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_MEETNAME_VALUE) {//会议名称
                     view.updateTv(R.id.meet_tv_main, itemInfo);
                 } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_MEMBERCOMPANY_VALUE) {//参会人单位
@@ -358,9 +369,17 @@ public class MainPresenter extends BasePresenter {
                     view.isShowLogo(isShow);
                 } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACE_checkin_GEO_VALUE) {//进入会议按钮 text
 //                    view.updateEnterView(R.id.slideview_main, itemInfo);
-                    view.updateBtn(R.id.enter_btn_main, itemInfo);
+//                    view.updateBtn(R.id.enter_btn_main, itemInfo);
                 } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACE_manage_GEO_VALUE) {//进入后台 text
                     view.updateBtn(R.id.set_btn_main, itemInfo);
+                } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACE_topstatus_GEO_VALUE) {//会议状态
+                    view.updateTv(R.id.meet_state, itemInfo);
+                } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACE_remark_GEO_VALUE) {//备注信息
+                    view.updateTv(R.id.note_info, itemInfo);
+                } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACE_ver_GEO_VALUE) {//软件版本
+                    view.updateTv(R.id.app_version, itemInfo);
+                } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACE_role_GEO_VALUE) {//角色
+                    view.updateTv(R.id.member_role, itemInfo);
                 }
             }
         } catch (InvalidProtocolBufferException e) {
@@ -375,8 +394,63 @@ public class MainPresenter extends BasePresenter {
             view.updateUI(devMeetInfo);
             //缓存参会人信息(不然收不到参会人变更通知)
             jni.cacheData(InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEMBER_VALUE);
+            //缓存会议信息
+            jni.cacheData(InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETINFO_VALUE);
             //缓存排位信息(不然收不到排位变更通知)
             jni.cacheData(InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETSEAT_VALUE);
+            //查询参会人单位
+            InterfaceMember.pbui_Type_MeetMembeProperty info = jni.queryMemberProperty(InterfaceMacro.Pb_MemberPropertyID.Pb_MEETMEMBER_PROPERTY_COMPANY_VALUE, 0);
+            if (info != null) {
+                String unit = info.getPropertytext().toStringUtf8();
+                LogUtil.d(TAG, "queryDevMeetInfo -->" + "是否是单位：" + unit);
+                view.updateUnit(unit);
+            }
+            InterfaceMember.pbui_Type_MeetMembeProperty info1 = jni.queryMemberProperty(InterfaceMacro.Pb_MemberPropertyID.Pb_MEETMEMBER_PROPERTY_COMMENT_VALUE, 0);
+            if (info1 != null) {
+                view.updateNote(info1.getPropertytext().toStringUtf8());
+            }
+            queryLocalRole();
+        } catch (InvalidProtocolBufferException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void queryMeetingState(int meetingid) {
+        byte[] bytes = jni.queryMeetingProperty(InterfaceMacro.Pb_MeetPropertyID.Pb_MEET_PROPERTY_STATUS_VALUE, meetingid, 0);
+        if (bytes == null) {
+            return;
+        }
+        try {
+            InterfaceBase.pbui_CommonInt32uProperty info = InterfaceBase.pbui_CommonInt32uProperty.parseFrom(bytes);
+            int propertyval = info.getPropertyval();
+            LogUtil.i(TAG, "queryMeetingState -->" + "会议状态：" + propertyval);
+            view.updateMeetingState(propertyval);
+        } catch (InvalidProtocolBufferException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void queryLocalRole() {
+        try {
+            InterfaceBase.pbui_CommonInt32uProperty property = jni.queryMeetRankingProperty(0, InterfaceMacro.Pb_MeetSeatPropertyID.Pb_MEETSEAT_PROPERTY_ROLEBYMEMBERID.getNumber());
+            if (property == null) return;
+            int propertyval = property.getPropertyval();
+            if (propertyval == InterfaceMacro.Pb_MeetMemberRole.Pb_role_member_compere.getNumber()
+                    || propertyval == InterfaceMacro.Pb_MeetMemberRole.Pb_role_member_secretary.getNumber()
+                    || propertyval == InterfaceMacro.Pb_MeetMemberRole.Pb_role_admin.getNumber()) {
+                //当前是主持人或秘书或管理员，设置拥有所有权限
+                MyApplication.hasAllPermissions = true;
+                if (propertyval == InterfaceMacro.Pb_MeetMemberRole.Pb_role_member_compere.getNumber()) {
+                    view.updateMemberRole(cxt.getString(R.string.member_role_host));
+                } else if (propertyval == InterfaceMacro.Pb_MeetMemberRole.Pb_role_member_secretary.getNumber()) {
+                    view.updateMemberRole(cxt.getString(R.string.member_role_secretary));
+                } else {
+                    view.updateMemberRole(cxt.getString(R.string.member_role_admin));
+                }
+            } else {
+                MyApplication.hasAllPermissions = false;
+                view.updateMemberRole(cxt.getString(R.string.member_role_ordinary));
+            }
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }

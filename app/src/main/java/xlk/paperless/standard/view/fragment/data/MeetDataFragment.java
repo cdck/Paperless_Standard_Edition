@@ -130,13 +130,10 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
         } else {
             dirAdapter.notifyDataSetChanged();
         }
-        dirAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                currentDirId = dirDetailInfos.get(position).getId();
-                dirAdapter.setChoose(currentDirId);
-                presenter.queryMeetFileByDir(currentDirId);
-            }
+        dirAdapter.setOnItemClickListener((adapter, view, position) -> {
+            currentDirId = dirDetailInfos.get(position).getId();
+            dirAdapter.setChoose(currentDirId);
+            presenter.queryMeetFileByDir(currentDirId);
         });
         if (!dirDetailInfos.isEmpty()) {
             if (currentDirId == -1) {

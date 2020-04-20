@@ -61,5 +61,14 @@ public interface IMain {
     //签到进入会议
     void signIn();
 
+    //更新参会人单位
     void updateUnit(String text);
+
+    void updateVersion(String versionName);
+
+    void updateMeetingState(int state);
+
+    void updateMemberRole(String role);
+
+    void updateNote(String noteinfo);
 }

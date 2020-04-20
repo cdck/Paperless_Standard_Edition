@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="@drawable/blue_transparent_s"
     android:layout_margin="@dimen/dp_2"
+    android:background="@drawable/blue_transparent_s"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
@@ -23,6 +23,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="3"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:lines="2"
         tools:text="无纸化文件.doc" />
 
     <TextView

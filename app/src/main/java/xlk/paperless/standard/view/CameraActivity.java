@@ -1,8 +1,5 @@
 package xlk.paperless.standard.view;
 
-
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.ImageFormat;
@@ -11,10 +8,8 @@ import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.Parameters;
 import android.hardware.Camera.PreviewCallback;
-import android.media.MediaCodec;
 import android.media.MediaCodecInfo;
 import android.media.MediaCodecList;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -53,7 +48,6 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback,
     public static final ArrayBlockingQueue<byte[]> YUVQueue = new ArrayBlockingQueue<byte[]>(
             yuvqueuesize);
     private AvcEncoder avcCodec;
-    public static boolean isbusy;
     private int camera_type;
     private SurfaceTexture texture;
 
@@ -61,7 +55,6 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
-        isbusy = true;
         Intent intent = getIntent();
         camera_type = intent.getIntExtra("camera_type", 0);//默认是0,后置摄像头
         surfaceview = findViewById(R.id.surfaceview);
@@ -96,7 +89,6 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback,
         holder.removeCallback(this);
     }
 
-
     private void exitCamera() {
         LogUtil.d(TAG, "CameraActivity.exitCamera :   --> ");
         if (null != camera) {
@@ -105,7 +97,6 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback,
             camera.stopPreview();
             camera.release();
             camera = null;
-            isbusy = false;
             EventBus.getDefault().unregister(this);
         }
     }

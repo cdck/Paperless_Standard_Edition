@@ -66,13 +66,9 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
         mInviteflag = getIntent().getIntExtra(Constant.extra_inviteflag, -1);
         mOperdeviceid = getIntent().getIntExtra(Constant.extra_operdeviceid, -1);
         LogUtil.d(TAG, "onCreate --> deviceid= " + mOperdeviceid);
-        video_chat_view.post(() -> {
-            int width = video_chat_view.getWidth();
-            int height = video_chat_view.getHeight();
-            initial(width, height);
-            EventBus.getDefault().register(this);
-            queryAttendPeople();
-        });
+        initial();
+        EventBus.getDefault().register(this);
+        queryAttendPeople();
     }
 
     private String getMemberName() {
@@ -85,7 +81,7 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
         return "";
     }
 
-    private void initial(int width, int height) {
+    private void initial() {
         pop_video_chat_paging.setOnClickListener(v -> {
             LogUtil.i(TAG, "initial -->" + "选择寻呼");
             video_chat_view.createDefaultView(1);
@@ -108,7 +104,6 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
             }
         }
     }
-
 
     private void queryAttendPeople() {
         try {
@@ -171,6 +166,7 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
         } else {
             memberAdapter.notifyDataSetChanged();
             memberAdapter.notifyCheck();
+            pop_video_chat_all.setChecked(memberAdapter.isCheckAll());
         }
     }
 
@@ -306,7 +302,6 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
         if (work_state == 1) {//寻呼中
             if (exitdeviceid == operdeviceid || exitdeviceid == MyApplication.localDeviceId) {//发起端退出了,自己才退出
                 LogUtil.i(TAG, "收到停止设备对讲通知 -->" + "发起端退出了或则自己退出");
-                EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_COLLECT_CAMERA_STOP).build());
                 stopAll();
                 video_chat_view.createDefaultView(1);
                 work_state = 0;
@@ -314,7 +309,6 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
             }
         } else if (work_state == 2) {//对讲中
             LogUtil.i(TAG, "收到停止设备对讲通知 -->" + "对讲中有人退出");
-            EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_COLLECT_CAMERA_STOP).build());
             stopAll();
             video_chat_view.createDefaultView(2);
             work_state = 0;
@@ -456,6 +450,8 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void stopAll() {
+        LogUtil.d(TAG, "stopAll -->" + "对讲或寻呼停止");
+        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_COLLECT_CAMERA_STOP).build());
         List<Integer> resids = new ArrayList<>();
         resids.add(10);
         resids.add(11);

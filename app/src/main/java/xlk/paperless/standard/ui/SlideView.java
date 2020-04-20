@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import xlk.paperless.standard.R;
@@ -21,7 +22,7 @@ import xlk.paperless.standard.R;
 /**
  * @author xlk
  * @date 2020/3/11
- * @Description:
+ * @Description: https://my.oschina.net/u/3026396/blog/817257
  */
 public class SlideView extends ViewGroup {
 
@@ -130,7 +131,7 @@ public class SlideView extends ViewGroup {
 
             // 修改
             mBgResId = a.getResourceId(R.styleable.SlideView_bg_drawable, R.drawable.default_btn_bg);
-            mIconResId = a.getResourceId(R.styleable.SlideView_icon_drawable, R.drawable.default_btn_bg);
+            mIconResId = a.getResourceId(R.styleable.SlideView_icon_drawable, R.drawable.shape_slide);
             mMinHeight = a.getDimensionPixelSize(R.styleable.SlideView_min_height, 240);
 
             mIconText = a.getString(R.styleable.SlideView_icon_text);
@@ -301,9 +302,9 @@ public class SlideView extends ViewGroup {
 
             RectF rectF = new RectF(MARGIN_HORIZONTAL, MARGIN_VERTICAL, mIconX + mDistanceX + MARGIN_HORIZONTAL + mSlideIcon.getMeasuredHeight() / 2,
                     getMeasuredHeight() - MARGIN_VERTICAL);
-            canvas.drawRoundRect(rectF, 12, 12, mSecondaryPaint);
-//            canvas.drawRect(MARGIN_HORIZONTAL, MARGIN_VERTICAL, mIconX + mDistanceX + MARGIN_HORIZONTAL + mSlideIcon.getMeasuredHeight() / 2,
-//                    getMeasuredHeight() - MARGIN_VERTICAL, mSecondaryPaint);
+//            canvas.drawRoundRect(rectF, 12, 12, mSecondaryPaint);
+            canvas.drawRect(MARGIN_HORIZONTAL, MARGIN_VERTICAL, mIconX + mDistanceX + MARGIN_HORIZONTAL + mSlideIcon.getMeasuredHeight() / 2,
+                    getMeasuredHeight() - MARGIN_VERTICAL, mSecondaryPaint);
         }
 
         // 绘制背景文字
@@ -320,7 +321,7 @@ public class SlideView extends ViewGroup {
     /**
      * 可拖动的View
      */
-    private class SlideIcon extends View {
+    private class SlideIcon extends ImageView {
         // 用来控制触摸事件是否可用
         private boolean mEnable;
 
@@ -374,8 +375,7 @@ public class SlideView extends ViewGroup {
             mFontMetrics = mTextPaint.getFontMetrics();
 
             // 设置背景图  修改
-//            setBackgroundResource(mIconResId);
-            setBackgroundResource(R.drawable.default_btn_bg);
+            setBackgroundResource(mIconResId);
 
             // 设置可用
             mEnable = true;
