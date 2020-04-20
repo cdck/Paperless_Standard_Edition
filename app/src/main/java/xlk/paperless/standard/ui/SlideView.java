@@ -131,7 +131,7 @@ public class SlideView extends ViewGroup {
 
             // 修改
             mBgResId = a.getResourceId(R.styleable.SlideView_bg_drawable, R.drawable.default_btn_bg);
-            mIconResId = a.getResourceId(R.styleable.SlideView_icon_drawable, R.drawable.shape_slide);
+            mIconResId = a.getResourceId(R.styleable.SlideView_icon_drawable, R.drawable.icon_slide);
             mMinHeight = a.getDimensionPixelSize(R.styleable.SlideView_min_height, 240);
 
             mIconText = a.getString(R.styleable.SlideView_icon_text);
@@ -416,7 +416,6 @@ public class SlideView extends ViewGroup {
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-
             // 获取文字baseline的Y坐标
             float baselineY = (getMeasuredHeight() - mFontMetrics.top - mFontMetrics.bottom) / 2;
             // 绘制文字
