@@ -6,6 +6,8 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
@@ -18,6 +20,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.mogujie.tt.protobuf.InterfaceDevice;
+import com.mogujie.tt.protobuf.InterfaceFaceconfig;
 import com.mogujie.tt.protobuf.InterfaceMeetfunction;
 
 import java.util.ArrayList;
@@ -61,7 +64,7 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
 
     private final String TAG = "MeetingActivity-->";
     private MeetingPresenter presenter;
-    private LinearLayout meet_root_id;
+    private ConstraintLayout meet_root_id;
     private LinearLayout meet_fun_all_ll;
     private LinearLayout meet_fun_ll;
     private ImageView meet_logo;
@@ -133,7 +136,7 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
     }
 
     private void initView() {
-        meet_root_id = (LinearLayout) findViewById(R.id.meet_root_id);
+        meet_root_id = (ConstraintLayout) findViewById(R.id.meet_root_id);
         meet_fun_all_ll = (LinearLayout) findViewById(R.id.meet_fun_all_ll);
         meet_fun_ll = (LinearLayout) findViewById(R.id.meet_fun_ll);
         meet_logo = (ImageView) findViewById(R.id.meet_logo);
@@ -174,11 +177,10 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
 
     @Override
     public void jump2main() {
+        if (isFinishing()) return;
         presenter.releaseVideoRes();
-        Intent intent1 = new Intent(this, MainActivity.class);
-        intent1.addFlags(FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent1);
         finish();
+        startActivity(new Intent(this, MainActivity.class).addFlags(FLAG_ACTIVITY_NEW_TASK));
     }
 
     @Override
@@ -272,6 +274,37 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
     @Override
     public void setCompanyVisibility(boolean isShow) {
 
+    }
+
+    @Override
+    public void updateLogoSize(int resid, InterfaceFaceconfig.pbui_Item_FaceTextItemInfo info) {
+        float bx = info.getBx();
+        float by = info.getBy();
+        float lx = info.getLx();
+        float ly = info.getLy();
+        ConstraintSet set = new ConstraintSet();
+        set.clone(meet_root_id);
+        //设置控件的大小
+        float width = (bx - lx) / 100 * MyApplication.screen_width;
+        float height = (by - ly) / 100 * MyApplication.screen_height;
+        set.constrainWidth(resid, (int) width);
+        set.constrainHeight(resid, (int) height);
+        LogUtil.d(TAG, "updateLogoSize: 控件大小 当前控件宽= " + width + ", 当前控件高= " + height);
+        float biasX, biasY;
+        float halfW = (bx - lx) / 2 + lx;
+        float halfH = (by - ly) / 2 + ly;
+
+        if (lx == 0) biasX = 0;
+        else if (lx > 50) biasX = bx / 100;
+        else biasX = halfW / 100;
+
+        if (ly == 0) biasY = 0;
+        else if (ly > 50) biasY = by / 100;
+        else biasY = halfH / 100;
+        LogUtil.d(TAG, "updateLogoSize: biasX= " + biasX + ",biasY= " + biasY);
+        set.setHorizontalBias(resid, biasX);
+        set.setVerticalBias(resid, biasY);
+        set.applyTo(meet_root_id);
     }
 
     @Override

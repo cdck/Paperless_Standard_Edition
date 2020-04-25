@@ -35,7 +35,6 @@
     <string name="meeting_sign_in_information">签到信息</string>
     <string name="meeting_score">评分查看</string>
     <string name="online">在线</string>
-    <string name="Offline">离线</string>
     <string name="previous">上一页</string>
     <string name="next_page">下一页</string>
     <string name="upload_file">上传文件</string>
@@ -375,6 +374,8 @@
     <string name="note_info_">备注信息：%1$s</string>
     <string name="slide_bg_text">滑动进入会议</string>
     <string name="slide_text_complete">松开即可进入</string>
+    <string name="check_network">网络连接错误</string>
+    <string name="open_network">前往打开</string>
 
     <string-array name="role">
         <item>无</item>

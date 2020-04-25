@@ -1,6 +1,7 @@
 package xlk.paperless.standard.view.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
@@ -178,18 +179,16 @@ public class MainPresenter extends BasePresenter {
     }
 
     public void initialization() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                jni.javaInitSys(AppUtil.getUniqueId(cxt));
-            }
-        }).start();
+        new Thread(() -> jni.javaInitSys(AppUtil.getUniqueId(cxt))).start();
     }
 
     @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void BusEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
+            case Constant.BUS_NET_WORK:
+
+                break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_TIME_VALUE:
                 Object[] objs = msg.getObjs();
                 byte[] data = (byte[]) objs[0];
@@ -369,7 +368,7 @@ public class MainPresenter extends BasePresenter {
                     view.isShowLogo(isShow);
                 } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACE_checkin_GEO_VALUE) {//进入会议按钮 text
 //                    view.updateEnterView(R.id.slideview_main, itemInfo);
-//                    view.updateBtn(R.id.enter_btn_main, itemInfo);
+                    view.updateBtn(R.id.enter_btn_main, itemInfo);
                 } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACE_manage_GEO_VALUE) {//进入后台 text
                     view.updateBtn(R.id.set_btn_main, itemInfo);
                 } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACE_topstatus_GEO_VALUE) {//会议状态
@@ -461,7 +460,7 @@ public class MainPresenter extends BasePresenter {
         InterfaceDevice.pbui_Type_DeviceDetailInfo devInfoById = jni.queryDevInfoById(MyApplication.localDeviceId);
         if (devInfoById == null) return;
         InterfaceDevice.pbui_Item_DeviceDetailInfo info = devInfoById.getPdevList().get(0);
-        view.updateSeatName(ConvertUtil.b2s(info.getDevname()));
+        view.updateSeatName(info.getDevname().toStringUtf8());
     }
 
     public void bindMeeting(int meetingid, int roomId) {

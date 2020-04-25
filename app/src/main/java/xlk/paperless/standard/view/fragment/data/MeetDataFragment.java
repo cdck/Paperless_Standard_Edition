@@ -173,27 +173,18 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
 
     private void lvFile(List<InterfaceFile.pbui_Item_MeetDirFileDetailInfo> fileDetailInfos) {
         if (fileListAdapter == null) {
-            f_data_file_lv.post(new Runnable() {
-                @Override
-                public void run() {
-                    int height = f_data_file_lv.getHeight();
-                    int itemCount = height / 100;
-                    LogUtil.d(TAG, "updateFileRv --> lv高度：" + height + "，itemCount：" + itemCount);
-                    fileListAdapter = new MeetDataFileListAdapter(getContext(), fileDetailInfos, itemCount);
-                    f_data_file_lv.setAdapter(fileListAdapter);
-                    fileListAdapter.setOnDownloadClickListener(new MeetDataFileListAdapter.ItemDownloadClickListener() {
-                        @Override
-                        public void clickDownload(InterfaceFile.pbui_Item_MeetDirFileDetailInfo item) {
-                            presenter.downloadFile(item);
-                        }
-                    });
-                    f_data_file_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            fileListAdapter.setChoose(fileDetailInfos.get(position).getMediaid());
-                        }
-                    });
-                }
+            f_data_file_lv.post(() -> {
+                int height = f_data_file_lv.getHeight();
+                int itemCount = height / 100;
+                LogUtil.d(TAG, "lvFile --> 列表的高度：" + height + "，itemCount：" + itemCount);
+                fileListAdapter = new MeetDataFileListAdapter(getContext(), fileDetailInfos, itemCount);
+                f_data_file_lv.setAdapter(fileListAdapter);
+                fileListAdapter.setOnDownloadClickListener(item -> {
+                    presenter.downloadFile(item);
+                });
+                f_data_file_lv.setOnItemClickListener((parent, view, position, id) -> {
+                    fileListAdapter.setChoose(fileDetailInfos.get(position).getMediaid());
+                });
             });
         } else {
             fileListAdapter.notifyDataSetChanged();
@@ -212,18 +203,12 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
         } else {
             fileAdapter.notifyDataSetChanged();
         }
-        fileAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                fileAdapter.setChoose(typeFileDetailInfos.get(position).getMediaid());
-            }
+        fileAdapter.setOnItemClickListener((adapter, view, position) -> {
+            fileAdapter.setChoose(typeFileDetailInfos.get(position).getMediaid());
         });
-        fileAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                if (view.getId() == R.id.i_m_d_file_download) {
-                    presenter.downloadFile(typeFileDetailInfos.get(position));
-                }
+        fileAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            if (view.getId() == R.id.i_m_d_file_download) {
+                presenter.downloadFile(typeFileDetailInfos.get(position));
             }
         });
     }

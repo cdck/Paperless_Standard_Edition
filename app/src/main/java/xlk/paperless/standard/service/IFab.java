@@ -6,13 +6,14 @@ import com.mogujie.tt.protobuf.InterfaceVote;
 import java.util.List;
 
 import xlk.paperless.standard.data.bean.DevMember;
+import xlk.paperless.standard.ui.CustomInterface.BaseInterface;
 
 /**
  * @author xlk
  * @date 2020/3/26
  * @Description:
  */
-public interface IFab {
+public interface IFab extends BaseInterface {
 
     void notifyOnLineAdapter();
 

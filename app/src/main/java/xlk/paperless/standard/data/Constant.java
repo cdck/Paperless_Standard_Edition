@@ -83,6 +83,7 @@ public class Constant {
     public static final int BUS_COLLECT_CAMERA_START = BUS_BASE + 14;//后台收到开始采集摄像头通知
     public static final int BUS_COLLECT_CAMERA_STOP = BUS_BASE + 15;//后台收到停止采集摄像头通知
     public static final int BUS_CHAT_STATE = BUS_BASE + 16;//发送视频聊天的状态
+    public static final int BUS_NET_WORK = BUS_BASE + 17;//网络状态改变
 
     //自定义其它功能的功能码
     public static final int fun_code = 200000;

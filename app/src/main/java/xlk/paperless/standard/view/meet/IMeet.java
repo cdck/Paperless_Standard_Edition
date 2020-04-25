@@ -3,6 +3,7 @@ package xlk.paperless.standard.view.meet;
 import android.graphics.drawable.Drawable;
 
 import com.mogujie.tt.protobuf.InterfaceDevice;
+import com.mogujie.tt.protobuf.InterfaceFaceconfig;
 import com.mogujie.tt.protobuf.InterfaceMeetfunction;
 
 import java.util.List;
@@ -37,4 +38,6 @@ public interface IMeet {
     void updateBg(Drawable drawable);
 
     void updateMemberRole(String roleStr);
+
+    void updateLogoSize(int logoiv, InterfaceFaceconfig.pbui_Item_FaceTextItemInfo info);
 }

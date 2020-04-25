@@ -83,7 +83,7 @@ public class DrawActivity extends BaseActivity implements IDraw, View.OnClickLis
         context = this;
         isDrawing = true;
         presenter = new DrawPresenter(this, this);
-        draw_fl.post(() -> initial());
+        draw_fl.post(this::initial);
     }
 
     private void initial() {
@@ -198,7 +198,7 @@ public class DrawActivity extends BaseActivity implements IDraw, View.OnClickLis
         if (enable) {
             draw_stop.setBackground(getResources().getDrawable(R.drawable.shape_btn_pressed));
         } else {
-            draw_stop.setBackground(getResources().getDrawable(R.drawable.icon_btn_enable));
+            draw_stop.setBackground(getResources().getDrawable(R.drawable.shape_btn_enable_flase));
         }
     }
 

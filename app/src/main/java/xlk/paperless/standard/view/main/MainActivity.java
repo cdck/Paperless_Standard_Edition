@@ -1,7 +1,9 @@
 package xlk.paperless.standard.view.main;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
@@ -10,8 +12,10 @@ import android.hardware.Camera;
 import android.media.MediaCodec;
 import android.media.MediaFormat;
 import android.media.projection.MediaProjectionManager;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
@@ -44,14 +48,18 @@ import com.mogujie.tt.protobuf.InterfaceMember;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.adapter.MainBindMemberAdapter;
+import xlk.paperless.standard.receiver.NetWorkReceiver;
 import xlk.paperless.standard.ui.ArtBoard;
 import xlk.paperless.standard.ui.SlideView;
 import xlk.paperless.standard.util.AppUtil;
 import xlk.paperless.standard.util.ConvertUtil;
 import xlk.paperless.standard.util.DateUtil;
+import xlk.paperless.standard.util.DialogUtil;
 import xlk.paperless.standard.util.IniUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.PopUtil;
@@ -82,7 +90,6 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
     private Button enter_btn_main, set_btn_main;
     private ImageView logo_iv_main;
     private SlideView slideview_main;
-    private LinearLayout date_linear_main;
     private RelativeLayout date_relative_main;
     private ConstraintLayout main_root_layout;
 
@@ -92,22 +99,23 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
     private MainBindMemberAdapter adapter;
     private int result;
     private Intent intent;
+    private android.app.AlertDialog netDialog;
+    private Timer timer;
+    private TimerTask timerTask;
+    private boolean toSetting = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
-        slideview_main.addSlideListener(new SlideView.OnSlideListener() {
-            @Override
-            public void onSlideSuccess() {
-                if (meet_tv_main.getText().toString().trim().isEmpty()) {
-                    jump2scan();
-                } else if (member_tv_main.getText().toString().trim().isEmpty()) {
-                    jump2bind();
-                } else {
-                    signIn();
-                }
+        slideview_main.addSlideListener(() -> {
+            if (meet_tv_main.getText().toString().trim().isEmpty()) {
+                jump2scan();
+            } else if (member_tv_main.getText().toString().trim().isEmpty()) {
+                jump2bind();
+            } else {
+                signIn();
             }
         });
         ((MyApplication) getApplication()).openBackstageService(true);
@@ -142,13 +150,9 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
 
     private void start() {
         LogUtil.d(TAG, "start --> 开始 ");
-//        if (ContextCompat.checkSelfPermission(this, READ_FRAME_BUFFER) != PackageManager.PERMISSION_GRANTED) {
-//
-//        }WRITE_SETTINGS READ_FRAME_BUFFER
         if (!XXPermissions.isHasPermission(this, READ_FRAME_BUFFER)) {
             LogUtil.d(TAG, "申请权限 -->" + " 没有 READ_FRAME_BUFFER 权限");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                ActivityCompat.requestPermissions(this, new String[]{READ_FRAME_BUFFER}, 10086);
                 request();
             }
         } else {
@@ -164,11 +168,75 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
             e.printStackTrace();
         }
         presenter.initConfFile();
-        if (!MyApplication.initializationIsOver) {
-            presenter.initialization();
+        checkNetWork();
+    }
+
+    private void checkNetWork() {
+        if (AppUtil.isNetworkAvailable(this)) {
+            LogUtil.d(TAG, "initial -->" + "网络可用");
+            if (!MyApplication.initializationIsOver) {
+                presenter.initialization();
+            } else {
+                initialized();
+            }
         } else {
-            initialized();
+            LogUtil.d(TAG, "initial -->" + "网络不可用");
+            netDialog = DialogUtil.createDialog(this, R.string.check_network, R.string.open_network, R.string.cancel, new DialogUtil.onDialogClickListener() {
+                @Override
+                public void positive(DialogInterface dialog) {
+                    dialog.dismiss();
+                    toSetting = true;
+                    startActivity(new Intent(Settings.ACTION_SETTINGS));
+                }
+
+                @Override
+                public void negative(DialogInterface dialog) {
+                    dialog.dismiss();
+                }
+
+                @Override
+                public void dismiss(DialogInterface dialog) {
+
+                }
+            });
+//            if (timer == null) timer = new Timer();
+//            if (timerTask == null) {
+//                timerTask = new TimerTask() {
+//                    @Override
+//                    public void run() {
+//                        boolean networkAvailable = AppUtil.isNetworkAvailable(getApplicationContext());
+//                        LogUtil.d(TAG, "initial -->是否有网络：" + networkAvailable);
+//                        if (networkAvailable) {
+//                            timerTask.cancel();
+//                            timer.purge();
+//                            timer.cancel();
+//                            timer = null;
+//                            timerTask = null;
+//                            if (netDialog != null && netDialog.isShowing()) {
+//                                netDialog.dismiss();
+//                            }
+//                            initial();
+//                        }
+//                    }
+//                };
+//                timer.schedule(timerTask, 0, 2000);
+//            }
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onRestart() {
+        LogUtil.d(TAG, "onRestart -->是否从设置界面回来：" + toSetting);
+        if (toSetting) {
+            toSetting = false;
+            initial();
+        }
+        super.onRestart();
     }
 
     private void initCameraSize(int type) {
@@ -202,8 +270,6 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
                     if (largestW * largestH > camera_width * camera_height) {
                         camera_width = largestW;
                         camera_height = largestH;
-//                        if (camera_width > 1280) camera_width = 1280;
-//                        if (camera_height > 720) camera_height = 720;
                     }
                 }
             } catch (IOException e) {
@@ -296,7 +362,6 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         app_version = (TextView) findViewById(R.id.app_version);
         note_info = (TextView) findViewById(R.id.note_info);
 
-        date_linear_main = (LinearLayout) findViewById(R.id.date_linear_main);
         date_relative_main = (RelativeLayout) findViewById(R.id.date_relative_main);
         main_root_layout = (ConstraintLayout) findViewById(R.id.main_root_layout);
     }

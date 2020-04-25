@@ -9,6 +9,8 @@ import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
 import android.media.MediaCodecInfo;
 import android.media.MediaCodecList;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Process;
 import android.provider.Settings;
@@ -165,4 +167,30 @@ public class AppUtil {
         Process.killProcess(Process.myPid());
     }
 
+
+    /**
+     * 检查网络是否可用
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isNetworkAvailable(Context context) {
+//        ConnectivityManager.NetworkCallback vb = new ConnectivityManager.NetworkCallback();
+//        vb.onCapabilitiesChanged();
+        ConnectivityManager manager = (ConnectivityManager) context
+                .getApplicationContext().getSystemService(
+                        Context.CONNECTIVITY_SERVICE);
+
+        if (manager == null) {
+            return false;
+        }
+
+        NetworkInfo networkinfo = manager.getActiveNetworkInfo();
+
+        if (networkinfo == null || !networkinfo.isAvailable()) {
+            return false;
+        }
+
+        return true;
+    }
 }

@@ -78,11 +78,13 @@ public class VideoPresenter extends BasePresenter {
 
     @Override
     public void register() {
+        LogUtil.d(TAG, "register -->EventBus");
         EventBus.getDefault().register(this);
     }
 
     @Override
     public void unregister() {
+        LogUtil.d(TAG, "unregister -->EventBus");
         EventBus.getDefault().unregister(this);
     }
 
@@ -119,7 +121,7 @@ public class VideoPresenter extends BasePresenter {
                     continue;
                 }
                 if (netstate == 1) {//在线
-                    if (Constant.isThisDevType(InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetProjective_VALUE,devcieid)) {//在线的投影机
+                    if (Constant.isThisDevType(InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetProjective_VALUE, devcieid)) {//在线的投影机
                         onLineProjectors.add(detailInfo);
                     } else {//查找在线参会人
                         if (facestate == 1) {//确保在会议界面
@@ -232,7 +234,8 @@ public class VideoPresenter extends BasePresenter {
             //1.创建了一个编解码器，此时编解码器处于未初始化状态（Uninitialized）
             mediaCodec = MediaCodec.createDecoderByType(saveMimeType);
             /**  宽高要判断是否是解码器所支持的范围  */
-            MediaCodecInfo.VideoCapabilities videoCapabilities = mediaCodec.getCodecInfo().getCapabilitiesForType(saveMimeType).getVideoCapabilities();
+            MediaCodecInfo.CodecCapabilities capabilitiesForType = mediaCodec.getCodecInfo().getCapabilitiesForType(saveMimeType);
+            MediaCodecInfo.VideoCapabilities videoCapabilities = capabilitiesForType.getVideoCapabilities();
             Range<Integer> supportedWidths = videoCapabilities.getSupportedWidths();
             Integer upper = supportedWidths.getUpper();
             Integer lower = supportedWidths.getLower();
@@ -253,7 +256,8 @@ public class VideoPresenter extends BasePresenter {
             }
             LogUtil.e(TAG, "initCodec :   --> " + upper + ", " + lower + " ,,高：" + upper1 + ", " + lower1);
             initMediaFormat(w, h, codecdata);
-            LogUtil.i(TAG, "initCodec :  是否支持 --> " + (mediaCodec.getCodecInfo().getCapabilitiesForType(saveMimeType).isFormatSupported(mediaFormat)));
+            boolean formatSupported = capabilitiesForType.isFormatSupported(mediaFormat);
+            LogUtil.i(TAG, "initCodec :  是否支持 --> " + formatSupported);
             info = new MediaCodec.BufferInfo();
             try {
                 //2.对编解码器进行配置，这将使编解码器转为配置状态（Configured）
@@ -290,6 +294,7 @@ public class VideoPresenter extends BasePresenter {
             mediaFormat.setByteBuffer("csd-0", ByteBuffer.wrap(codecdata));
             mediaFormat.setByteBuffer("csd-1", ByteBuffer.wrap(codecdata));
         }
+        mediaCodec.getCodecInfo().getCapabilitiesForType(saveMimeType).isFormatSupported(mediaFormat);
     }
 
 
@@ -530,7 +535,7 @@ public class VideoPresenter extends BasePresenter {
             super.run();
             while (!isStop) {
                 if (System.currentTimeMillis() - lastPushTime >= framepersecond) {
-                    LogUtil.e(TAG, "releaseThread 手动发送空数据 -->");
+                    LogUtil.v(TAG, "releaseThread 手动发送空数据 -->");
                     EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_VIDEO_DECODE)
                             .objs(0, 0, 0, 0, 0, null, 1L, null).build());
                     try {

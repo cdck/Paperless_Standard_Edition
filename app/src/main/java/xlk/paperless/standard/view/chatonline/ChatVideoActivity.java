@@ -424,11 +424,11 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
         if (enabled) {
             pop_video_chat_stop.setBackground(getResources().getDrawable(R.drawable.shape_btn_pressed));
         } else {
-            pop_video_chat_launch.setBackground(getResources().getDrawable(R.drawable.icon_btn_enable));
+            pop_video_chat_launch.setBackground(getResources().getDrawable(R.drawable.shape_btn_enable_flase));
         }
         pop_video_chat_stop.setEnabled(!enabled);
         if (enabled) {
-            pop_video_chat_stop.setBackground(getResources().getDrawable(R.drawable.icon_btn_enable));
+            pop_video_chat_stop.setBackground(getResources().getDrawable(R.drawable.shape_btn_enable_flase));
         } else {
             pop_video_chat_stop.setBackground(getResources().getDrawable(R.drawable.shape_btn_pressed));
         }

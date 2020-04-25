@@ -18,9 +18,10 @@ import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.ToastUtil;
+import xlk.paperless.standard.view.BaseActivity;
 import xlk.paperless.standard.view.MyApplication;
 
-public class ScoreActivity extends AppCompatActivity implements IScore, View.OnClickListener {
+public class ScoreActivity extends BaseActivity implements IScore, View.OnClickListener {
 
     private final String TAG = "ScoreActivity-->";
     private TextView score_desc_tv;

@@ -1,8 +1,6 @@
 package xlk.paperless.standard.service;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,22 +15,17 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Chronometer;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.protobuf.ByteString;
@@ -55,6 +48,7 @@ import xlk.paperless.standard.adapter.WmScreenMemberAdapter;
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.data.JniHandler;
+import xlk.paperless.standard.ui.CustomBaseViewHolder;
 import xlk.paperless.standard.util.AppUtil;
 import xlk.paperless.standard.util.DateUtil;
 import xlk.paperless.standard.util.DialogUtil;
@@ -258,13 +252,13 @@ public class FabService extends Service implements IFab {
     private void showMenuView() {
         menuView = LayoutInflater.from(cxt).inflate(R.layout.wm_menu_view, null);
         menuView.setTag("menuView");
-        MenuViewHolder menuViewHolder = new MenuViewHolder(menuView);
+        CustomBaseViewHolder.MenuViewHolder menuViewHolder = new CustomBaseViewHolder.MenuViewHolder(menuView);
         menuViewHolderEvent(menuViewHolder);
         showPop(hoverButton, menuView);
     }
 
     //菜单视图事件
-    private void menuViewHolderEvent(MenuViewHolder holder) {
+    private void menuViewHolderEvent(CustomBaseViewHolder.MenuViewHolder holder) {
         holder.wm_menu_back.setOnClickListener(v -> showPop(menuView, hoverButton, mParams));
         //截图批注
         holder.wm_menu_screenshot.setOnClickListener(v -> screenshot());
@@ -319,12 +313,12 @@ public class FabService extends Service implements IFab {
     private void showProView(int type) {
         proView = LayoutInflater.from(cxt).inflate(R.layout.wm_pro_view, null);
         proView.setTag("proView");
-        ProViewHolder proViewHolder = new ProViewHolder(proView);
+        CustomBaseViewHolder.ProViewHolder proViewHolder = new CustomBaseViewHolder.ProViewHolder(proView);
         proViewHolderEvent(proViewHolder, type);
         showPop(menuView, proView);
     }
 
-    private void proViewHolderEvent(ProViewHolder holder, int type) {
+    private void proViewHolderEvent(CustomBaseViewHolder.ProViewHolder holder, int type) {
         holder.wm_pro_mandatory.setVisibility(type == 1 ? View.VISIBLE : View.INVISIBLE);
         holder.wm_pro_title.setText(type == 1 ? cxt.getString(R.string.launch_pro_title) : cxt.getString(R.string.stop_pro_title));
         holder.wm_pro_launch_pro.setText(type == 1 ? cxt.getString(R.string.launch_pro) : cxt.getString(R.string.stop_pro));
@@ -376,13 +370,13 @@ public class FabService extends Service implements IFab {
     private void showJoinView() {
         joinView = LayoutInflater.from(cxt).inflate(R.layout.wm_screen_view, null);
         joinView.setTag("joinView");
-        ScreenViewHolder joinViewHolder = new ScreenViewHolder(joinView);
+        CustomBaseViewHolder.ScreenViewHolder joinViewHolder = new CustomBaseViewHolder.ScreenViewHolder(joinView);
         joinViewHolderEvent(joinViewHolder);
         showPop(menuView, joinView);
     }
 
     //加入同屏视图事件
-    private void joinViewHolderEvent(ScreenViewHolder holder) {
+    private void joinViewHolderEvent(CustomBaseViewHolder.ScreenViewHolder holder) {
         holder.wm_screen_mandatory.setVisibility(View.INVISIBLE);
         holder.wm_screen_cb_attendee.setVisibility(View.INVISIBLE);
         holder.wm_screen_cb_projector.setVisibility(View.INVISIBLE);
@@ -435,13 +429,13 @@ public class FabService extends Service implements IFab {
     private void showServiceView() {
         serviceView = LayoutInflater.from(cxt).inflate(R.layout.wm_service_view, null);
         serviceView.setTag("serviceView");
-        ServiceViewHolder serviceViewHolder = new ServiceViewHolder(serviceView);
+        CustomBaseViewHolder.ServiceViewHolder serviceViewHolder = new CustomBaseViewHolder.ServiceViewHolder(serviceView);
         serviceViewHolderEvent(serviceViewHolder);
         showPop(menuView, serviceView);
     }
 
     //服务视图事件
-    private void serviceViewHolderEvent(ServiceViewHolder holder) {
+    private void serviceViewHolderEvent(CustomBaseViewHolder.ServiceViewHolder holder) {
         holder.wm_service_close.setOnClickListener(v -> showPop(serviceView, hoverButton, mParams));
         holder.wm_service_pager.setOnClickListener(v -> holder.wm_service_edt.setText(cxt.getResources().getString(R.string.service_pager)));
         holder.wm_service_pen.setOnClickListener(v -> holder.wm_service_edt.setText(cxt.getResources().getString(R.string.service_pen)));
@@ -464,13 +458,13 @@ public class FabService extends Service implements IFab {
         //同屏视图
         screenView = LayoutInflater.from(cxt).inflate(R.layout.wm_screen_view, null);
         screenView.setTag("screenView");
-        ScreenViewHolder screenViewHolder = new ScreenViewHolder(screenView);
+        CustomBaseViewHolder.ScreenViewHolder screenViewHolder = new CustomBaseViewHolder.ScreenViewHolder(screenView);
         screenViewHolderEvent(screenViewHolder, type);
         showPop(menuView, screenView);
     }
 
     //同屏视图事件
-    private void screenViewHolderEvent(ScreenViewHolder holder, int type) {
+    private void screenViewHolderEvent(CustomBaseViewHolder.ScreenViewHolder holder, int type) {
         holder.wm_screen_mandatory.setVisibility((type == 1) ? View.VISIBLE : View.INVISIBLE);
         if (type == 1) {
             holder.wm_screen_launch.setText(cxt.getString(R.string.launch_screen));
@@ -677,14 +671,14 @@ public class FabService extends Service implements IFab {
         currentVoteId = info.getVoteid();
         voteView = LayoutInflater.from(cxt).inflate(R.layout.wm_vote_view, null);
         voteView.setTag("voteView");
-        VoteViewHolder voteViewHolder = new VoteViewHolder(voteView);
+        CustomBaseViewHolder.VoteViewHolder voteViewHolder = new CustomBaseViewHolder.VoteViewHolder(voteView);
         voteViewHolderEvent(voteViewHolder, info);
         voteViewIsShowing = true;
         wm.addView(voteView, postilParams);
     }
 
     //投票视图事件
-    private void voteViewHolderEvent(VoteViewHolder holder, InterfaceVote.pbui_Item_MeetOnVotingDetailInfo info) {
+    private void voteViewHolderEvent(CustomBaseViewHolder.VoteViewHolder holder, InterfaceVote.pbui_Item_MeetOnVotingDetailInfo info) {
         voteTimeouts = info.getTimeouts();
         String voteMode = getVoteMode(info);
         holder.wm_vote_title.setText(info.getContent().toStringUtf8());
@@ -788,7 +782,7 @@ public class FabService extends Service implements IFab {
         return voteMode;
     }
 
-    private void initCheckBox(VoteViewHolder holder, InterfaceVote.pbui_Item_MeetOnVotingDetailInfo info) {
+    private void initCheckBox(CustomBaseViewHolder.VoteViewHolder holder, InterfaceVote.pbui_Item_MeetOnVotingDetailInfo info) {
         holder.checkBox1.setVisibility(View.VISIBLE);
         holder.checkBox2.setVisibility(View.VISIBLE);
         holder.checkBox3.setVisibility(View.VISIBLE);
@@ -973,148 +967,148 @@ public class FabService extends Service implements IFab {
         presenter.unregister();
     }
 
-    public static class MenuViewHolder {
-        public View rootView;
-        public Button wm_menu_note;
-        public Button wm_menu_soft;
-        public Button wm_menu_hand;
-        public Button wm_menu_service;
-        public Button wm_menu_start_projection;
-        public Button wm_menu_back;
-        public Button wm_menu_stop_projection;
-        public Button wm_menu_start_screen;
-        public Button wm_menu_join_screen;
-        public Button wm_menu_stop_screen;
-        public Button wm_menu_screenshot;
-
-        public MenuViewHolder(View rootView) {
-            this.rootView = rootView;
-            this.wm_menu_note = (Button) rootView.findViewById(R.id.wm_menu_note);
-            this.wm_menu_soft = (Button) rootView.findViewById(R.id.wm_menu_soft);
-            this.wm_menu_hand = (Button) rootView.findViewById(R.id.wm_menu_hand);
-            this.wm_menu_service = (Button) rootView.findViewById(R.id.wm_menu_service);
-            this.wm_menu_start_projection = (Button) rootView.findViewById(R.id.wm_menu_start_projection);
-            this.wm_menu_back = (Button) rootView.findViewById(R.id.wm_menu_back);
-            this.wm_menu_stop_projection = (Button) rootView.findViewById(R.id.wm_menu_stop_projection);
-            this.wm_menu_start_screen = (Button) rootView.findViewById(R.id.wm_menu_start_screen);
-            this.wm_menu_join_screen = (Button) rootView.findViewById(R.id.wm_menu_join_screen);
-            this.wm_menu_stop_screen = (Button) rootView.findViewById(R.id.wm_menu_stop_screen);
-            this.wm_menu_screenshot = (Button) rootView.findViewById(R.id.wm_menu_screenshot);
-        }
-
-    }
-
-    public static class ServiceViewHolder {
-        public View rootView;
-        public TextView textView;
-        public ImageView wm_service_close;
-        public Button wm_service_pen;
-        public Button wm_service_pager;
-        public Button wm_service_tea;
-        public Button wm_service_calculate;
-        public Button wm_service_waiter;
-        public Button wm_service_clean;
-        public EditText wm_service_edt;
-        public Button wm_service_send;
-
-        public ServiceViewHolder(View rootView) {
-            this.rootView = rootView;
-            this.textView = (TextView) rootView.findViewById(R.id.textView);
-            this.wm_service_close = (ImageView) rootView.findViewById(R.id.wm_service_close);
-            this.wm_service_pen = (Button) rootView.findViewById(R.id.wm_service_pen);
-            this.wm_service_pager = (Button) rootView.findViewById(R.id.wm_service_pager);
-            this.wm_service_tea = (Button) rootView.findViewById(R.id.wm_service_tea);
-            this.wm_service_calculate = (Button) rootView.findViewById(R.id.wm_service_calculate);
-            this.wm_service_waiter = (Button) rootView.findViewById(R.id.wm_service_waiter);
-            this.wm_service_clean = (Button) rootView.findViewById(R.id.wm_service_clean);
-            this.wm_service_edt = (EditText) rootView.findViewById(R.id.wm_service_edt);
-            this.wm_service_send = (Button) rootView.findViewById(R.id.wm_service_send);
-        }
-
-    }
-
-    public static class ScreenViewHolder {
-        public View rootView;
-        public CheckBox wm_screen_mandatory;
-        public TextView wm_screen_title;
-        public TextView textView2;
-        public CheckBox wm_screen_cb_attendee;
-        public Button wm_screen_launch;
-        public Button wm_screen_cancel;
-        public CheckBox wm_screen_cb_projector;
-        public RecyclerView wm_screen_rv_attendee;
-        public RecyclerView wm_screen_rv_projector;
-
-        public ScreenViewHolder(View rootView) {
-            this.rootView = rootView;
-            this.wm_screen_mandatory = (CheckBox) rootView.findViewById(R.id.wm_screen_mandatory);
-            this.wm_screen_title = (TextView) rootView.findViewById(R.id.wm_screen_title);
-            this.textView2 = (TextView) rootView.findViewById(R.id.textView2);
-            this.wm_screen_cb_attendee = (CheckBox) rootView.findViewById(R.id.wm_screen_cb_attendee);
-            this.wm_screen_launch = (Button) rootView.findViewById(R.id.wm_screen_launch);
-            this.wm_screen_cancel = (Button) rootView.findViewById(R.id.wm_screen_cancel);
-            this.wm_screen_cb_projector = (CheckBox) rootView.findViewById(R.id.wm_screen_cb_projector);
-            this.wm_screen_rv_attendee = (RecyclerView) rootView.findViewById(R.id.wm_screen_rv_attendee);
-            this.wm_screen_rv_projector = (RecyclerView) rootView.findViewById(R.id.wm_screen_rv_projector);
-        }
-
-    }
-
-    public static class ProViewHolder {
-        public View rootView;
-        public CheckBox wm_pro_mandatory;
-        public TextView wm_pro_title;
-        public CheckBox wm_pro_all;
-        public RecyclerView wm_pro_rv;
-        public CheckBox wm_pro_full;
-        public CheckBox wm_pro_flow1;
-        public CheckBox wm_pro_flow2;
-        public CheckBox wm_pro_flow3;
-        public CheckBox wm_pro_flow4;
-        public Button wm_pro_launch_pro;
-        public Button wm_pro_cancel;
-
-        public ProViewHolder(View rootView) {
-            this.rootView = rootView;
-            this.wm_pro_mandatory = (CheckBox) rootView.findViewById(R.id.wm_pro_mandatory);
-            this.wm_pro_title = (TextView) rootView.findViewById(R.id.wm_pro_title);
-            this.wm_pro_all = (CheckBox) rootView.findViewById(R.id.wm_pro_all);
-            this.wm_pro_rv = (RecyclerView) rootView.findViewById(R.id.wm_pro_rv);
-            this.wm_pro_full = (CheckBox) rootView.findViewById(R.id.wm_pro_full);
-            this.wm_pro_flow1 = (CheckBox) rootView.findViewById(R.id.wm_pro_flow1);
-            this.wm_pro_flow2 = (CheckBox) rootView.findViewById(R.id.wm_pro_flow2);
-            this.wm_pro_flow3 = (CheckBox) rootView.findViewById(R.id.wm_pro_flow3);
-            this.wm_pro_flow4 = (CheckBox) rootView.findViewById(R.id.wm_pro_flow4);
-            this.wm_pro_launch_pro = (Button) rootView.findViewById(R.id.wm_pro_launch_pro);
-            this.wm_pro_cancel = (Button) rootView.findViewById(R.id.wm_pro_cancel);
-        }
-
-    }
-
-    public static class VoteViewHolder {
-        public View rootView;
-        public TextView wm_vote_title;
-        public TextView wm_vote_type;
-        public CheckBox checkBox1;
-        public CheckBox checkBox2;
-        public CheckBox checkBox3;
-        public CheckBox checkBox4;
-        public CheckBox checkBox5;
-        public Chronometer wm_vote_chronometer;
-        public Button wm_vote_submit;
-
-        public VoteViewHolder(View rootView) {
-            this.rootView = rootView;
-            this.wm_vote_title = (TextView) rootView.findViewById(R.id.wm_vote_title);
-            this.wm_vote_type = (TextView) rootView.findViewById(R.id.wm_vote_type);
-            this.checkBox1 = (CheckBox) rootView.findViewById(R.id.checkBox1);
-            this.checkBox2 = (CheckBox) rootView.findViewById(R.id.checkBox2);
-            this.checkBox3 = (CheckBox) rootView.findViewById(R.id.checkBox3);
-            this.checkBox4 = (CheckBox) rootView.findViewById(R.id.checkBox4);
-            this.checkBox5 = (CheckBox) rootView.findViewById(R.id.checkBox5);
-            this.wm_vote_chronometer = (Chronometer) rootView.findViewById(R.id.wm_vote_chronometer);
-            this.wm_vote_submit = (Button) rootView.findViewById(R.id.wm_vote_submit);
-        }
-
-    }
+//    public static class MenuViewHolder {
+//        public View rootView;
+//        public Button wm_menu_note;
+//        public Button wm_menu_soft;
+//        public Button wm_menu_hand;
+//        public Button wm_menu_service;
+//        public Button wm_menu_start_projection;
+//        public Button wm_menu_back;
+//        public Button wm_menu_stop_projection;
+//        public Button wm_menu_start_screen;
+//        public Button wm_menu_join_screen;
+//        public Button wm_menu_stop_screen;
+//        public Button wm_menu_screenshot;
+//
+//        public MenuViewHolder(View rootView) {
+//            this.rootView = rootView;
+//            this.wm_menu_note = (Button) rootView.findViewById(R.id.wm_menu_note);
+//            this.wm_menu_soft = (Button) rootView.findViewById(R.id.wm_menu_soft);
+//            this.wm_menu_hand = (Button) rootView.findViewById(R.id.wm_menu_hand);
+//            this.wm_menu_service = (Button) rootView.findViewById(R.id.wm_menu_service);
+//            this.wm_menu_start_projection = (Button) rootView.findViewById(R.id.wm_menu_start_projection);
+//            this.wm_menu_back = (Button) rootView.findViewById(R.id.wm_menu_back);
+//            this.wm_menu_stop_projection = (Button) rootView.findViewById(R.id.wm_menu_stop_projection);
+//            this.wm_menu_start_screen = (Button) rootView.findViewById(R.id.wm_menu_start_screen);
+//            this.wm_menu_join_screen = (Button) rootView.findViewById(R.id.wm_menu_join_screen);
+//            this.wm_menu_stop_screen = (Button) rootView.findViewById(R.id.wm_menu_stop_screen);
+//            this.wm_menu_screenshot = (Button) rootView.findViewById(R.id.wm_menu_screenshot);
+//        }
+//
+//    }
+//
+//    public static class ServiceViewHolder {
+//        public View rootView;
+//        public TextView textView;
+//        public ImageView wm_service_close;
+//        public Button wm_service_pen;
+//        public Button wm_service_pager;
+//        public Button wm_service_tea;
+//        public Button wm_service_calculate;
+//        public Button wm_service_waiter;
+//        public Button wm_service_clean;
+//        public EditText wm_service_edt;
+//        public Button wm_service_send;
+//
+//        public ServiceViewHolder(View rootView) {
+//            this.rootView = rootView;
+//            this.textView = (TextView) rootView.findViewById(R.id.textView);
+//            this.wm_service_close = (ImageView) rootView.findViewById(R.id.wm_service_close);
+//            this.wm_service_pen = (Button) rootView.findViewById(R.id.wm_service_pen);
+//            this.wm_service_pager = (Button) rootView.findViewById(R.id.wm_service_pager);
+//            this.wm_service_tea = (Button) rootView.findViewById(R.id.wm_service_tea);
+//            this.wm_service_calculate = (Button) rootView.findViewById(R.id.wm_service_calculate);
+//            this.wm_service_waiter = (Button) rootView.findViewById(R.id.wm_service_waiter);
+//            this.wm_service_clean = (Button) rootView.findViewById(R.id.wm_service_clean);
+//            this.wm_service_edt = (EditText) rootView.findViewById(R.id.wm_service_edt);
+//            this.wm_service_send = (Button) rootView.findViewById(R.id.wm_service_send);
+//        }
+//
+//    }
+//
+//    public static class ScreenViewHolder {
+//        public View rootView;
+//        public CheckBox wm_screen_mandatory;
+//        public TextView wm_screen_title;
+//        public TextView textView2;
+//        public CheckBox wm_screen_cb_attendee;
+//        public Button wm_screen_launch;
+//        public Button wm_screen_cancel;
+//        public CheckBox wm_screen_cb_projector;
+//        public RecyclerView wm_screen_rv_attendee;
+//        public RecyclerView wm_screen_rv_projector;
+//
+//        public ScreenViewHolder(View rootView) {
+//            this.rootView = rootView;
+//            this.wm_screen_mandatory = (CheckBox) rootView.findViewById(R.id.wm_screen_mandatory);
+//            this.wm_screen_title = (TextView) rootView.findViewById(R.id.wm_screen_title);
+//            this.textView2 = (TextView) rootView.findViewById(R.id.textView2);
+//            this.wm_screen_cb_attendee = (CheckBox) rootView.findViewById(R.id.wm_screen_cb_attendee);
+//            this.wm_screen_launch = (Button) rootView.findViewById(R.id.wm_screen_launch);
+//            this.wm_screen_cancel = (Button) rootView.findViewById(R.id.wm_screen_cancel);
+//            this.wm_screen_cb_projector = (CheckBox) rootView.findViewById(R.id.wm_screen_cb_projector);
+//            this.wm_screen_rv_attendee = (RecyclerView) rootView.findViewById(R.id.wm_screen_rv_attendee);
+//            this.wm_screen_rv_projector = (RecyclerView) rootView.findViewById(R.id.wm_screen_rv_projector);
+//        }
+//
+//    }
+//
+//    public static class ProViewHolder {
+//        public View rootView;
+//        public CheckBox wm_pro_mandatory;
+//        public TextView wm_pro_title;
+//        public CheckBox wm_pro_all;
+//        public RecyclerView wm_pro_rv;
+//        public CheckBox wm_pro_full;
+//        public CheckBox wm_pro_flow1;
+//        public CheckBox wm_pro_flow2;
+//        public CheckBox wm_pro_flow3;
+//        public CheckBox wm_pro_flow4;
+//        public Button wm_pro_launch_pro;
+//        public Button wm_pro_cancel;
+//
+//        public ProViewHolder(View rootView) {
+//            this.rootView = rootView;
+//            this.wm_pro_mandatory = (CheckBox) rootView.findViewById(R.id.wm_pro_mandatory);
+//            this.wm_pro_title = (TextView) rootView.findViewById(R.id.wm_pro_title);
+//            this.wm_pro_all = (CheckBox) rootView.findViewById(R.id.wm_pro_all);
+//            this.wm_pro_rv = (RecyclerView) rootView.findViewById(R.id.wm_pro_rv);
+//            this.wm_pro_full = (CheckBox) rootView.findViewById(R.id.wm_pro_full);
+//            this.wm_pro_flow1 = (CheckBox) rootView.findViewById(R.id.wm_pro_flow1);
+//            this.wm_pro_flow2 = (CheckBox) rootView.findViewById(R.id.wm_pro_flow2);
+//            this.wm_pro_flow3 = (CheckBox) rootView.findViewById(R.id.wm_pro_flow3);
+//            this.wm_pro_flow4 = (CheckBox) rootView.findViewById(R.id.wm_pro_flow4);
+//            this.wm_pro_launch_pro = (Button) rootView.findViewById(R.id.wm_pro_launch_pro);
+//            this.wm_pro_cancel = (Button) rootView.findViewById(R.id.wm_pro_cancel);
+//        }
+//
+//    }
+//
+//    public static class VoteViewHolder {
+//        public View rootView;
+//        public TextView wm_vote_title;
+//        public TextView wm_vote_type;
+//        public CheckBox checkBox1;
+//        public CheckBox checkBox2;
+//        public CheckBox checkBox3;
+//        public CheckBox checkBox4;
+//        public CheckBox checkBox5;
+//        public Chronometer wm_vote_chronometer;
+//        public Button wm_vote_submit;
+//
+//        public VoteViewHolder(View rootView) {
+//            this.rootView = rootView;
+//            this.wm_vote_title = (TextView) rootView.findViewById(R.id.wm_vote_title);
+//            this.wm_vote_type = (TextView) rootView.findViewById(R.id.wm_vote_type);
+//            this.checkBox1 = (CheckBox) rootView.findViewById(R.id.checkBox1);
+//            this.checkBox2 = (CheckBox) rootView.findViewById(R.id.checkBox2);
+//            this.checkBox3 = (CheckBox) rootView.findViewById(R.id.checkBox3);
+//            this.checkBox4 = (CheckBox) rootView.findViewById(R.id.checkBox4);
+//            this.checkBox5 = (CheckBox) rootView.findViewById(R.id.checkBox5);
+//            this.wm_vote_chronometer = (Chronometer) rootView.findViewById(R.id.wm_vote_chronometer);
+//            this.wm_vote_submit = (Button) rootView.findViewById(R.id.wm_vote_submit);
+//        }
+//
+//    }
 }

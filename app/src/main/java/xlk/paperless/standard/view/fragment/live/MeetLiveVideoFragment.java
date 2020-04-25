@@ -30,6 +30,7 @@ import xlk.paperless.standard.adapter.WmScreenMemberAdapter;
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.data.bean.VideoDev;
+import xlk.paperless.standard.ui.CustomBaseViewHolder;
 import xlk.paperless.standard.ui.CustomInterface.ViewClickListener;
 import xlk.paperless.standard.ui.video.CustomVideoView;
 import xlk.paperless.standard.util.LogUtil;
@@ -202,11 +203,11 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
     private void showProPop(boolean isStart, VideoDev videoDev) {
         View inflate = LayoutInflater.from(getContext()).inflate(R.layout.wm_pro_view, null);
         proPop = PopUtil.create(inflate, MyApplication.screen_width / 2, MyApplication.screen_height / 2, true, f_l_v_stop_pro);
-        ProViewHolder holder = new ProViewHolder(inflate);
+        CustomBaseViewHolder.ProViewHolder holder = new CustomBaseViewHolder.ProViewHolder(inflate);
         proHolderEvent(holder, isStart, videoDev);
     }
 
-    private void proHolderEvent(ProViewHolder holder, boolean isStart, VideoDev videoDev) {
+    private void proHolderEvent(CustomBaseViewHolder.ProViewHolder holder, boolean isStart, VideoDev videoDev) {
         holder.wm_pro_mandatory.setVisibility(isStart ? View.VISIBLE : View.INVISIBLE);
         holder.wm_pro_title.setText(isStart ? getContext().getString(R.string.launch_pro_title) : getContext().getString(R.string.stop_pro_title));
         holder.wm_pro_launch_pro.setText(isStart ? getContext().getString(R.string.launch_pro) : getContext().getString(R.string.stop_pro));
@@ -259,11 +260,11 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
     private void showScreenPop(boolean isStart, VideoDev videoDev) {
         View inflate = LayoutInflater.from(getContext()).inflate(R.layout.wm_screen_view, null);
         screenPop = PopUtil.create(inflate, MyApplication.screen_width / 2, MyApplication.screen_height / 2, true, f_l_v_stop_pro);
-        ScreenViewHolder holder = new ScreenViewHolder(inflate);
+        CustomBaseViewHolder.ScreenViewHolder holder = new CustomBaseViewHolder.ScreenViewHolder(inflate);
         holderEvent(holder, isStart, videoDev);
     }
 
-    private void holderEvent(ScreenViewHolder holder, boolean isStart, VideoDev videoDev) {
+    private void holderEvent(CustomBaseViewHolder.ScreenViewHolder holder, boolean isStart, VideoDev videoDev) {
         holder.wm_screen_mandatory.setVisibility(isStart ? View.VISIBLE : View.INVISIBLE);
         if (isStart) {
             holder.wm_screen_launch.setText(getContext().getString(R.string.launch_screen));
@@ -424,61 +425,61 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
         super.onHiddenChanged(hidden);
     }
 
-    public static class ScreenViewHolder {
-        public View rootView;
-        public CheckBox wm_screen_mandatory;
-        public TextView wm_screen_title;
-        public TextView textView2;
-        public CheckBox wm_screen_cb_attendee;
-        public Button wm_screen_launch;
-        public Button wm_screen_cancel;
-        public CheckBox wm_screen_cb_projector;
-        public RecyclerView wm_screen_rv_attendee;
-        public RecyclerView wm_screen_rv_projector;
-
-        public ScreenViewHolder(View rootView) {
-            this.rootView = rootView;
-            this.wm_screen_mandatory = (CheckBox) rootView.findViewById(R.id.wm_screen_mandatory);
-            this.wm_screen_title = (TextView) rootView.findViewById(R.id.wm_screen_title);
-            this.textView2 = (TextView) rootView.findViewById(R.id.textView2);
-            this.wm_screen_cb_attendee = (CheckBox) rootView.findViewById(R.id.wm_screen_cb_attendee);
-            this.wm_screen_launch = (Button) rootView.findViewById(R.id.wm_screen_launch);
-            this.wm_screen_cancel = (Button) rootView.findViewById(R.id.wm_screen_cancel);
-            this.wm_screen_cb_projector = (CheckBox) rootView.findViewById(R.id.wm_screen_cb_projector);
-            this.wm_screen_rv_attendee = (RecyclerView) rootView.findViewById(R.id.wm_screen_rv_attendee);
-            this.wm_screen_rv_projector = (RecyclerView) rootView.findViewById(R.id.wm_screen_rv_projector);
-        }
-
-    }
-
-    public static class ProViewHolder {
-        public View rootView;
-        public CheckBox wm_pro_mandatory;
-        public TextView wm_pro_title;
-        public CheckBox wm_pro_all;
-        public RecyclerView wm_pro_rv;
-        public CheckBox wm_pro_full;
-        public CheckBox wm_pro_flow1;
-        public CheckBox wm_pro_flow2;
-        public CheckBox wm_pro_flow3;
-        public CheckBox wm_pro_flow4;
-        public Button wm_pro_launch_pro;
-        public Button wm_pro_cancel;
-
-        public ProViewHolder(View rootView) {
-            this.rootView = rootView;
-            this.wm_pro_mandatory = (CheckBox) rootView.findViewById(R.id.wm_pro_mandatory);
-            this.wm_pro_title = (TextView) rootView.findViewById(R.id.wm_pro_title);
-            this.wm_pro_all = (CheckBox) rootView.findViewById(R.id.wm_pro_all);
-            this.wm_pro_rv = (RecyclerView) rootView.findViewById(R.id.wm_pro_rv);
-            this.wm_pro_full = (CheckBox) rootView.findViewById(R.id.wm_pro_full);
-            this.wm_pro_flow1 = (CheckBox) rootView.findViewById(R.id.wm_pro_flow1);
-            this.wm_pro_flow2 = (CheckBox) rootView.findViewById(R.id.wm_pro_flow2);
-            this.wm_pro_flow3 = (CheckBox) rootView.findViewById(R.id.wm_pro_flow3);
-            this.wm_pro_flow4 = (CheckBox) rootView.findViewById(R.id.wm_pro_flow4);
-            this.wm_pro_launch_pro = (Button) rootView.findViewById(R.id.wm_pro_launch_pro);
-            this.wm_pro_cancel = (Button) rootView.findViewById(R.id.wm_pro_cancel);
-        }
-
-    }
+//    public static class ScreenViewHolder {
+//        public View rootView;
+//        public CheckBox wm_screen_mandatory;
+//        public TextView wm_screen_title;
+//        public TextView textView2;
+//        public CheckBox wm_screen_cb_attendee;
+//        public Button wm_screen_launch;
+//        public Button wm_screen_cancel;
+//        public CheckBox wm_screen_cb_projector;
+//        public RecyclerView wm_screen_rv_attendee;
+//        public RecyclerView wm_screen_rv_projector;
+//
+//        public ScreenViewHolder(View rootView) {
+//            this.rootView = rootView;
+//            this.wm_screen_mandatory = (CheckBox) rootView.findViewById(R.id.wm_screen_mandatory);
+//            this.wm_screen_title = (TextView) rootView.findViewById(R.id.wm_screen_title);
+//            this.textView2 = (TextView) rootView.findViewById(R.id.textView2);
+//            this.wm_screen_cb_attendee = (CheckBox) rootView.findViewById(R.id.wm_screen_cb_attendee);
+//            this.wm_screen_launch = (Button) rootView.findViewById(R.id.wm_screen_launch);
+//            this.wm_screen_cancel = (Button) rootView.findViewById(R.id.wm_screen_cancel);
+//            this.wm_screen_cb_projector = (CheckBox) rootView.findViewById(R.id.wm_screen_cb_projector);
+//            this.wm_screen_rv_attendee = (RecyclerView) rootView.findViewById(R.id.wm_screen_rv_attendee);
+//            this.wm_screen_rv_projector = (RecyclerView) rootView.findViewById(R.id.wm_screen_rv_projector);
+//        }
+//
+//    }
+//
+//    public static class ProViewHolder {
+//        public View rootView;
+//        public CheckBox wm_pro_mandatory;
+//        public TextView wm_pro_title;
+//        public CheckBox wm_pro_all;
+//        public RecyclerView wm_pro_rv;
+//        public CheckBox wm_pro_full;
+//        public CheckBox wm_pro_flow1;
+//        public CheckBox wm_pro_flow2;
+//        public CheckBox wm_pro_flow3;
+//        public CheckBox wm_pro_flow4;
+//        public Button wm_pro_launch_pro;
+//        public Button wm_pro_cancel;
+//
+//        public ProViewHolder(View rootView) {
+//            this.rootView = rootView;
+//            this.wm_pro_mandatory = (CheckBox) rootView.findViewById(R.id.wm_pro_mandatory);
+//            this.wm_pro_title = (TextView) rootView.findViewById(R.id.wm_pro_title);
+//            this.wm_pro_all = (CheckBox) rootView.findViewById(R.id.wm_pro_all);
+//            this.wm_pro_rv = (RecyclerView) rootView.findViewById(R.id.wm_pro_rv);
+//            this.wm_pro_full = (CheckBox) rootView.findViewById(R.id.wm_pro_full);
+//            this.wm_pro_flow1 = (CheckBox) rootView.findViewById(R.id.wm_pro_flow1);
+//            this.wm_pro_flow2 = (CheckBox) rootView.findViewById(R.id.wm_pro_flow2);
+//            this.wm_pro_flow3 = (CheckBox) rootView.findViewById(R.id.wm_pro_flow3);
+//            this.wm_pro_flow4 = (CheckBox) rootView.findViewById(R.id.wm_pro_flow4);
+//            this.wm_pro_launch_pro = (Button) rootView.findViewById(R.id.wm_pro_launch_pro);
+//            this.wm_pro_cancel = (Button) rootView.findViewById(R.id.wm_pro_cancel);
+//        }
+//
+//    }
 }

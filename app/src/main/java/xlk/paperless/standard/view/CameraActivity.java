@@ -1,6 +1,5 @@
 package xlk.paperless.standard.view;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
@@ -32,7 +31,7 @@ import static android.media.MediaCodecList.ALL_CODECS;
 import static xlk.paperless.standard.view.MyApplication.camera_height;
 import static xlk.paperless.standard.view.MyApplication.camera_width;
 
-public class CameraActivity extends Activity implements SurfaceHolder.Callback,
+public class CameraActivity extends BaseActivity implements SurfaceHolder.Callback,
         PreviewCallback {
 
     private final String TAG = "CameraLog-->";
@@ -155,6 +154,12 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback,
                 parameters.setPreviewFrameRate(framerate);
                 parameters.setPreviewFormat(imageFormat);//NV21 YV12
                 parameters.setPreviewSize(camera_width, camera_height);
+                boolean supported = parameters.isVideoStabilizationSupported();
+                if(supported){
+                    //这个方法可以帮助提高录制视频的稳定性。使用的时候通过 #isVideoStabilizationSupported 来判断是否可以使用。
+                    // 如果妄自使用的话，会造成页面黑屏，PreviewCallback 没有任何回调
+                    parameters.setVideoStabilization(true);
+                }
                 mCamera.setParameters(parameters);
                 //mCamera.setPreviewDisplay(surfaceHolder);
                 mCamera.setPreviewTexture(texture);

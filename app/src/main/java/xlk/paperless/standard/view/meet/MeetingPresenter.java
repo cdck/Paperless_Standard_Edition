@@ -22,6 +22,7 @@ import xlk.paperless.standard.R;
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.data.JniHandler;
+import xlk.paperless.standard.util.AppUtil;
 import xlk.paperless.standard.util.FileUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.view.BasePresenter;
@@ -58,6 +59,11 @@ public class MeetingPresenter extends BasePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void BusEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
+            case Constant.BUS_NET_WORK:
+                if (!AppUtil.isNetworkAvailable(cxt)) {
+                    view.jump2main();
+                }
+                break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_TIME_VALUE:
                 Object[] objs = msg.getObjs();
                 byte[] data = (byte[]) objs[0];
@@ -83,25 +89,46 @@ public class MeetingPresenter extends BasePresenter {
                 LogUtil.d(TAG, "BusEvent -->" + "界面配置变更通知");
                 queryInterFaceConfiguration();
                 break;
-            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_ROOMDEVICE_VALUE://会场设备信息变更通知
-                byte[] o = (byte[]) msg.getObjs()[0];
-                InterfaceBase.pbui_MeetNotifyMsgForDouble msgForDouble = InterfaceBase.pbui_MeetNotifyMsgForDouble.parseFrom(o);
-                int subid = msgForDouble.getSubid();
-                int opermethod = msgForDouble.getOpermethod();
-                if (opermethod == 4 && subid == MyApplication.localDeviceId) {
-                    view.jump2main();
-                }
-                break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETSEAT_VALUE://会议排位变更通知
                 LogUtil.d(TAG, "BusEvent -->" + "会议排位变更通知");
                 queryLocalRole();
                 break;
-//            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEINFO_VALUE://设备寄存器变更通知
-//                LogUtil.d(TAG, "BusEvent -->" + "设备寄存器变更通知");
-//                if (msg.getMethod() == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_NOTIFY_VALUE) {
-//                    queryInterFaceConfiguration();
-//                }
-//                break;
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_ROOMDEVICE_VALUE://会场设备信息变更通知
+                byte[] o = (byte[]) msg.getObjs()[0];
+                InterfaceBase.pbui_MeetNotifyMsgForDouble msgForDouble = InterfaceBase.pbui_MeetNotifyMsgForDouble.parseFrom(o);
+                int id = msgForDouble.getId();
+                int subid = msgForDouble.getSubid();
+                int opermethod = msgForDouble.getOpermethod();
+                if (opermethod == 4 && subid == MyApplication.localDeviceId) {
+                    LogUtil.d(TAG, "BusEvent -->" + "会场设备信息变更通知 退到主界面 id=" + id + ", subid= " + subid);
+                    view.jump2main();
+                }
+                break;
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEINFO_VALUE://设备寄存器变更通知
+                LogUtil.d(TAG, "BusEvent -->" + "设备寄存器变更通知");
+                byte[] bytes = jni.queryDevicePropertiesById(InterfaceMacro.Pb_MeetDevicePropertyID.Pb_MEETDEVICE_PROPERTY_NETSTATUS_VALUE,
+                        MyApplication.localDeviceId);
+                if (bytes == null) {
+                    LogUtil.d(TAG, "BusEvent -->" + "bytes为空 设置离线");
+                    view.updateOnline(cxt.getString(R.string.offline));
+                    view.jump2main();
+                    return;
+                }
+                InterfaceDevice.pbui_DeviceInt32uProperty pbui_deviceInt32uProperty = InterfaceDevice.pbui_DeviceInt32uProperty.parseFrom(bytes);
+                int propertyval = pbui_deviceInt32uProperty.getPropertyval();
+                boolean isonline = propertyval == 1;
+                if (!isonline) {
+                    LogUtil.d(TAG, "BusEvent -->" + "isonline为false 设置离线");
+                    view.jump2main();
+                } else {
+                    view.updateOnline(cxt.getString(R.string.online));
+                }
+                break;
+
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEFACESHOW_VALUE://设备会议信息变更通知
+                LogUtil.i(TAG, "BusEvent -->" + "设备会议信息变更通知");
+                queryDeviceMeetInfo();
+                break;
         }
     }
 
@@ -190,7 +217,9 @@ public class MeetingPresenter extends BasePresenter {
                     boolean isShow = (InterfaceMacro.Pb_MeetFaceFlag.Pb_MEET_FACEFLAG_SHOW_VALUE == (flag & InterfaceMacro.Pb_MeetFaceFlag.Pb_MEET_FACEFLAG_SHOW_VALUE));
                     LogUtil.d(TAG, "fun_queryInterFaceConfiguration -->是否显示公司名称：" + isShow);
                     view.setCompanyVisibility(isShow);
-                    break;
+                } else if (info.getFaceid() == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACE_LOGO_GEO.getNumber()) {//Logo图标,只需要更新位置坐标
+                    LogUtil.d(TAG, "queryInterFaceConfiguration -->" + "更新logo图标大小");
+                    view.updateLogoSize(R.id.meet_logo, info);
                 }
             }
         } catch (InvalidProtocolBufferException e) {
@@ -202,13 +231,13 @@ public class MeetingPresenter extends BasePresenter {
     public void queryIsOnline() {
         byte[] bytes = jni.queryDevicePropertiesById(InterfaceMacro.Pb_MeetDevicePropertyID.Pb_MEETDEVICE_PROPERTY_NETSTATUS_VALUE, MyApplication.localDeviceId);
         if (bytes == null) {
-            view.updateOnline(cxt.getResources().getString(R.string.Offline));
+            view.updateOnline(cxt.getResources().getString(R.string.offline));
             return;
         }
         try {
             InterfaceDevice.pbui_DeviceInt32uProperty pbui_deviceInt32uProperty = InterfaceDevice.pbui_DeviceInt32uProperty.parseFrom(bytes);
             int propertyval = pbui_deviceInt32uProperty.getPropertyval();
-            view.updateOnline((propertyval == 1) ? cxt.getResources().getString(R.string.online) : cxt.getResources().getString(R.string.Offline));
+            view.updateOnline((propertyval == 1) ? cxt.getResources().getString(R.string.online) : cxt.getResources().getString(R.string.offline));
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
@@ -219,6 +248,12 @@ public class MeetingPresenter extends BasePresenter {
         try {
             InterfaceDevice.pbui_Type_DeviceFaceShowDetail deviceMeetInfo = jni.queryDeviceMeetInfo();
             if (deviceMeetInfo == null) return;
+            MyApplication.localMeetingId = deviceMeetInfo.getMeetingid();
+            MyApplication.localMemberId = deviceMeetInfo.getMemberid();
+            MyApplication.localMemberName = deviceMeetInfo.getMembername().toStringUtf8();
+            MyApplication.localMeetingName = deviceMeetInfo.getMeetingname().toStringUtf8();
+            MyApplication.localDeviceId = deviceMeetInfo.getDeviceid();
+            MyApplication.localRoomId = deviceMeetInfo.getRoomid();
             view.updateMeetName(deviceMeetInfo);
             queryLocalRole();
         } catch (InvalidProtocolBufferException e) {
@@ -248,6 +283,7 @@ public class MeetingPresenter extends BasePresenter {
             InterfaceBase.pbui_CommonInt32uProperty property = jni.queryMeetRankingProperty(0, InterfaceMacro.Pb_MeetSeatPropertyID.Pb_MEETSEAT_PROPERTY_ROLEBYMEMBERID.getNumber());
             if (property == null) return;
             int propertyval = property.getPropertyval();
+            MyApplication.localRole = propertyval;
             if (propertyval == InterfaceMacro.Pb_MeetMemberRole.Pb_role_member_compere.getNumber()
                     || propertyval == InterfaceMacro.Pb_MeetMemberRole.Pb_role_member_secretary.getNumber()
                     || propertyval == InterfaceMacro.Pb_MeetMemberRole.Pb_role_admin.getNumber()) {
