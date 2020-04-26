@@ -99,10 +99,8 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
     private MainBindMemberAdapter adapter;
     private int result;
     private Intent intent;
-    private android.app.AlertDialog netDialog;
-    private Timer timer;
-    private TimerTask timerTask;
     private boolean toSetting = false;
+    private android.app.AlertDialog netDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,47 +179,35 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
             }
         } else {
             LogUtil.d(TAG, "initial -->" + "网络不可用");
-            netDialog = DialogUtil.createDialog(this, R.string.check_network, R.string.open_network, R.string.cancel, new DialogUtil.onDialogClickListener() {
-                @Override
-                public void positive(DialogInterface dialog) {
-                    dialog.dismiss();
-                    toSetting = true;
-                    startActivity(new Intent(Settings.ACTION_SETTINGS));
-                }
-
-                @Override
-                public void negative(DialogInterface dialog) {
-                    dialog.dismiss();
-                }
-
-                @Override
-                public void dismiss(DialogInterface dialog) {
-
-                }
-            });
-//            if (timer == null) timer = new Timer();
-//            if (timerTask == null) {
-//                timerTask = new TimerTask() {
-//                    @Override
-//                    public void run() {
-//                        boolean networkAvailable = AppUtil.isNetworkAvailable(getApplicationContext());
-//                        LogUtil.d(TAG, "initial -->是否有网络：" + networkAvailable);
-//                        if (networkAvailable) {
-//                            timerTask.cancel();
-//                            timer.purge();
-//                            timer.cancel();
-//                            timer = null;
-//                            timerTask = null;
-//                            if (netDialog != null && netDialog.isShowing()) {
-//                                netDialog.dismiss();
-//                            }
-//                            initial();
-//                        }
-//                    }
-//                };
-//                timer.schedule(timerTask, 0, 2000);
-//            }
+            showNetDialog();
         }
+    }
+
+    private void showNetDialog() {
+        if (netDialog != null) {
+            if (!netDialog.isShowing()) {
+                netDialog.show();
+            }
+            return;
+        }
+        netDialog = DialogUtil.createDialog(this, R.string.check_network, R.string.open_network, R.string.cancel, new DialogUtil.onDialogClickListener() {
+            @Override
+            public void positive(DialogInterface dialog) {
+                dialog.dismiss();
+                toSetting = true;
+                startActivity(new Intent(Settings.ACTION_SETTINGS));
+            }
+
+            @Override
+            public void negative(DialogInterface dialog) {
+                dialog.dismiss();
+            }
+
+            @Override
+            public void dismiss(DialogInterface dialog) {
+
+            }
+        });
     }
 
     @Override
@@ -628,8 +614,8 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
     public void updateEnterView(int resId, InterfaceFaceconfig.pbui_Item_FaceTextItemInfo itemInfo) {
         update(resId, itemInfo);
 //        int faceid = itemInfo.getFaceid();
-        int flag = itemInfo.getFlag();
-        boolean isShow = (InterfaceMacro.Pb_MeetFaceFlag.Pb_MEET_FACEFLAG_SHOW_VALUE == (flag & InterfaceMacro.Pb_MeetFaceFlag.Pb_MEET_FACEFLAG_SHOW_VALUE));
+//        int flag = itemInfo.getFlag();
+//        boolean isShow = (InterfaceMacro.Pb_MeetFaceFlag.Pb_MEET_FACEFLAG_SHOW_VALUE == (flag & InterfaceMacro.Pb_MeetFaceFlag.Pb_MEET_FACEFLAG_SHOW_VALUE));
 //        int fontsize = itemInfo.getFontsize();
 //        int color = itemInfo.getColor();
 //        int align = itemInfo.getAlign();
@@ -773,6 +759,9 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
 
     @Override
     protected void onDestroy() {
+        if (netDialog != null && netDialog.isShowing()) {
+            netDialog.dismiss();
+        }
         super.onDestroy();
         presenter.unregister();
 //        app.openBackstageService(false);
@@ -794,12 +783,16 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.enter_btn_main:
-                if (meet_tv_main.getText().toString().trim().isEmpty()) {
-                    jump2scan();
-                } else if (member_tv_main.getText().toString().trim().isEmpty()) {
-                    jump2bind();
+                if (AppUtil.isNetworkAvailable(this)) {
+                    if (meet_tv_main.getText().toString().trim().isEmpty()) {
+                        jump2scan();
+                    } else if (member_tv_main.getText().toString().trim().isEmpty()) {
+                        jump2bind();
+                    } else {
+                        signIn();
+                    }
                 } else {
-                    signIn();
+                    showNetDialog();
                 }
                 break;
             case R.id.set_btn_main:
@@ -970,34 +963,16 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         Button pwd_draw_clear = inflate.findViewById(R.id.pwd_draw_clear);
         Button pwd_draw_determine = inflate.findViewById(R.id.pwd_draw_determine);
         Button pwd_draw_cancel = inflate.findViewById(R.id.pwd_draw_cancel);
-        pwd_draw_revoke.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                artBoard.revoke();
-            }
+        pwd_draw_revoke.setOnClickListener(v -> artBoard.revoke());
+        pwd_draw_clear.setOnClickListener(v -> artBoard.clear());
+        pwd_draw_determine.setOnClickListener(v -> {
+            Bitmap canvasBmp = artBoard.getCanvasBmp();
+            popupWindow.dismiss();
+            presenter.sendSign(0, MyApplication.localSigninType, pwd, ConvertUtil.bmp2bs(canvasBmp));
+            artBoard.clear();//不清理在画板界面就会存在于 LocalPathList集合中
+            canvasBmp.recycle();
         });
-        pwd_draw_clear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                artBoard.clear();
-            }
-        });
-        pwd_draw_determine.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bitmap canvasBmp = artBoard.getCanvasBmp();
-                popupWindow.dismiss();
-                presenter.sendSign(0, MyApplication.localSigninType, pwd, ConvertUtil.bmp2bs(canvasBmp));
-                artBoard.clear();//不清理在画板界面就会存在于 LocalPathList集合中
-                canvasBmp.recycle();
-            }
-        });
-        pwd_draw_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-            }
-        });
+        pwd_draw_cancel.setOnClickListener(v -> popupWindow.dismiss());
     }
 
     /**
@@ -1011,28 +986,20 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         EditText enter_pwd_edt = inflate.findViewById(R.id.enter_pwd_edt);
         Button enter_pwd_determine = inflate.findViewById(R.id.enter_pwd_determine);
         Button enter_pwd_cancel = inflate.findViewById(R.id.enter_pwd_cancel);
-        enter_pwd_determine.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String pwd = enter_pwd_edt.getText().toString().trim();
-                if (!pwd.isEmpty()) {
-                    if (haspic) {
-                        showDrawBoard(pwd);
-                    } else {
-                        presenter.sendSign(0, MyApplication.localSigninType, pwd, s2b(""));
-                    }
-                    popupWindow.dismiss();
+        enter_pwd_determine.setOnClickListener(v -> {
+            String pwd = enter_pwd_edt.getText().toString().trim();
+            if (!pwd.isEmpty()) {
+                if (haspic) {
+                    showDrawBoard(pwd);
                 } else {
-                    ToastUtil.show(MainActivity.this, R.string.password_can_not_blank);
+                    presenter.sendSign(0, MyApplication.localSigninType, pwd, s2b(""));
                 }
-            }
-        });
-        enter_pwd_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 popupWindow.dismiss();
+            } else {
+                ToastUtil.show(MainActivity.this, R.string.password_can_not_blank);
             }
         });
+        enter_pwd_cancel.setOnClickListener(v -> popupWindow.dismiss());
     }
 
     private void jump2bind() {
@@ -1053,42 +1020,28 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         RecyclerView pop_bind_member_rv = inflate.findViewById(R.id.pop_bind_member_rv);
         pop_bind_member_rv.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
         pop_bind_member_rv.setAdapter(adapter);
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter ad, View view, int position) {
-                int personid = chooseMemberDetailInfos.get(position).getPersonid();
-                LogUtil.d(TAG, "onItemClick -->position= " + position + ", personid= " + personid);
-                adapter.setChoose(personid);
-            }
+        adapter.setOnItemClickListener((ad, view, position) -> {
+            int personid = chooseMemberDetailInfos.get(position).getPersonid();
+            LogUtil.d(TAG, "onItemClick -->position= " + position + ", personid= " + personid);
+            adapter.setChoose(personid);
         });
         Button pop_bind_member_determine = inflate.findViewById(R.id.pop_bind_member_determine);
         Button pop_bind_member_create = inflate.findViewById(R.id.pop_bind_member_create);
         Button pop_bind_member_cancel = inflate.findViewById(R.id.pop_bind_member_cancel);
-        pop_bind_member_determine.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LogUtil.d(TAG, "onClick -->" + "确定");
-                if (adapter.getChooseId() != -1) {
-                    bindMemberPop.dismiss();
-                    presenter.joinMeeting(adapter.getChooseId());
-                } else {
-                    ToastUtil.show(MainActivity.this, R.string.err_unselected_member);
-                }
-            }
-        });
-        pop_bind_member_create.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        pop_bind_member_determine.setOnClickListener(v -> {
+            LogUtil.d(TAG, "onClick -->" + "确定");
+            if (adapter.getChooseId() != -1) {
                 bindMemberPop.dismiss();
-                showCreateMemberView();
+                presenter.joinMeeting(adapter.getChooseId());
+            } else {
+                ToastUtil.show(MainActivity.this, R.string.err_unselected_member);
             }
         });
-        pop_bind_member_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bindMemberPop.dismiss();
-            }
+        pop_bind_member_create.setOnClickListener(v -> {
+            bindMemberPop.dismiss();
+            showCreateMemberView();
         });
+        pop_bind_member_cancel.setOnClickListener(v -> bindMemberPop.dismiss());
     }
 
     private void showCreateMemberView() {
@@ -1109,38 +1062,30 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         EditText pop_create_member_password = inflate.findViewById(R.id.pop_create_member_password);
         Button pop_create_member_determine = inflate.findViewById(R.id.pop_create_member_determine);
         Button pop_create_member_cancel = inflate.findViewById(R.id.pop_create_member_cancel);
-        pop_create_member_determine.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String company = pop_create_member_company.getText().toString().trim();
-                String name = pop_create_member_name.getText().toString().trim();
-                String position = pop_create_member_position.getText().toString().trim();
-                String phone = pop_create_member_phone.getText().toString().trim();
-                String email = pop_create_member_email.getText().toString().trim();
-                String password = pop_create_member_password.getText().toString().trim();
-                if (!name.isEmpty()) {
-                    createMemberPop.dismiss();
-                    InterfaceMember.pbui_Item_MemberDetailInfo build = InterfaceMember.pbui_Item_MemberDetailInfo.newBuilder()
-                            .setPassword(s2b(password))
-                            .setEmail(s2b(email))
-                            .setPhone(s2b(phone))
-                            .setJob(s2b(position))
-                            .setCompany(s2b(company))
-                            .setName(s2b(name))
-                            .setPersonid(0)
-                            .setComment(s2b("")).build();
-                    presenter.addAttendPeople(build);
-                } else {
-                    ToastUtil.show(MainActivity.this, R.string.name_is_required);
-                }
-            }
-        });
-        pop_create_member_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        pop_create_member_determine.setOnClickListener(v -> {
+            String company = pop_create_member_company.getText().toString().trim();
+            String name = pop_create_member_name.getText().toString().trim();
+            String position = pop_create_member_position.getText().toString().trim();
+            String phone = pop_create_member_phone.getText().toString().trim();
+            String email = pop_create_member_email.getText().toString().trim();
+            String password = pop_create_member_password.getText().toString().trim();
+            if (!name.isEmpty()) {
                 createMemberPop.dismiss();
+                InterfaceMember.pbui_Item_MemberDetailInfo build = InterfaceMember.pbui_Item_MemberDetailInfo.newBuilder()
+                        .setPassword(s2b(password))
+                        .setEmail(s2b(email))
+                        .setPhone(s2b(phone))
+                        .setJob(s2b(position))
+                        .setCompany(s2b(company))
+                        .setName(s2b(name))
+                        .setPersonid(0)
+                        .setComment(s2b("")).build();
+                presenter.addAttendPeople(build);
+            } else {
+                ToastUtil.show(MainActivity.this, R.string.name_is_required);
             }
         });
+        pop_create_member_cancel.setOnClickListener(v -> createMemberPop.dismiss());
     }
 
     private void jump2scan() {

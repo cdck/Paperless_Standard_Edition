@@ -185,7 +185,7 @@ public class JniHandler {
         InterfaceDownload.pbui_Type_DownloadStart build = builder.build();
         jni.call_method(InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DOWNLOAD.getNumber(),
                 InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_ADD_VALUE, build.toByteArray());
-        LogUtil.e(TAG, "creationFileDownload:  创建一个文件下载 --->>> ");
+        LogUtil.e(TAG, "creationFileDownload:  创建一个文件下载 --->>>pathname=  " + pathname);
     }
 
     /**
@@ -483,10 +483,16 @@ public class JniHandler {
         return deviceDetailInfo;
     }
 
+
     /**
-     * 252.媒体播放操作
+     * 媒体播放操作
      *
-     * @return
+     * @param mediaid
+     * @param devIds
+     * @param pos
+     * @param res
+     * @param triggeruserval
+     * @param flag           InterfaceMacro.Pb_MeetPlayFlag
      */
     public void mediaPlayOperate(int mediaid, List<Integer> devIds, int pos, int res, int triggeruserval, int flag) {
         InterfacePlaymedia.pbui_Type_MeetDoMediaPlay.Builder builder = InterfacePlaymedia.pbui_Type_MeetDoMediaPlay.newBuilder();
@@ -519,6 +525,8 @@ public class JniHandler {
 
     /**
      * 上传文件
+     *
+     * @param uploadflag Pb_Upload_Flag =0开启上传进度回调，=1上传结束才回调进度
      */
     public void uploadFile(int uploadflag, int dirid, int attrib, String newname, String pathname, int userval, int mediaid, String userStr) {
         InterfaceUpload.pbui_Type_AddUploadFile.Builder builder = InterfaceUpload.pbui_Type_AddUploadFile.newBuilder();
@@ -529,10 +537,9 @@ public class JniHandler {
         builder.setPathname(s2b(pathname));
         builder.setUserval(userval);
         builder.setUserstr(s2b(userStr));
-//                builder.setMediaid(mediaid);
         InterfaceUpload.pbui_Type_AddUploadFile build = builder.build();
         jni.call_method(InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_UPLOAD.getNumber(), InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_ADD.getNumber(), build.toByteArray());
-        LogUtil.e(TAG, "uploadFile :   --> 上传文件 " + newname + ", dirid= " + dirid);
+        LogUtil.e(TAG, "uploadFile :   --> 上传文件 " + newname + ", dirid= " + dirid + ", pathname= " + pathname);
     }
 
     /**

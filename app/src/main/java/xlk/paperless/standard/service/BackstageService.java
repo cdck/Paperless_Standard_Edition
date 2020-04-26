@@ -2,6 +2,7 @@ package xlk.paperless.standard.service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.IBinder;
 
 import com.google.protobuf.ByteString;
@@ -30,7 +31,9 @@ import xlk.paperless.standard.R;
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.data.JniHandler;
+import xlk.paperless.standard.data.WpsModel;
 import xlk.paperless.standard.data.bean.ChatMessage;
+import xlk.paperless.standard.receiver.WpsReceiver;
 import xlk.paperless.standard.util.AppUtil;
 import xlk.paperless.standard.util.FileUtil;
 import xlk.paperless.standard.util.LogUtil;
@@ -42,7 +45,6 @@ import xlk.paperless.standard.view.score.ScoreActivity;
 import xlk.paperless.standard.view.video.VideoActivity;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static xlk.paperless.standard.view.chatonline.ChatVideoActivity.isChatingOpened;
 import static xlk.paperless.standard.view.draw.DrawPresenter.disposePicOpermemberid;
 import static xlk.paperless.standard.view.draw.DrawPresenter.disposePicSrcmemid;
 import static xlk.paperless.standard.view.draw.DrawPresenter.disposePicSrcwbidd;
@@ -63,6 +65,7 @@ public class BackstageService extends Service {
     public static boolean isVideoPlaying;//是否正在播放
     public static boolean isMandatoryPlaying;//是否正在被强制性播放中
     public static boolean haveNewPlayInform;
+    private WpsReceiver reciver;//WPS广播监听
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -89,6 +92,11 @@ public class BackstageService extends Service {
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_UPLOAD_VALUE://上传进度通知
                 uploadInform(msg);
+                break;
+            case Constant.BUS_WPS_RECEIVER://处理WPS广播监听
+                boolean isopen = (boolean) msg.getObjs()[0];
+                if (isopen) registerWpsBroadCase();
+                else unregisterWpsBroadCase();
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEMBERPERMISSION_VALUE://参会人权限变更通知
                 InterfaceMember.pbui_Type_MemberPermission o = jni.queryAttendPeoplePermissions();
@@ -150,6 +158,25 @@ public class BackstageService extends Service {
                     startActivity(new Intent(this, ScoreActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra("voteid", voteid));
                 }
                 break;
+        }
+    }
+
+    public void registerWpsBroadCase() {
+        if (reciver == null) {
+            reciver = new WpsReceiver();
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(WpsModel.Reciver.ACTION_SAVE);
+            filter.addAction(WpsModel.Reciver.ACTION_CLOSE);
+            filter.addAction(WpsModel.Reciver.ACTION_HOME);
+//            filter.addAction(WpsModel.Reciver.ACTION_BACK);
+            registerReceiver(reciver, filter);
+        }
+    }
+
+    public void unregisterWpsBroadCase() {
+        if (reciver != null) {
+            unregisterReceiver(reciver);
+            reciver = null;
         }
     }
 
@@ -320,23 +347,23 @@ public class BackstageService extends Service {
     private void uploadInform(EventMessage msg) throws InvalidProtocolBufferException {
         byte[] datas = (byte[]) msg.getObjs()[0];
         InterfaceUpload.pbui_TypeUploadPosCb uploadPosCb = InterfaceUpload.pbui_TypeUploadPosCb.parseFrom(datas);
-        // /storage/emulated/0/PaperlessStandardEdition/ArtboardPicture/1584785387355.png
         String pathName = uploadPosCb.getPathname().toStringUtf8();
         String userStr = uploadPosCb.getUserstr().toStringUtf8();
         int status = uploadPosCb.getStatus();
-//        int mediaId = uploadPosCb.getMediaId();
-//        int per = uploadPosCb.getPer();
+        int mediaId = uploadPosCb.getMediaId();
+        int per = uploadPosCb.getPer();
 //        int uploadflag = uploadPosCb.getUploadflag();
 //        int userval = uploadPosCb.getUserval();
-//        byte[] bytes = jni.queryFileProperty(InterfaceMacro.Pb_MeetFilePropertyID.Pb_MEETFILE_PROPERTY_NAME.getNumber(), mediaId);
-//        InterfaceBase.pbui_CommonTextProperty pbui_commonTextProperty = InterfaceBase.pbui_CommonTextProperty.parseFrom(bytes);
-//        //1584785387355.png
-//        String uploadFileName = b2s(pbui_commonTextProperty.getPropertyval());
+        byte[] bytes = jni.queryFileProperty(InterfaceMacro.Pb_MeetFilePropertyID.Pb_MEETFILE_PROPERTY_NAME.getNumber(), mediaId);
+        InterfaceBase.pbui_CommonTextProperty pbui_commonTextProperty = InterfaceBase.pbui_CommonTextProperty.parseFrom(bytes);
+        String fileName = pbui_commonTextProperty.getPropertyval().toStringUtf8();
+        LogUtil.i(TAG, "uploadInform -->" + "上传进度：" + per + "\npathName= " + pathName);
         if (status == InterfaceMacro.Pb_Upload_State.Pb_UPLOADMEDIA_FLAG_HADEND_VALUE) {//结束上传
-            LogUtil.i(TAG, "uploadInform -->" + pathName + " 上传完毕");
             if (userStr.equals(Constant.upload_draw_pic)) {//从画板上传的图片
                 FileUtil.delFileByPath(pathName);
             }
+            ToastUtil.show(this, getString(R.string.upload_completed, fileName));
+            LogUtil.i(TAG, "uploadInform -->" + fileName + " 上传完毕");
         } else if (status == InterfaceMacro.Pb_Upload_State.Pb_UPLOADMEDIA_FLAG_NOSERVER_VALUE) {
             LogUtil.i(TAG, "uploadInform -->" + " 没找到可用的服务器");
         } else if (status == InterfaceMacro.Pb_Upload_State.Pb_UPLOADMEDIA_FLAG_ISBEING_VALUE) {

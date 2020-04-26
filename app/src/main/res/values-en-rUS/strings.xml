@@ -376,6 +376,7 @@
     <string name="slide_text_complete">松开即可进入</string>
     <string name="check_network">网络连接错误</string>
     <string name="open_network">前往打开</string>
+    <string name="upload_completed">%1$s文件上传完毕</string>
 
     <string-array name="role">
         <item>无</item>

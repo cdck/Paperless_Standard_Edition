@@ -55,6 +55,7 @@ public class Constant {
     public static final int USER_VAL_UPLOAD = 1;
     public static final String UPLOAD_MDF = "upload_mdf";
     public static final String upload_draw_pic = "upload_draw_pic";
+    public static final String upload_wps_file = "upload_wps_file";
 
     //自定义广播action
     public static String action_screen_recording = "screen_recording";//开始屏幕录制
@@ -84,6 +85,8 @@ public class Constant {
     public static final int BUS_COLLECT_CAMERA_STOP = BUS_BASE + 15;//后台收到停止采集摄像头通知
     public static final int BUS_CHAT_STATE = BUS_BASE + 16;//发送视频聊天的状态
     public static final int BUS_NET_WORK = BUS_BASE + 17;//网络状态改变
+    public static final int BUS_PREVIEW_IMAGE = BUS_BASE + 18;//发送查看图片通知
+    public static final int BUS_WPS_RECEIVER = BUS_BASE + 19;//通知是否注册WPS广播监听
 
     //自定义其它功能的功能码
     public static final int fun_code = 200000;

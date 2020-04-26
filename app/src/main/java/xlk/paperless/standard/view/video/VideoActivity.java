@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Gravity;
@@ -45,6 +46,7 @@ import static xlk.paperless.standard.view.draw.DrawActivity.isDrawing;
 public class VideoActivity extends BaseActivity implements IVideo {
 
     private final String TAG = "VideoActivity-->";
+    private ConstraintLayout video_root_layout;
     private MyGLSurfaceView video_view;
     private VideoPresenter presenter;
     private PopupWindow popView;
@@ -142,6 +144,7 @@ public class VideoActivity extends BaseActivity implements IVideo {
     }
 
     private void initView() {
+        video_root_layout = (ConstraintLayout) findViewById(R.id.video_root_layout);
         video_view = (MyGLSurfaceView) findViewById(R.id.video_view);
         video_view.setOnClickListener(v -> {
             if (popView != null && popView.isShowing()) {
@@ -162,7 +165,7 @@ public class VideoActivity extends BaseActivity implements IVideo {
         popView.setOutsideTouchable(true);
         popView.setFocusable(true);
         popView.setAnimationStyle(R.style.pop_Animation);
-        popView.showAtLocation(video_view, Gravity.BOTTOM, 0, 0);
+        popView.showAtLocation(video_root_layout, Gravity.BOTTOM, 0, 0);
         pop_video_time = inflate.findViewById(R.id.pop_video_time);
         inflate.findViewById(R.id.pop_video_play).setOnClickListener(v -> {
             presenter.playOrPause();
@@ -200,7 +203,6 @@ public class VideoActivity extends BaseActivity implements IVideo {
                 presenter.setPlayPlace(seekBar.getProgress());
             }
         });
-
     }
 
     private void showScreenPop(int type) {
@@ -284,6 +286,9 @@ public class VideoActivity extends BaseActivity implements IVideo {
 
     @Override
     protected void onDestroy() {
+        if (popView != null && popView.isShowing()) {
+            popView.dismiss();
+        }
         super.onDestroy();
         BackstageService.isVideoPlaying = false;
         BackstageService.isMandatoryPlaying = false;
@@ -291,4 +296,5 @@ public class VideoActivity extends BaseActivity implements IVideo {
         presenter.stopPlay();
         presenter.releaseMediaRes();
     }
+
 }

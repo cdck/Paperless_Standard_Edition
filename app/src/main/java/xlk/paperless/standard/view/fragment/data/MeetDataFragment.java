@@ -38,6 +38,7 @@ import xlk.paperless.standard.adapter.MeetDataFileListAdapter;
 import xlk.paperless.standard.adapter.PopPushMemberAdapter;
 import xlk.paperless.standard.adapter.PopPushProjectionAdapter;
 import xlk.paperless.standard.data.Constant;
+import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.data.bean.DevMember;
 import xlk.paperless.standard.util.FileUtil;
 import xlk.paperless.standard.util.LogUtil;
@@ -207,8 +208,18 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
             fileAdapter.setChoose(typeFileDetailInfos.get(position).getMediaid());
         });
         fileAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            InterfaceFile.pbui_Item_MeetDirFileDetailInfo info = typeFileDetailInfos.get(position);
             if (view.getId() == R.id.i_m_d_file_download) {
-                presenter.downloadFile(typeFileDetailInfos.get(position));
+                presenter.downloadFile(info);
+            } else if (view.getId() == R.id.i_m_d_file_view) {
+                LogUtil.d(TAG, "rvFile -->" + "查看文件");
+                if (FileUtil.isVideoFile(info.getName().toStringUtf8())) {
+                    List<Integer> devIds = new ArrayList<>();
+                    devIds.add(MyApplication.localDeviceId);
+                    JniHandler.getInstance().mediaPlayOperate(info.getMediaid(), devIds, 0, 0, 0, 0);
+                } else {
+                    FileUtil.openFile(getContext(), Constant.data_file_dir, info.getName().toStringUtf8(), info.getMediaid());
+                }
             }
         });
     }

@@ -56,6 +56,7 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
     private int work_state = 0;//=0空闲,=1寻呼中，=2对讲中
     public static boolean isChatingOpened = false;//当前是否已打开该界面
     private int mInviteflag, mOperdeviceid;
+    private LinearLayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,10 +150,23 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
+    private void setRvLayoutManager(boolean canScroll) {
+        layoutManager = new LinearLayoutManager(this) {
+            @Override
+            public boolean canScrollVertically() {
+                return canScroll;
+            }
+        };
+        pop_video_chat_rv.setLayoutManager(layoutManager);
+    }
+
     private void updateRv() {
         if (memberAdapter == null) {
             memberAdapter = new MeetChatMemberAdapter(R.layout.item_chat_member, onlineMembers);
-            pop_video_chat_rv.setLayoutManager(new LinearLayoutManager(this));
+            if (layoutManager == null) {
+                setRvLayoutManager(true);
+            }
+            pop_video_chat_rv.setLayoutManager(layoutManager);
             pop_video_chat_rv.setAdapter(memberAdapter);
             memberAdapter.setOnItemClickListener((adapter, view, position) -> {
                 memberAdapter.setCheck(onlineMembers.get(position).getMemberDetailInfo().getPersonid());
@@ -316,7 +330,6 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
-
     private void initView() {
         pop_video_chat_all = (CheckBox) findViewById(R.id.pop_video_chat_all);
         pop_video_chat_rv = (RecyclerView) findViewById(R.id.pop_video_chat_rv);
@@ -392,7 +405,6 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
-
     private void createIntercom() {
         work_state = 2;
         ids.clear();
@@ -418,8 +430,7 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
         pop_video_chat_paging.setEnabled(enabled);
         pop_video_chat_intercom.setEnabled(enabled);
         pop_video_chat_all.setEnabled(enabled);
-        pop_video_chat_rv.setFocusable(enabled);
-        pop_video_chat_rv.setEnabled(enabled);
+        setRvLayoutManager(enabled);
         pop_video_chat_launch.setEnabled(enabled);
         if (enabled) {
             pop_video_chat_stop.setBackground(getResources().getDrawable(R.drawable.shape_btn_pressed));

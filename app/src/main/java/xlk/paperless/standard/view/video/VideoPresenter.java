@@ -60,7 +60,7 @@ public class VideoPresenter extends BasePresenter {
     private MediaFormat mediaFormat;
     private String saveMimeType = "";
     private boolean isStop;
-    private long lastPushTime;
+    private long lastPushTime;//最后有数据的时间
     long framepersecond = 80;//估计每秒的播放时间 单位：毫秒
     private releaseThread timeThread;
     private boolean isShareing;//是否正在同屏中
@@ -297,7 +297,6 @@ public class VideoPresenter extends BasePresenter {
         mediaCodec.getCodecInfo().getCapabilitiesForType(saveMimeType).isFormatSupported(mediaFormat);
     }
 
-
     private void mediaCodecDecode(byte[] bytes, int size, long pts, int iskeyframe) {
         if (isStop) return;
         if (bytes != null && bytes.length > 0) {
@@ -396,7 +395,7 @@ public class VideoPresenter extends BasePresenter {
                     this.mMediaId);
             InterfaceBase.pbui_CommonInt32uProperty commonInt32uProperty = InterfaceBase.pbui_CommonInt32uProperty.parseFrom(timedata);
             int propertyval = commonInt32uProperty.getPropertyval();
-            view.updateProgressUi(per, "" + DateUtil.convertTime(sec * 1000), "" + DateUtil.convertTime((long) propertyval * 1000));
+            view.updateProgressUi(per, DateUtil.convertTime((long) sec * 1000), DateUtil.convertTime((long) propertyval));
         }
     }
 
@@ -407,14 +406,12 @@ public class VideoPresenter extends BasePresenter {
     void releaseMediaRes() {
         LogUtil.e(TAG, "releaseMediaRes :   --> ");
         isStop = true;
-        List<Integer> a = new ArrayList<Integer>();
-        List<Integer> b = new ArrayList<Integer>();
+        List<Integer> a = new ArrayList<>();
+        List<Integer> b = new ArrayList<>();
         a.add(0);
         b.add(MyApplication.localDeviceId);
         /** ************ ******  停止资源操作  ****** ************ **/
         jni.stopResourceOperate(a, b);
-        /** ************ ******  释放播放资源  ****** ************ **/
-//        jni.releaseVideoRes(0);
         timeThread = null;
         releaseMediaCodec();
     }
@@ -534,15 +531,24 @@ public class VideoPresenter extends BasePresenter {
         public void run() {
             super.run();
             while (!isStop) {
+                //距离上次有数据的时间超过了framepersecond毫秒就进行手动发送
                 if (System.currentTimeMillis() - lastPushTime >= framepersecond) {
+//                    if (System.currentTimeMillis() - lastPushTime >= 10 * 1000) {
+//                        LogUtil.d(TAG, "releaseThread -->" + "没有数据的持续时间超过10秒了，执行退出操作");
+//                        view.close();
+//                    } else {
                     LogUtil.v(TAG, "releaseThread 手动发送空数据 -->");
-                    EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_VIDEO_DECODE)
-                            .objs(0, 0, 0, 0, 0, null, 1L, null).build());
+                    EventBus.getDefault().post(new EventMessage.Builder()
+                            .type(Constant.BUS_VIDEO_DECODE)
+                            .objs(0, 0, 0, 0, 0, null, 1L, null)
+                            .build()
+                    );
                     try {
                         sleep(25);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+//                    }
                 }
             }
         }

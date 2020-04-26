@@ -37,10 +37,19 @@
         tools:text="20.14 M" />
 
     <ImageView
-        android:id="@+id/i_m_d_file_download"
-        android:layout_width="0dp"
+        android:id="@+id/i_m_d_file_view"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_marginStart="@dimen/dp_5"
+        android:layout_marginEnd="@dimen/dp_5"
         android:gravity="center"
-        android:src="@drawable/download_s" />
+        android:src="@drawable/file_view_icon_pressed" />
+
+    <ImageView
+        android:id="@+id/i_m_d_file_download"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="@dimen/dp_5"
+        android:gravity="center"
+        android:src="@drawable/file_download_icon_pressed" />
 </LinearLayout>

@@ -76,5 +76,8 @@ dependencies {
     implementation files('libs/jxl.jar')
     //图形百分比
     implementation 'com.github.IntruderShanky:scatter-piechart:1.0.0'
+    //屏幕适配
     implementation 'me.jessyan:autosize:1.2.1'
+    //图片查看
+    implementation 'com.github.SuperKotlin:PictureViewer:2.0.1'
 }

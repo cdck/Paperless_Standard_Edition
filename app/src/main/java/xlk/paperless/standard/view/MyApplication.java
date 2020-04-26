@@ -31,6 +31,8 @@ import xlk.paperless.standard.util.LogUtil;
  */
 public class MyApplication extends Application {
 
+    public static boolean isOneline;//=false离线，=true在线
+
     static {
         {
             System.loadLibrary("avcodec-57");

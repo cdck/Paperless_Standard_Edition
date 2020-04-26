@@ -1,5 +1,6 @@
 package xlk.paperless.standard.view;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
@@ -31,7 +32,7 @@ import static android.media.MediaCodecList.ALL_CODECS;
 import static xlk.paperless.standard.view.MyApplication.camera_height;
 import static xlk.paperless.standard.view.MyApplication.camera_width;
 
-public class CameraActivity extends BaseActivity implements SurfaceHolder.Callback,
+public class CameraActivity extends Activity implements SurfaceHolder.Callback,
         PreviewCallback {
 
     private final String TAG = "CameraLog-->";
@@ -96,8 +97,8 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
             camera.stopPreview();
             camera.release();
             camera = null;
-            EventBus.getDefault().unregister(this);
         }
+        EventBus.getDefault().unregister(this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

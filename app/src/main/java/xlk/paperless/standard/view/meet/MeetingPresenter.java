@@ -3,6 +3,8 @@ package xlk.paperless.standard.view.meet;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
+import com.SuperKotlin.pictureviewer.ImagePagerActivity;
+import com.SuperKotlin.pictureviewer.PictureConfig;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mogujie.tt.protobuf.InterfaceBase;
 import com.mogujie.tt.protobuf.InterfaceDevice;
@@ -129,7 +131,40 @@ public class MeetingPresenter extends BasePresenter {
                 LogUtil.i(TAG, "BusEvent -->" + "设备会议信息变更通知");
                 queryDeviceMeetInfo();
                 break;
+            case Constant.BUS_PREVIEW_IMAGE:
+                String filepath = (String) msg.getObjs()[0];
+                int index = 0;
+                if (!picPath.contains(filepath)) {
+                    picPath.add(filepath);
+                    index = picPath.size() - 1;
+                } else {
+                    for (int i = 0; i < picPath.size(); i++) {
+                        if (picPath.get(i).equals(filepath)) {
+                            index = i;
+                        }
+                    }
+                }
+                previewImage(index);
+                break;
         }
+    }
+
+    List<String> picPath = new ArrayList<>();
+
+    private void previewImage(int index) {
+        if (picPath.isEmpty()) {
+            return;
+        }
+        //使用方式
+        PictureConfig config = new PictureConfig.Builder()
+                .setListData((ArrayList<String>) picPath)    //图片数据List<String> list
+                .setPosition(index)    //图片下标（从第position张图片开始浏览）
+//                .setDownloadPath("pictureviewer")	//图片下载文件夹地址
+                .setIsShowNumber(true)//是否显示数字下标
+//                .needDownload(true)	//是否支持图片下载
+//                .setPlacrHolder(R.mipmap.icon)	//占位符图片（图片加载完成前显示的资源图片，来源drawable或者mipmap）
+                .build();
+        ImagePagerActivity.startActivity(cxt, config);
     }
 
     public void initial() {

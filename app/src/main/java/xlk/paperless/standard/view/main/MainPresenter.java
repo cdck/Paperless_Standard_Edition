@@ -186,9 +186,6 @@ public class MainPresenter extends BasePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void BusEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
-            case Constant.BUS_NET_WORK:
-
-                break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_TIME_VALUE:
                 Object[] objs = msg.getObjs();
                 byte[] data = (byte[]) objs[0];

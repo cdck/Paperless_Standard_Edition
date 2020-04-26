@@ -29,8 +29,10 @@ public class NetWorkReceiver extends BroadcastReceiver {
             NetworkInfo info = connectivityManager.getActiveNetworkInfo();
             if (info != null && info.isAvailable()) {
                 String name = info.getTypeName();
+                MyApplication.isOneline = true;
                 LogUtil.d(TAG, "当前网络名称：" + name);
             } else {
+                MyApplication.isOneline = false;
                 LogUtil.d(TAG, "没有可用网络");
             }
             EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_NET_WORK).build());

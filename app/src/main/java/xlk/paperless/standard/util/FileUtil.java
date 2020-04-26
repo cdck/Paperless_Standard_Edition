@@ -14,6 +14,8 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -24,6 +26,9 @@ import java.text.DecimalFormat;
 
 import xlk.paperless.standard.BuildConfig;
 import xlk.paperless.standard.R;
+import xlk.paperless.standard.data.Constant;
+import xlk.paperless.standard.data.EventMessage;
+import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.data.WpsModel;
 
 /**
@@ -223,6 +228,14 @@ public class FileUtil {
         }
     }
 
+
+    public static void openFile(Context context, String dir, String filename, int mediaid) {
+        createDir(dir);
+        String pathname = dir + filename;
+        LogUtil.d(TAG, "openFile -->" + "下载将要打开的文件 pathname= " + pathname);
+        JniHandler.getInstance().creationFileDownload(pathname, mediaid, 1, 0, Constant.SHOULD_OPEN_FILE_KEY);
+    }
+
     /**
      * 打开文件
      *
@@ -230,13 +243,17 @@ public class FileUtil {
      */
     public static void openFile(Context context, File file) {
         String filename = file.getName();
-        LogUtil.e(TAG, "OpenThisFile :   --> " + filename);
+        LogUtil.e(TAG, "openFile :   --> " + filename);
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
         if (FileUtil.isVideoFile(filename)) {
             return;
         } else if (FileUtil.isPictureFile(filename)) {
-//            EventBus.getDefault().post(new EventMessage(IDEventF.open_picture, file.getAbsolutePath()));
+            EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_PREVIEW_IMAGE).objs(file.getAbsolutePath()).build());
+            return;
         } else if (FileUtil.isDocumentFile(filename)) {
-//            EventBus.getDefault().post(new EventMessage(IDEventMessage.WPS_BROAD_CASE_INFORM, true));
+            //通知注册WPS广播
+            EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_WPS_RECEIVER).objs(true).build());
             /** **** **  如果是文档类文件并且不是pdf文件，设置只能使用WPS软件打开  ** **** **/
             Bundle bundle = new Bundle();
             bundle.putString(WpsModel.OPEN_MODE, WpsModel.OpenMode.NORMAL); // 打开模式
@@ -251,18 +268,10 @@ public class FileUtil {
             bundle.putString(WpsModel.THIRD_PACKAGE, WpsModel.PackageName.NORMAL); // 第三方应用的包名，用于对改应用合法性的验证
 //            bundle.putBoolean(WpsModel.CLEAR_TRACE, true);// 清除打开记录
 //            bundle.putBoolean(CLEAR_FILE, true); //关闭后删除打开文件
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_VIEW);
             intent.setClassName(WpsModel.PackageName.NORMAL, WpsModel.ClassName.NORMAL);
             intent.putExtras(bundle);
-            uriX(context, intent, file);
-        } else {
-            //已经存在才打开文件
-            Intent intent = new Intent();
-            //设置intent的Action属性
-            intent.setAction(Intent.ACTION_VIEW);
-            uriX(context, intent, file);
         }
+        uriX(context, intent, file);
     }
 
     /**
