@@ -84,7 +84,7 @@
     </style>
     <!--PopupWindow展示和隐藏的动画 展示右往左 隐藏左往右-->
     <style name="pop_lr_animation">
-        <item name="android:windowEnterAnimation">@anim/popshow_rl</item>
-        <item name="android:windowExitAnimation">@anim/pophide_lr</item>
+        <item name="android:windowEnterAnimation">@anim/popshow_end_start</item>
+        <item name="android:windowExitAnimation">@anim/pophide_start_end</item>
     </style>
 </resources>

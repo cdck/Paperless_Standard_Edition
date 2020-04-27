@@ -56,6 +56,11 @@
     <dimen name="dp_200">200dp</dimen>
     <dimen name="dp_220">220dp</dimen>
     <dimen name="dp_300">300dp</dimen>
+    <dimen name="dp_320">320dp</dimen>
+    <dimen name="dp_350">350dp</dimen>
+    <dimen name="dp_400">400dp</dimen>
+    <dimen name="dp_420">420dp</dimen>
+    <dimen name="dp_450">450dp</dimen>
     <dimen name="dp_500">500dp</dimen>
 
     <!-- font size,you can add if there is no one -->

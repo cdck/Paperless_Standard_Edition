@@ -38,11 +38,6 @@
         android:name="android.permission.READ_FRAME_BUFFER"
         tools:ignore="ProtectedPermissions" />
 
-    <!-- <uses-permission android:name="android.permission.BLUETOOTH" /> -->
-    <!-- &lt;!&ndash; To auto-complete the email text field in the login form with the user's emails &ndash;&gt; -->
-    <!-- <uses-permission android:name="android.permission.GET_ACCOUNTS" /> -->
-    <!-- <uses-permission android:name="android.permission.READ_PROFILE" /> -->
-    <!-- <uses-permission android:name="android.permission.READ_CONTACTS" /> -->
     <!-- Android P的系统上面默认所有Http的请求都被阻止了,TBS初始化会失败 -->
     <!-- android:usesCleartextTraffic="true" -->
     <application
@@ -55,6 +50,27 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <meta-data
+            android:name="design_width_in_dp"
+            android:value="960" />
+        <meta-data
+            android:name="design_height_in_dp"
+            android:value="1280" />
+
+        <service android:name=".service.BackstageService" />
+        <service android:name=".service.FabService" />
+
         <activity
             android:name=".view.main.MainActivity"
             android:launchMode="singleTop"
@@ -69,25 +85,10 @@
             android:name=".view.meet.MeetingActivity"
             android:launchMode="singleTop"
             android:screenOrientation="landscape" />
-
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="${applicationId}.fileProvider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
-
         <activity
             android:name=".view.draw.DrawActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustResize|adjustPan" />
-
-        <service android:name=".service.BackstageService" />
-        <service android:name=".service.FabService" />
-
         <activity
             android:name=".view.video.VideoActivity"
             android:screenOrientation="landscape" />
@@ -105,15 +106,7 @@
             android:name=".view.CameraActivity"
             android:launchMode="singleInstance"
             android:theme="@style/Transparent" />
-        <activity android:name=".view.camera.Camera2Activity"
-            android:screenOrientation="landscape" />
 
-        <meta-data
-            android:name="design_width_in_dp"
-            android:value="960"/>
-        <meta-data
-            android:name="design_height_in_dp"
-            android:value="1280"/>
     </application>
 
 </manifest>

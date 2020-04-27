@@ -13,6 +13,7 @@ import android.media.Image;
 import android.media.ImageReader;
 import android.os.Build;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -20,6 +21,7 @@ import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
@@ -77,7 +79,7 @@ public class FabService extends Service implements IFab {
     private Context cxt;
     private long downTime, upTime;
     private int mTouchStartX, mTouchStartY;
-    private WindowManager.LayoutParams mParams, defaultParams, postilParams, notParams;
+    private WindowManager.LayoutParams mParams, defaultParams, fullParams, wrapParams;
     private ImageView hoverButton;
     private boolean hoverButtonIsShowing, menuViewIsShowing, serviceViewIsShowing, screenViewIsShowing,
             joinViewIsShowing, proViewIsShowing, voteViewIsShowing;
@@ -203,7 +205,7 @@ public class FabService extends Service implements IFab {
         mParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         setParamsType(mParams);
         mParams.format = PixelFormat.RGBA_8888;
-        mParams.gravity = Gravity.LEFT | Gravity.TOP;
+        mParams.gravity = Gravity.START | Gravity.TOP;
         mParams.width = FrameLayout.LayoutParams.WRAP_CONTENT;
         mParams.height = FrameLayout.LayoutParams.WRAP_CONTENT;
         mParams.x = 0;
@@ -220,21 +222,21 @@ public class FabService extends Service implements IFab {
         defaultParams.height = MyApplication.screen_height / 2;
         defaultParams.windowAnimations = R.style.pop_Animation;
         /** **** **  充满屏幕  ** **** **/
-        postilParams = new WindowManager.LayoutParams();
-        setParamsType(postilParams);
-        postilParams.format = PixelFormat.RGBA_8888;
-        postilParams.gravity = Gravity.CENTER;
-        postilParams.width = FrameLayout.LayoutParams.MATCH_PARENT;
-        postilParams.height = FrameLayout.LayoutParams.MATCH_PARENT;
-        postilParams.windowAnimations = R.style.pop_Animation;
+        fullParams = new WindowManager.LayoutParams();
+        setParamsType(fullParams);
+        fullParams.format = PixelFormat.RGBA_8888;
+        fullParams.gravity = Gravity.CENTER;
+        fullParams.width = FrameLayout.LayoutParams.MATCH_PARENT;
+        fullParams.height = FrameLayout.LayoutParams.MATCH_PARENT;
+        fullParams.windowAnimations = R.style.pop_Animation;
         /** **** **  外部不可点击  ** **** **/
-        notParams = new WindowManager.LayoutParams();
-        setParamsType(notParams);
-        notParams.format = PixelFormat.RGBA_8888;
-        notParams.gravity = Gravity.CENTER;
-        notParams.width = FrameLayout.LayoutParams.WRAP_CONTENT;
-        notParams.height = FrameLayout.LayoutParams.WRAP_CONTENT;
-        notParams.windowAnimations = R.style.pop_Animation;
+        wrapParams = new WindowManager.LayoutParams();
+        setParamsType(wrapParams);
+        wrapParams.format = PixelFormat.RGBA_8888;
+        wrapParams.gravity = Gravity.CENTER;
+        wrapParams.width = FrameLayout.LayoutParams.WRAP_CONTENT;
+        wrapParams.height = FrameLayout.LayoutParams.WRAP_CONTENT;
+        wrapParams.windowAnimations = R.style.pop_Animation;
     }
 
     private void setParamsType(WindowManager.LayoutParams params) {
@@ -253,7 +255,7 @@ public class FabService extends Service implements IFab {
         menuView.setTag("menuView");
         CustomBaseViewHolder.MenuViewHolder menuViewHolder = new CustomBaseViewHolder.MenuViewHolder(menuView);
         menuViewHolderEvent(menuViewHolder);
-        showPop(hoverButton, menuView);
+        showPop(hoverButton, menuView, wrapParams);
     }
 
     //菜单视图事件
@@ -648,7 +650,7 @@ public class FabService extends Service implements IFab {
         cameraView.findViewById(R.id.wm_camera_reject).setOnClickListener(v -> {
             wm.removeView(cameraView);
         });
-        wm.addView(cameraView, notParams);
+        wm.addView(cameraView, wrapParams);
     }
 
     @Override
@@ -673,7 +675,7 @@ public class FabService extends Service implements IFab {
         CustomBaseViewHolder.VoteViewHolder voteViewHolder = new CustomBaseViewHolder.VoteViewHolder(voteView);
         voteViewHolderEvent(voteViewHolder, info);
         voteViewIsShowing = true;
-        wm.addView(voteView, postilParams);
+        wm.addView(voteView, fullParams);
     }
 
     //投票视图事件
@@ -831,25 +833,42 @@ public class FabService extends Service implements IFab {
             startVirtual();
             new Handler().postDelayed(() -> {
                 startScreen();
-            }, 100);
+            }, 500);//延迟因为ImageReader需要准备时间
         }, 500);
     }
 
     private void startVirtual() {
         try {
+            Surface surface = mImageReader.getSurface();
             mVirtualDisplay = mMediaProjection.createVirtualDisplay("screen-mirror",
-                    MyApplication.screen_width, MyApplication.screen_height, mScreenDensity, DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
-                    mImageReader.getSurface(), null, null);
-            LogUtil.d(TAG, "virtual displayed");
+                    MyApplication.screen_width, MyApplication.screen_height,
+                    mScreenDensity, DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
+                    surface, null, null);
+            LogUtil.d(TAG, "virtual displayed surface是否为null： " + (surface == null));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    Handler backgroundHandler;
+
+    private Handler getBackgroundHandler() {
+        if (backgroundHandler == null) {
+            HandlerThread backgroundThread =
+                    new HandlerThread("catwindow", android.os.Process
+                            .THREAD_PRIORITY_BACKGROUND);
+            backgroundThread.start();
+            backgroundHandler = new Handler(backgroundThread.getLooper());
+        }
+        return backgroundHandler;
+    }
+
     private void startScreen() {
         Image image = mImageReader.acquireLatestImage();
+        LogUtil.e(TAG, "startScreen :  image 为null --> " + (image == null));
         if (image == null) {
-            LogUtil.e(TAG, "startScreen :  image 为null --> ");
+            hoverButtonIsShowing = true;
+            wm.addView(hoverButton, mParams);
             return;
         }
         int width = image.getWidth();
@@ -864,7 +883,7 @@ public class FabService extends Service implements IFab {
         bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height);
         image.close();
         LogUtil.d(TAG, "image data captured bitmap是否为空：" + (bitmap == null));
-        //截图完毕，从新显示悬浮按钮
+        //截图完毕，重新显示悬浮按钮
         hoverButtonIsShowing = true;
         wm.addView(hoverButton, mParams);
         if (bitmap != null) {
@@ -873,6 +892,7 @@ public class FabService extends Service implements IFab {
                 EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_SCREEN_SHOT).build());
             } else {
                 Intent intent = new Intent(cxt, DrawActivity.class);
+                intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         }

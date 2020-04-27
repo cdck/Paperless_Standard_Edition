@@ -377,6 +377,14 @@
     <string name="check_network">网络连接错误</string>
     <string name="open_network">前往打开</string>
     <string name="upload_completed">%1$s文件上传完毕</string>
+    <string name="Initiate_projection">发起投影</string>
+    <string name="Call_service">呼叫服务</string>
+    <string name="End_projection">结束投影</string>
+    <string name="Initiate_the_same_screen">发起同屏</string>
+    <string name="Join_screen">加入同屏</string>
+    <string name="End_screen">结束同屏</string>
+    <string name="Screenshot_annotation">截图批注</string>
+    <string name="initialization_failed">平台初始化失败</string>
 
     <string-array name="role">
         <item>无</item>

@@ -9,10 +9,10 @@
         android:id="@+id/vote_manage_rv"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="@dimen/dp_8"
+        android:layout_marginTop="@dimen/dp_8"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginBottom="@dimen/dp_8"
         android:background="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/textView9"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="@dimen/dp_8"
         android:text="@string/vote_manage_title"
         android:textColor="@color/red"
         app:layout_constraintBottom_toTopOf="@+id/vote_manage_register"
@@ -43,8 +43,8 @@
         android:id="@+id/vote_manage_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="@dimen/dp_8"
+        android:layout_marginEnd="@dimen/dp_8"
         android:background="@drawable/shape_edt_vote"
         android:padding="@dimen/dp_1"
         android:textColor="@color/blue"
@@ -65,7 +65,7 @@
     <Button
         android:id="@+id/vote_manage_add"
         style="@style/btn_pressed_style"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="@dimen/dp_8"
         android:text="@string/add"
         app:layout_constraintBaseline_toBaselineOf="@+id/vote_manage_delete"
         app:layout_constraintEnd_toStartOf="@+id/vote_manage_modify" />
@@ -73,7 +73,7 @@
     <Button
         android:id="@+id/vote_manage_modify"
         style="@style/btn_pressed_style"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="@dimen/dp_8"
         android:text="@string/modify"
         app:layout_constraintBaseline_toBaselineOf="@+id/vote_manage_delete"
         app:layout_constraintEnd_toStartOf="@+id/vote_manage_delete" />
@@ -81,8 +81,8 @@
     <Button
         android:id="@+id/vote_manage_delete"
         style="@style/btn_pressed_style"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginBottom="@dimen/dp_8"
         android:text="@string/delete"
         app:layout_constraintBottom_toTopOf="@+id/vote_manage_stop"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -92,7 +92,7 @@
         style="@style/btn_pressed_style"
         android:layout_width="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="@dimen/dp_8"
         android:padding="@dimen/dp_2"
         android:text="@string/export_excel"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -104,9 +104,9 @@
         style="@style/btn_pressed_style"
         android:layout_width="wrap_content"
         android:padding="@dimen/dp_2"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="@dimen/dp_8"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginBottom="@dimen/dp_8"
         android:text="@string/import_excel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/textView11"
@@ -116,7 +116,7 @@
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="@dimen/dp_8"
         android:text="@string/count_down_"
         app:layout_constraintBottom_toBottomOf="@+id/vote_manage_details"
         app:layout_constraintEnd_toStartOf="@+id/vote_manage_time_sp"
@@ -126,7 +126,7 @@
         android:id="@+id/vote_manage_time_sp"
         android:layout_width="@dimen/dp_90"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="@dimen/dp_8"
         app:layout_constraintBottom_toBottomOf="@+id/vote_manage_details"
         app:layout_constraintEnd_toStartOf="@+id/vote_manage_details"
         app:layout_constraintTop_toTopOf="@+id/vote_manage_details" />
@@ -134,8 +134,8 @@
     <Button
         android:id="@+id/vote_manage_details"
         style="@style/btn_pressed_style"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginBottom="@dimen/dp_8"
         android:text="@string/see_details"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/vote_manage_chart" />
@@ -143,8 +143,8 @@
     <Button
         android:id="@+id/vote_manage_chart"
         style="@style/btn_pressed_style"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginBottom="@dimen/dp_8"
         android:text="@string/see_chart"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/vote_manage_launch" />
@@ -152,8 +152,8 @@
     <Button
         android:id="@+id/vote_manage_launch"
         style="@style/btn_pressed_style"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginBottom="@dimen/dp_8"
         android:text="@string/launch_vote"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/vote_manage_stop" />
@@ -161,8 +161,8 @@
     <Button
         android:id="@+id/vote_manage_stop"
         style="@style/btn_pressed_style"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginBottom="@dimen/dp_8"
         android:text="@string/stop_vote"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

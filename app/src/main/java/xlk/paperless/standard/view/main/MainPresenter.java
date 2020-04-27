@@ -212,6 +212,7 @@ public class MainPresenter extends BasePresenter {
                 } else if (method == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_LOGON_VALUE) {
                     initializationIsOver = false;
                     LogUtil.i(TAG, "BusEvent -->" + "平台初始化失败");
+                    ToastUtil.show(cxt, R.string.initialization_failed);
                 }
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEMEETSTATUS_VALUE://界面状态变更通知
@@ -431,6 +432,7 @@ public class MainPresenter extends BasePresenter {
             InterfaceBase.pbui_CommonInt32uProperty property = jni.queryMeetRankingProperty(0, InterfaceMacro.Pb_MeetSeatPropertyID.Pb_MEETSEAT_PROPERTY_ROLEBYMEMBERID.getNumber());
             if (property == null) return;
             int propertyval = property.getPropertyval();
+            MyApplication.localRole = propertyval;
             if (propertyval == InterfaceMacro.Pb_MeetMemberRole.Pb_role_member_compere.getNumber()
                     || propertyval == InterfaceMacro.Pb_MeetMemberRole.Pb_role_member_secretary.getNumber()
                     || propertyval == InterfaceMacro.Pb_MeetMemberRole.Pb_role_admin.getNumber()) {
