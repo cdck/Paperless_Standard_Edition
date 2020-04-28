@@ -376,8 +376,7 @@ public class DrawActivity extends BaseActivity implements IDraw, View.OnClickLis
                 Bitmap bitmap = artBoard.drawZoomBmp(dstbmp);
                 //保存图片信息
                 ArtBoard.DrawPath drawPath = new ArtBoard.DrawPath();
-                ByteString picdata = bmp2bs(bitmap);
-                drawPath.picdata = picdata;
+                drawPath.picdata = bmp2bs(bitmap);
                 ArtBoard.LocalPathList.add(drawPath);
                 if (DrawPresenter.isSharing) {
                     long time = System.currentTimeMillis();

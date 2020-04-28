@@ -26,6 +26,7 @@
             android:background="@color/white"
             android:gravity="center_vertical"
             android:paddingStart="@dimen/dp_2"
+            android:paddingEnd="@dimen/dp_2"
             android:text="@string/number"
             android:textStyle="bold" />
 
@@ -39,6 +40,7 @@
             android:background="@color/white"
             android:gravity="center_vertical"
             android:paddingStart="@dimen/dp_2"
+            android:paddingEnd="@dimen/dp_2"
             android:text="@string/title"
             android:textStyle="bold" />
 
@@ -52,6 +54,7 @@
             android:background="@color/white"
             android:gravity="center_vertical"
             android:paddingStart="@dimen/dp_2"
+            android:paddingEnd="@dimen/dp_2"
             android:text="@string/content"
             android:textStyle="bold" />
     </LinearLayout>

@@ -321,7 +321,7 @@ public class SlideView extends ViewGroup {
     /**
      * 可拖动的View
      */
-    private class SlideIcon extends ImageView {
+    private class SlideIcon extends android.support.v7.widget.AppCompatImageView {
         // 用来控制触摸事件是否可用
         private boolean mEnable;
 
@@ -401,15 +401,14 @@ public class SlideView extends ViewGroup {
             int heightSize = MeasureSpec.getSize(heightMeasureSpec);
             int heightMode = MeasureSpec.getMode(heightMeasureSpec);
 
-            switch (heightMode) {
-                case MeasureSpec.AT_MOST:   // layout_height为"wrap_content"时显示最小高度
-                    setMeasuredDimension(MeasureSpec.makeMeasureSpec((int)(widthSize * mIconRatio), widthMode),
-                            MeasureSpec.makeMeasureSpec(mMinHeight, heightMode));
-                    break;
-                default:    // layout_height为"match_parent"或指定具体高度时显示默认高度
-                    setMeasuredDimension(MeasureSpec.makeMeasureSpec((int)(widthSize * mIconRatio), widthMode),
-                            MeasureSpec.makeMeasureSpec(heightSize, heightMode));
-                    break;
+            // layout_height为"wrap_content"时显示最小高度
+            // layout_height为"match_parent"或指定具体高度时显示默认高度
+            if (heightMode == MeasureSpec.AT_MOST) {
+                setMeasuredDimension(MeasureSpec.makeMeasureSpec((int) (widthSize * mIconRatio), widthMode),
+                        MeasureSpec.makeMeasureSpec(mMinHeight, heightMode));
+            } else {
+                setMeasuredDimension(MeasureSpec.makeMeasureSpec((int) (widthSize * mIconRatio), widthMode),
+                        MeasureSpec.makeMeasureSpec(heightSize, heightMode));
             }
         }
 
@@ -472,7 +471,7 @@ public class SlideView extends ViewGroup {
         void onActionUp(int x);
     }
 
-    private class CustTextView extends TextView {
+    private class CustTextView extends android.support.v7.widget.AppCompatTextView {
         private int mViewWith;
         private int mTranleate;
         private Paint mPaint;

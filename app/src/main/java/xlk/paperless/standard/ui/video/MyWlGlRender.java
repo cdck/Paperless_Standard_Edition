@@ -158,7 +158,7 @@ public class MyWlGlRender implements GLSurfaceView.Renderer, SurfaceTexture.OnFr
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4);
         if (cutimg) {
             cutimg = false;
-            Bitmap bitmap = cutBitmap(0, 0, sWidth, sHeight);
+            Bitmap bitmap = cutBitmap(sWidth, sHeight);
             if (wlOnGlSurfaceViewOncreateListener != null) {
                 wlOnGlSurfaceViewOncreateListener.onCutVideoImg(bitmap);
             }
@@ -320,13 +320,13 @@ public class MyWlGlRender implements GLSurfaceView.Renderer, SurfaceTexture.OnFr
         GLES20.glVertexAttribPointer(aTextureCoordHandle_stop, 2, GLES20.GL_FLOAT, false, 8, textureBuffer);
     }
 
-    private Bitmap cutBitmap(int x, int y, int w, int h) {
+    private Bitmap cutBitmap(int w, int h) {
         int bitmapBuffer[] = new int[w * h];
         int bitmapSource[] = new int[w * h];
         IntBuffer intBuffer = IntBuffer.wrap(bitmapBuffer);
         intBuffer.position(0);
         try {
-            GLES20.glReadPixels(x, y, w, h, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE,
+            GLES20.glReadPixels(0, 0, w, h, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE,
                     intBuffer);
             int offset1, offset2;
             for (int i = 0; i < h; i++) {

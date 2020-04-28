@@ -49,7 +49,7 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
     private Button pop_video_chat_stop;
     private VideoChatView video_chat_view;
     private JniHandler jni = JniHandler.getInstance();
-    List<Integer> ids = new ArrayList<>();
+    private List<Integer> ids = new ArrayList<>();
     private List<InterfaceMember.pbui_Item_MemberDetailInfo> memberInfos = new ArrayList<>();
     private List<DevMember> onlineMembers = new ArrayList<>();
     private MeetChatMemberAdapter memberAdapter;

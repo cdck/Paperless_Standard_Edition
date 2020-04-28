@@ -95,9 +95,9 @@ public class NoticeActivity extends BaseActivity implements INotice, View.OnClic
         }
         //对齐方式
         if (align == InterfaceMacro.Pb_FontAlignFlag.Pb_MEET_FONTALIGNFLAG_LEFT.getNumber()) {//左对齐
-            btn.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+            btn.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
         } else if (align == InterfaceMacro.Pb_FontAlignFlag.Pb_MEET_FONTALIGNFLAG_RIGHT.getNumber()) {//右对齐
-            btn.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+            btn.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
         } else if (align == InterfaceMacro.Pb_FontAlignFlag.Pb_MEET_FONTALIGNFLAG_HCENTER.getNumber()) {//水平对齐
             btn.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
         } else if (align == InterfaceMacro.Pb_FontAlignFlag.Pb_MEET_FONTALIGNFLAG_TOP.getNumber()) {//上对齐
@@ -112,16 +112,22 @@ public class NoticeActivity extends BaseActivity implements INotice, View.OnClic
         //字体类型
         Typeface kt_typeface;
         if (!TextUtils.isEmpty(fontName)) {
-            if (fontName.equals("楷体")) {
-                kt_typeface = Typeface.createFromAsset(getAssets(), "kt.ttf");
-            } else if (fontName.equals("宋体")) {
-                kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
-            } else if (fontName.equals("隶书")) {
-                kt_typeface = Typeface.createFromAsset(getAssets(), "ls.ttf");
-            } else if (fontName.equals("微软雅黑")) {
-                kt_typeface = Typeface.createFromAsset(getAssets(), "wryh.ttf");
-            } else {
-                kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
+            switch (fontName) {
+                case "楷体":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "kt.ttf");
+                    break;
+                case "宋体":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
+                    break;
+                case "隶书":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "ls.ttf");
+                    break;
+                case "微软雅黑":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "wryh.ttf");
+                    break;
+                default:
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
+                    break;
             }
             btn.setTypeface(kt_typeface);
         }
@@ -153,9 +159,9 @@ public class NoticeActivity extends BaseActivity implements INotice, View.OnClic
         }
         //对齐方式
         if (align == InterfaceMacro.Pb_FontAlignFlag.Pb_MEET_FONTALIGNFLAG_LEFT.getNumber()) {//左对齐
-            tv.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+            tv.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
         } else if (align == InterfaceMacro.Pb_FontAlignFlag.Pb_MEET_FONTALIGNFLAG_RIGHT.getNumber()) {//右对齐
-            tv.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+            tv.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
         } else if (align == InterfaceMacro.Pb_FontAlignFlag.Pb_MEET_FONTALIGNFLAG_HCENTER.getNumber()) {//水平对齐
             tv.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
         } else if (align == InterfaceMacro.Pb_FontAlignFlag.Pb_MEET_FONTALIGNFLAG_TOP.getNumber()) {//上对齐
@@ -170,16 +176,22 @@ public class NoticeActivity extends BaseActivity implements INotice, View.OnClic
         //字体类型
         Typeface kt_typeface;
         if (!TextUtils.isEmpty(fontName)) {
-            if (fontName.equals("楷体")) {
-                kt_typeface = Typeface.createFromAsset(getAssets(), "kt.ttf");
-            } else if (fontName.equals("宋体")) {
-                kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
-            } else if (fontName.equals("隶书")) {
-                kt_typeface = Typeface.createFromAsset(getAssets(), "ls.ttf");
-            } else if (fontName.equals("微软雅黑")) {
-                kt_typeface = Typeface.createFromAsset(getAssets(), "wryh.ttf");
-            } else {
-                kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
+            switch (fontName) {
+                case "楷体":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "kt.ttf");
+                    break;
+                case "宋体":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
+                    break;
+                case "隶书":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "ls.ttf");
+                    break;
+                case "微软雅黑":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "wryh.ttf");
+                    break;
+                default:
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
+                    break;
             }
             tv.setTypeface(kt_typeface);
         }

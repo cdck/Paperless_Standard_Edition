@@ -110,11 +110,7 @@ public class JxlUtil {
             //7.最后一步，关闭工作簿
             workbook.close();
             ToastUtil.show(context, R.string.export_successful);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (RowsExceededException e) {
-            e.printStackTrace();
-        } catch (WriteException e) {
+        } catch (IOException | WriteException e) {
             e.printStackTrace();
         }
     }

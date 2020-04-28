@@ -3,7 +3,6 @@ package xlk.paperless.standard.view.main;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
@@ -12,7 +11,6 @@ import android.hardware.Camera;
 import android.media.MediaCodec;
 import android.media.MediaFormat;
 import android.media.projection.MediaProjectionManager;
-import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -36,7 +34,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.acker.simplezxing.activity.CaptureActivity;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.hjq.permissions.OnPermission;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
@@ -48,14 +45,10 @@ import com.mogujie.tt.protobuf.InterfaceMember;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.adapter.MainBindMemberAdapter;
-import xlk.paperless.standard.receiver.NetWorkReceiver;
 import xlk.paperless.standard.ui.ArtBoard;
-import xlk.paperless.standard.ui.SlideView;
 import xlk.paperless.standard.util.AppUtil;
 import xlk.paperless.standard.util.ConvertUtil;
 import xlk.paperless.standard.util.DateUtil;
@@ -89,7 +82,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
             meet_tv_main, seat_tv_main, post_tv_main, unit_tv_main, member_role, app_version, meet_state, note_info;
     private Button enter_btn_main, set_btn_main;
     private ImageView logo_iv_main;
-    private SlideView slideview_main;
+    //    private SlideView slideview_main;
     private RelativeLayout date_relative_main;
     private ConstraintLayout main_root_layout;
 
@@ -107,15 +100,15 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
-        slideview_main.addSlideListener(() -> {
-            if (meet_tv_main.getText().toString().trim().isEmpty()) {
-                jump2scan();
-            } else if (member_tv_main.getText().toString().trim().isEmpty()) {
-                jump2bind();
-            } else {
-                signIn();
-            }
-        });
+//        slideview_main.addSlideListener(() -> {
+//            if (meet_tv_main.getText().toString().trim().isEmpty()) {
+//                jump2scan();
+//            } else if (member_tv_main.getText().toString().trim().isEmpty()) {
+//                jump2bind();
+//            } else {
+//                signIn();
+//            }
+//        });
         ((MyApplication) getApplication()).openBackstageService(true);
         presenter = new MainPresenter(this, this);
         presenter.register();
@@ -160,7 +153,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
 
     private void initial() {
         try {
-            initCameraSize(1);
+            initCameraSize();
         } catch (Exception e) {
             LogUtil.d(TAG, "initial --> 相机使用失败：" + e.toString());
             e.printStackTrace();
@@ -225,7 +218,8 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         super.onRestart();
     }
 
-    private void initCameraSize(int type) {
+    private void initCameraSize() {
+        int type = 1;
         LogUtil.d(TAG, "initCameraSize :   --> ");
         int numberOfCameras = Camera.getNumberOfCameras();//获取摄像机的个数 一般是前/后置两个
         if (numberOfCameras < 2) {
@@ -332,7 +326,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         logo_iv_main = (ImageView) findViewById(R.id.logo_iv_main);
         company_tv_main = (TextView) findViewById(R.id.company_tv_main);
 
-        slideview_main = (SlideView) findViewById(R.id.slideview_main);
+//        slideview_main = (SlideView) findViewById(R.id.slideview_main);
 
         enter_btn_main = (Button) findViewById(R.id.enter_btn_main);
         enter_btn_main.setOnClickListener(this);
@@ -536,16 +530,22 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         //字体类型
         Typeface kt_typeface;
         if (!TextUtils.isEmpty(fontName)) {
-            if (fontName.equals("楷体")) {
-                kt_typeface = Typeface.createFromAsset(getAssets(), "kt.ttf");
-            } else if (fontName.equals("宋体")) {
-                kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
-            } else if (fontName.equals("隶书")) {
-                kt_typeface = Typeface.createFromAsset(getAssets(), "ls.ttf");
-            } else if (fontName.equals("微软雅黑")) {
-                kt_typeface = Typeface.createFromAsset(getAssets(), "wryh.ttf");
-            } else {
-                kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
+            switch (fontName) {
+                case "楷体":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "kt.ttf");
+                    break;
+                case "宋体":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
+                    break;
+                case "隶书":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "ls.ttf");
+                    break;
+                case "微软雅黑":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "wryh.ttf");
+                    break;
+                default:
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
+                    break;
             }
             tv.setTypeface(kt_typeface);
         }
@@ -578,9 +578,9 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         }
         //对齐方式
         if (align == InterfaceMacro.Pb_FontAlignFlag.Pb_MEET_FONTALIGNFLAG_LEFT.getNumber()) {//左对齐
-            btn.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+            btn.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
         } else if (align == InterfaceMacro.Pb_FontAlignFlag.Pb_MEET_FONTALIGNFLAG_RIGHT.getNumber()) {//右对齐
-            btn.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+            btn.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
         } else if (align == InterfaceMacro.Pb_FontAlignFlag.Pb_MEET_FONTALIGNFLAG_HCENTER.getNumber()) {//水平对齐
             btn.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
         } else if (align == InterfaceMacro.Pb_FontAlignFlag.Pb_MEET_FONTALIGNFLAG_TOP.getNumber()) {//上对齐
@@ -595,16 +595,22 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         //字体类型
         Typeface kt_typeface;
         if (!TextUtils.isEmpty(fontName)) {
-            if (fontName.equals("楷体")) {
-                kt_typeface = Typeface.createFromAsset(getAssets(), "kt.ttf");
-            } else if (fontName.equals("宋体")) {
-                kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
-            } else if (fontName.equals("隶书")) {
-                kt_typeface = Typeface.createFromAsset(getAssets(), "ls.ttf");
-            } else if (fontName.equals("微软雅黑")) {
-                kt_typeface = Typeface.createFromAsset(getAssets(), "wryh.ttf");
-            } else {
-                kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
+            switch (fontName) {
+                case "楷体":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "kt.ttf");
+                    break;
+                case "宋体":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
+                    break;
+                case "隶书":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "ls.ttf");
+                    break;
+                case "微软雅黑":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "wryh.ttf");
+                    break;
+                default:
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
+                    break;
             }
             btn.setTypeface(kt_typeface);
         }
@@ -636,9 +642,9 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
 //        }
         //对齐方式
 //        if (align == InterfaceMacro.Pb_FontAlignFlag.Pb_MEET_FONTALIGNFLAG_LEFT.getNumber()) {//左对齐
-//            btn.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+//            btn.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
 //        } else if (align == InterfaceMacro.Pb_FontAlignFlag.Pb_MEET_FONTALIGNFLAG_RIGHT.getNumber()) {//右对齐
-//            btn.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+//            btn.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
 //        } else if (align == InterfaceMacro.Pb_FontAlignFlag.Pb_MEET_FONTALIGNFLAG_HCENTER.getNumber()) {//水平对齐
 //            btn.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
 //        } else if (align == InterfaceMacro.Pb_FontAlignFlag.Pb_MEET_FONTALIGNFLAG_TOP.getNumber()) {//上对齐
@@ -702,15 +708,15 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         week_tv_main.setTypeface(typeface);
         //对齐方式
         if (align == InterfaceMacro.Pb_FontAlignFlag.Pb_MEET_FONTALIGNFLAG_LEFT.getNumber()) {//左对齐
-            date_relative_main.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
-            time_tv_main.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
-            date_tv_main.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
-            week_tv_main.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+            date_relative_main.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
+            time_tv_main.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
+            date_tv_main.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
+            week_tv_main.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
         } else if (align == InterfaceMacro.Pb_FontAlignFlag.Pb_MEET_FONTALIGNFLAG_RIGHT.getNumber()) {//右对齐
-            date_relative_main.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
-            time_tv_main.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
-            date_tv_main.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
-            week_tv_main.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+            date_relative_main.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
+            time_tv_main.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
+            date_tv_main.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
+            week_tv_main.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
         } else if (align == InterfaceMacro.Pb_FontAlignFlag.Pb_MEET_FONTALIGNFLAG_HCENTER.getNumber()) {//水平对齐
             date_relative_main.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
             time_tv_main.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
@@ -740,16 +746,22 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         //字体类型
         Typeface kt_typeface;
         if (!TextUtils.isEmpty(fontName)) {
-            if (fontName.equals("楷体")) {
-                kt_typeface = Typeface.createFromAsset(getAssets(), "kt.ttf");
-            } else if (fontName.equals("宋体")) {
-                kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
-            } else if (fontName.equals("隶书")) {
-                kt_typeface = Typeface.createFromAsset(getAssets(), "ls.ttf");
-            } else if (fontName.equals("微软雅黑")) {
-                kt_typeface = Typeface.createFromAsset(getAssets(), "wryh.ttf");
-            } else {
-                kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
+            switch (fontName) {
+                case "楷体":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "kt.ttf");
+                    break;
+                case "宋体":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
+                    break;
+                case "隶书":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "ls.ttf");
+                    break;
+                case "微软雅黑":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "wryh.ttf");
+                    break;
+                default:
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
+                    break;
             }
             time_tv_main.setTypeface(kt_typeface);
             date_tv_main.setTypeface(kt_typeface);
@@ -764,6 +776,8 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         }
         super.onDestroy();
         presenter.unregister();
+        presenter.onDestroy();
+        presenter = null;
 //        app.openBackstageService(false);
     }
 

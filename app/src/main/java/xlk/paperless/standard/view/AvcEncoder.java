@@ -18,7 +18,7 @@ import xlk.paperless.standard.util.LogUtil;
 /**
  * @author 视屏录制 CameraActivity
  */
-public class AvcEncoder {
+class AvcEncoder {
     private final String TAG = "AvcEncoder-->";
 
     private final String MIME_TYPE = "video/avc";

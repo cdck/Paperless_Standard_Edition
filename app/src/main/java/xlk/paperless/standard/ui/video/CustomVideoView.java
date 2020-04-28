@@ -307,11 +307,7 @@ public class CustomVideoView extends ViewGroup {
         MyGLSurfaceView childAt = (MyGLSurfaceView) getChildAt(0);
         shrinkSfvs.add(childAt);
         removeView(childAt);
-        List<MyGLSurfaceView> temps = new ArrayList<>();
-        for (int i = 0; i < shrinkSfvs.size(); i++) {
-            MyGLSurfaceView child = shrinkSfvs.get(i);
-            temps.add(child);
-        }
+        List<MyGLSurfaceView> temps = new ArrayList<>(shrinkSfvs);
         for (int i = 0; i < shrinkSfvs.size(); i++) {
             MyGLSurfaceView child = shrinkSfvs.get(i);
             int resId1 = child.getResId();

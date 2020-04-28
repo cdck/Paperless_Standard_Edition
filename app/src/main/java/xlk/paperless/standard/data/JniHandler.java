@@ -120,8 +120,7 @@ public class JniHandler {
             return null;
         }
         LogUtil.e(TAG, "queryDevInfoById :  查询指定ID的设备信息成功 --> ");
-        InterfaceDevice.pbui_Type_DeviceDetailInfo deviceDetailInfo = InterfaceDevice.pbui_Type_DeviceDetailInfo.parseFrom(array);
-        return deviceDetailInfo;
+        return InterfaceDevice.pbui_Type_DeviceDetailInfo.parseFrom(array);
     }
 
     public InterfaceDevice.pbui_Type_DeviceFaceShowDetail queryDeviceMeetInfo() throws InvalidProtocolBufferException {
@@ -255,9 +254,8 @@ public class JniHandler {
             return null;
         }
         LogUtil.e(TAG, "queryAttendPeopleFromId:  查询参会人员成功 --->>> ");
-        InterfaceMember.pbui_Type_MemberDetailInfo pbui_type_memberDetailInfo = InterfaceMember.pbui_Type_MemberDetailInfo.parseFrom(array);
 
-        return pbui_type_memberDetailInfo;
+        return InterfaceMember.pbui_Type_MemberDetailInfo.parseFrom(array);
     }
 
     /**
@@ -479,8 +477,7 @@ public class JniHandler {
             return null;
         }
         LogUtil.e(TAG, "queryDeviceInfo :  查询设备信息成功 --> ");
-        InterfaceDevice.pbui_Type_DeviceDetailInfo deviceDetailInfo = InterfaceDevice.pbui_Type_DeviceDetailInfo.parseFrom(array);
-        return deviceDetailInfo;
+        return InterfaceDevice.pbui_Type_DeviceDetailInfo.parseFrom(array);
     }
 
 
@@ -781,7 +778,7 @@ public class JniHandler {
      *
      * @return
      */
-    public boolean setPlayRecover(int resIndex, List<Integer> devIds) {
+    public void setPlayRecover(int resIndex, List<Integer> devIds) {
         InterfacePlaymedia.pbui_Type_MeetDoPlayControl.Builder builder = InterfacePlaymedia.pbui_Type_MeetDoPlayControl.newBuilder();
         builder.setResindex(resIndex);
         builder.addAllDeviceid(devIds);
@@ -789,7 +786,6 @@ public class JniHandler {
         jni.call_method(InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEDIAPLAY.getNumber(),
                 InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_PLAY.getNumber(), build.toByteArray());
         LogUtil.e(TAG, "setPlayRecover:  设置播放回复 --->>> ");
-        return true;
     }
 
     /**
@@ -820,7 +816,7 @@ public class JniHandler {
             return null;
         }
         LogUtil.e(TAG, "webQuery  网页查询 --->>> 成功");
-        return InterfaceBase.pbui_meetUrl.getDefaultInstance().parseFrom(array);
+        return InterfaceBase.pbui_meetUrl.parseFrom(array);
     }
 
     /**

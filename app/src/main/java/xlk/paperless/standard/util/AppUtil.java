@@ -79,14 +79,14 @@ public class AppUtil {
     /**
      * 获取屏幕高度(px)
      */
-    public static int getScreenHeight(Context context) {
+    private static int getScreenHeight(Context context) {
         return context.getResources().getDisplayMetrics().heightPixels;
     }
 
     /**
      * 获取屏幕宽度(px)
      */
-    public static int getScreenWidth(Context context) {
+    private static int getScreenWidth(Context context) {
         return context.getResources().getDisplayMetrics().widthPixels;
     }
 
@@ -187,10 +187,6 @@ public class AppUtil {
 
         NetworkInfo networkinfo = manager.getActiveNetworkInfo();
 
-        if (networkinfo == null || !networkinfo.isAvailable()) {
-            return false;
-        }
-
-        return true;
+        return networkinfo != null && networkinfo.isAvailable();
     }
 }

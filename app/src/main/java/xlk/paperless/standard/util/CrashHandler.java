@@ -30,7 +30,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     private Thread.UncaughtExceptionHandler mDefaultHandler;// 系统默认的UncaughtException处理类
     private static CrashHandler INSTANCE = new CrashHandler();// CrashHandler实例
     private Context mContext;// 程序的Context对象
-    private Map<String, String> info = new HashMap<String, String>();// 用来存储设备信息和异常信息
+    private Map<String, String> info = new HashMap<>();// 用来存储设备信息和异常信息
     private SimpleDateFormat format = new SimpleDateFormat(
             "yyyy-MM-dd_HH:mm:ss");// 用于格式化日期,作为日志文件名的一部分
 
@@ -151,7 +151,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         for (Map.Entry<String, String> entry : info.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-            sb.append(key + "=" + value + "\r\n");
+            sb.append(key).append("=").append(value).append("\r\n");
         }
         Writer writer = new StringWriter();
         PrintWriter pw = new PrintWriter(writer);

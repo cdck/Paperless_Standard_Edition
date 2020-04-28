@@ -51,7 +51,7 @@ public class DeviceControlPresenter extends BasePresenter {
 
     @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void BusEvent(EventMessage msg) throws InvalidProtocolBufferException {
+    public void BusEvent(EventMessage msg)  {
         switch (msg.getType()) {
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_ROOMDEVICE_VALUE://会场设备信息变更通知
                 queryRankInfo();

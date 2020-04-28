@@ -66,10 +66,10 @@ public class ArtBoard extends View {
     private Canvas mCanvas;
     private Path mPath;
     private DrawPath drawPath;
-    public static List<DrawPath> LocalPathList = new ArrayList<>();//存放自己操作的path，撤销时使用
+    public static final List<DrawPath> LocalPathList = new ArrayList<>();//存放自己操作的path，撤销时使用
     private final int WRAP_WIDTH = 300;
     private final int WRAP_HEIGHT = 300;
-    private JniHandler jni = JniHandler.getInstance();
+    private final JniHandler jni = JniHandler.getInstance();
     private DrawTextListener mListener;
     private boolean drawAgain;
     public boolean drag = false;//是否拖动画板
@@ -334,7 +334,7 @@ public class ArtBoard extends View {
     }
 
     private void shareDraw(float x, float y) {
-        List<Float> allpt = new ArrayList<Float>();
+        List<Float> allpt = new ArrayList<>();
         allpt.add(startX);
         allpt.add(startY);
         allpt.add(x);

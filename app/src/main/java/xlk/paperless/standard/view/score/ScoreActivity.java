@@ -150,10 +150,7 @@ public class ScoreActivity extends BaseActivity implements IScore, View.OnClickL
         if (!option3.isEmpty() && (Integer.parseInt(option3) > 100)) {
             return true;
         }
-        if (!option4.isEmpty() && (Integer.parseInt(option4) > 100)) {
-            return true;
-        }
-        return false;
+        return !option4.isEmpty() && (Integer.parseInt(option4) > 100);
     }
 
     @Override

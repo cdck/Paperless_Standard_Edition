@@ -38,8 +38,7 @@ public class ConvertUtil {
 
     public static Bitmap bs2bmp(ByteString bs) {
         byte[] bytes = bs.toByteArray();
-        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-        return bitmap;
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         //byte[] bytes = picdata.toByteArray();
         //ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
         //return BitmapFactory.decodeStream(inputStream);

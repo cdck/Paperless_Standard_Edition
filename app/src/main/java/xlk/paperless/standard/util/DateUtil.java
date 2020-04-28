@@ -22,8 +22,7 @@ public class DateUtil {
     public static String nowDate(long time) {
         Date tTime = new Date(time);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String date = format.format(tTime);
-        return date;
+        return format.format(tTime);
     }
 
     /**
@@ -46,8 +45,7 @@ public class DateUtil {
         tim.setTimeZone(TimeZone.getTimeZone("GTM"));
         String timt = tim.format(tTime);
 
-        String[] date = {dayt, weekt, timt};
-        return date;
+        return new String[]{dayt, weekt, timt};
     }
 
     /**

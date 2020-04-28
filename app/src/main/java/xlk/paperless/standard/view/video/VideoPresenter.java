@@ -492,7 +492,7 @@ public class VideoPresenter extends BasePresenter {
 
 
     public void setPlayPlace(int progress) {
-        List<Integer> devIds = new ArrayList<Integer>();
+        List<Integer> devIds = new ArrayList<>();
         devIds.add(MyApplication.localDeviceId);
         if (isShareing) {
             devIds.addAll(currentShareIds);
@@ -519,8 +519,7 @@ public class VideoPresenter extends BasePresenter {
             }
         }
         isShareing = true;
-        List<Integer> temps = new ArrayList<>();
-        temps.addAll(currentShareIds);
+        List<Integer> temps = new ArrayList<>(currentShareIds);
         temps.add(MyApplication.localDeviceId);
         jni.mediaPlayOperate(mMediaId, temps, currentPre, 0, 0, 0);
     }

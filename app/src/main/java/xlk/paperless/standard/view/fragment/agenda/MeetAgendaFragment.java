@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.tencent.smtt.sdk.TbsReaderView;
 
 import java.io.File;
+import java.util.Objects;
 
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.util.LogUtil;
@@ -87,7 +88,7 @@ public class MeetAgendaFragment extends Fragment implements IMeetAgenda, TbsRead
                 LogUtil.e(TAG, "displayFile 创建/storage/emulated/0/TbsReaderTemp失败！！！！！");
             }
         }
-        tbsReaderView = new TbsReaderView(getContext(), this);
+        tbsReaderView = new TbsReaderView(Objects.requireNonNull(getContext()), this);
         f_agenda_root.addView(tbsReaderView, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         Bundle bundle = new Bundle();

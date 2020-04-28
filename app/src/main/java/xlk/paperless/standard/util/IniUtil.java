@@ -44,10 +44,6 @@ public class IniUtil {
         this.file = filePath;
         try {
             ini.load(new FileReader(file));
-        } catch (InvalidFileFormatException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
+import java.util.Objects;
 
 import xlk.paperless.standard.BuildConfig;
 import xlk.paperless.standard.R;
@@ -67,8 +68,6 @@ public class FileUtil {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.flush();
             fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -129,7 +128,7 @@ public class FileUtil {
         }
         //获取文件的扩展名  mp3/mp4...
         String fileEnd = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()).toLowerCase();
-        if (fileEnd.equals("mp4")
+        return fileEnd.equals("mp4")
                 || fileEnd.equals("3gp")
                 || fileEnd.equals("wav")
                 || fileEnd.equals("mp3")
@@ -156,12 +155,7 @@ public class FileUtil {
                 || fileEnd.equals("asx")
                 || fileEnd.equals("ra")
                 || fileEnd.equals("naivx")
-                || fileEnd.equals("xvid")
-                ) {
-            return true;
-        } else {
-            return false;
-        }
+                || fileEnd.equals("xvid");
     }
 
     /**
@@ -176,17 +170,12 @@ public class FileUtil {
         }
         //获取文件的扩展名
         String fileEnd = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()).toLowerCase();
-        if (fileEnd.equals("jpg")
+        return fileEnd.equals("jpg")
                 || fileEnd.equals("png")
                 || fileEnd.equals("gif")
                 || fileEnd.equals("img")
                 || fileEnd.equals("bmp")
-                || fileEnd.equals("jpeg")
-                ) {
-            return true;
-        } else {
-            return false;
-        }
+                || fileEnd.equals("jpeg");
     }
 
     /**
@@ -201,7 +190,7 @@ public class FileUtil {
         }
         //获取文件的扩展名 -->获得的是小写：toLowerCase()  /大写:toUpperCase()
         String fileEnd = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()).toLowerCase();
-        if (fileEnd.equals("txt")
+        return fileEnd.equals("txt")
                 || fileEnd.equals("doc")
                 || fileEnd.equals("docx")
                 || fileEnd.equals("log")
@@ -220,12 +209,7 @@ public class FileUtil {
                 || fileEnd.equals("wpt")
                 || fileEnd.equals("wps")
                 || fileEnd.equals("csv")
-                || fileEnd.equals("pdf")
-                ) {
-            return true;
-        } else {
-            return false;
-        }
+                || fileEnd.equals("pdf");
     }
 
 
@@ -394,19 +378,13 @@ public class FileUtil {
      */
     private static String getDataColumn(Context context, Uri uri, String selection,
                                         String[] selectionArgs) {
-        Cursor cursor = null;
         final String column = "_data";
         final String[] projection = {column};
-        try {
-            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
-                    null);
+        try (Cursor cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null)) {
             if (cursor != null && cursor.moveToFirst()) {
                 final int column_index = cursor.getColumnIndexOrThrow(column);
                 return cursor.getString(column_index);
             }
-        } finally {
-            if (cursor != null)
-                cursor.close();
         }
         return null;
     }
@@ -474,7 +452,7 @@ public class FileUtil {
         String cachePath = null;
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
                 || !Environment.isExternalStorageRemovable()) {
-            cachePath = context.getExternalCacheDir().getPath();
+            cachePath = Objects.requireNonNull(context.getExternalCacheDir()).getPath();
         } else {
             cachePath = context.getCacheDir().getPath();
         }

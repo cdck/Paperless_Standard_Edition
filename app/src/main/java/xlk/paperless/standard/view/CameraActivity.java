@@ -41,11 +41,11 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback,
     private Camera camera;
     private Parameters parameters;
 
-    int framerate = 18;
+    private int framerate = 18;
     private int imageFormat = -1;
     private static int yuvqueuesize = 10;
 
-    public static final ArrayBlockingQueue<byte[]> YUVQueue = new ArrayBlockingQueue<byte[]>(
+    public static final ArrayBlockingQueue<byte[]> YUVQueue = new ArrayBlockingQueue<>(
             yuvqueuesize);
     private AvcEncoder avcCodec;
     private int camera_type;
@@ -119,7 +119,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback,
         putYUVData(data, data.length);
     }
 
-    public void putYUVData(byte[] buffer, int length) {
+    private void putYUVData(byte[] buffer, int length) {
         if (YUVQueue.size() >= 5) {
             YUVQueue.poll();
         }
@@ -156,7 +156,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback,
                 parameters.setPreviewFormat(imageFormat);//NV21 YV12
                 parameters.setPreviewSize(camera_width, camera_height);
                 boolean supported = parameters.isVideoStabilizationSupported();
-                if(supported){
+                if (supported) {
                     //这个方法可以帮助提高录制视频的稳定性。使用的时候通过 #isVideoStabilizationSupported 来判断是否可以使用。
                     // 如果妄自使用的话，会造成页面黑屏，PreviewCallback 没有任何回调
                     parameters.setVideoStabilization(true);
@@ -181,7 +181,6 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback,
             imageFormat = ImageFormat.NV21;
         } else {
             imageFormat = -1;
-            return;
         }
     }
 
@@ -199,7 +198,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback,
         return c;
     }
 
-    public void setCameraOrientation(Camera camera) {
+    private void setCameraOrientation(Camera camera) {
         CameraInfo info = new CameraInfo();
         Camera.getCameraInfo(0, info);
         int rotation = this.getWindowManager().getDefaultDisplay()

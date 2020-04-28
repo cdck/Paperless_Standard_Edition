@@ -211,30 +211,30 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.9" />
 
-    <xlk.paperless.standard.ui.SlideView
-        android:id="@+id/slideview_main"
-        android:layout_width="@dimen/dp_150"
-        android:layout_height="@dimen/dp_45"
-        android:visibility="gone"
-        app:bg_text="@string/slide_bg_text"
-        app:bg_text_color="@color/white"
-        app:bg_text_complete="@string/slide_text_complete"
-        app:bg_text_size="18sp"
-        app:enable_when_full="true"
-        app:gradient_color1="#0a0a0a"
-        app:gradient_color2="#FFFFFF"
-        app:gradient_color3="#0a0a0a"
-        app:icon_drawable="@drawable/icon_slide"
-        app:icon_ratio="0.2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9"
-        app:min_height="@dimen/dp_45"
-        app:reset_not_full="true"
-        app:secondary_color="@color/yellow" />
+    <!--<xlk.paperless.standard.ui.SlideView-->
+        <!--android:id="@+id/slideview_main"-->
+        <!--android:layout_width="@dimen/dp_150"-->
+        <!--android:layout_height="@dimen/dp_45"-->
+        <!--android:visibility="gone"-->
+        <!--app:bg_text="@string/slide_bg_text"-->
+        <!--app:bg_text_color="@color/white"-->
+        <!--app:bg_text_complete="@string/slide_text_complete"-->
+        <!--app:bg_text_size="18sp"-->
+        <!--app:enable_when_full="true"-->
+        <!--app:gradient_color1="#0a0a0a"-->
+        <!--app:gradient_color2="#FFFFFF"-->
+        <!--app:gradient_color3="#0a0a0a"-->
+        <!--app:icon_drawable="@drawable/icon_slide"-->
+        <!--app:icon_ratio="0.2"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="0.5"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintRight_toRightOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--app:layout_constraintVertical_bias="0.9"-->
+        <!--app:min_height="@dimen/dp_45"-->
+        <!--app:reset_not_full="true"-->
+        <!--app:secondary_color="@color/yellow" />-->
 
 
 </android.support.constraint.ConstraintLayout>

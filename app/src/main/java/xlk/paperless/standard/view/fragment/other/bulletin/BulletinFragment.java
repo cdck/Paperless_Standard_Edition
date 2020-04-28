@@ -54,14 +54,14 @@ public class BulletinFragment extends BaseFragment implements IBulletin, View.On
     }
 
     private void initView(View inflate) {
-        f_bulletin_rv = (RecyclerView) inflate.findViewById(R.id.f_bulletin_rv);
-        f_bulletin_title = (EditText) inflate.findViewById(R.id.f_bulletin_title);
-        f_bulletin_content = (EditText) inflate.findViewById(R.id.f_bulletin_content);
-        f_bulletin_add = (Button) inflate.findViewById(R.id.f_bulletin_add);
-        f_bulletin_del = (Button) inflate.findViewById(R.id.f_bulletin_del);
-        f_bulletin_modify = (Button) inflate.findViewById(R.id.f_bulletin_modify);
-        f_bulletin_launch = (Button) inflate.findViewById(R.id.f_bulletin_launch);
-        f_bulletin_close = (Button) inflate.findViewById(R.id.f_bulletin_close);
+        f_bulletin_rv = inflate.findViewById(R.id.f_bulletin_rv);
+        f_bulletin_title = inflate.findViewById(R.id.f_bulletin_title);
+        f_bulletin_content = inflate.findViewById(R.id.f_bulletin_content);
+        f_bulletin_add = inflate.findViewById(R.id.f_bulletin_add);
+        f_bulletin_del = inflate.findViewById(R.id.f_bulletin_del);
+        f_bulletin_modify = inflate.findViewById(R.id.f_bulletin_modify);
+        f_bulletin_launch = inflate.findViewById(R.id.f_bulletin_launch);
+        f_bulletin_close = inflate.findViewById(R.id.f_bulletin_close);
 
         f_bulletin_add.setOnClickListener(this);
         f_bulletin_del.setOnClickListener(this);

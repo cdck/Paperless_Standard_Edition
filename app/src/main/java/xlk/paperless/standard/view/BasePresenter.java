@@ -26,6 +26,9 @@ public class BasePresenter {
 
     }
 
+    public void onDestroy(){
+
+    }
 
     public void BusEvent(EventMessage msg) throws InvalidProtocolBufferException {
 

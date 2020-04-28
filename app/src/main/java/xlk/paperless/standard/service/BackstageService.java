@@ -161,7 +161,7 @@ public class BackstageService extends Service {
         }
     }
 
-    public void registerWpsBroadCase() {
+    private void registerWpsBroadCase() {
         if (reciver == null) {
             reciver = new WpsReceiver();
             IntentFilter filter = new IntentFilter();
@@ -173,7 +173,7 @@ public class BackstageService extends Service {
         }
     }
 
-    public void unregisterWpsBroadCase() {
+    private void unregisterWpsBroadCase() {
         if (reciver != null) {
             unregisterReceiver(reciver);
             reciver = null;
@@ -302,7 +302,6 @@ public class BackstageService extends Service {
                 disposePicSrcmemid = 0;
                 disposePicSrcwbidd = 0;
             }
-            return;
         } else {
             EventBus.getDefault().postSticky(new EventMessage.Builder().type(Constant.BUS_SHARE_PIC).objs(object).build());
         }
@@ -321,22 +320,31 @@ public class BackstageService extends Service {
             File f = new File(filepath);
             if (f.exists()) {
                 LogUtil.i(TAG, "BusEvent -->" + "下载完成：" + filepath);
-                if (userStr.equals(Constant.MAIN_BG_PNG_TAG)) {
-                    EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_MAIN_BG).objs(filepath).build());
-                } else if (userStr.equals(Constant.SUB_BG_PNG_TAG)) {
-                    EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_SUB_BG).objs(filepath).build());
-                } else if (userStr.equals(Constant.NOTICE_BG_PNG_TAG)) {
-                    EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_NOTICE_BG).objs(filepath).build());
-                } else if (userStr.equals(Constant.NOTICE_LOGO_PNG_TAG)) {
-                    EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_NOTICE_LOGO).objs(filepath).build());
-                } else if (userStr.equals(Constant.MAIN_LOGO_PNG_TAG)) {
-                    EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_MAIN_LOGO).objs(filepath).build());
-                } else if (userStr.equals(Constant.ROOM_BG_PNG_TAG)) {
-                    EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_ROOM_BG).objs(filepath).build());
-                } else if (userStr.equals(Constant.SHOULD_OPEN_FILE_KEY)) {//下载完成后需要打开的文件
-                    FileUtil.openFile(this, f);
-                } else if (userStr.equals(Constant.AGENDA_FILE_KEY)) {//下载的议程文件
-                    EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_AGENDA_FILE).objs(filepath).build());
+                switch (userStr) {
+                    case Constant.MAIN_BG_PNG_TAG:
+                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_MAIN_BG).objs(filepath).build());
+                        break;
+                    case Constant.SUB_BG_PNG_TAG:
+                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_SUB_BG).objs(filepath).build());
+                        break;
+                    case Constant.NOTICE_BG_PNG_TAG:
+                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_NOTICE_BG).objs(filepath).build());
+                        break;
+                    case Constant.NOTICE_LOGO_PNG_TAG:
+                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_NOTICE_LOGO).objs(filepath).build());
+                        break;
+                    case Constant.MAIN_LOGO_PNG_TAG:
+                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_MAIN_LOGO).objs(filepath).build());
+                        break;
+                    case Constant.ROOM_BG_PNG_TAG:
+                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_ROOM_BG).objs(filepath).build());
+                        break;
+                    case Constant.SHOULD_OPEN_FILE_KEY: //下载完成后需要打开的文件
+                        FileUtil.openFile(this, f);
+                        break;
+                    case Constant.AGENDA_FILE_KEY: //下载的议程文件
+                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_AGENDA_FILE).objs(filepath).build());
+                        break;
                 }
             } else {
                 ToastUtil.show(getApplicationContext(), R.string.err_download);

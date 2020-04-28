@@ -29,6 +29,7 @@ import com.mogujie.tt.protobuf.InterfaceMacro;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.adapter.MeetDataDirAdapter;
@@ -351,6 +352,7 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
 //                e.printStackTrace();
 //            }
             try {
+                assert uri != null;
                 String path = FileUtil.getRealPath(getContext(), uri);
                 if (path != null && !path.equals("")) {
                     LogUtil.e(TAG, "onActivityResult :  选中文件的路径 --->>> " + path);
@@ -381,7 +383,7 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
         //给输入框设置默认文件名
         editText.setText(fileName);
         LogUtil.e(TAG, "uploadFileDia    --->>> " + fileName);
-        new AlertDialog.Builder(getContext()).setTitle(getResources().getString(R.string.please_enter_valid_file_name))
+        new AlertDialog.Builder(Objects.requireNonNull(getContext())).setTitle(getResources().getString(R.string.please_enter_valid_file_name))
                 .setView(editText)
                 .setPositiveButton(getResources().getString(R.string.determine), (dialogInterface, i) -> {
                     if (!(TextUtils.isEmpty(editText.getText().toString().trim()))) {

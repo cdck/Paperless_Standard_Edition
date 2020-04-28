@@ -442,7 +442,7 @@
                     android:layout_below="@+id/f_score_yd"
                     android:layout_alignRight="@+id/f_score_yd"
                     android:layout_marginTop="@dimen/dp_15"
-                    android:text="选项一：" />
+                    android:text="@string/option1_" />
 
                 <TextView
                     android:id="@+id/f_score_choose1"
@@ -464,7 +464,7 @@
                     android:layout_below="@+id/f_score_choose1_title"
                     android:layout_alignRight="@+id/f_score_choose1_title"
                     android:layout_marginTop="@dimen/dp_15"
-                    android:text="选项二：" />
+                    android:text="@string/option2_" />
 
                 <TextView
                     android:id="@+id/f_score_choose2"
@@ -486,7 +486,7 @@
                     android:layout_below="@+id/f_score_choose2_title"
                     android:layout_alignRight="@+id/f_score_choose2_title"
                     android:layout_marginTop="@dimen/dp_15"
-                    android:text="选项三：" />
+                    android:text="@string/option3_" />
 
                 <TextView
                     android:id="@+id/f_score_choose3"
@@ -508,7 +508,7 @@
                     android:layout_below="@+id/f_score_choose3_title"
                     android:layout_alignRight="@+id/f_score_choose3_title"
                     android:layout_marginTop="@dimen/dp_15"
-                    android:text="选项四：" />
+                    android:text="@string/option4_" />
 
                 <TextView
                     android:id="@+id/f_score_choose4"

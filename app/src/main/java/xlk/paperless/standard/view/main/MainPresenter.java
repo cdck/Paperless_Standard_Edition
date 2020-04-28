@@ -1,7 +1,6 @@
 package xlk.paperless.standard.view.main;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
@@ -28,17 +27,17 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.data.Call;
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
-import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.util.AppUtil;
 import xlk.paperless.standard.util.CodecUtil;
-import xlk.paperless.standard.util.ConvertUtil;
 import xlk.paperless.standard.util.FileUtil;
 import xlk.paperless.standard.util.IniUtil;
 import xlk.paperless.standard.util.LogUtil;
@@ -56,16 +55,15 @@ import static xlk.paperless.standard.view.MyApplication.initializationIsOver;
 public class MainPresenter extends BasePresenter {
     private final String TAG = "MainPresenter-->";
     private IniUtil iniUtil = IniUtil.getInstance();
-    private JniHandler jni = JniHandler.getInstance();
-    private final Context cxt;
-    private final IMain view;
+    private WeakReference<Context> cxt;
+    private WeakReference<IMain> view;
     private List<InterfaceMember.pbui_Item_MemberDetailInfo> memberDetailInfos = new ArrayList<>();
     //存放未绑定的人员
     private List<InterfaceMember.pbui_Item_MemberDetailInfo> chooseMemberDetailInfos = new ArrayList<>();
 
     public MainPresenter(Context cxt, IMain iMain) {
-        this.cxt = cxt;
-        this.view = iMain;
+        this.cxt = new WeakReference<>(cxt);
+        this.view = new WeakReference<>(iMain);
     }
 
     public void setInterfaceState() {
@@ -84,12 +82,22 @@ public class MainPresenter extends BasePresenter {
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
+    public void onDestroy() {
+        cxt.clear();
+        view.clear();
+        memberDetailInfos.clear();
+        memberDetailInfos = null;
+        chooseMemberDetailInfos.clear();
+        chooseMemberDetailInfos = null;
+    }
+
     // 复制ini、dev文件
     public void initConfFile() {
         //拷贝配置文件
         if (!IniUtil.iniFile.exists()) {
             LogUtil.d(TAG, "initConfFile :  拷贝配置文件 --> ");
-            copyTo("client.ini", Constant.ROOT_DIR, Constant.INI_NAME);
+            copyTo("client.ini", Constant.INI_NAME);
         } else {
             LogUtil.d(TAG, "initConfFile :  已有ini文件 --> ");
             iniUtil.loadFile(IniUtil.iniFile);
@@ -106,21 +114,21 @@ public class MainPresenter extends BasePresenter {
         setVersion();
         File devFile = new File(Constant.ROOT_DIR + "/" + Constant.DEV_NAME);
         if (!devFile.exists()) {
-            copyTo(Constant.DEV_NAME, Constant.ROOT_DIR, Constant.DEV_NAME);
+            copyTo(Constant.DEV_NAME, Constant.DEV_NAME);
         } else {
             devFile.delete();
-            copyTo(Constant.DEV_NAME, Constant.ROOT_DIR, Constant.DEV_NAME);
+            copyTo(Constant.DEV_NAME, Constant.DEV_NAME);
         }
     }
 
     /**
      * 复制文件
      */
-    private void copyTo(String fromPath, String toPath, String fileName) {
+    private void copyTo(String fromPath, String fileName) {
         // 复制位置
         // opPath：mnt/sdcard/lcuhg/health/
         // mnt/sdcard：表示sdcard
-        File toFile = new File(toPath);
+        File toFile = new File(Constant.ROOT_DIR);
         // 如果不存在，创建文件夹
         if (!toFile.exists()) {
             boolean isCreate = toFile.mkdirs();
@@ -129,7 +137,7 @@ public class MainPresenter extends BasePresenter {
         }
         try {
             // 根据文件名获取assets文件夹下的该文件的inputstream
-            InputStream fromFileIs = cxt.getResources().getAssets().open(fromPath);
+            InputStream fromFileIs = cxt.get().getResources().getAssets().open(fromPath);
             int length = fromFileIs.available(); // 获取文件的字节数
             byte[] buffer = new byte[length]; // 创建byte数组
             FileOutputStream fileOutputStream = new FileOutputStream(toFile + "/" + fileName); // 字节输入流
@@ -159,11 +167,11 @@ public class MainPresenter extends BasePresenter {
 
     private void setVersion() {
         LogUtil.d(TAG, "setVersion -->设置版本信息");
-        PackageManager pm = cxt.getPackageManager();
+        PackageManager pm = cxt.get().getPackageManager();
         try {
-            PackageInfo packageInfo = pm.getPackageInfo(cxt.getPackageName(), 0);
+            PackageInfo packageInfo = pm.getPackageInfo(cxt.get().getPackageName(), 0);
             LogUtil.d(TAG, "当前版本名称：" + packageInfo.versionName + ", 版本号：" + packageInfo.versionCode);
-            view.updateVersion(packageInfo.versionName);
+            view.get().updateVersion(packageInfo.versionName);
             String hardver = "";
             String softver = "";
             if (packageInfo.versionName.contains(".")) {
@@ -179,7 +187,7 @@ public class MainPresenter extends BasePresenter {
     }
 
     public void initialization() {
-        new Thread(() -> jni.javaInitSys(AppUtil.getUniqueId(cxt))).start();
+        new Thread(() -> jni.javaInitSys(AppUtil.getUniqueId(cxt.get()))).start();
     }
 
     @Override
@@ -191,28 +199,28 @@ public class MainPresenter extends BasePresenter {
                 byte[] data = (byte[]) objs[0];
                 InterfaceBase.pbui_Time pbui_time = InterfaceBase.pbui_Time.parseFrom(data);
                 //微秒 转换成毫秒 除以 1000
-                view.updateTime(pbui_time.getUsec() / 1000);
+                view.get().updateTime(pbui_time.getUsec() / 1000);
                 break;
             case Constant.BUS_MAIN_LOGO:
                 String filepath = (String) msg.getObjs()[0];
                 Drawable drawable = Drawable.createFromPath(filepath);
-                view.updateLogo(drawable);
+                view.get().updateLogo(drawable);
                 break;
             case Constant.BUS_MAIN_BG:
                 String filepath1 = (String) msg.getObjs()[0];
                 Drawable drawable1 = Drawable.createFromPath(filepath1);
-                view.updateBackground(drawable1);
+                view.get().updateBackground(drawable1);
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_READY_VALUE:
                 int method = msg.getMethod();
                 if (method == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_NOTIFY_VALUE) {
                     LogUtil.i(TAG, "BusEvent -->" + "平台初始化完毕");
                     initializationIsOver = true;
-                    view.initialized();
+                    view.get().initialized();
                 } else if (method == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_LOGON_VALUE) {
                     initializationIsOver = false;
                     LogUtil.i(TAG, "BusEvent -->" + "平台初始化失败");
-                    ToastUtil.show(cxt, R.string.initialization_failed);
+                    ToastUtil.show(cxt.get(), R.string.initialization_failed);
                 }
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEMEETSTATUS_VALUE://界面状态变更通知
@@ -253,18 +261,18 @@ public class MainPresenter extends BasePresenter {
                     int status = dbServerOperError.getStatus();
                     if (status == InterfaceMacro.Pb_DB_StatusCode.Pb_STATUS_DONE_VALUE) {
                         LogUtil.i(TAG, "BusEvent -->" + "签到成功，进入会议");
-                        view.jump2meet();
+                        view.get().jump2meet();
                     } else if (status == InterfaceMacro.Pb_DB_StatusCode.Pb_STATUS_PSWFAILED_VALUE) {
                         LogUtil.i(TAG, "BusEvent -->" + "签到密码错误");
-                        ToastUtil.show(cxt, R.string.sign_in_password_error);
-                        view.signIn();
+                        ToastUtil.show(cxt.get(), R.string.sign_in_password_error);
+                        view.get().signIn();
                     }
                 }
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEOPER_VALUE://设备交互信息
                 if (msg.getMethod() == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_ENTER_VALUE) {
                     LogUtil.i(TAG, "BusEvent -->" + "辅助签到进入会议");
-                    view.jump2meet();
+                    view.get().jump2meet();
                 }
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETSEAT_VALUE://会议排位变更通知
@@ -276,7 +284,7 @@ public class MainPresenter extends BasePresenter {
 
     //初始化流通道
     public void initStream() {
-        int format = CodecUtil.selectColorFormat(CodecUtil.selectCodec("video/avc"), "video/avc");
+        int format = CodecUtil.selectColorFormat(Objects.requireNonNull(CodecUtil.selectCodec("video/avc")), "video/avc");
         switch (format) {
             case MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420Planar:
                 Call.COLOR_FORMAT = 0;
@@ -333,7 +341,7 @@ public class MainPresenter extends BasePresenter {
                 String text = itemInfo.getText().toStringUtf8();
                 LogUtil.i(TAG, "queryInterFaceConfiguration onlytextList-->" + faceid + ", text= " + text);
                 if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_COLTDTEXT_VALUE) {//公司名称
-                    view.updateCompany(text);
+                    view.get().updateCompany(text);
                 }
 //                else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_MEMBERCOMPANY_VALUE) {//参会人单位
 //                    view.updateUnit(text);
@@ -347,36 +355,36 @@ public class MainPresenter extends BasePresenter {
                 int faceid = itemInfo.getFaceid();
                 LogUtil.i(TAG, "queryInterFaceConfiguration -->" + "faceid= " + faceid);
                 if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_MEETNAME_VALUE) {//会议名称
-                    view.updateTv(R.id.meet_tv_main, itemInfo);
+                    view.get().updateTv(R.id.meet_tv_main, itemInfo);
                 } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_MEMBERCOMPANY_VALUE) {//参会人单位
-                    view.updateTv(R.id.unit_tv_main, itemInfo);
+                    view.get().updateTv(R.id.unit_tv_main, itemInfo);
                 } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_MEMBERNAME_VALUE) {//参会人名称
-                    view.updateTv(R.id.member_tv_main, itemInfo);
+                    view.get().updateTv(R.id.member_tv_main, itemInfo);
                 } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_MEMBERJOB_VALUE) {//参会人职业
-                    view.updateTv(R.id.post_tv_main, itemInfo);
+                    view.get().updateTv(R.id.post_tv_main, itemInfo);
                 } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_SEATNAME_VALUE) {//座席名称
-                    view.updateTv(R.id.seat_tv_main, itemInfo);
+                    view.get().updateTv(R.id.seat_tv_main, itemInfo);
                 } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_TIMER_VALUE) {//日期时间
-                    view.updateDate(R.id.date_relative_main, itemInfo);
+                    view.get().updateDate(R.id.date_relative_main, itemInfo);
                 } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_COMPANY_VALUE) {//单位名称
-                    view.updateTv(R.id.company_tv_main, itemInfo);
+                    view.get().updateTv(R.id.company_tv_main, itemInfo);
                 } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACE_LOGO_GEO_VALUE) {//Logo图标,只需要更新位置坐标
-                    view.update(R.id.logo_iv_main, itemInfo);
+                    view.get().update(R.id.logo_iv_main, itemInfo);
                     boolean isShow = (InterfaceMacro.Pb_MeetFaceFlag.Pb_MEET_FACEFLAG_SHOW_VALUE == (itemInfo.getFlag() & InterfaceMacro.Pb_MeetFaceFlag.Pb_MEET_FACEFLAG_SHOW_VALUE));
-                    view.isShowLogo(isShow);
+                    view.get().isShowLogo(isShow);
                 } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACE_checkin_GEO_VALUE) {//进入会议按钮 text
 //                    view.updateEnterView(R.id.slideview_main, itemInfo);
-                    view.updateBtn(R.id.enter_btn_main, itemInfo);
+                    view.get().updateBtn(R.id.enter_btn_main, itemInfo);
                 } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACE_manage_GEO_VALUE) {//进入后台 text
-                    view.updateBtn(R.id.set_btn_main, itemInfo);
+                    view.get().updateBtn(R.id.set_btn_main, itemInfo);
                 } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACE_topstatus_GEO_VALUE) {//会议状态
-                    view.updateTv(R.id.meet_state, itemInfo);
+                    view.get().updateTv(R.id.meet_state, itemInfo);
                 } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACE_remark_GEO_VALUE) {//备注信息
-                    view.updateTv(R.id.note_info, itemInfo);
+                    view.get().updateTv(R.id.note_info, itemInfo);
                 } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACE_ver_GEO_VALUE) {//软件版本
-                    view.updateTv(R.id.app_version, itemInfo);
+                    view.get().updateTv(R.id.app_version, itemInfo);
                 } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACE_role_GEO_VALUE) {//角色
-                    view.updateTv(R.id.member_role, itemInfo);
+                    view.get().updateTv(R.id.member_role, itemInfo);
                 }
             }
         } catch (InvalidProtocolBufferException e) {
@@ -388,7 +396,7 @@ public class MainPresenter extends BasePresenter {
         try {
             InterfaceDevice.pbui_Type_DeviceFaceShowDetail devMeetInfo = jni.queryDeviceMeetInfo();
             if (devMeetInfo == null) return;
-            view.updateUI(devMeetInfo);
+            view.get().updateUI(devMeetInfo);
             //缓存参会人信息(不然收不到参会人变更通知)
             jni.cacheData(InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEMBER_VALUE);
             //缓存会议信息
@@ -400,11 +408,11 @@ public class MainPresenter extends BasePresenter {
             if (info != null) {
                 String unit = info.getPropertytext().toStringUtf8();
                 LogUtil.d(TAG, "queryDevMeetInfo -->" + "是否是单位：" + unit);
-                view.updateUnit(unit);
+                view.get().updateUnit(unit);
             }
             InterfaceMember.pbui_Type_MeetMembeProperty info1 = jni.queryMemberProperty(InterfaceMacro.Pb_MemberPropertyID.Pb_MEETMEMBER_PROPERTY_COMMENT_VALUE, 0);
             if (info1 != null) {
-                view.updateNote(info1.getPropertytext().toStringUtf8());
+                view.get().updateNote(info1.getPropertytext().toStringUtf8());
             }
             queryLocalRole();
         } catch (InvalidProtocolBufferException e) {
@@ -421,7 +429,7 @@ public class MainPresenter extends BasePresenter {
             InterfaceBase.pbui_CommonInt32uProperty info = InterfaceBase.pbui_CommonInt32uProperty.parseFrom(bytes);
             int propertyval = info.getPropertyval();
             LogUtil.i(TAG, "queryMeetingState -->" + "会议状态：" + propertyval);
-            view.updateMeetingState(propertyval);
+            view.get().updateMeetingState(propertyval);
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
@@ -439,15 +447,15 @@ public class MainPresenter extends BasePresenter {
                 //当前是主持人或秘书或管理员，设置拥有所有权限
                 MyApplication.hasAllPermissions = true;
                 if (propertyval == InterfaceMacro.Pb_MeetMemberRole.Pb_role_member_compere.getNumber()) {
-                    view.updateMemberRole(cxt.getString(R.string.member_role_host));
+                    view.get().updateMemberRole(cxt.get().getString(R.string.member_role_host));
                 } else if (propertyval == InterfaceMacro.Pb_MeetMemberRole.Pb_role_member_secretary.getNumber()) {
-                    view.updateMemberRole(cxt.getString(R.string.member_role_secretary));
+                    view.get().updateMemberRole(cxt.get().getString(R.string.member_role_secretary));
                 } else {
-                    view.updateMemberRole(cxt.getString(R.string.member_role_admin));
+                    view.get().updateMemberRole(cxt.get().getString(R.string.member_role_admin));
                 }
             } else {
                 MyApplication.hasAllPermissions = false;
-                view.updateMemberRole(cxt.getString(R.string.member_role_ordinary));
+                view.get().updateMemberRole(cxt.get().getString(R.string.member_role_ordinary));
             }
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
@@ -459,7 +467,7 @@ public class MainPresenter extends BasePresenter {
         InterfaceDevice.pbui_Type_DeviceDetailInfo devInfoById = jni.queryDevInfoById(MyApplication.localDeviceId);
         if (devInfoById == null) return;
         InterfaceDevice.pbui_Item_DeviceDetailInfo info = devInfoById.getPdevList().get(0);
-        view.updateSeatName(info.getDevname().toStringUtf8());
+        view.get().updateSeatName(info.getDevname().toStringUtf8());
     }
 
     public void bindMeeting(int meetingid, int roomId) {
@@ -522,7 +530,7 @@ public class MainPresenter extends BasePresenter {
                     chooseMemberDetailInfos.add(info);
                 }
             }
-            view.showBindMemberView(chooseMemberDetailInfos);
+            view.get().showBindMemberView(chooseMemberDetailInfos);
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
