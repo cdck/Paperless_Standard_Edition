@@ -31,7 +31,7 @@ import static com.mogujie.tt.protobuf.InterfaceMacro.Pb_Method.Pb_METHOD_MEET_IN
 /**
  * @author xlk
  * @date 2020/3/20
- * @Description:
+ * @desc
  */
 public class MeetScorePresenter extends BasePresenter {
     private final String TAG = "MeetScorePresenter-->";

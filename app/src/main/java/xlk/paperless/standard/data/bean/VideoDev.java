@@ -6,7 +6,7 @@ import com.mogujie.tt.protobuf.InterfaceVideo;
 /**
  * @author xlk
  * @date 2020/3/18
- * @Description: 会议视频和设备
+ * @desc 会议视频和设备
  */
 public class VideoDev {
     InterfaceVideo.pbui_Item_MeetVideoDetailInfo videoDetailInfo;

@@ -385,6 +385,14 @@
     <string name="End_screen">结束同屏</string>
     <string name="Screenshot_annotation">截图批注</string>
     <string name="initialization_failed">平台初始化失败</string>
+    <string name="get_file_path_fail">文件获取失败</string>
+    <string name="encoding_filtering">编码过滤</string>
+    <string name="no_vote_info">没有投票信息</string>
+    <string name="election_content">选举内容</string>
+    <string name="election_fileName">选举详情</string>
+    <string name="vote_fileName">投票详情</string>
+    <string name="vote_content">投票内容</string>
+    <string name="must_be_xls">只能打开xls表格文件</string>
     <string-array name="role">
         <item>无</item>
         <item>普通参会人</item>

@@ -16,7 +16,7 @@ import xlk.paperless.standard.R;
 /**
  * @author xlk
  * @date 2020/4/14
- * @Description:
+ * @desc
  */
 public class DialogUtil {
     /**

@@ -11,7 +11,7 @@ import xlk.paperless.standard.data.bean.SeatMember;
 /**
  * @author xlk
  * @date 2020/3/18
- * @Description:
+ * @desc
  */
 public interface IMeetAnnotation {
     void updateMemberRv(List<SeatMember> memberDetailInfos);

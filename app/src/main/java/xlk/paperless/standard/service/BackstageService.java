@@ -56,7 +56,7 @@ import static xlk.paperless.standard.view.meet.MeetingActivity.mBadge;
 /**
  * @author xlk
  * @date 2020/3/11
- * @Description: 后台服务
+ * @desc 后台服务
  */
 public class BackstageService extends Service {
 
@@ -100,11 +100,12 @@ public class BackstageService extends Service {
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEMBERPERMISSION_VALUE://参会人权限变更通知
                 InterfaceMember.pbui_Type_MemberPermission o = jni.queryAttendPeoplePermissions();
-                MyApplication.allMemberPermissions = o.getItemList();
-                for (int i = 0; i < MyApplication.allMemberPermissions.size(); i++) {
-                    InterfaceMember.pbui_Item_MemberPermission item = MyApplication.allMemberPermissions.get(i);
+                List<InterfaceMember.pbui_Item_MemberPermission> allMemberPermissions = o.getItemList();
+                for (int i = 0; i < allMemberPermissions.size(); i++) {
+                    InterfaceMember.pbui_Item_MemberPermission item = allMemberPermissions.get(i);
                     if (item.getMemberid() == MyApplication.localMemberId) {
-                        MyApplication.localPermissions = Constant.getChoose(item.getPermission());
+                        int permission = item.getPermission();
+                        MyApplication.localPermissions = Constant.getChoose(permission);
                         break;
                     }
                 }
@@ -136,10 +137,10 @@ public class BackstageService extends Service {
                 deviceControlInform(msg);
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETBULLET_VALUE://公告
+                byte[] bulletin = (byte[]) msg.getObjs()[0];
                 if (msg.getMethod() == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_PUBLIST_VALUE) {
-                    LogUtil.i(TAG, "BusEvent -->" + "发布公告通知");
-                    byte[] o1 = (byte[]) msg.getObjs()[0];
-                    InterfaceBullet.pbui_BulletDetailInfo detailInfo = InterfaceBullet.pbui_BulletDetailInfo.parseFrom(o1);
+                    LogUtil.i(TAG, "发布公告通知");
+                    InterfaceBullet.pbui_BulletDetailInfo detailInfo = InterfaceBullet.pbui_BulletDetailInfo.parseFrom(bulletin);
                     List<InterfaceBullet.pbui_Item_BulletDetailInfo> itemList = detailInfo.getItemList();
                     if (!itemList.isEmpty()) {
                         InterfaceBullet.pbui_Item_BulletDetailInfo info = itemList.get(0);
@@ -189,8 +190,8 @@ public class BackstageService extends Service {
         if (oper == InterfaceMacro.Pb_DeviceControlFlag.Pb_DEVICECONTORL_MODIFYLOGO.getNumber()) {
             LogUtil.i(TAG, "deviceControl: 更换Logo通知");
             //本地没有才下载
-            FileUtil.createDir(Constant.configuration_picture_dir);
-            jni.creationFileDownload(Constant.configuration_picture_dir + Constant.MAIN_LOGO_PNG_TAG + ".png", operval1, 1, 0, Constant.MAIN_LOGO_PNG_TAG);
+//            FileUtil.createDir(Constant.configuration_picture_dir);
+//            jni.creationFileDownload(Constant.configuration_picture_dir + Constant.MAIN_LOGO_PNG_TAG + ".png", operval1, 1, 0, Constant.MAIN_LOGO_PNG_TAG);
         } else if (oper == InterfaceMacro.Pb_DeviceControlFlag.Pb_DEVICECONTORL_SHUTDOWN.getNumber()) {//关机
             LogUtil.i(TAG, "deviceControl: 关机");
         } else if (oper == InterfaceMacro.Pb_DeviceControlFlag.Pb_DEVICECONTORL_REBOOT.getNumber()) {//重启
@@ -347,7 +348,7 @@ public class BackstageService extends Service {
                         break;
                 }
             } else {
-                ToastUtil.show(getApplicationContext(), R.string.err_download);
+                ToastUtil.show(R.string.err_download);
             }
         }
     }
@@ -370,7 +371,7 @@ public class BackstageService extends Service {
             if (userStr.equals(Constant.upload_draw_pic)) {//从画板上传的图片
                 FileUtil.delFileByPath(pathName);
             }
-            ToastUtil.show(this, getString(R.string.upload_completed, fileName));
+            ToastUtil.show(getString(R.string.upload_completed, fileName));
             LogUtil.i(TAG, "uploadInform -->" + fileName + " 上传完毕");
         } else if (status == InterfaceMacro.Pb_Upload_State.Pb_UPLOADMEDIA_FLAG_NOSERVER_VALUE) {
             LogUtil.i(TAG, "uploadInform -->" + " 没找到可用的服务器");

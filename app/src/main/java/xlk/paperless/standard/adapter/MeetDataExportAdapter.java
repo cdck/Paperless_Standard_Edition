@@ -16,7 +16,7 @@ import xlk.paperless.standard.R;
 /**
  * @author xlk
  * @date 2020/3/17
- * @Description: 会议资料界面-导出资料时弹框的adapter
+ * @desc 会议资料界面-导出资料时弹框的adapter
  */
 public class MeetDataExportAdapter extends BaseQuickAdapter<InterfaceFile.pbui_Item_MeetDirFileDetailInfo, BaseViewHolder> {
     private List<Long> ids = new ArrayList<>();

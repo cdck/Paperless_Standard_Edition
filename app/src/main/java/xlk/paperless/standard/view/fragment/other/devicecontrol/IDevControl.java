@@ -7,7 +7,7 @@ import xlk.paperless.standard.data.bean.DevControlBean;
 /**
  * @author xlk
  * @date 2020/4/1
- * @Description:
+ * @desc
  */
 public interface IDevControl {
     void updateRv();

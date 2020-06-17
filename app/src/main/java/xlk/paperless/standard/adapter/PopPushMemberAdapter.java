@@ -14,7 +14,7 @@ import xlk.paperless.standard.data.bean.DevMember;
 /**
  * @author xlk
  * @date 2020/3/14
- * @Description: 文件推送参会人列表adapter
+ * @desc 文件推送参会人列表adapter
  */
 public class PopPushMemberAdapter extends BaseQuickAdapter<DevMember, BaseViewHolder> {
     private List<Integer> devIds = new ArrayList<>();

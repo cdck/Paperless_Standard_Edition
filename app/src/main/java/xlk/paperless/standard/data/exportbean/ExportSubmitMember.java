@@ -7,7 +7,7 @@ import xlk.paperless.standard.data.bean.SubmitMember;
 /**
  * @author xlk
  * @date 2020/4/3
- * @Description: 导出成Excel文件
+ * @desc: 将投票详情导出成Excel文件
  */
 public class ExportSubmitMember {
     String title;//投票/选举标题

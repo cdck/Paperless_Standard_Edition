@@ -28,7 +28,7 @@ import xlk.paperless.standard.view.MyApplication;
 /**
  * @author xlk
  * @date 2020/3/14
- * @Description:
+ * @desc
  */
 public class MeetDataPresenter extends BasePresenter {
     private final String TAG = "MeetDataPresenter-->";
@@ -58,7 +58,7 @@ public class MeetDataPresenter extends BasePresenter {
 
     @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void BusEvent(EventMessage msg) throws InvalidProtocolBufferException {
+    public void BusEvent(EventMessage msg) {
         switch (msg.getType()) {
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETDIRECTORY_VALUE://会议目录
                 queryMeetDir();
@@ -80,7 +80,13 @@ public class MeetDataPresenter extends BasePresenter {
                 view.updateDir(dirDetailInfos);
                 return;
             }
-            dirDetailInfos.addAll(dirDetailInfo.getItemList());
+            List<InterfaceFile.pbui_Item_MeetDirDetailInfo> itemList = dirDetailInfo.getItemList();
+            for (int i = 0; i < itemList.size(); i++) {
+                InterfaceFile.pbui_Item_MeetDirDetailInfo item = itemList.get(i);
+                if (item.getParentid() != 0 || item.getId() == 2) continue;//过滤掉子目录和批注文件目录
+                LogUtil.i(TAG, "queryMeetDir  -->" + item.getId() + " , " + item.getName().toStringUtf8());
+                dirDetailInfos.add(item);
+            }
             view.updateDir(dirDetailInfos);
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
@@ -136,7 +142,7 @@ public class MeetDataPresenter extends BasePresenter {
                 int netstate = detailInfo.getNetstate();
                 int memberid = detailInfo.getMemberid();
                 int facestate = detailInfo.getFacestate();
-                if (Constant.isThisDevType(InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetProjective_VALUE,devcieid)
+                if (Constant.isThisDevType(InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetProjective_VALUE, devcieid)
                         && netstate == 1) {
                     onLineProjectors.add(detailInfo);
                 }
@@ -159,8 +165,8 @@ public class MeetDataPresenter extends BasePresenter {
         jni.mediaPlayOperate(mediaid, devIds, pos, res, triggeruserval, flag);
     }
 
-    public void uploadFile(int uploadflag, int dirid, int attrib, String newname, String pathname, int userval, int mediaid,String userStr) {
-        jni.uploadFile(uploadflag, dirid, attrib, newname, pathname, userval, mediaid,userStr);
+    public void uploadFile(int uploadflag, int dirid, int attrib, String newname, String pathname, int userval, int mediaid, String userStr) {
+        jni.uploadFile(uploadflag, dirid, attrib, newname, pathname, userval, mediaid, userStr);
     }
 
 }

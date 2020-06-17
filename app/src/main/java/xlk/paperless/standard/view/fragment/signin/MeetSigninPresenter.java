@@ -1,6 +1,8 @@
 package xlk.paperless.standard.view.fragment.signin;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mogujie.tt.protobuf.InterfaceMacro;
@@ -15,21 +17,25 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.util.DateUtil;
 import xlk.paperless.standard.util.FileUtil;
+import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.view.BasePresenter;
 import xlk.paperless.standard.view.MyApplication;
 
 /**
  * @author xlk
  * @date 2020/3/18
- * @Description:
+ * @desc
  */
 public class MeetSigninPresenter extends BasePresenter {
+    private final String TAG = "MeetSigninPresenter-->";
     private final IMeetSignin view;
     private final Context cxt;
     private JniHandler jni = JniHandler.getInstance();
@@ -52,16 +58,18 @@ public class MeetSigninPresenter extends BasePresenter {
 
     @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void BusEvent(EventMessage msg) throws InvalidProtocolBufferException {
+    public void BusEvent(EventMessage msg) {
         switch (msg.getType()) {
             case Constant.BUS_ROOM_BG:
                 String filepath = (String) msg.getObjs()[0];
                 view.updateBg(filepath);
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_ROOMDEVICE_VALUE://会场设备信息变更通知
+                LogUtil.e(TAG, "BusEvent 会场设备信息变更通知 -->");
                 placeDeviceRankingInfo();
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_ROOM_VALUE://会场信息变更通知
+                LogUtil.e(TAG, "BusEvent 会场信息变更通知 -->");
                 queryMeetRoomBg();
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETSIGN_VALUE://签到变更

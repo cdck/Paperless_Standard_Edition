@@ -39,7 +39,7 @@ import static xlk.paperless.standard.util.ConvertUtil.s2b;
 /**
  * @author xlk
  * @date 2020/3/9
- * @Description:
+ * @desc
  */
 public class JniHandler {
     private final String TAG = "JniHandler-->";
@@ -857,6 +857,23 @@ public class JniHandler {
             return new byte[0];
         }
         return array;
+    }
+
+    /**
+     * 根据媒体ID查询文件名
+     * @param mediaId
+     * @return
+     */
+    public String getFileName(int mediaId) {
+        String fileName = "";
+        byte[] bytes = queryFileProperty(InterfaceMacro.Pb_MeetFilePropertyID.Pb_MEETFILE_PROPERTY_NAME.getNumber(), mediaId);
+        try {
+            InterfaceBase.pbui_CommonTextProperty pbui_commonTextProperty = InterfaceBase.pbui_CommonTextProperty.parseFrom(bytes);
+            fileName = pbui_commonTextProperty.getPropertyval().toStringUtf8();
+        } catch (InvalidProtocolBufferException e) {
+            e.printStackTrace();
+        }
+        return fileName;
     }
 
     /**

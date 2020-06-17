@@ -14,7 +14,7 @@ import xlk.paperless.standard.R;
 /**
  * @author xlk
  * @date 2020/3/28
- * @Description: 可加入同屏的参会人
+ * @desc 可加入同屏的参会人
  */
 public class WmCanJoinMemberAdapter extends BaseQuickAdapter<InterfaceDevice.pbui_Item_DeviceResPlay, BaseViewHolder> {
 

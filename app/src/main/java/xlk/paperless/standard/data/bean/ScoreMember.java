@@ -6,7 +6,7 @@ import com.mogujie.tt.protobuf.InterfaceMember;
 /**
  * @author xlk
  * @date 2020/4/9
- * @Description:
+ * @desc
  */
 public class ScoreMember {
     InterfaceMember.pbui_Item_MemberDetailInfo member;

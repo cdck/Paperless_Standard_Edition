@@ -20,7 +20,7 @@ import xlk.paperless.standard.util.LogUtil;
 /**
  * @author xlk
  * @date 2020/3/20
- * @Description: 评分查看 左边评分列表
+ * @desc 评分查看 左边评分列表
  */
 public class MeetScoreAdapter extends BaseQuickAdapter<InterfaceFilescorevote.pbui_Type_Item_UserDefineFileScore, BaseViewHolder> {
     private int chooseId = -1;
@@ -39,7 +39,7 @@ public class MeetScoreAdapter extends BaseQuickAdapter<InterfaceFilescorevote.pb
         average = b1.divide(b2, 2, BigDecimal.ROUND_HALF_UP).doubleValue();
 
         helper.setText(R.id.item_score_desc, item.getContent().toStringUtf8())
-                .setText(R.id.item_score_file, Constant.getFileName(item.getFileid()))
+                .setText(R.id.item_score_file, JniHandler.getInstance().getFileName(item.getFileid()))
                 .setText(R.id.item_score_state, getVoteState(item.getVotestate()))
                 .setText(R.id.item_score_people, item.getShouldmembernum() + " | " + item.getRealmembernum())
                 .setText(R.id.item_score_register, getMode(item.getMode()))

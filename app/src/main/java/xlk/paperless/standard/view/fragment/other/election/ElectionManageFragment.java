@@ -1,7 +1,10 @@
 package xlk.paperless.standard.view.fragment.other.election;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -40,6 +43,7 @@ import xlk.paperless.standard.util.DateUtil;
 import xlk.paperless.standard.util.JxlUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.ToastUtil;
+import xlk.paperless.standard.util.UriUtil;
 import xlk.paperless.standard.view.fragment.BaseFragment;
 import xlk.paperless.standard.view.meet.MeetingActivity;
 
@@ -48,9 +52,9 @@ import static xlk.paperless.standard.util.ConvertUtil.s2b;
 /**
  * @author xlk
  * @date 2020/4/7
- * @Description:
+ * @desc 选举管理
  */
-public class ElectionManageFragment extends BaseFragment implements View.OnClickListener,IElectionManage {
+public class ElectionManageFragment extends BaseFragment implements View.OnClickListener, IElectionManage {
     private final String TAG = "ElectionManageFragment-->";
     private RecyclerView election_manage_rv;
     private EditText election_manage_title;
@@ -190,7 +194,7 @@ public class ElectionManageFragment extends BaseFragment implements View.OnClick
     private void voteOper(boolean isCreate, int voteid) {
         String content = election_manage_title.getText().toString().trim();
         if (content.isEmpty()) {
-            ToastUtil.show(getContext(), R.string.vote_content_empty);
+            ToastUtil.show(R.string.vote_content_empty);
             return;
         }
         String option1 = election_manage_option1.getText().toString().trim();
@@ -204,9 +208,9 @@ public class ElectionManageFragment extends BaseFragment implements View.OnClick
                 || type == InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_3_5_VALUE
                 || type == InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_2_5_VALUE
                 || type == InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_MANY_VALUE
-                ) {
+        ) {
             if (option1.isEmpty() || option2.isEmpty() || option3.isEmpty() || option4.isEmpty() || option5.isEmpty()) {
-                ToastUtil.show(getContext(), R.string.please_enter_all_option);
+                ToastUtil.show(R.string.please_enter_all_option);
                 return;
             } else {
                 all.add(s2b(option1));
@@ -219,7 +223,7 @@ public class ElectionManageFragment extends BaseFragment implements View.OnClick
         if (type == InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_2_3_VALUE
                 || type == InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_SINGLE_VALUE) {
             if (option1.isEmpty() || option2.isEmpty() || option3.isEmpty()) {
-                ToastUtil.show(getContext(), R.string.please_enter_all_option);
+                ToastUtil.show(R.string.please_enter_all_option);
                 return;
             } else {
                 all.add(s2b(option1));
@@ -258,7 +262,7 @@ public class ElectionManageFragment extends BaseFragment implements View.OnClick
                         InterfaceVote.pbui_Item_MeetVoteDetailInfo detailInfo = presenter.voteInfos.get(i);
                         if (detailInfo.getVoteid() == electionManageAdapter.getSelectedVote().getVoteid()) {
                             if (detailInfo.getVotestate() != InterfaceMacro.Pb_MeetVoteStatus.Pb_vote_notvote_VALUE) {
-                                ToastUtil.show(getContext(), R.string.modify_not_vote);
+                                ToastUtil.show(R.string.modify_not_vote);
                                 return;
                             } else {
                                 voteOper(false, detailInfo.getVoteid());
@@ -267,21 +271,29 @@ public class ElectionManageFragment extends BaseFragment implements View.OnClick
                         }
                     }
                 } else {
-                    ToastUtil.show(getContext(), R.string.please_choose_vote);
+                    ToastUtil.show(R.string.please_choose_vote);
                 }
                 break;
             case R.id.election_manage_delete:
                 if (electionManageAdapter != null && electionManageAdapter.getSelectedVote() != null) {
                     presenter.deleteVote(electionManageAdapter.getSelectedVote().getVoteid());
                 } else {
-                    ToastUtil.show(getContext(), R.string.please_choose_vote);
+                    ToastUtil.show(R.string.please_choose_vote);
                 }
                 break;
             case R.id.election_manage_export:
-
+                if (!presenter.voteInfos.isEmpty()) {
+                    JxlUtil.exportVoteInfo(presenter.voteInfos, getString(R.string.election_fileName), getString(R.string.election_content));
+                } else {
+                    ToastUtil.show(R.string.no_vote_info);
+                }
                 break;
             case R.id.election_manage_import:
-
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("text/plain");//.xls文件
+//                intent.setType("file/*.xls");// {".xls", "application/vnd.ms-excel"}
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                startActivityForResult(intent, 1);
                 break;
             case R.id.election_manage_details:
                 if (electionManageAdapter != null && electionManageAdapter.getSelectedVote() != null) {
@@ -290,10 +302,10 @@ public class ElectionManageFragment extends BaseFragment implements View.OnClick
                         if (selectedVote.getVotestate() != InterfaceMacro.Pb_MeetVoteStatus.Pb_vote_notvote_VALUE) {
                             presenter.querySubmittedVoters(selectedVote, true);
                         } else {
-                            ToastUtil.show(getContext(), R.string.can_not_choose_notvote);
+                            ToastUtil.show(R.string.can_not_choose_notvote);
                         }
                     } else {
-                        ToastUtil.show(getContext(), R.string.please_choose_registered_vote);
+                        ToastUtil.show(R.string.please_choose_registered_vote);
                     }
                 }
                 break;
@@ -303,20 +315,20 @@ public class ElectionManageFragment extends BaseFragment implements View.OnClick
                     if (selectedVote.getVotestate() != InterfaceMacro.Pb_MeetVoteStatus.Pb_vote_notvote_VALUE) {
                         presenter.querySubmittedVoters(selectedVote, false);
                     } else {
-                        ToastUtil.show(getContext(), R.string.can_not_choose_notvote);
+                        ToastUtil.show(R.string.can_not_choose_notvote);
                     }
                 }
                 break;
             case R.id.election_manage_launch:
                 if (electionManageAdapter != null && electionManageAdapter.getSelectedVote() != null) {
                     if (electionManageAdapter.getSelectedVote().getVotestate() != InterfaceMacro.Pb_MeetVoteStatus.Pb_vote_notvote_VALUE) {
-                        ToastUtil.show(getContext(), R.string.please_choose_not_vote);
+                        ToastUtil.show(R.string.please_choose_not_vote);
                         return;
                     }
                     for (int i = 0; i < presenter.voteInfos.size(); i++) {
                         InterfaceVote.pbui_Item_MeetVoteDetailInfo info = presenter.voteInfos.get(i);
                         if (info.getVotestate() == InterfaceMacro.Pb_MeetVoteStatus.Pb_vote_voteing_VALUE) {
-                            ToastUtil.show(getContext(), R.string.please_stop_vote_first);
+                            ToastUtil.show(R.string.please_stop_vote_first);
                             return;
                         }
                     }
@@ -326,12 +338,36 @@ public class ElectionManageFragment extends BaseFragment implements View.OnClick
             case R.id.election_manage_stop:
                 if (electionManageAdapter != null && electionManageAdapter.getSelectedVote() != null) {
                     if (electionManageAdapter.getSelectedVote().getVotestate() != InterfaceMacro.Pb_MeetVoteStatus.Pb_vote_voteing_VALUE) {
-                        ToastUtil.show(getContext(), R.string.only_stop_voteing);
+                        ToastUtil.show(R.string.only_stop_voteing);
                         return;
                     }
                     presenter.stopVote(electionManageAdapter.getSelectedVote().getVoteid());
                 }
                 break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == 1) {
+            Uri uri = data.getData();
+            try {
+                String path = UriUtil.getFilePath(getContext(), uri);
+                LogUtil.i(TAG, "onActivityResult -->path = " + path);
+                if (path != null && !path.isEmpty()) {
+                    if (path.lastIndexOf(".") > 0 && path.substring(path.lastIndexOf(".")).equals(".xls")) {
+                        List<InterfaceVote.pbui_Item_MeetOnVotingDetailInfo> infos = JxlUtil.readVoteXls(path, InterfaceMacro.Pb_MeetVoteType.Pb_VOTE_MAINTYPE_vote_VALUE);
+                        for (int i = 0; i < infos.size(); i++) {
+                            presenter.createVote(infos.get(i));
+                        }
+                    } else {
+                        ToastUtil.show(R.string.must_be_xls);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -363,7 +399,7 @@ public class ElectionManageFragment extends BaseFragment implements View.OnClick
         inflate.findViewById(R.id.pop_vote_determine).setOnClickListener(v -> {
             List<Integer> memberIds = memberAdapter.getChoose();
             if (memberIds.isEmpty()) {
-                ToastUtil.show(getContext(), R.string.please_choose_member);
+                ToastUtil.show(R.string.please_choose_member);
                 return;
             }
             InterfaceVote.pbui_Item_MeetVoteDetailInfo selectedVote = electionManageAdapter.getSelectedVote();
@@ -372,7 +408,7 @@ public class ElectionManageFragment extends BaseFragment implements View.OnClick
                 int timeouts = getTimeouts();
                 presenter.launchVote(memberIds, voteid, timeouts);
             } else {
-                ToastUtil.show(getContext(), R.string.vote_changed);
+                ToastUtil.show(R.string.vote_changed);
             }
             memberPop.dismiss();
         });
@@ -507,7 +543,7 @@ public class ElectionManageFragment extends BaseFragment implements View.OnClick
             String[] strings = presenter.queryYd(vote);
             String createTime = DateUtil.nowDate(System.currentTimeMillis());
             ExportSubmitMember exportSubmitMember = new ExportSubmitMember(vote.getContent().toStringUtf8(), createTime, strings[0], strings[1], strings[2], strings[3], presenter.submitMembers);
-            JxlUtil.exportSubmitMember(exportSubmitMember, getContext());
+            JxlUtil.exportSubmitMember(exportSubmitMember);
         });
     }
 

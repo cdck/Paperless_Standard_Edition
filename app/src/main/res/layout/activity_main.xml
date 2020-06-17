@@ -177,7 +177,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="3dp"
-            android:layout_toRightOf="@id/time_tv_main"
+            android:layout_toEndOf="@id/time_tv_main"
             android:orientation="vertical">
 
             <TextView

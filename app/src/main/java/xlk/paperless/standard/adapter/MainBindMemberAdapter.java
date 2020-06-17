@@ -16,7 +16,7 @@ import xlk.paperless.standard.R;
 /**
  * @author xlk
  * @date 2020/3/12
- * @Description: 主页选择绑定参会人adapter
+ * @desc 主页选择绑定参会人adapter
  */
 public class MainBindMemberAdapter extends BaseQuickAdapter<InterfaceMember.pbui_Item_MemberDetailInfo, BaseViewHolder> {
     private int chooseId = -1;

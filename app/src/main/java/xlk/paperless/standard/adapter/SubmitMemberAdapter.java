@@ -13,7 +13,7 @@ import xlk.paperless.standard.data.bean.SubmitMember;
 /**
  * @author xlk
  * @date 2020/4/3
- * @Description: 投票和选举查看详情界面
+ * @desc 投票和选举查看详情界面
  */
 public class SubmitMemberAdapter extends BaseQuickAdapter<SubmitMember, BaseViewHolder> {
     public SubmitMemberAdapter(int layoutResId, @Nullable List<SubmitMember> data) {

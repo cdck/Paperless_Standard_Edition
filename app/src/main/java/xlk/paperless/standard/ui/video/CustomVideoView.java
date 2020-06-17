@@ -18,7 +18,7 @@ import xlk.paperless.standard.util.LogUtil;
 /**
  * @author xlk
  * @date 2020/3/19
- * @Description:
+ * @desc
  */
 public class CustomVideoView extends ViewGroup {
     private final String TAG = "CustomVideoView-->";

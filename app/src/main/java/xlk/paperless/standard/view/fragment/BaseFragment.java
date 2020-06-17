@@ -12,7 +12,7 @@ import xlk.paperless.standard.view.meet.MeetingActivity;
 /**
  * @author xlk
  * @date 2020/3/14
- * @Description:
+ * @desc
  */
 public class BaseFragment extends Fragment {
 

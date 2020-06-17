@@ -6,7 +6,7 @@ import com.mogujie.tt.protobuf.InterfaceRoom;
 /**
  * @author xlk
  * @date 2020/4/1
- * @Description: 设备控制adapter使用
+ * @desc 设备控制adapter使用
  */
 public class DevControlBean {
     InterfaceDevice.pbui_Item_DeviceDetailInfo deviceInfo;

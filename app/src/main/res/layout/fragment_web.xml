@@ -43,7 +43,7 @@
             android:layout_weight="1"
             android:background="@drawable/shape_edt"
             android:ellipsize="end"
-            android:lines="1"
+            android:singleLine="true"
             tools:text="www.baidu.com" />
 
         <Button

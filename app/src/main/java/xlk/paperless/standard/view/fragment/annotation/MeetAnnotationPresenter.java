@@ -32,7 +32,7 @@ import xlk.paperless.standard.view.MyApplication;
 /**
  * @author xlk
  * @date 2020/3/18
- * @Description:
+ * @desc
  */
 public class MeetAnnotationPresenter extends BasePresenter {
     private final String TAG = "MeetAnnotationPresenter-->";
@@ -97,7 +97,7 @@ public class MeetAnnotationPresenter extends BasePresenter {
                         for (int i = 0; i < memberDetailInfos.size(); i++) {
                             if (memberDetailInfos.get(i).getPersonid() == memberid) {
                                 name = memberDetailInfos.get(i).getName().toStringUtf8();
-                                ToastUtil.show(cxt, cxt.getString(R.string.agreed_postilview, name));
+                                ToastUtil.show(cxt.getString(R.string.agreed_postilview, name));
                                 break;
                             }
                         }
@@ -109,7 +109,7 @@ public class MeetAnnotationPresenter extends BasePresenter {
                         for (int i = 0; i < memberDetailInfos.size(); i++) {
                             if (memberDetailInfos.get(i).getPersonid() == memberid) {
                                 String name = memberDetailInfos.get(i).getName().toStringUtf8();
-                                ToastUtil.show(cxt, cxt.getString(R.string.reject_postilview, name));
+                                ToastUtil.show(cxt.getString(R.string.reject_postilview, name));
                                 break;
                             }
                         }

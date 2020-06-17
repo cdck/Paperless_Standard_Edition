@@ -17,7 +17,7 @@ import xlk.paperless.standard.view.BasePresenter;
 /**
  * @author xlk
  * @date 2020/3/20
- * @Description:
+ * @desc
  */
 public class MeetWebPresenter extends BasePresenter {
     private final IMeetWeb view;

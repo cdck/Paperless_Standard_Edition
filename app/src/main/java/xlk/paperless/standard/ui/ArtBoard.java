@@ -39,14 +39,14 @@ import static xlk.paperless.standard.view.draw.DrawPresenter.localOperids;
 /**
  * @author xlk
  * @date 2020/3/13
- * @Description: 画板
+ * @desc 画板
  */
 public class ArtBoard extends View {
 
     private final String TAG = "ArtBoard-->";
-    private int screenWidth;
-    private int screenHeight;
-    private boolean isCreate;
+    private int screenWidth,screenHeight;//显示区域的宽高，是不变的
+    public static int artBoardWidth,artBoardHeight;//画板的宽高，会根据图片大小改变
+    private boolean isCreate;//=true表示是通过构造器动态创建
     private Paint mPaint;
     private int paintWidth = 10;//画笔宽度
     private int paintColor = Color.BLACK;//画笔默认颜色
@@ -60,8 +60,6 @@ public class ArtBoard extends View {
     public static final int DRAW_ERASER = 6;//橡皮擦
     private int currentDrawGraphics = DRAW_SLINE;//当前画笔默认是曲线
     private Paint mBitmapPaint;
-    public static int artBoardWidth;
-    public static int artBoardHeight;
     private Bitmap mBitmap;
     private Canvas mCanvas;
     private Path mPath;
@@ -73,7 +71,6 @@ public class ArtBoard extends View {
     private DrawTextListener mListener;
     private boolean drawAgain;
     public boolean drag = false;//是否拖动画板
-//    private int currentArtBoardWidth, currentArtBoardHeight;//拖动后画板的宽高
 
     public ArtBoard(Context context) {
         this(context, null);
@@ -240,6 +237,7 @@ public class ArtBoard extends View {
                     else if (dy > 0)
                         t = (int) (top + dy);
                 } else t = 0;
+                LogUtil.e(TAG, "drag -->artBoard= (" + artBoardWidth + ", " + artBoardHeight + "), screen= (" + screenWidth + "," + screenHeight + ")");
                 //右
                 r = artBoardWidth + l;
                 int i1 = screenWidth - r;

@@ -1,5 +1,6 @@
 package xlk.paperless.standard.view.notice;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
@@ -25,7 +26,7 @@ import xlk.paperless.standard.view.BasePresenter;
 /**
  * @author xlk
  * @date 2020/4/8
- * @Description:
+ * @desc
  */
 public class NoticePresenter extends BasePresenter {
     private final String TAG = "NoticePresenter-->";
@@ -72,6 +73,15 @@ public class NoticePresenter extends BasePresenter {
                 queryInterfaceConfig();
                 break;
 
+        }
+    }
+
+
+    private void close(int bulletid){
+        if (NoticeActivity.hashMap.containsKey(bulletid)) {
+            Activity activity = NoticeActivity.hashMap.get(bulletid);
+            activity.finish();
+            NoticeActivity.hashMap.remove(bulletid);
         }
     }
 

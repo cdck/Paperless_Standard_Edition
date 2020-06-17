@@ -20,7 +20,7 @@ import xlk.paperless.standard.util.LogUtil;
 /**
  * @author xlk
  * @date 2020/4/11
- * @Description:
+ * @desc 会议交流中视频聊天
  */
 public class VideoChatView extends ViewGroup {
     private final String TAG = "VideoChatView-->";

@@ -14,7 +14,7 @@ import xlk.paperless.standard.data.bean.DevMember;
 /**
  * @author xlk
  * @date 2020/3/26
- * @Description: 悬浮框中在线参会人
+ * @desc 悬浮框中在线参会人
  */
 public class WmScreenMemberAdapter extends BaseQuickAdapter<DevMember, BaseViewHolder> {
     List<Integer> ids = new ArrayList<>();

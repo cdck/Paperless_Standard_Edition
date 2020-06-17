@@ -1,12 +1,13 @@
 package xlk.paperless.standard.util;
 
-import android.content.Context;
 import android.widget.Toast;
+
+import static xlk.paperless.standard.view.MyApplication.mContext;
 
 /**
  * @author xlk
  * @date 2020/3/9
- * @Description: 弹窗提示类
+ * @desc 弹窗提示类
  */
 public class ToastUtil {
 
@@ -15,9 +16,9 @@ public class ToastUtil {
     private static long twoTime;
     private static String oldMsg;
 
-    public static void show(Context cxt, String msg) {
+    public static void show(String msg) {
         if (toast == null) {
-            toast = Toast.makeText(cxt.getApplicationContext(), msg, Toast.LENGTH_SHORT);
+            toast = Toast.makeText(mContext, msg, Toast.LENGTH_SHORT);
             toast.show();
             oneTime = System.currentTimeMillis();
         } else {
@@ -35,7 +36,7 @@ public class ToastUtil {
         oneTime = twoTime;
     }
 
-    public static void show(Context cxt, int resid) {
-        show(cxt, cxt.getResources().getString(resid));
+    public static void show(int resid) {
+        show(mContext.getResources().getString(resid));
     }
 }

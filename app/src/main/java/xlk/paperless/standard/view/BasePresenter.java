@@ -12,7 +12,7 @@ import xlk.paperless.standard.ui.CustomInterface.BaseInterface;
 /**
  * @author xlk
  * @date 2020/3/9
- * @Description:
+ * @desc
  */
 public class BasePresenter {
     protected JniHandler jni = JniHandler.getInstance();

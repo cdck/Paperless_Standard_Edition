@@ -19,7 +19,7 @@ import xlk.paperless.standard.util.FileUtil;
 /**
  * @author xlk
  * @date 2020/3/14
- * @Description: 会议资料文件分页展示adapter
+ * @desc 会议资料文件分页展示adapter
  */
 public class MeetDataFileListAdapter extends BaseAdapter {
     private final Context cxt;

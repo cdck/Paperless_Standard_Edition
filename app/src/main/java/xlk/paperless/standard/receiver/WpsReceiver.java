@@ -18,7 +18,7 @@ import xlk.paperless.standard.view.meet.MeetingActivity;
 /**
  * @author xlk
  * @date 2020/4/26
- * @Description: wps 文件处理的广播
+ * @desc wps 文件处理的广播
  */
 public class WpsReceiver extends BroadcastReceiver {
     private final String TAG = "WpsReceiver-->";

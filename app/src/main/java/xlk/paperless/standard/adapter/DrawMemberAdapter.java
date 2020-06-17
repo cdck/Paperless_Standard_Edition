@@ -14,7 +14,7 @@ import xlk.paperless.standard.data.bean.DevMember;
 /**
  * @author xlk
  * @date 2020/3/23
- * @Description:
+ * @desc
  */
 public class DrawMemberAdapter extends BaseQuickAdapter<DevMember, BaseViewHolder> {
     List<Integer> ids=new ArrayList<>();

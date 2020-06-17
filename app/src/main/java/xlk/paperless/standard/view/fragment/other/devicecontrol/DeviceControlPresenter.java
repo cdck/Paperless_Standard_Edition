@@ -20,12 +20,11 @@ import xlk.paperless.standard.data.bean.DevControlBean;
 import xlk.paperless.standard.view.BasePresenter;
 import xlk.paperless.standard.view.MyApplication;
 
-import static xlk.paperless.standard.data.Constant.DEVICE_MEET_ID_MASK;
 
 /**
  * @author xlk
  * @date 2020/4/1
- * @Description:
+ * @desc
  */
 public class DeviceControlPresenter extends BasePresenter {
     private final Context cxt;

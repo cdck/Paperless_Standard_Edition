@@ -3,11 +3,8 @@ package xlk.paperless.standard.data;
 import android.content.Context;
 import android.os.Environment;
 
-import com.google.protobuf.InvalidProtocolBufferException;
-import com.mogujie.tt.protobuf.InterfaceBase;
 import com.mogujie.tt.protobuf.InterfaceMacro;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +15,7 @@ import xlk.paperless.standard.view.MyApplication;
 /**
  * @author xlk
  * @date 2020/3/9
- * @Description: 常量类
+ * @desc 常量类
  */
 public class Constant {
     public static final String ROOT_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/PaperlessStandardEdition/";
@@ -35,7 +32,6 @@ public class Constant {
     public static final String artboard_picture_dir = file_dir + "/ArtboardPicture/";
     public static final String export_dir = file_dir + "/export/";
     public static final String cache_file_dir = ROOT_DIR + "/Cache/";
-
 
     //图片名称
     public static final String MAIN_BG_PNG_TAG = "mian_bg";
@@ -88,6 +84,19 @@ public class Constant {
     public static final int BUS_PREVIEW_IMAGE = BUS_BASE + 18;//发送查看图片通知
     public static final int BUS_WPS_RECEIVER = BUS_BASE + 19;//通知是否注册WPS广播监听
 
+    //会议功能码
+    public static final int fun_code_agenda_bulletin = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_AGENDA_BULLETIN_VALUE;//会议议程
+    public static final int fun_code_meet_file = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_MATERIAL_VALUE;//会议资料
+    public static final int fun_code_shared_file = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_SHAREDFILE_VALUE;//共享文件
+    public static final int fun_code_postil_file = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_POSTIL_VALUE;//批注文件
+    public static final int fun_code_message = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_MESSAGE_VALUE;//会议交流
+    public static final int fun_code_video_stream = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_VIDEOSTREAM_VALUE;//视频直播
+    public static final int fun_code_whiteboard = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_WHITEBOARD_VALUE;//电子白板
+    public static final int fun_code_webbrowser = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_WEBBROWSER_VALUE;//网页
+    public static final int fun_code_voteresult = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_VOTERESULT_VALUE;//投票
+    public static final int fun_code_signinresult = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_SIGNINRESULT_VALUE;//签到
+    public static final int fun_code_document = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_DOCUMENT_VALUE;//外部文档
+
     //自定义其它功能的功能码
     public static final int fun_code = 200000;
     public static final int fun_code_terminal = fun_code + 1;
@@ -100,7 +109,6 @@ public class Constant {
 
     //投票时提交，用于签到参与投票
     public static final int PB_VOTE_SELFLAG_CHECKIN = 0x80000000;
-
 
     //编码类型
     /**
@@ -123,7 +131,6 @@ public class Constant {
      * MPEG4 video
      */
     public static final String AMIME_VIDEO_MPEG4 = "video/mp4v-es";
-
 
     //文件类别
 
@@ -219,7 +226,6 @@ public class Constant {
      * 判断本机是否拥有某权限
      *
      * @param code 权限对应: 1 同屏权限, 2 投影权限, 3 上传权限, 4 下载权限, 5 投票权限
-     * @return
      */
     public static boolean hasPermission(int code) {
         if (MyApplication.localPermissions != null) {//本机权限集合
@@ -233,7 +239,6 @@ public class Constant {
      * 获取选中的项数
      *
      * @param permission 10进制int型数据
-     * @return
      */
     public static List<Integer> getChoose(int permission) {
         List<Integer> ls = new ArrayList<>();
@@ -254,6 +259,39 @@ public class Constant {
         return ls;
     }
 
+    /**
+     * 判断是否是其它文件
+     *
+     * @param mediaid 文件ID
+     */
+    public static boolean isOther(int mediaid) {
+        return (MAIN_TYPE_BITMASK & mediaid) == MEDIA_FILE_TYPE_OTHER;
+    }
+
+    /**
+     * 判断是否是图片文件
+     *
+     * @param mediaid 文件ID
+     */
+    public static boolean isPicture(int mediaid) {
+        return (MAIN_TYPE_BITMASK & mediaid) == MEDIA_FILE_TYPE_PICTURE;
+    }
+
+    /**
+     * 判断是否是视频文件
+     *
+     * @param mediaid 文件ID
+     */
+    public static boolean isVideo(int mediaid) {
+        return (MAIN_TYPE_BITMASK & mediaid) == MEDIA_FILE_TYPE_VIDEO;
+    }
+
+    /**
+     * 判断是否是文档类文件
+     */
+    public static boolean isDocument(int mediaid) {
+        return !isPicture(mediaid) && !isVideo(mediaid) && !isOther(mediaid);
+    }
 
     /**
      * 计算媒体ID
@@ -266,58 +304,57 @@ public class Constant {
         if (FileUtil.isDocumentFile(path) || FileUtil.isOtherFile(path)) {
             return MEDIA_FILE_TYPE_OTHER | MEDIA_FILE_TYPE_OTHER_SUB;
         }
-        if (FileUtil.isDocumentFile(path) || FileUtil.isOtherFile(path)) {
-            return MEDIA_FILE_TYPE_RECORD | MEDIA_FILE_TYPE_OTHER_SUB;
-        }
-        if (FileUtil.isDocumentFile(path) || FileUtil.isOtherFile(path)) {
-            return MEDIA_FILE_TYPE_UPDATE | MEDIA_FILE_TYPE_OTHER_SUB;
-        }
-        if (FileUtil.isDocumentFile(path) || FileUtil.isOtherFile(path)) {
-            return MEDIA_FILE_TYPE_TEMP | MEDIA_FILE_TYPE_OTHER_SUB;
-        }
-        //
-        if (FileUtil.isDocumentFile(path) || FileUtil.isOtherFile(path)) {
-            return MAIN_TYPE_BITMASK | SUB_TYPE_BITMASK;
-        }
+//        if (FileUtil.isDocumentFile(path) || FileUtil.isOtherFile(path)) {
+//            return MEDIA_FILE_TYPE_RECORD | MEDIA_FILE_TYPE_OTHER_SUB;
+//        }
+//        if (FileUtil.isDocumentFile(path) || FileUtil.isOtherFile(path)) {
+//            return MEDIA_FILE_TYPE_UPDATE | MEDIA_FILE_TYPE_OTHER_SUB;
+//        }
+//        if (FileUtil.isDocumentFile(path) || FileUtil.isOtherFile(path)) {
+//            return MEDIA_FILE_TYPE_TEMP | MEDIA_FILE_TYPE_OTHER_SUB;
+//        }
+//        if (FileUtil.isDocumentFile(path) || FileUtil.isOtherFile(path)) {
+//            return MAIN_TYPE_BITMASK | SUB_TYPE_BITMASK;
+//        }
         //音频
         if (FileUtil.isVideoFile(path)) {
             return MEDIA_FILE_TYPE_AUDIO | MEDIA_FILE_TYPE_PCM;
         }
-        if (FileUtil.isVideoFile(path)) {
-            return MEDIA_FILE_TYPE_AUDIO | MEDIA_FILE_TYPE_MP3;
-        }
-        if (FileUtil.isVideoFile(path)) {
-            return MEDIA_FILE_TYPE_AUDIO | MEDIA_FILE_TYPE_ADPCM;
-        }
-        if (FileUtil.isVideoFile(path)) {
-            return MEDIA_FILE_TYPE_AUDIO | MEDIA_FILE_TYPE_FLAC;
-        }
-        if (FileUtil.isVideoFile(path)) {
-            return MEDIA_FILE_TYPE_AUDIO | MEDIA_FILE_TYPE_MP4;
-        }
+//        if (FileUtil.isVideoFile(path)) {
+//            return MEDIA_FILE_TYPE_AUDIO | MEDIA_FILE_TYPE_MP3;
+//        }
+//        if (FileUtil.isVideoFile(path)) {
+//            return MEDIA_FILE_TYPE_AUDIO | MEDIA_FILE_TYPE_ADPCM;
+//        }
+//        if (FileUtil.isVideoFile(path)) {
+//            return MEDIA_FILE_TYPE_AUDIO | MEDIA_FILE_TYPE_FLAC;
+//        }
+//        if (FileUtil.isVideoFile(path)) {
+//            return MEDIA_FILE_TYPE_AUDIO | MEDIA_FILE_TYPE_MP4;
+//        }
         //视屏
         if (FileUtil.isVideoFile(path)) {
             return MEDIA_FILE_TYPE_VIDEO | MEDIA_FILE_TYPE_MKV;
         }
-        if (FileUtil.isVideoFile(path)) {
-            return MEDIA_FILE_TYPE_VIDEO | MEDIA_FILE_TYPE_RMVB;
-        }
-        if (FileUtil.isVideoFile(path)) {
-            return MEDIA_FILE_TYPE_VIDEO | MEDIA_FILE_TYPE_AVI;
-        }
-        if (FileUtil.isVideoFile(path)) {
-            return MEDIA_FILE_TYPE_VIDEO | MEDIA_FILE_TYPE_RM;
-        }
+//        if (FileUtil.isVideoFile(path)) {
+//            return MEDIA_FILE_TYPE_VIDEO | MEDIA_FILE_TYPE_RMVB;
+//        }
+//        if (FileUtil.isVideoFile(path)) {
+//            return MEDIA_FILE_TYPE_VIDEO | MEDIA_FILE_TYPE_AVI;
+//        }
+//        if (FileUtil.isVideoFile(path)) {
+//            return MEDIA_FILE_TYPE_VIDEO | MEDIA_FILE_TYPE_RM;
+//        }
         //图片
         if (FileUtil.isPictureFile(path)) {
             return MEDIA_FILE_TYPE_PICTURE | MEDIA_FILE_TYPE_BMP;
         }
-        if (FileUtil.isPictureFile(path)) {
-            return MEDIA_FILE_TYPE_PICTURE | MEDIA_FILE_TYPE_JPEG;
-        }
-        if (FileUtil.isPictureFile(path)) {
-            return MEDIA_FILE_TYPE_PICTURE | MEDIA_FILE_TYPE_PNG;
-        }
+//        if (FileUtil.isPictureFile(path)) {
+//            return MEDIA_FILE_TYPE_PICTURE | MEDIA_FILE_TYPE_JPEG;
+//        }
+//        if (FileUtil.isPictureFile(path)) {
+//            return MEDIA_FILE_TYPE_PICTURE | MEDIA_FILE_TYPE_PNG;
+//        }
         return 0;
     }
 
@@ -355,74 +392,54 @@ public class Constant {
     }
 
     /**
-     * 数学除法运算
-     *
-     * @param a     被除数
-     * @param b     除数
-     * @param scale 小数位
-     * @return
-     */
-    public static double divide(double a, double b, int scale) {
-        BigDecimal d = new BigDecimal(Double.toString(a));
-        BigDecimal e = new BigDecimal(Double.toString(b));
-        return d.divide(e, scale, BigDecimal.ROUND_HALF_UP).doubleValue();
-    }
-
-    public static String getFileName(int mediaId) {
-        String fileName = "";
-        byte[] bytes = JniHandler.getInstance().queryFileProperty(InterfaceMacro.Pb_MeetFilePropertyID.Pb_MEETFILE_PROPERTY_NAME.getNumber(), mediaId);
-        try {
-            InterfaceBase.pbui_CommonTextProperty pbui_commonTextProperty = InterfaceBase.pbui_CommonTextProperty.parseFrom(bytes);
-            fileName = pbui_commonTextProperty.getPropertyval().toStringUtf8();
-        } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
-        }
-        return fileName;
-    }
-
-    /**
-     * 判断设备是否是当前类型
+     * 判断设备是否是当前{@param type}类型
      *
      * @param type  类型
      * @param devId 设备ID
-     * @return
+     * @see InterfaceMacro.Pb_DeviceIDType
      */
     public static boolean isThisDevType(int type, int devId) {
         return (devId & Constant.DEVICE_MEET_ID_MASK) == type;
     }
 
-    public static int DEVICE_MEET_ID_MASK = 0xfffc0000;
+    public static final int DEVICE_MEET_ID_MASK = 0xfffc0000;
 
+    /**
+     * 获取该设备的类型名称
+     */
     public static String getDeviceTypeName(Context context, int deviceId) {
-        if (InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetDBServer_VALUE == (deviceId & DEVICE_MEET_ID_MASK)) {
+        if (isThisDevType(InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetDBServer_VALUE, deviceId)) {
             //会议数据库设备
             return context.getString(R.string.database_dev);
-        } else if (InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetService_VALUE == (DEVICE_MEET_ID_MASK & deviceId)) {
+        } else if (isThisDevType(InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetService_VALUE, deviceId)) {
             //会议茶水设备
             return context.getString(R.string.tea_dev);
-        } else if (InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetProjective_VALUE == (DEVICE_MEET_ID_MASK & deviceId)) {
+        } else if (isThisDevType(InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetProjective_VALUE, deviceId)) {
             //会议投影设备
             return context.getString(R.string.pro_dev);
-        } else if (InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetCapture_VALUE == (DEVICE_MEET_ID_MASK & deviceId)) {
+        } else if (isThisDevType(InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetCapture_VALUE, deviceId)) {
             //会议流采集设备
             return context.getString(R.string.capture_dev);
-        } else if (InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetClient_VALUE == (DEVICE_MEET_ID_MASK & deviceId)) {
+        } else if (isThisDevType(InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetClient_VALUE, deviceId)) {
             //会议终端设备
             return context.getString(R.string.client_dev);
-        } else if (InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetVideoClient_VALUE == (DEVICE_MEET_ID_MASK & deviceId)) {
+        } else if (isThisDevType(InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetVideoClient_VALUE, deviceId)) {
             //会议视屏对讲客户端
             return context.getString(R.string.video_chat_dev);
-        } else if (InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetPublish_VALUE == (DEVICE_MEET_ID_MASK & deviceId)) {
+        } else if (isThisDevType(InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetPublish_VALUE, deviceId)) {
             //会议发布
             return context.getString(R.string.release_dev);
-        } else if (InterfaceMacro.Pb_DeviceIDType.Pb_DEVICE_MEET_PHPCLIENT_VALUE == (DEVICE_MEET_ID_MASK & deviceId)) {
+        } else if (isThisDevType(InterfaceMacro.Pb_DeviceIDType.Pb_DEVICE_MEET_PHPCLIENT_VALUE, deviceId)) {
             //PHP中转数据设备
-        } else if (InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetShare_VALUE == (DEVICE_MEET_ID_MASK & deviceId)) {
+        } else if (isThisDevType(InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetShare_VALUE, deviceId)) {
             //会议一键同屏设备
         }
         return "";
     }
 
+    /**
+     * 获取操作界面名称
+     */
     public static String getInterfaceStateName(Context context, int state) {
         if (state == InterfaceMacro.Pb_MeetFaceStatus.Pb_MemState_MainFace_VALUE) {
             return context.getString(R.string.face_main);

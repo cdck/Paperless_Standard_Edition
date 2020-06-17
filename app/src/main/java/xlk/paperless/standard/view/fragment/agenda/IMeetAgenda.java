@@ -3,7 +3,7 @@ package xlk.paperless.standard.view.fragment.agenda;
 /**
  * @author xlk
  * @date 2020/3/20
- * @Description:
+ * @desc
  */
 public interface IMeetAgenda {
     void initDefault();

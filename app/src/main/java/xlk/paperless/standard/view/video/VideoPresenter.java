@@ -42,7 +42,7 @@ import static xlk.paperless.standard.data.Constant.getMimeType;
 /**
  * @author xlk
  * @date 2020/3/30
- * @Description:
+ * @desc
  */
 public class VideoPresenter extends BasePresenter {
     private final String TAG = "VideoPresenter-->";

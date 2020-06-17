@@ -1,7 +1,10 @@
 package xlk.paperless.standard.view.fragment.other.vote;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,7 +25,6 @@ import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.protobuf.ByteString;
 import com.intrusoft.scatter.ChartData;
 import com.intrusoft.scatter.PieChart;
@@ -36,11 +38,14 @@ import xlk.paperless.standard.R;
 import xlk.paperless.standard.adapter.SubmitMemberAdapter;
 import xlk.paperless.standard.adapter.VoteManageAdapter;
 import xlk.paperless.standard.adapter.VoteManageMemberAdapter;
+import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.exportbean.ExportSubmitMember;
+import xlk.paperless.standard.data.exportbean.ExportVoteInfo;
 import xlk.paperless.standard.util.DateUtil;
 import xlk.paperless.standard.util.JxlUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.ToastUtil;
+import xlk.paperless.standard.util.UriUtil;
 import xlk.paperless.standard.view.fragment.BaseFragment;
 import xlk.paperless.standard.view.meet.MeetingActivity;
 
@@ -49,13 +54,11 @@ import static xlk.paperless.standard.util.ConvertUtil.s2b;
 /**
  * @author xlk
  * @date 2020/4/2
- * @Description:
+ * @desc:
  */
 public class VoteManageFragment extends BaseFragment implements View.OnClickListener, IVoteManage {
     private final String TAG = "VoteManageFragment-->";
     private RecyclerView vote_manage_rv;
-    private TextView textView9;
-    private TextView textView10;
     private EditText vote_manage_title;
     private CheckBox vote_manage_register;
     private Button vote_manage_add;
@@ -63,7 +66,6 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
     private Button vote_manage_delete;
     private Button vote_manage_export;
     private Button vote_manage_import;
-    private TextView textView11;
     private Spinner vote_manage_time_sp;
     private Button vote_manage_details;
     private Button vote_manage_chart;
@@ -101,13 +103,10 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
             voteManageAdapter.notifyDataSetChanged();
             voteManageAdapter.notitySelect();
         }
-        voteManageAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                InterfaceVote.pbui_Item_MeetVoteDetailInfo voteInfo = presenter.voteInfos.get(position);
-                voteManageAdapter.setSelect(voteInfo);
-                updateUI(voteInfo);
-            }
+        voteManageAdapter.setOnItemClickListener((adapter, view, position) -> {
+            InterfaceVote.pbui_Item_MeetVoteDetailInfo voteInfo = presenter.voteInfos.get(position);
+            voteManageAdapter.setSelect(voteInfo);
+            updateUI(voteInfo);
         });
         if (voteManageAdapter.getSelectedVote() == null) {
             if (!presenter.voteInfos.isEmpty()) {
@@ -163,22 +162,19 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
     }
 
     private void initView(View inflate) {
-        vote_manage_rv = (RecyclerView) inflate.findViewById(R.id.vote_manage_rv);
-        textView9 = (TextView) inflate.findViewById(R.id.textView9);
-        textView10 = (TextView) inflate.findViewById(R.id.textView10);
-        vote_manage_title = (EditText) inflate.findViewById(R.id.vote_manage_title);
-        vote_manage_register = (CheckBox) inflate.findViewById(R.id.vote_manage_register);
-        vote_manage_add = (Button) inflate.findViewById(R.id.vote_manage_add);
-        vote_manage_modify = (Button) inflate.findViewById(R.id.vote_manage_modify);
-        vote_manage_delete = (Button) inflate.findViewById(R.id.vote_manage_delete);
-        vote_manage_export = (Button) inflate.findViewById(R.id.vote_manage_export);
-        vote_manage_import = (Button) inflate.findViewById(R.id.vote_manage_import);
-        textView11 = (TextView) inflate.findViewById(R.id.textView11);
-        vote_manage_time_sp = (Spinner) inflate.findViewById(R.id.vote_manage_time_sp);
-        vote_manage_details = (Button) inflate.findViewById(R.id.vote_manage_details);
-        vote_manage_chart = (Button) inflate.findViewById(R.id.vote_manage_chart);
-        vote_manage_launch = (Button) inflate.findViewById(R.id.vote_manage_launch);
-        vote_manage_stop = (Button) inflate.findViewById(R.id.vote_manage_stop);
+        vote_manage_rv = inflate.findViewById(R.id.vote_manage_rv);
+        vote_manage_title = inflate.findViewById(R.id.vote_manage_title);
+        vote_manage_register = inflate.findViewById(R.id.vote_manage_register);
+        vote_manage_add = inflate.findViewById(R.id.vote_manage_add);
+        vote_manage_modify = inflate.findViewById(R.id.vote_manage_modify);
+        vote_manage_delete = inflate.findViewById(R.id.vote_manage_delete);
+        vote_manage_export = inflate.findViewById(R.id.vote_manage_export);
+        vote_manage_import = inflate.findViewById(R.id.vote_manage_import);
+        vote_manage_time_sp = inflate.findViewById(R.id.vote_manage_time_sp);
+        vote_manage_details = inflate.findViewById(R.id.vote_manage_details);
+        vote_manage_chart = inflate.findViewById(R.id.vote_manage_chart);
+        vote_manage_launch = inflate.findViewById(R.id.vote_manage_launch);
+        vote_manage_stop = inflate.findViewById(R.id.vote_manage_stop);
 
         vote_manage_add.setOnClickListener(this);
         vote_manage_modify.setOnClickListener(this);
@@ -203,7 +199,7 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
                         InterfaceVote.pbui_Item_MeetVoteDetailInfo detailInfo = presenter.voteInfos.get(i);
                         if (detailInfo.getVoteid() == voteManageAdapter.getSelectedVote().getVoteid()) {
                             if (detailInfo.getVotestate() != InterfaceMacro.Pb_MeetVoteStatus.Pb_vote_notvote_VALUE) {
-                                ToastUtil.show(getContext(), R.string.modify_not_vote);
+                                ToastUtil.show(R.string.modify_not_vote);
                                 return;
                             } else {
                                 voteOper(false, detailInfo.getVoteid());
@@ -212,21 +208,29 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
                         }
                     }
                 } else {
-                    ToastUtil.show(getContext(), R.string.please_choose_vote);
+                    ToastUtil.show(R.string.please_choose_vote);
                 }
                 break;
             case R.id.vote_manage_delete:
                 if (voteManageAdapter != null && voteManageAdapter.getSelectedVote() != null) {
                     presenter.deleteVote(voteManageAdapter.getSelectedVote().getVoteid());
                 } else {
-                    ToastUtil.show(getContext(), R.string.please_choose_vote);
+                    ToastUtil.show(R.string.please_choose_vote);
                 }
                 break;
             case R.id.vote_manage_export:
-
+                if (!presenter.voteInfos.isEmpty()) {
+                    JxlUtil.exportVoteInfo(presenter.voteInfos, getString(R.string.vote_fileName), getString(R.string.vote_content));
+                } else {
+                    ToastUtil.show(R.string.no_vote_info);
+                }
                 break;
             case R.id.vote_manage_import:
-
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("text/plain");//.xls文件
+//                intent.setType("file/*.xls");// {".xls", "application/vnd.ms-excel"}
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                startActivityForResult(intent, 1);
                 break;
             case R.id.vote_manage_details:
                 if (voteManageAdapter != null && voteManageAdapter.getSelectedVote() != null) {
@@ -235,10 +239,10 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
                         if (selectedVote.getVotestate() != InterfaceMacro.Pb_MeetVoteStatus.Pb_vote_notvote_VALUE) {
                             presenter.querySubmittedVoters(selectedVote, true);
                         } else {
-                            ToastUtil.show(getContext(), R.string.can_not_choose_notvote);
+                            ToastUtil.show(R.string.can_not_choose_notvote);
                         }
                     } else {
-                        ToastUtil.show(getContext(), R.string.please_choose_registered_vote);
+                        ToastUtil.show(R.string.please_choose_registered_vote);
                     }
                 }
                 break;
@@ -248,20 +252,20 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
                     if (selectedVote.getVotestate() != InterfaceMacro.Pb_MeetVoteStatus.Pb_vote_notvote_VALUE) {
                         presenter.querySubmittedVoters(selectedVote, false);
                     } else {
-                        ToastUtil.show(getContext(), R.string.can_not_choose_notvote);
+                        ToastUtil.show(R.string.can_not_choose_notvote);
                     }
                 }
                 break;
             case R.id.vote_manage_launch:
                 if (voteManageAdapter != null && voteManageAdapter.getSelectedVote() != null) {
                     if (voteManageAdapter.getSelectedVote().getVotestate() != InterfaceMacro.Pb_MeetVoteStatus.Pb_vote_notvote_VALUE) {
-                        ToastUtil.show(getContext(), R.string.please_choose_not_vote);
+                        ToastUtil.show(R.string.please_choose_not_vote);
                         return;
                     }
                     for (int i = 0; i < presenter.voteInfos.size(); i++) {
                         InterfaceVote.pbui_Item_MeetVoteDetailInfo info = presenter.voteInfos.get(i);
                         if (info.getVotestate() == InterfaceMacro.Pb_MeetVoteStatus.Pb_vote_voteing_VALUE) {
-                            ToastUtil.show(getContext(), R.string.please_stop_vote_first);
+                            ToastUtil.show(R.string.please_stop_vote_first);
                             return;
                         }
                     }
@@ -271,12 +275,36 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
             case R.id.vote_manage_stop:
                 if (voteManageAdapter != null && voteManageAdapter.getSelectedVote() != null) {
                     if (voteManageAdapter.getSelectedVote().getVotestate() != InterfaceMacro.Pb_MeetVoteStatus.Pb_vote_voteing_VALUE) {
-                        ToastUtil.show(getContext(), R.string.only_stop_voteing);
+                        ToastUtil.show(R.string.only_stop_voteing);
                         return;
                     }
                     presenter.stopVote(voteManageAdapter.getSelectedVote().getVoteid());
                 }
                 break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == 1) {
+            Uri uri = data.getData();
+            try {
+                String path = UriUtil.getFilePath(getContext(), uri);
+                LogUtil.i(TAG, "onActivityResult -->path = " + path);
+                if (path != null && !path.isEmpty()) {
+                    if (path.lastIndexOf(".") > 0 && path.substring(path.lastIndexOf(".")).equals(".xls")) {
+                        List<InterfaceVote.pbui_Item_MeetOnVotingDetailInfo> infos = JxlUtil.readVoteXls(path, InterfaceMacro.Pb_MeetVoteType.Pb_VOTE_MAINTYPE_vote_VALUE);
+                        for (int i = 0; i < infos.size(); i++) {
+                            presenter.createVote(infos.get(i));
+                        }
+                    } else {
+                        ToastUtil.show(R.string.must_be_xls);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -396,7 +424,7 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
             String[] strings = presenter.queryYd(vote);
             String createTime = DateUtil.nowDate(System.currentTimeMillis());
             ExportSubmitMember exportSubmitMember = new ExportSubmitMember(vote.getContent().toStringUtf8(), createTime, strings[0], strings[1], strings[2], strings[3], presenter.submitMembers);
-            JxlUtil.exportSubmitMember(exportSubmitMember, getContext());
+            JxlUtil.exportSubmitMember(exportSubmitMember);
         });
     }
 
@@ -428,7 +456,7 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
         inflate.findViewById(R.id.pop_vote_determine).setOnClickListener(v -> {
             List<Integer> memberIds = memberAdapter.getChoose();
             if (memberIds.isEmpty()) {
-                ToastUtil.show(getContext(), R.string.please_choose_member);
+                ToastUtil.show(R.string.please_choose_member);
                 return;
             }
             InterfaceVote.pbui_Item_MeetVoteDetailInfo selectedVote = voteManageAdapter.getSelectedVote();
@@ -437,7 +465,7 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
                 int timeouts = getTimeouts();
                 presenter.launchVote(memberIds, voteid, timeouts);
             } else {
-                ToastUtil.show(getContext(), R.string.vote_changed);
+                ToastUtil.show(R.string.vote_changed);
             }
             memberPop.dismiss();
         });
@@ -449,7 +477,7 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
     private void voteOper(boolean isCreate, int voteid) {
         String content = vote_manage_title.getText().toString().trim();
         if (content.isEmpty()) {
-            ToastUtil.show(getContext(), R.string.vote_content_empty);
+            ToastUtil.show(R.string.vote_content_empty);
             return;
         }
         int timeouts = getTimeouts();

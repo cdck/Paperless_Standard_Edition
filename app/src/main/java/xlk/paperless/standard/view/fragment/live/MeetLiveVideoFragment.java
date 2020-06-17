@@ -42,7 +42,7 @@ import xlk.paperless.standard.view.fragment.BaseFragment;
 /**
  * @author xlk
  * @date 2020/3/13
- * @Description: 视频直播
+ * @desc 视频直播
  */
 public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVideo, ViewClickListener, View.OnClickListener {
     private final String TAG = "MeetLiveVideoFragment-->";
@@ -146,10 +146,10 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                                 }
                             }, 500);
                         } else {
-                            ToastUtil.show(getContext(), R.string.please_choose_view);
+                            ToastUtil.show(R.string.please_choose_view);
                         }
                     } else {
-                        ToastUtil.show(getContext(), R.string.please_choose_video_show);
+                        ToastUtil.show(R.string.please_choose_video_show);
                     }
                 }
                 break;
@@ -158,7 +158,7 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                 if (selectResId != -1) {
                     presenter.stopResource(selectResId);
                 } else {
-                    ToastUtil.show(getContext(), R.string.please_choose_stop_view);
+                    ToastUtil.show(R.string.please_choose_stop_view);
                 }
                 break;
             case R.id.f_l_v_stop_pro:
@@ -166,7 +166,7 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                     if (Constant.hasPermission(2)) {
                         showProPop(false, adapter.getSelected());
                     } else {
-                        ToastUtil.show(getContext(), R.string.err_NoPermission);
+                        ToastUtil.show(R.string.err_NoPermission);
                     }
                 }
                 break;
@@ -175,7 +175,7 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                     if (Constant.hasPermission(2)) {
                         showProPop(true, adapter.getSelected());
                     } else {
-                        ToastUtil.show(getContext(), R.string.err_NoPermission);
+                        ToastUtil.show(R.string.err_NoPermission);
                     }
                 }
                 break;
@@ -184,7 +184,7 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                     if (Constant.hasPermission(1)) {
                         showScreenPop(false, adapter.getSelected());
                     } else {
-                        ToastUtil.show(getContext(), R.string.err_NoPermission);
+                        ToastUtil.show(R.string.err_NoPermission);
                     }
                 }
                 break;
@@ -193,7 +193,7 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                     if (Constant.hasPermission(1)) {
                         showScreenPop(true, adapter.getSelected());
                     } else {
-                        ToastUtil.show(getContext(), R.string.err_NoPermission);
+                        ToastUtil.show(R.string.err_NoPermission);
                     }
                 }
                 break;
@@ -226,7 +226,7 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
         holder.wm_pro_launch_pro.setOnClickListener(v -> {
             List<Integer> ids = projectorAdapter.getChooseIds();
             if (ids.isEmpty()) {
-                ToastUtil.show(getContext(), getContext().getString(R.string.please_choose_projector_first));
+                ToastUtil.show(getContext().getString(R.string.please_choose_projector_first));
                 return;
             }
             boolean checked = holder.wm_pro_full.isChecked();
@@ -240,7 +240,7 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                 if (holder.wm_pro_flow4.isChecked()) res.add(4);
             }
             if (res.isEmpty()) {
-                ToastUtil.show(getContext(), R.string.please_choose_res_first);
+                ToastUtil.show(R.string.please_choose_res_first);
                 return;
             }
             int deviceid = videoDev.getVideoDetailInfo().getDeviceid();
@@ -301,7 +301,7 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
             List<Integer> ids = memberAdapter.getChooseIds();
             ids.addAll(projectorAdapter.getChooseIds());
             if (ids.isEmpty()) {
-                ToastUtil.show(getContext(), R.string.err_target_NotNull);
+                ToastUtil.show(R.string.err_target_NotNull);
             } else {
                 List<Integer> temps = new ArrayList<>();
                 temps.add(0);

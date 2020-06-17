@@ -14,7 +14,7 @@ import xlk.paperless.standard.R;
 /**
  * @author xlk
  * @date 2020/3/14
- * @Description: 推送文件投影机列表adapter
+ * @desc 推送文件投影机列表adapter
  */
 public class PopPushProjectionAdapter extends BaseQuickAdapter<InterfaceDevice.pbui_Item_DeviceDetailInfo,BaseViewHolder> {
     private List<Integer> devIds = new ArrayList<>();

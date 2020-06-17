@@ -14,7 +14,7 @@ import xlk.paperless.standard.util.FileUtil;
 /**
  * @author xlk
  * @date 2020/3/14
- * @Description: 会议资料中的文件adapter
+ * @desc 会议资料中的文件adapter
  */
 public class MeetDataFileAdapter extends BaseQuickAdapter<InterfaceFile.pbui_Item_MeetDirFileDetailInfo, BaseViewHolder> {
 

@@ -13,6 +13,7 @@ import xlk.paperless.standard.data.Call;
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.util.CodecUtil;
 import xlk.paperless.standard.util.LogUtil;
+import xlk.paperless.standard.util.MathUtil;
 
 
 /**
@@ -119,7 +120,6 @@ class AvcEncoder {
 //            outputStream.flush();
 //            outputStream.close();
 //        } catch (IOException e) {
-//            // TODO Auto-generated catch block
 //            e.printStackTrace();
 //        }
     }
@@ -221,7 +221,7 @@ class AvcEncoder {
 
     private void timePush(byte[] data, boolean is_key_frame, long presentationTimeUs) {
         //最小使用的
-        int hm = (int) Constant.divide(Constant.divide(1000, m_framerate, 0), 2, 0);
+        int hm = (int) MathUtil.divide(MathUtil.divide(1000, m_framerate, 0), 2, 0);
         int iskeyframe = is_key_frame ? 1 : 0;
         long useTime = System.currentTimeMillis() - lastTime;
         if (useTime <= hm) {

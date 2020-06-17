@@ -35,7 +35,7 @@ import xlk.paperless.standard.view.MyApplication;
 /**
  * @author xlk
  * @date 2020/3/13
- * @Description: 评分查看
+ * @desc 评分查看
  */
 public class MeetScoreFragment extends Fragment implements IMeetScore, View.OnClickListener {
     private final String TAG = "MeetScoreFragment-->";
@@ -174,7 +174,7 @@ public class MeetScoreFragment extends Fragment implements IMeetScore, View.OnCl
     private void updateRight(InterfaceFilescorevote.pbui_Type_Item_UserDefineFileScore score) {
         f_score_state.setText(getVoteState(score.getVotestate()));
         f_score_describe_edt.setText(score.getContent().toStringUtf8());
-        f_score_file_edt.setText(Constant.getFileName(score.getFileid()));
+        f_score_file_edt.setText(JniHandler.getInstance().getFileName(score.getFileid()));
         f_score_register_tv.setText(score.getMode() == InterfaceMacro.Pb_MeetVoteMode.Pb_VOTEMODE_agonymous_VALUE ? getString(R.string.no) : getString(R.string.yes));
         f_score_yd_tv.setText(String.valueOf(score.getShouldmembernum()));
         f_score_yp_tv.setText(String.valueOf(score.getRealmembernum()));
@@ -257,13 +257,13 @@ public class MeetScoreFragment extends Fragment implements IMeetScore, View.OnCl
                             if (chooseScore.getVotestate() == InterfaceMacro.Pb_MeetVoteStatus.Pb_vote_notvote_VALUE) {
                                 scoreOper(chooseScore.getVoteid());
                             } else {
-                                ToastUtil.show(getContext(), R.string.please_choose_notvote_score);
+                                ToastUtil.show(R.string.please_choose_notvote_score);
                             }
                         } else {
-                            ToastUtil.show(getContext(), R.string.please_stop_voteing_first);
+                            ToastUtil.show(R.string.please_stop_voteing_first);
                         }
                     } else {
-                        ToastUtil.show(getContext(), R.string.please_choose_notvote_score);
+                        ToastUtil.show(R.string.please_choose_notvote_score);
                     }
                 }
                 break;
@@ -274,7 +274,7 @@ public class MeetScoreFragment extends Fragment implements IMeetScore, View.OnCl
                         if (chooseScore.getVotestate() == InterfaceMacro.Pb_MeetVoteStatus.Pb_vote_voteing_VALUE) {
                             JniHandler.getInstance().stopScore(scoreAdapter.getChooseId());
                         } else {
-                            ToastUtil.show(getContext(), R.string.please_choose_votein_score);
+                            ToastUtil.show(R.string.please_choose_votein_score);
                         }
                     }
                 }
@@ -301,7 +301,7 @@ public class MeetScoreFragment extends Fragment implements IMeetScore, View.OnCl
         inflate.findViewById(R.id.pop_score_start).setOnClickListener(v -> {
             List<Integer> chooseMemberIds = onlineAdapter.getChooseMemberIds();
             if (chooseMemberIds.isEmpty()) {
-                ToastUtil.show(getContext(), R.string.please_choose_target_first);
+                ToastUtil.show(R.string.please_choose_target_first);
                 return;
             }
             JniHandler.getInstance().startScore(voteid, 0, 0, chooseMemberIds);

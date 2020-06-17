@@ -53,7 +53,7 @@ import static xlk.paperless.standard.view.draw.DrawPresenter.tempPicData;
 /**
  * @author xlk
  * @date 2020/3/26
- * @Description:
+ * @desc
  */
 public class FabPresenter extends BasePresenter {
     private final String TAG = "FabPresenter-->";
@@ -128,19 +128,19 @@ public class FabPresenter extends BasePresenter {
                 int type = (int) msg.getObjs()[0];
                 LogUtil.i(TAG, "BusEvent -->" + "收到开始采集摄像头通知 type= " + type);
                 if (AppUtil.checkCamera(cxt, 0)) {
-                    ToastUtil.show(cxt, R.string.opening_camera);
+                    ToastUtil.show(R.string.opening_camera);
                     Intent intent = new Intent(cxt, CameraActivity.class);
                     intent.putExtra(Constant.extra_camrea_type, 0);
                     intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                     cxt.startActivity(intent);
                 } else if (AppUtil.checkCamera(cxt, 1)) {
-                    ToastUtil.show(cxt, R.string.opening_camera);
+                    ToastUtil.show(R.string.opening_camera);
                     Intent intent = new Intent(cxt, CameraActivity.class);
                     intent.putExtra(Constant.extra_camrea_type, 1);
                     intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                     cxt.startActivity(intent);
                 } else {
-                    ToastUtil.show(cxt, R.string.not_find_camera);
+                    ToastUtil.show(R.string.not_find_camera);
                 }
 //                view.showOpenCamera();
                 break;
@@ -182,6 +182,10 @@ public class FabPresenter extends BasePresenter {
         return "";
     }
 
+    /**
+     * 查询发起的投票
+     * @param voteid
+     */
     private void queryInitiateVote(int voteid) {
         try {
             InterfaceVote.pbui_Type_MeetOnVotingDetailInfo info = jni.queryInitiateVote();
@@ -213,7 +217,9 @@ public class FabPresenter extends BasePresenter {
         if (operflag == InterfaceMacro.Pb_MeetPostilOperType.Pb_MEETPOTIL_FLAG_FORCEOPEN.getNumber()) {
             LogUtil.i(TAG, "eventOpenBoard: 强制打开白板  直接强制同意加入..");
             jni.agreeJoin(MyApplication.localMemberId, disposePicSrcmemid, disposePicSrcwbidd);
-            cxt.startActivity(new Intent(cxt, DrawActivity.class));
+            Intent intent = new Intent(cxt, DrawActivity.class);
+            intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+            cxt.startActivity(intent);
             isSharing = true;//如果同意加入就设置已经在共享中
             mSrcmemid = disposePicSrcmemid;//设置发起的人员ID
             DrawPresenter.mSrcwbid = disposePicSrcwbidd;//设置白板标识
@@ -271,53 +277,6 @@ public class FabPresenter extends BasePresenter {
 
                     }
                 });
-//        AlertDialog.Builder builder = new AlertDialog.Builder(cxt);
-//        builder.setTitle(cxt.getString(R.string.title_whether_agree_join, medianame));
-//        builder.setPositiveButton(cxt.getString(R.string.agree), (dialog, which) -> {
-//            //同意加入
-//            jni.agreeJoin(MyApplication.localMemberId, srcmemid, srcwbidd);
-//            isSharing = true;//如果同意加入就设置已经在共享中
-//            mSrcmemid = srcmemid;//设置发起的人员ID
-//            mSrcwbid = srcwbidd;
-//            Intent intent1 = new Intent(cxt, DrawActivity.class);
-//            if (tempPicData != null) {
-//                savePicData = tempPicData;
-//                intent1.putExtra("have_pic", "have_pic");
-//                LogUtil.i(TAG, "WhetherOpen:  putExtra 'have_pic' ");
-//                /** **** **  作为接收者保存  ** **** **/
-//                ArtBoard.DrawPath drawPath = new ArtBoard.DrawPath();
-//                drawPath.operid = MyApplication.operid;
-//                drawPath.srcwbid = srcwbidd;
-//                drawPath.srcmemid = srcmemid;
-//                drawPath.opermemberid = opermemberid;
-//                drawPath.picdata = savePicData;
-//                MyApplication.operid = 0;
-//                tempPicData = null;
-//                //将路径保存到共享中绘画信息
-//                DrawPresenter.pathList.add(drawPath);
-//            }
-//            intent1.addFlags(FLAG_ACTIVITY_NEW_TASK);
-//            cxt.startActivity(intent1);
-//            //自己不是发起人的时候,每次收到绘画通知都要判断是不是同一个发起人和白板标识
-//            //并且集合中没有这一号人,将其添加进集合中
-//            if (!DrawPresenter.togetherIDs.contains(opermemberid)) {
-//                DrawPresenter.togetherIDs.add(opermemberid);
-//            }
-//            dialog.dismiss();
-//        });
-//        builder.setNegativeButton(cxt.getString(R.string.reject), (dialog, which) -> {
-//            jni.rejectJoin(MyApplication.localMemberId, srcmemid, srcwbidd);
-//            dialog.dismiss();
-//        });
-//        AlertDialog dialog = builder.create();
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {//8.0新特性
-//            dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
-//        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_PHONE);
-//        } else {
-//            dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-//        }
-//        dialog.show();
     }
 
     public void queryMember() {

@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.util.LogUtil;
+import xlk.paperless.standard.util.MathUtil;
 
 /**
  * @author Gowcage
@@ -73,7 +74,6 @@ public class ScreenRecorder extends Thread {
 
     @Override
     public void run() {
-        // TODO Auto-generated method stub
         super.run();
         try {
             try {
@@ -81,7 +81,6 @@ public class ScreenRecorder extends Thread {
                 // Muxer需要传入一个文件路径来保存输出的视频，并传入输出格式
                 muxer = new MediaMuxer(savePath, MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4);
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 throw new RuntimeException(e);
             }
             // 4:创建VirtualDisplay实例,DisplayManager.VIRTUAL_DISPLAY_FLAG_PUBLIC / DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR
@@ -177,7 +176,7 @@ public class ScreenRecorder extends Thread {
 
     private void timePush(byte[] data, boolean is_key_frame, long presentationTimeUs) {
         //最小使用的
-        int hm = (int) Constant.divide(Constant.divide(1000, FRAME_RATE, 0), 2, 0);
+        int hm = (int) MathUtil.divide(MathUtil.divide(1000, FRAME_RATE, 0), 2, 0);
         int iskeyframe = is_key_frame ? 1 : 0;
         // 20 = 120 -100
         long useTime = System.currentTimeMillis() - lastTime;

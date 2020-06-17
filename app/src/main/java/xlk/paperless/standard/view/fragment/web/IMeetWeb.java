@@ -3,7 +3,7 @@ package xlk.paperless.standard.view.fragment.web;
 /**
  * @author xlk
  * @date 2020/3/20
- * @Description:
+ * @desc
  */
 public interface IMeetWeb {
     void loadUrl(String urlAddr);

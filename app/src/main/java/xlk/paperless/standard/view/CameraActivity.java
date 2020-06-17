@@ -114,7 +114,6 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback,
 
     @Override
     public void onPreviewFrame(byte[] data, Camera camera) {
-        // TODO Auto-generated method stub
         LogUtil.v(TAG, "rawDataLen=" + data.length);
         putYUVData(data, data.length);
     }

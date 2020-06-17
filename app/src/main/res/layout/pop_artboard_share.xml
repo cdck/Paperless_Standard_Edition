@@ -38,7 +38,6 @@
             android:id="@+id/pop_artboard_launch"
             style="@style/btn_pressed_style"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_margin="@dimen/dp_5"
             android:layout_weight="1"
             android:text="@string/initiate_multi_person_comments" />
@@ -47,7 +46,6 @@
             android:id="@+id/pop_artboard_cancel"
             style="@style/btn_pressed_style"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_margin="@dimen/dp_5"
             android:layout_weight="1"
             android:text="@string/cancel" />

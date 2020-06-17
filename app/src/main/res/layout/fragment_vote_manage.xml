@@ -124,7 +124,7 @@
 
     <Spinner
         android:id="@+id/vote_manage_time_sp"
-        android:layout_width="@dimen/dp_90"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/dp_8"
         app:layout_constraintBottom_toBottomOf="@+id/vote_manage_details"

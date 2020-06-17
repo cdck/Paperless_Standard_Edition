@@ -6,7 +6,7 @@ import com.mogujie.tt.protobuf.InterfaceVote;
 /**
  * @author xlk
  * @date 2020/4/7
- * @Description:
+ * @desc
  */
 public interface IElectionManage {
     void updateRv();

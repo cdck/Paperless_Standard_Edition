@@ -6,7 +6,7 @@ import com.mogujie.tt.protobuf.InterfaceVote;
 /**
  * @author xlk
  * @date 2020/4/3
- * @Description: 投票提交人
+ * @desc 投票提交人
  */
 public class SubmitMember {
     InterfaceMember.pbui_Item_MeetMemberDetailInfo memberInfo;

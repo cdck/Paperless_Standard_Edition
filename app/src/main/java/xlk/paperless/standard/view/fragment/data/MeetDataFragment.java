@@ -14,7 +14,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -27,6 +26,7 @@ import com.mogujie.tt.protobuf.InterfaceDevice;
 import com.mogujie.tt.protobuf.InterfaceFile;
 import com.mogujie.tt.protobuf.InterfaceMacro;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -45,13 +45,14 @@ import xlk.paperless.standard.util.FileUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.PopUtil;
 import xlk.paperless.standard.util.ToastUtil;
+import xlk.paperless.standard.util.UriUtil;
 import xlk.paperless.standard.view.MyApplication;
 import xlk.paperless.standard.view.fragment.BaseFragment;
 
 /**
  * @author xlk
  * @date 2020/3/13
- * @Description: 会议资料
+ * @desc 会议资料
  */
 public class MeetDataFragment extends BaseFragment implements View.OnClickListener, IMeetData {
 
@@ -98,19 +99,19 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void initView(View inflate) {
-        f_data_dir_rv = (RecyclerView) inflate.findViewById(R.id.f_data_dir_rv);
-        f_data_upload_file = (Button) inflate.findViewById(R.id.f_data_upload_file);
-        f_data_documentation = (Button) inflate.findViewById(R.id.f_data_documentation);
-        f_data_picture = (Button) inflate.findViewById(R.id.f_data_picture);
-        f_data_video = (Button) inflate.findViewById(R.id.f_data_video);
-        f_data_other = (Button) inflate.findViewById(R.id.f_data_other);
-        f_data_push = (Button) inflate.findViewById(R.id.f_data_push);
-        f_data_export = (Button) inflate.findViewById(R.id.f_data_export);
-        f_data_file_rv = (RecyclerView) inflate.findViewById(R.id.f_data_file_rv);
-        f_data_file_lv = (ListView) inflate.findViewById(R.id.f_data_file_lv);
-        f_data_previous_btn = (Button) inflate.findViewById(R.id.f_data_previous_btn);
-        f_data_page = (TextView) inflate.findViewById(R.id.f_data_page);
-        f_data_nextpage_btn = (Button) inflate.findViewById(R.id.f_data_nextpage_btn);
+        f_data_dir_rv = inflate.findViewById(R.id.f_data_dir_rv);
+        f_data_upload_file = inflate.findViewById(R.id.f_data_upload_file);
+        f_data_documentation = inflate.findViewById(R.id.f_data_documentation);
+        f_data_picture = inflate.findViewById(R.id.f_data_picture);
+        f_data_video = inflate.findViewById(R.id.f_data_video);
+        f_data_other = inflate.findViewById(R.id.f_data_other);
+        f_data_push = inflate.findViewById(R.id.f_data_push);
+        f_data_export = inflate.findViewById(R.id.f_data_export);
+        f_data_file_rv = inflate.findViewById(R.id.f_data_file_rv);
+        f_data_file_lv = inflate.findViewById(R.id.f_data_file_lv);
+        f_data_previous_btn = inflate.findViewById(R.id.f_data_previous_btn);
+        f_data_page = inflate.findViewById(R.id.f_data_page);
+        f_data_nextpage_btn = inflate.findViewById(R.id.f_data_nextpage_btn);
 
         f_data_upload_file.setOnClickListener(this);
         f_data_documentation.setOnClickListener(this);
@@ -138,9 +139,11 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
             presenter.queryMeetFileByDir(currentDirId);
         });
         if (!dirDetailInfos.isEmpty()) {
+            int dirId = dirDetailInfos.get(0).getId();
             if (currentDirId == -1) {
-                presenter.queryMeetFileByDir(dirDetailInfos.get(0).getId());
-                dirAdapter.setChoose(dirDetailInfos.get(0).getId());
+                presenter.queryMeetFileByDir(dirId);
+                currentDirId = dirId;
+                dirAdapter.setChoose(dirId);
             } else {
                 boolean have = false;
                 for (int i = 0; i < dirDetailInfos.size(); i++) {
@@ -153,13 +156,16 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
                     presenter.queryMeetFileByDir(currentDirId);
                     dirAdapter.setChoose(currentDirId);
                 } else {
-                    presenter.queryMeetFileByDir(dirDetailInfos.get(0).getId());
-                    dirAdapter.setChoose(dirDetailInfos.get(0).getId());
+                    currentDirId = dirId;
+                    presenter.queryMeetFileByDir(dirId);
+                    dirAdapter.setChoose(dirId);
                 }
             }
         } else {
+            currentDirId = -1;
             presenter.clearFile();
         }
+        LogUtil.e(TAG, "updateDir currentDirId -->" + currentDirId);
     }
 
     @Override
@@ -285,7 +291,7 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
                         pushPop.dismiss();
                         presenter.mediaPlayOperate(mediaId, devIds, 0, 0, 0, InterfaceMacro.Pb_MeetPlayFlag.Pb_MEDIA_PLAYFLAG_ZERO.getNumber());
                     } else {
-                        ToastUtil.show(getContext(), R.string.please_choose_push_target);
+                        ToastUtil.show(R.string.please_choose_push_target);
                     }
                 }
             });
@@ -301,7 +307,7 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
 
     private void exportFile() {
         if (allFileDetailInfos.isEmpty()) {
-            ToastUtil.show(getContext(), R.string.no_export_file);
+            ToastUtil.show(R.string.no_export_file);
             return;
         }
         List<InterfaceFile.pbui_Item_MeetDirFileDetailInfo> temps = new ArrayList<>(allFileDetailInfos);
@@ -343,23 +349,16 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK && requestCode == 1) {
             Uri uri = data.getData();
-//            try {
-//                InputStream is = getContext().getContentResolver().openInputStream(uri);
-//                File file = FileUtil.createTemporalFileFrom(getContext(), is, "");
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
+            String path = null;
             try {
-                assert uri != null;
-                String path = FileUtil.getRealPath(getContext(), uri);
-                if (path != null && !path.equals("")) {
-                    LogUtil.e(TAG, "onActivityResult :  选中文件的路径 --->>> " + path);
-                    uploadFileDia(path);
-                }
+                path = UriUtil.getFilePath(getContext(), uri);
+//                path = GetFilePath.getPath(getContext(), uri);
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+            if (path != null && !path.equals("")) {
+                LogUtil.e(TAG, "onActivityResult :  选中文件的路径 --->>> " + path);
+                uploadFileDia(path);
             }
         }
     }
@@ -370,19 +369,20 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
      * @param path
      */
     public void uploadFileDia(@NonNull String path) {
-        //eg: D://Dir/abc.txt 截取到文本 abc.txt
-        String file = path.substring(path.lastIndexOf("/") + 1, path.length());
-        LogUtil.e(TAG, "uploadFileDia :截取的文件 fileName --> " + file);
-//        if (!FileUtil.isLegalName(file)) {
-//            ToastUtil.show(getContext(), R.string.tip_file_name_unlawfulness);
-//            return;
-//        }
+        File file = new File(path);
+        if (!file.exists()) return;
+        String fileName = file.getName();
+        LogUtil.e(TAG, "uploadFileDia : 要上传的文件名：" + fileName);
+        String name = fileName, suffix = "";
+        if (fileName.contains(".")) {
+            name = fileName.substring(0, fileName.lastIndexOf("."));
+            suffix = fileName.substring(fileName.lastIndexOf("."));
+        }
         final EditText editText = new EditText(getContext());
-        //获取选择的文件名
-        String fileName = path.substring(path.lastIndexOf("/") + 1, path.lastIndexOf("."));
         //给输入框设置默认文件名
-        editText.setText(fileName);
-        LogUtil.e(TAG, "uploadFileDia    --->>> " + fileName);
+        editText.setText(name);
+        LogUtil.e(TAG, "uploadFileDia  输入框文件名： " + name);
+        String finalSuffix = suffix;
         new AlertDialog.Builder(Objects.requireNonNull(getContext())).setTitle(getResources().getString(R.string.please_enter_valid_file_name))
                 .setView(editText)
                 .setPositiveButton(getResources().getString(R.string.determine), (dialogInterface, i) -> {
@@ -390,13 +390,12 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
                         String shareFileName = editText.getText().toString();
                         //计算出 媒体ID
                         int mediaid = Constant.getMediaId(path);
-                        String fileEnd = FileUtil.getCutStr(path, 0);
                         presenter.uploadFile(InterfaceMacro.Pb_Upload_Flag.Pb_MEET_UPLOADFLAG_ONLYENDCALLBACK_VALUE,
-                                currentDirId, 0, shareFileName + "." + fileEnd, path,
+                                currentDirId, 0, shareFileName + finalSuffix, path,
                                 Constant.USER_VAL_UPLOAD, mediaid, Constant.UPLOAD_MDF);
                         dialogInterface.dismiss();
                     } else {
-                        ToastUtil.show(getContext().getApplicationContext(), R.string.please_enter_valid_file_name);
+                        ToastUtil.show(R.string.please_enter_valid_file_name);
                     }
                 })
                 .setNegativeButton(getResources().getString(R.string.cancel), (dialogInterface, i) -> dialogInterface.dismiss()).show();
@@ -411,12 +410,15 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
                     intent.setType("*/*");//无类型限制
                     intent.addCategory(Intent.CATEGORY_OPENABLE);
                     startActivityForResult(intent, 1);
+                } else {
+                    ToastUtil.show(R.string.no_permission);
                 }
                 break;
             case R.id.f_data_documentation:
                 typeFileDetailInfos.clear();
                 for (int i = 0; i < allFileDetailInfos.size(); i++) {
                     InterfaceFile.pbui_Item_MeetDirFileDetailInfo info = allFileDetailInfos.get(i);
+//                    if(Constant.isDocument(info.getMediaid())){
                     if (FileUtil.isDocumentFile(info.getName().toStringUtf8())) {
                         typeFileDetailInfos.add(info);
                     }
@@ -429,6 +431,7 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
                 typeFileDetailInfos.clear();
                 for (int i = 0; i < allFileDetailInfos.size(); i++) {
                     InterfaceFile.pbui_Item_MeetDirFileDetailInfo info = allFileDetailInfos.get(i);
+//                    if(Constant.isPicture(info.getMediaid())){
                     if (FileUtil.isPictureFile(info.getName().toStringUtf8())) {
                         typeFileDetailInfos.add(info);
                     }
@@ -441,6 +444,7 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
                 typeFileDetailInfos.clear();
                 for (int i = 0; i < allFileDetailInfos.size(); i++) {
                     InterfaceFile.pbui_Item_MeetDirFileDetailInfo info = allFileDetailInfos.get(i);
+//                    if(Constant.isVideo(info.getMediaid())){
                     if (FileUtil.isVideoFile(info.getName().toStringUtf8())) {
                         typeFileDetailInfos.add(info);
                     }
@@ -453,6 +457,7 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
                 typeFileDetailInfos.clear();
                 for (int i = 0; i < allFileDetailInfos.size(); i++) {
                     InterfaceFile.pbui_Item_MeetDirFileDetailInfo info = allFileDetailInfos.get(i);
+//                    if(Constant.isOther(info.getMediaid())){
                     if (FileUtil.isOtherFile(info.getName().toStringUtf8())) {
                         typeFileDetailInfos.add(info);
                     }
@@ -465,7 +470,7 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
                 if (fileAdapter != null) {
                     int chooseId = fileAdapter.getChooseId();
                     if (chooseId == -1) {
-                        ToastUtil.show(getContext(), R.string.please_choose_push_file);
+                        ToastUtil.show(R.string.please_choose_push_file);
                     } else {
                         presenter.pushFile(chooseId);
                     }

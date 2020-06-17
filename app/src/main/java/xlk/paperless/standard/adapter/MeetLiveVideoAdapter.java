@@ -17,7 +17,7 @@ import xlk.paperless.standard.util.LogUtil;
 /**
  * @author xlk
  * @date 2020/3/18
- * @Description:
+ * @desc
  */
 public class MeetLiveVideoAdapter extends BaseQuickAdapter<VideoDev, BaseViewHolder> {
     private final String TAG = "MeetLiveVideoAdapter-->";

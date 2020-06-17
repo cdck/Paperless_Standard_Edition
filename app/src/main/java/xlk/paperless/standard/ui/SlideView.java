@@ -22,7 +22,7 @@ import xlk.paperless.standard.R;
 /**
  * @author xlk
  * @date 2020/3/11
- * @Description: https://my.oschina.net/u/3026396/blog/817257
+ * @desc https://my.oschina.net/u/3026396/blog/817257
  */
 public class SlideView extends ViewGroup {
 

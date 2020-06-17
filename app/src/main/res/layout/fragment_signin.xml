@@ -5,11 +5,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <AbsoluteLayout
-        android:id="@+id/f_s_absolute"
+    <LinearLayout
+        android:id="@+id/seat_root_ll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <xlk.paperless.standard.ui.CustomAbsoluteLayout
+            android:id="@+id/f_s_absolute"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible" />
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

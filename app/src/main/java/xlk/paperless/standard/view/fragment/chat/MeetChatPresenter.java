@@ -30,7 +30,7 @@ import static xlk.paperless.standard.view.meet.MeetingActivity.chatMessages;
 /**
  * @author xlk
  * @date 2020/3/17
- * @Description:
+ * @desc
  */
 public class MeetChatPresenter extends BasePresenter {
     private final String TAG = "MeetChatPresenter-->";

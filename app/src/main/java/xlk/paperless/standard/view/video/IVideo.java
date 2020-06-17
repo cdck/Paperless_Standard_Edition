@@ -3,7 +3,7 @@ package xlk.paperless.standard.view.video;
 /**
  * @author xlk
  * @date 2020/3/30
- * @Description:
+ * @desc
  */
 public interface IVideo {
     void updateProgressUi(int per, String s, String s1);

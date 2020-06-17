@@ -14,7 +14,7 @@ import xlk.paperless.standard.R;
 /**
  * @author xlk
  * @date 2020/4/8
- * @Description: 公告管理adapter
+ * @desc 公告管理adapter
  */
 public class BulletAdapter extends BaseQuickAdapter<InterfaceBullet.pbui_Item_BulletDetailInfo, BaseViewHolder> {
     private int chooseId = -1;

@@ -14,7 +14,7 @@ import xlk.paperless.standard.data.Constant;
 /**
  * @author xlk
  * @date 2020/3/9
- * @Description:
+ * @desc
  */
 public class IniUtil {
 
@@ -40,13 +40,15 @@ public class IniUtil {
     }
 
     //加载文件
-    public void loadFile(File filePath) {
-        this.file = filePath;
+    public boolean loadFile(File filePath) {
         try {
-            ini.load(new FileReader(file));
+            ini.load(new FileReader(filePath));
+            this.file = filePath;
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     public String get(String sectionName, String optionName) {

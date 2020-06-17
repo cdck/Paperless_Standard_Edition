@@ -18,7 +18,7 @@ import xlk.paperless.standard.util.ToastUtil;
 /**
  * @author xlk
  * @date 2020/4/3
- * @Description: 投票管理点击投票选择加入投票的参会人
+ * @desc 投票管理点击投票选择加入投票的参会人
  */
 public class VoteManageMemberAdapter extends BaseQuickAdapter<InterfaceMember.pbui_Item_MeetMemberDetailInfo, BaseViewHolder> {
     List<InterfaceMember.pbui_Item_MeetMemberDetailInfo> canChooseInfos = new ArrayList<>();
@@ -105,7 +105,7 @@ public class VoteManageMemberAdapter extends BaseQuickAdapter<InterfaceMember.pb
             if (isCan) {
                 ids.add(memberId);
             } else {
-                ToastUtil.show(mContext, R.string.can_not_vote);
+                ToastUtil.show(R.string.can_not_vote);
             }
         }
         notifyDataSetChanged();

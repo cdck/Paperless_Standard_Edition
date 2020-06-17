@@ -24,7 +24,7 @@ import xlk.paperless.standard.view.BasePresenter;
 /**
  * @author xlk
  * @date 2020/4/2
- * @Description:
+ * @desc
  */
 public class VoteManagePresenter extends BasePresenter {
     private final String TAG = getClass().getSimpleName();

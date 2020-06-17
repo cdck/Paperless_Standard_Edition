@@ -2,6 +2,8 @@ package xlk.paperless.standard.data;
 
 import android.content.Intent;
 
+import com.mogujie.tt.protobuf.InterfaceMacro;
+
 import org.greenrobot.eventbus.EventBus;
 
 import xlk.paperless.standard.util.LogUtil;
@@ -12,7 +14,7 @@ import static xlk.paperless.standard.view.MyApplication.lbm;
 /**
  * @author xlk
  * @date 2020/3/9
- * @Description:
+ * @desc
  */
 public class Call {
 
@@ -180,7 +182,10 @@ public class Call {
     //datalen data有数据时 datalen就有长度
     //返回0即可
     public int callback_method(int type, int method, byte[] data, int datalen) {
-//        LogUtil.v(CASE_TAG, "callback_method :  后台 --> type:" + type + ",method:" + method);
+        if (type == InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEMBER_VALUE &&
+                method == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_QUERYPROPERTY_VALUE) {
+            LogUtil.e("后台回调", "queryMemberProperty 查询属性---- ");
+        }
         EventBus.getDefault().post(new EventMessage.Builder().type(type).method(method).objs(data, datalen).build());
         return 0;
     }

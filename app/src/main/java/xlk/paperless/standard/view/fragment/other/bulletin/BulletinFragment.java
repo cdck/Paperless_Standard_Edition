@@ -28,7 +28,7 @@ import static xlk.paperless.standard.util.ConvertUtil.s2b;
 /**
  * @author xlk
  * @date 2020/4/8
- * @Description: 公告管理
+ * @desc 公告管理
  */
 public class BulletinFragment extends BaseFragment implements IBulletin, View.OnClickListener {
     private RecyclerView f_bulletin_rv;
@@ -77,7 +77,7 @@ public class BulletinFragment extends BaseFragment implements IBulletin, View.On
                 String title = f_bulletin_title.getText().toString();
                 String content = f_bulletin_content.getText().toString();
                 if (title.isEmpty() || content.isEmpty()) {
-                    ToastUtil.show(getContext(), R.string.please_enter_info);
+                    ToastUtil.show(R.string.please_enter_info);
                 } else {
                     InterfaceBullet.pbui_Item_BulletDetailInfo build = InterfaceBullet.pbui_Item_BulletDetailInfo.newBuilder()
                             .setTitle(s2b(title))
@@ -89,7 +89,7 @@ public class BulletinFragment extends BaseFragment implements IBulletin, View.On
                 if (bulletAdapter != null && bulletAdapter.getChoose() != null) {
                     JniHandler.getInstance().deleteNotice(bulletAdapter.getChoose());
                 } else {
-                    ToastUtil.show(getContext(), R.string.please_choose_bulletin);
+                    ToastUtil.show(R.string.please_choose_bulletin);
                 }
                 break;
             case R.id.f_bulletin_modify:
@@ -97,7 +97,7 @@ public class BulletinFragment extends BaseFragment implements IBulletin, View.On
                     String title1 = f_bulletin_title.getText().toString();
                     String content1 = f_bulletin_content.getText().toString();
                     if (title1.isEmpty() || content1.isEmpty()) {
-                        ToastUtil.show(getContext(), R.string.please_enter_info);
+                        ToastUtil.show(R.string.please_enter_info);
                     } else {
                         InterfaceBullet.pbui_Item_BulletDetailInfo build = InterfaceBullet.pbui_Item_BulletDetailInfo.newBuilder()
                                 .setTitle(s2b(title1))
@@ -105,25 +105,21 @@ public class BulletinFragment extends BaseFragment implements IBulletin, View.On
                         JniHandler.getInstance().modifNotice(build);
                     }
                 } else {
-                    ToastUtil.show(getContext(), R.string.please_choose_bulletin);
+                    ToastUtil.show(R.string.please_choose_bulletin);
                 }
                 break;
             case R.id.f_bulletin_launch:
                 if (bulletAdapter != null && bulletAdapter.getChoose() != null) {
-                    List<Integer> ids = new ArrayList<>();
-//                    ids.add(0);
-                    JniHandler.getInstance().pushNotice(bulletAdapter.getChoose(), ids);
+                    JniHandler.getInstance().pushNotice(bulletAdapter.getChoose(), new ArrayList<>());
                 } else {
-                    ToastUtil.show(getContext(), R.string.please_choose_bulletin);
+                    ToastUtil.show(R.string.please_choose_bulletin);
                 }
                 break;
             case R.id.f_bulletin_close:
                 if (bulletAdapter != null && bulletAdapter.getChoose() != null) {
-                    List<Integer> ids = new ArrayList<>();
-                    ids.add(0);
-                    JniHandler.getInstance().stopNotice(bulletAdapter.getChoose().getBulletid(), ids);
+                    JniHandler.getInstance().stopNotice(bulletAdapter.getChoose().getBulletid(), new ArrayList<>());
                 } else {
-                    ToastUtil.show(getContext(), R.string.please_choose_bulletin);
+                    ToastUtil.show(R.string.please_choose_bulletin);
                 }
                 break;
         }

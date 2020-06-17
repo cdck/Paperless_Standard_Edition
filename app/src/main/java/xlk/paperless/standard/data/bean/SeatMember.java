@@ -6,7 +6,7 @@ import com.mogujie.tt.protobuf.InterfaceRoom;
 /**
  * @author xlk
  * @date 2020/3/18
- * @Description:
+ * @desc
  */
 public class SeatMember {
     InterfaceMember.pbui_Item_MemberDetailInfo memberDetailInfo;

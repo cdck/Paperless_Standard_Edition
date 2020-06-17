@@ -14,7 +14,7 @@ import xlk.paperless.standard.R;
 /**
  * @author xlk
  * @date 2020/4/24
- * @Description:
+ * @desc
  */
 public class CustomBaseViewHolder {
     public static class MenuViewHolder {

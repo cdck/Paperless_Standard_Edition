@@ -66,7 +66,7 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
         isChatingOpened = true;
         mInviteflag = getIntent().getIntExtra(Constant.extra_inviteflag, -1);
         mOperdeviceid = getIntent().getIntExtra(Constant.extra_operdeviceid, -1);
-        LogUtil.d(TAG, "onCreate --> deviceid= " + mOperdeviceid);
+        LogUtil.d(TAG, "onCreate --> 收到该设备ID的设备交互= " + mOperdeviceid);
         initial();
         EventBus.getDefault().register(this);
         queryAttendPeople();
@@ -282,24 +282,24 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
             if ((inviteflag & InterfaceDevice.Pb_DeviceInviteFlag.Pb_DEVICE_INVITECHAT_FLAG_SIMPLEX_VALUE) ==
                     InterfaceDevice.Pb_DeviceInviteFlag.Pb_DEVICE_INVITECHAT_FLAG_SIMPLEX_VALUE) {
                 LogUtil.i(TAG, "收到回复设备对讲的通知 -->" + "对方同意寻呼");
-                ToastUtil.show(this, getString(R.string.agree_device_paging, getMemberName()));
+                ToastUtil.show(getString(R.string.agree_device_paging, getMemberName()));
                 if (work_state != 1) {
                     createPaging();
                 }
             } else {
                 LogUtil.i(TAG, "收到回复设备对讲的通知 -->" + "对方同意对讲");
-                ToastUtil.show(this, getString(R.string.agree_device_intercom, getMemberName()));
+                ToastUtil.show(getString(R.string.agree_device_intercom, getMemberName()));
                 createIntercom();
             }
         } else {
             work_state = 0;
             if ((inviteflag & InterfaceDevice.Pb_DeviceInviteFlag.Pb_DEVICE_INVITECHAT_FLAG_SIMPLEX_VALUE) == InterfaceDevice.Pb_DeviceInviteFlag.Pb_DEVICE_INVITECHAT_FLAG_SIMPLEX_VALUE) {
                 LogUtil.i(TAG, "收到回复设备对讲的通知 -->" + "对方拒绝寻呼");
-                ToastUtil.show(this, getString(R.string.reject_device_paging, getMemberName()));
+                ToastUtil.show(getString(R.string.reject_device_paging, getMemberName()));
                 video_chat_view.createDefaultView(1);
             } else {
                 LogUtil.i(TAG, "收到回复设备对讲的通知 -->" + "对方拒绝对讲");
-                ToastUtil.show(this, getString(R.string.reject_device_intercom, getMemberName()));
+                ToastUtil.show(getString(R.string.reject_device_intercom, getMemberName()));
                 video_chat_view.createDefaultView(2);
             }
             setEnable();
@@ -331,16 +331,16 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void initView() {
-        pop_video_chat_all = (CheckBox) findViewById(R.id.pop_video_chat_all);
-        pop_video_chat_rv = (RecyclerView) findViewById(R.id.pop_video_chat_rv);
-        pop_video_chat_radio = (RadioGroup) findViewById(R.id.pop_video_chat_radio);
-        pop_video_chat_paging = (RadioButton) findViewById(R.id.pop_video_chat_paging);
-        pop_video_chat_intercom = (RadioButton) findViewById(R.id.pop_video_chat_intercom);
-        pop_video_chat_close = (ImageView) findViewById(R.id.pop_video_chat_close);
-        video_chat_ask_cb = (CheckBox) findViewById(R.id.video_chat_ask_cb);
-        pop_video_chat_launch = (Button) findViewById(R.id.pop_video_chat_launch);
-        pop_video_chat_stop = (Button) findViewById(R.id.pop_video_chat_stop);
-        video_chat_view = (VideoChatView) findViewById(R.id.video_chat_view);
+        pop_video_chat_all = findViewById(R.id.pop_video_chat_all);
+        pop_video_chat_rv = findViewById(R.id.pop_video_chat_rv);
+        pop_video_chat_radio = findViewById(R.id.pop_video_chat_radio);
+        pop_video_chat_paging = findViewById(R.id.pop_video_chat_paging);
+        pop_video_chat_intercom = findViewById(R.id.pop_video_chat_intercom);
+        pop_video_chat_close = findViewById(R.id.pop_video_chat_close);
+        video_chat_ask_cb = findViewById(R.id.video_chat_ask_cb);
+        pop_video_chat_launch = findViewById(R.id.pop_video_chat_launch);
+        pop_video_chat_stop = findViewById(R.id.pop_video_chat_stop);
+        video_chat_view = findViewById(R.id.video_chat_view);
 
         pop_video_chat_close.setOnClickListener(this);
         pop_video_chat_launch.setOnClickListener(this);
@@ -373,7 +373,7 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
                     } else {
                         //对讲模式
                         if (chooseDevids.size() > 1) {
-                            ToastUtil.show(this, R.string.can_only_choose_one);
+                            ToastUtil.show(R.string.can_only_choose_one);
                         } else {
                             LogUtil.i(TAG, "发起对讲 -->选中的设备ID= " + chooseDevids.toString());
                             int flag;
@@ -391,7 +391,7 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
                         }
                     }
                 } else {
-                    ToastUtil.show(this, R.string.please_choose_member);
+                    ToastUtil.show(R.string.please_choose_member);
                 }
                 break;
             case R.id.pop_video_chat_stop:

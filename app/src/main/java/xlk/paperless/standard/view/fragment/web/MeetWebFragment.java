@@ -23,7 +23,7 @@ import xlk.paperless.standard.view.fragment.BaseFragment;
 /**
  * @author xlk
  * @date 2020/3/13
- * @Description: 网页浏览
+ * @desc 网页浏览
  */
 public class MeetWebFragment extends BaseFragment implements View.OnClickListener, IMeetWeb {
     private final String TAG = "MeetWebFragment-->";
@@ -106,7 +106,6 @@ public class MeetWebFragment extends BaseFragment implements View.OnClickListene
 //            }
         });
     }
-
 
     @Override
     public void onResume() {

@@ -240,7 +240,7 @@
 
     <Spinner
         android:id="@+id/election_manage_countdown_sp"
-        android:layout_width="@dimen/dp_90"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/dp_8"
         app:layout_constraintBottom_toBottomOf="@+id/textView22"

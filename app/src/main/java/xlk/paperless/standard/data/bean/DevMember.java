@@ -6,7 +6,7 @@ import com.mogujie.tt.protobuf.InterfaceMember;
 /**
  * @author xlk
  * @date 2020/3/14
- * @Description: 在线参会人
+ * @desc 在线参会人
  */
 public class DevMember {
     InterfaceDevice.pbui_Item_DeviceDetailInfo deviceDetailInfo;

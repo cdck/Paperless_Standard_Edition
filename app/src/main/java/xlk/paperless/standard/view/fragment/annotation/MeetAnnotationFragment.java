@@ -39,7 +39,7 @@ import xlk.paperless.standard.view.fragment.BaseFragment;
 /**
  * @author xlk
  * @date 2020/3/13
- * @Description: 批注查看
+ * @desc 批注查看
  */
 public class MeetAnnotationFragment extends BaseFragment implements View.OnClickListener, IMeetAnnotation {
     private final String TAG = "MeetAnnotationFragment-->";
@@ -115,7 +115,7 @@ public class MeetAnnotationFragment extends BaseFragment implements View.OnClick
                 if (fileAdapter != null) {
                     int chooseId = fileAdapter.getChooseId();
                     if (chooseId == -1) {
-                        ToastUtil.show(getContext(), R.string.please_choose_push_file);
+                        ToastUtil.show(R.string.please_choose_push_file);
                     } else {
                         presenter.pushFile(chooseId);
                     }
@@ -129,7 +129,7 @@ public class MeetAnnotationFragment extends BaseFragment implements View.OnClick
 
     private void exportFile() {
         if (currentFiles.isEmpty()) {
-            ToastUtil.show(getContext(), R.string.no_export_file);
+            ToastUtil.show(R.string.no_export_file);
             return;
         }
         List<InterfaceFile.pbui_Item_MeetDirFileDetailInfo> temps = new ArrayList<>(currentFiles);
@@ -334,7 +334,7 @@ public class MeetAnnotationFragment extends BaseFragment implements View.OnClick
                         pushPop.dismiss();
                         presenter.mediaPlayOperate(mediaId, devIds, 0, 0, 0, InterfaceMacro.Pb_MeetPlayFlag.Pb_MEDIA_PLAYFLAG_ZERO.getNumber());
                     } else {
-                        ToastUtil.show(getContext(), R.string.please_choose_push_target);
+                        ToastUtil.show(R.string.please_choose_push_target);
                     }
                 }
             });

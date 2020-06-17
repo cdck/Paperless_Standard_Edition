@@ -28,7 +28,7 @@ import xlk.paperless.standard.view.fragment.BaseFragment;
 /**
  * @author xlk
  * @date 2020/4/8
- * @Description:
+ * @desc
  */
 public class ScreenFragment extends BaseFragment implements IScreen, View.OnClickListener {
 
@@ -151,7 +151,7 @@ public class ScreenFragment extends BaseFragment implements IScreen, View.OnClic
                     ids.add(MyApplication.localDeviceId);
                     JniHandler.getInstance().streamPlay(devcieid, 2, 0, temps, ids);
                 } else {
-                    ToastUtil.show(getContext(), R.string.please_choose_source);
+                    ToastUtil.show(R.string.please_choose_source);
                 }
                 break;
             case R.id.f_screen_stop_preview:
@@ -174,7 +174,7 @@ public class ScreenFragment extends BaseFragment implements IScreen, View.OnClic
             temps.add(0);
             JniHandler.getInstance().stopResourceOperate(temps, ids);
         } else {
-            ToastUtil.show(getContext(), R.string.please_choose_stop_target);
+            ToastUtil.show(R.string.please_choose_stop_target);
         }
     }
 
@@ -190,10 +190,10 @@ public class ScreenFragment extends BaseFragment implements IScreen, View.OnClic
                 int triggeruserval = f_screen_mandatory_cb.isChecked() ? 1 : 0;
                 JniHandler.getInstance().streamPlay(devcieid, 2, triggeruserval, temps, ids);
             } else {
-                ToastUtil.show(getContext(), R.string.please_choose_target);
+                ToastUtil.show(R.string.please_choose_target);
             }
         } else {
-            ToastUtil.show(getContext(), R.string.please_choose_source);
+            ToastUtil.show(R.string.please_choose_source);
         }
     }
 

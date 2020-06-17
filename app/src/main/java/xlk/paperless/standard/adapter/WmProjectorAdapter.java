@@ -14,7 +14,7 @@ import xlk.paperless.standard.R;
 /**
  * @author xlk
  * @date 2020/3/27
- * @Description:悬浮框中在线投影机
+ * @desc悬浮框中在线投影机
  */
 public class WmProjectorAdapter extends BaseQuickAdapter<InterfaceDevice.pbui_Item_DeviceDetailInfo,BaseViewHolder> {
     List<Integer> ids = new ArrayList<>();

@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * @author xlk
  * @date 2020/3/18
- * @Description:
+ * @desc
  */
 public interface IMeetSignin {
     void updateBg(String filepath);

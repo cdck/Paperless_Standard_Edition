@@ -13,7 +13,7 @@ import xlk.paperless.standard.data.bean.SeatMember;
 /**
  * @author xlk
  * @date 2020/3/18
- * @Description: 批注查看参会人列表
+ * @desc 批注查看参会人列表
  */
 public class MeetAnnotationAdapter extends BaseQuickAdapter<SeatMember, BaseViewHolder> {
     int selectedDevId = -1;

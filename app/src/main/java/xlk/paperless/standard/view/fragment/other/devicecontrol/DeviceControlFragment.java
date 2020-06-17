@@ -27,7 +27,7 @@ import xlk.paperless.standard.view.fragment.BaseFragment;
 /**
  * @author xlk
  * @date 2020/4/1
- * @Description: 设备控制
+ * @desc 设备控制
  */
 public class DeviceControlFragment extends BaseFragment implements View.OnClickListener, IDevControl {
     private CheckBox dev_control_all_ab;
@@ -122,7 +122,7 @@ public class DeviceControlFragment extends BaseFragment implements View.OnClickL
     public void onClick(View v) {
         if (devControlAdapter == null) return;
         if (devControlAdapter.getChooseIds().isEmpty()) {
-            ToastUtil.show(getContext(), R.string.err_target_NotNull);
+            ToastUtil.show(R.string.err_target_NotNull);
             return;
         }
         switch (v.getId()) {
@@ -178,7 +178,7 @@ public class DeviceControlFragment extends BaseFragment implements View.OnClickL
                 role = InterfaceMacro.Pb_MeetMemberRole.Pb_role_member_secretary.getNumber();
             else if (index == 4) role = InterfaceMacro.Pb_MeetMemberRole.Pb_role_admin.getNumber();
             if (devControlAdapter.getChooseIds().size() != 1) {
-                ToastUtil.show(getContext(), R.string.must_chooose_one);
+                ToastUtil.show(R.string.must_chooose_one);
                 return;
             } else {
                 for (int i = 0; i < presenter.devControlBeans.size(); i++) {
@@ -189,7 +189,7 @@ public class DeviceControlFragment extends BaseFragment implements View.OnClickL
                             devId = deviceInfo.getDevcieid();
                             break;
                         } else {
-                            ToastUtil.show(getContext(), R.string.please_choose_member);
+                            ToastUtil.show(R.string.please_choose_member);
                             return;
                         }
                     }

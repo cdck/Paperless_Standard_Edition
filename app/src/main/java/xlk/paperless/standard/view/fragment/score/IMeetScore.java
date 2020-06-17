@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * @author xlk
  * @date 2020/3/20
- * @Description:
+ * @desc
  */
 public interface IMeetScore {
     void updateScoreRv(List<InterfaceFilescorevote.pbui_Type_Item_UserDefineFileScore> scoreInfos);

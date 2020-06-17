@@ -245,7 +245,7 @@ public class VideoActivity extends BaseActivity implements IVideo {
             List<Integer> ids = memberAdapter.getChooseIds();
             ids.addAll(projectorAdapter.getChooseIds());
             if (ids.isEmpty()) {
-                ToastUtil.show(this, R.string.err_target_NotNull);
+                ToastUtil.show(R.string.err_target_NotNull);
             } else {
                 if (type == 1) {//发起
                     presenter.mediaPlayOperate(ids);

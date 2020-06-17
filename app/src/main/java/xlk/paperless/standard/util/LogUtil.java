@@ -5,7 +5,7 @@ import android.util.Log;
 /**
  * @author xlk
  * @date 2020/3/9
- * @Description: 日志打印工具类
+ * @desc 日志打印工具类
  */
 public class LogUtil {
     private static final boolean log_enable = true;

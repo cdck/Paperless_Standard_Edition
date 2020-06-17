@@ -28,7 +28,7 @@ import xlk.paperless.standard.view.MyApplication;
 /**
  * @author xlk
  * @date 2020/3/18
- * @Description:
+ * @desc
  */
 public class MeetLiveVideoPresenter extends BasePresenter {
     private final String TAG = "MeetLiveVideoPresenter-->";

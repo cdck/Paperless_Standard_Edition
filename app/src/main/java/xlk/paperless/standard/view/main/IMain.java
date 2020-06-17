@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * @author xlk
  * @date 2020/3/9
- * @Description:
+ * @desc
  */
 public interface IMain {
     //初始化完成
@@ -59,7 +59,7 @@ public interface IMain {
     void jump2meet();
 
     //签到进入会议
-    void signIn();
+    void readySignIn();
 
     //更新参会人单位
     void updateUnit(String text);
@@ -71,4 +71,6 @@ public interface IMain {
     void updateMemberRole(String role);
 
     void updateNote(String noteinfo);
+
+    void checkNetWork();
 }

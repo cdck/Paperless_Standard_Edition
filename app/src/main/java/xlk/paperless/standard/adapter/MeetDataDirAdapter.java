@@ -15,7 +15,7 @@ import xlk.paperless.standard.R;
 /**
  * @author xlk
  * @date 2020/3/14
- * @Description: 会议资料中目录adapter
+ * @desc 会议资料中目录adapter
  */
 public class MeetDataDirAdapter extends BaseQuickAdapter<InterfaceFile.pbui_Item_MeetDirDetailInfo, BaseViewHolder> {
     private int chooseId = -1;

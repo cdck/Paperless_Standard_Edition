@@ -1,5 +1,6 @@
 package xlk.paperless.standard.view.main;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -119,22 +120,47 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         XXPermissions.with(this)
                 // 可设置被拒绝后继续申请，直到用户授权或者永久拒绝
                 .constantRequest()
-                // 支持请求6.0悬浮窗权限8.0请求安装权限
-                //.permission(Permission.SYSTEM_ALERT_WINDOW, Permission.REQUEST_INSTALL_PACKAGES)
-                // 不指定权限则自动获取清单中的危险权限
-                //.permission(Permission.Group.STORAGE, Permission.Group.CALENDAR)
+                // 支持请求6.0悬浮窗权限8.0请求安装权限 , Permission.REQUEST_INSTALL_PACKAGES
+                .permission(
+                        Permission.WRITE_EXTERNAL_STORAGE,
+                        Permission.READ_EXTERNAL_STORAGE,
+                        Permission.RECORD_AUDIO,
+                        Permission.CAMERA,
+                        Permission.READ_PHONE_STATE
+                )
                 .request(new OnPermission() {
                     @Override
                     public void hasPermission(List<String> granted, boolean all) {
-                        if (granted.contains(Permission.WRITE_EXTERNAL_STORAGE)
-                                && granted.contains(Permission.READ_EXTERNAL_STORAGE)) {
-                            start();
-                        }
+//                        if (granted.contains(Permission.WRITE_EXTERNAL_STORAGE)
+//                                && granted.contains(Permission.READ_EXTERNAL_STORAGE)) {
+//                            start();
+//                        }
+                        if (all) start();
                     }
 
                     @Override
                     public void noPermission(List<String> denied, boolean quick) {
                         LogUtil.d(TAG, "noPermission -->未获取的权限：" + denied.toString());
+                        initPermissions();
+                    }
+                });
+    }
+
+    /**
+     * 申请悬浮窗权限
+     */
+    private void applyAlertWindowPermission() {
+        XXPermissions.with(this).constantRequest()
+                .permission(Manifest.permission.SYSTEM_ALERT_WINDOW)
+                .request(new OnPermission() {
+                    @Override
+                    public void hasPermission(List<String> granted, boolean all) {
+                        LogUtil.e(TAG, "useXX hasPermission  -->" + granted);
+                    }
+
+                    @Override
+                    public void noPermission(List<String> denied, boolean quick) {
+                        LogUtil.e(TAG, "useXX noPermission  -->" + denied);
                     }
                 });
     }
@@ -142,7 +168,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
     private void start() {
         LogUtil.d(TAG, "start --> 开始 ");
         if (!XXPermissions.isHasPermission(this, READ_FRAME_BUFFER)) {
-            LogUtil.d(TAG, "申请权限 -->" + " 没有 READ_FRAME_BUFFER 权限");
+            LogUtil.d(TAG, "申请权限帧缓存权限");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 request();
             }
@@ -162,9 +188,13 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         checkNetWork();
     }
 
-    private void checkNetWork() {
+    @Override
+    public void checkNetWork() {
         if (AppUtil.isNetworkAvailable(this)) {
             LogUtil.d(TAG, "initial -->" + "网络可用");
+            if (netDialog != null && netDialog.isShowing()) {
+                netDialog.dismiss();
+            }
             if (!MyApplication.initializationIsOver) {
                 presenter.initialization();
             } else {
@@ -428,7 +458,16 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         MyApplication.localMemberName = memberName;
         MyApplication.localMeetingName = meetingName;
         MyApplication.localRoomId = devMeetInfo.getRoomid();
-
+        if (MyApplication.localMemberId > 0) {
+            if (bindMemberPop != null && bindMemberPop.isShowing()) {
+                LogUtil.d(TAG, "已经绑定了参会人了隐藏掉绑定参会人弹框");
+                bindMemberPop.dismiss();
+            }
+            if (createMemberPop != null && createMemberPop.isShowing()) {
+                LogUtil.d(TAG, "已经绑定了参会人了隐藏掉新建参会人弹框");
+                createMemberPop.dismiss();
+            }
+        }
         LogUtil.d(TAG, "updateUI -->memberName= " + memberName + ", meetingName= " + meetingName);
         member_tv_main.setText(memberName);
         meet_tv_main.setText(meetingName);
@@ -789,7 +828,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
             System.exit(0);
         } else {
             last = System.currentTimeMillis();
-            ToastUtil.show(this, R.string.click_again_exit);
+            ToastUtil.show(R.string.click_again_exit);
         }
     }
 
@@ -803,7 +842,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
                     } else if (member_tv_main.getText().toString().trim().isEmpty()) {
                         jump2bind();
                     } else {
-                        signIn();
+                        readySignIn();
                     }
                 } else {
                     showNetDialog();
@@ -812,6 +851,15 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
             case R.id.set_btn_main:
                 setConfiguration();
                 break;
+        }
+    }
+
+    @Override
+    public void readySignIn() {
+        if (!XXPermissions.isHasPermission(this, Manifest.permission.SYSTEM_ALERT_WINDOW)) {
+            applyAlertWindowPermission();
+        } else {
+            signIn();
         }
     }
 
@@ -843,24 +891,37 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         CheckBox pop_config_microphone = inflate.findViewById(R.id.pop_config_microphone);
         CheckBox pop_config_multicase = inflate.findViewById(R.id.pop_config_multicase);
         CheckBox pop_config_tcp = inflate.findViewById(R.id.pop_config_tcp);
+        CheckBox pop_config_disablebsf = inflate.findViewById(R.id.pop_config_disablebsf);
 
         String nowIp = iniUtil.get("areaaddr", "area0ip");
         String nowPort = iniUtil.get("areaaddr", "area0port");
         String videoaudio = iniUtil.get("debug", "videoaudio");
         String streamprotol = iniUtil.get("selfinfo", "streamprotol");
         String disablemulticast = iniUtil.get("Audio", "disablemulticast");
+        //是否开启编码过滤
+        String encodingFiltering = iniUtil.get("nosdl", "disablebsf");
+
         if (videoaudio == null || videoaudio.isEmpty()) {
-            LogUtil.d(TAG, "showConfigurationView -->" + "没获取到麦克风选项");
+            LogUtil.d(TAG, "showConfigurationView -->" + "设置麦克风默认值");
             iniUtil.put("debug", "videoaudio", 1);
             iniUtil.store();//修改后提交
         }
-
-        if (streamprotol == null || streamprotol.isEmpty() || disablemulticast == null || disablemulticast.isEmpty()) {
-            LogUtil.d(TAG, "showConfigurationView :  没获取到组播和TCP选项 --> ");
+        if (streamprotol == null || streamprotol.isEmpty()) {
+            LogUtil.d(TAG, "showConfigurationView :  设置TCP模式默认值 --> ");
             iniUtil.put("selfinfo", "streamprotol", 1);
+            iniUtil.store();//修改后提交
+        }
+        if (disablemulticast == null || disablemulticast.isEmpty()) {
+            LogUtil.d(TAG, "showConfigurationView :  设置组播默认值 --> ");
             iniUtil.put("Audio", "disablemulticast", 1);
             iniUtil.store();//修改后提交
         }
+        if (encodingFiltering == null || encodingFiltering.isEmpty()) {
+            LogUtil.d(TAG, "showConfigurationView -->" + "设置编码过滤默认值");
+            iniUtil.put("nosdl", "disablebsf", 0);
+            iniUtil.store();//修改后提交
+        }
+
         String maxBitRateStr = iniUtil.get("OtherConfiguration", "maxBitRate");
         int defaultMax = 100;
         if (maxBitRateStr != null && !maxBitRateStr.isEmpty()) {
@@ -868,7 +929,6 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
             if (defaultMax < 100) defaultMax = 100;
             else if (defaultMax > 10000) defaultMax = 10000;
         }
-        pop_config_bitrate.setText(String.valueOf(defaultMax));
         String ipStr = "";
         String portStr = "";
         if (nowIp != null && !nowIp.isEmpty()) {
@@ -884,15 +944,20 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         if (nowPort != null && !nowPort.isEmpty()) {
             portStr = nowPort;
         }
+
+        pop_config_bitrate.setText(String.valueOf(defaultMax));
         pop_config_ip.setText(ipStr);
         pop_config_port.setText(portStr);
+
         streamprotol = iniUtil.get("selfinfo", "streamprotol");
         disablemulticast = iniUtil.get("Audio", "disablemulticast");
         videoaudio = iniUtil.get("debug", "videoaudio");
+        encodingFiltering = iniUtil.get("nosdl", "disablebsf");
 
         pop_config_tcp.setChecked(isEnable(streamprotol));//是否启用TCP模式
         pop_config_multicase.setChecked(isEnable(disablemulticast));//是否禁用组播
         pop_config_microphone.setChecked(isEnable(videoaudio));//是否打开麦克风
+        pop_config_disablebsf.setChecked(!isEnable(encodingFiltering));//是否开启编码过滤
 
         inflate.findViewById(R.id.pop_config_determine).setOnClickListener(v -> {
             String newIP = "";
@@ -903,11 +968,11 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
             if (!newIP.isEmpty() && !newPort.isEmpty() && !newMaxBitRate.isEmpty()) {
                 int maxRate = Integer.parseInt(newMaxBitRate);
                 if (maxRate < 100) {
-                    ToastUtil.show(this, R.string.err_tooLittle);
+                    ToastUtil.show(R.string.err_tooLittle);
                     return;
                 }
                 if (maxRate > 10000) {
-                    ToastUtil.show(this, R.string.error_tooMush);
+                    ToastUtil.show(R.string.error_tooMush);
                     return;
                 }
                 iniUtil.put("OtherConfiguration", "maxBitRate", maxRate);
@@ -916,12 +981,12 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
                 iniUtil.put("selfinfo", "streamprotol", pop_config_tcp.isChecked() ? 1 : 0);
                 iniUtil.put("Audio", "disablemulticast", pop_config_multicase.isChecked() ? 1 : 0);
                 iniUtil.put("debug", "videoaudio", pop_config_microphone.isChecked() ? 1 : 0);
-                LogUtil.d(TAG, " 点击确定 maxBitRate= " + maxRate);
+                iniUtil.put("nosdl", "disablebsf", pop_config_disablebsf.isChecked() ? 0 : 1);
                 iniUtil.store();//修改后提交
                 /** **** **  app重启  ** **** **/
                 AppUtil.restartApplication(this);
             } else {
-                ToastUtil.show(this, R.string.errorContentNull);
+                ToastUtil.show(R.string.errorContentNull);
             }
         });
         inflate.findViewById(R.id.pop_config_cancel).setOnClickListener(v -> {
@@ -935,13 +1000,12 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
             int a = Integer.parseInt(str);
             return a == 1;
         } catch (NumberFormatException e) {
-            LogUtil.e(TAG, " showConfigurationView videoaudio 转换异常");
+            LogUtil.e(TAG, " isEnable 转换异常");
             e.printStackTrace();
         }
         return false;
     }
 
-    @Override
     public void signIn() {
         try {
             LogUtil.d(TAG, "signIn :  signinType --> " + MyApplication.localSigninType);
@@ -1010,7 +1074,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
                 }
                 popupWindow.dismiss();
             } else {
-                ToastUtil.show(MainActivity.this, R.string.password_can_not_blank);
+                ToastUtil.show(R.string.password_can_not_blank);
             }
         });
         enter_pwd_cancel.setOnClickListener(v -> popupWindow.dismiss());
@@ -1029,7 +1093,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
             return;
         }
         View inflate = LayoutInflater.from(this).inflate(R.layout.pop_bind_member, null);
-        bindMemberPop = PopUtil.create(inflate, MyApplication.screen_width, MyApplication.screen_height, true, enter_btn_main);
+        bindMemberPop = PopUtil.create(inflate, MyApplication.screen_width / 2, MyApplication.screen_height / 2, true, enter_btn_main);
         adapter = new MainBindMemberAdapter(R.layout.item_bind_member, chooseMemberDetailInfos);
         RecyclerView pop_bind_member_rv = inflate.findViewById(R.id.pop_bind_member_rv);
         pop_bind_member_rv.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
@@ -1048,7 +1112,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
                 bindMemberPop.dismiss();
                 presenter.joinMeeting(adapter.getChooseId());
             } else {
-                ToastUtil.show(MainActivity.this, R.string.err_unselected_member);
+                ToastUtil.show(R.string.err_unselected_member);
             }
         });
         pop_bind_member_create.setOnClickListener(v -> {
@@ -1096,7 +1160,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
                         .setComment(s2b("")).build();
                 presenter.addAttendPeople(build);
             } else {
-                ToastUtil.show(MainActivity.this, R.string.name_is_required);
+                ToastUtil.show(R.string.name_is_required);
             }
         });
         pop_create_member_cancel.setOnClickListener(v -> createMemberPop.dismiss());

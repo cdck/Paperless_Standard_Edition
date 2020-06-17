@@ -17,7 +17,7 @@ import xlk.paperless.standard.data.bean.ScoreMember;
 /**
  * @author xlk
  * @date 2020/4/9
- * @Description:
+ * @desc
  */
 public class ScoreMemberAdapter extends BaseQuickAdapter<ScoreMember, BaseViewHolder> {
     int chooseid = -1;

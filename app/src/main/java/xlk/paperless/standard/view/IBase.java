@@ -5,7 +5,7 @@ import xlk.paperless.standard.data.EventMessage;
 /**
  * @author xlk
  * @date 2020/3/9
- * @Description:
+ * @desc
  */
 public interface IBase {
     void register();

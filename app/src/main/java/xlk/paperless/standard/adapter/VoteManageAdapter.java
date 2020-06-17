@@ -6,10 +6,10 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.google.protobuf.ByteString;
 import com.mogujie.tt.protobuf.InterfaceMacro;
 import com.mogujie.tt.protobuf.InterfaceVote;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import xlk.paperless.standard.R;
@@ -17,7 +17,7 @@ import xlk.paperless.standard.R;
 /**
  * @author xlk
  * @date 2020/4/2
- * @Description:
+ * @desc
  */
 public class VoteManageAdapter extends BaseQuickAdapter<InterfaceVote.pbui_Item_MeetVoteDetailInfo, BaseViewHolder> {
     InterfaceVote.pbui_Item_MeetVoteDetailInfo selectedVote = null;
@@ -29,7 +29,9 @@ public class VoteManageAdapter extends BaseQuickAdapter<InterfaceVote.pbui_Item_
     @Override
     protected void convert(BaseViewHolder helper, InterfaceVote.pbui_Item_MeetVoteDetailInfo item) {
         View view = helper.getView(R.id.item_vote_manage_root);
-        view.setSelected(selectedVote.getVoteid() == item.getVoteid());
+        if (selectedVote != null) {
+            view.setSelected(selectedVote.getVoteid() == item.getVoteid());
+        }
         TextView option1 = helper.getView(R.id.item_vote_manage_answer1);
         TextView option2 = helper.getView(R.id.item_vote_manage_answer2);
         TextView option3 = helper.getView(R.id.item_vote_manage_answer3);
@@ -40,12 +42,12 @@ public class VoteManageAdapter extends BaseQuickAdapter<InterfaceVote.pbui_Item_
         option3.setVisibility(View.GONE);
         option4.setVisibility(View.GONE);
         option5.setVisibility(View.GONE);
-
-        List<InterfaceVote.pbui_SubItem_VoteItemInfo> itemList = item.getItemList();
+        List<InterfaceVote.pbui_SubItem_VoteItemInfo> itemList = disposeItemList(item.getItemList());
         for (int i = 0; i < itemList.size(); i++) {
             InterfaceVote.pbui_SubItem_VoteItemInfo info = itemList.get(i);
-            String text = info.getText().toStringUtf8();
-            String string = text + "：" + String.valueOf(info.getSelcnt() + "票");
+            String text = info.getText().toStringUtf8().trim();
+            int selcnt = info.getSelcnt();
+            String string = text + "：" + selcnt + "票";
             if (i == 0) {
                 option1.setText(string);
                 option1.setVisibility(View.VISIBLE);
@@ -68,12 +70,27 @@ public class VoteManageAdapter extends BaseQuickAdapter<InterfaceVote.pbui_Item_
                 .setText(R.id.item_vote_manage_state, getState(item.getVotestate()));
     }
 
+    //去除掉答案是空文本的选项
+    private List<InterfaceVote.pbui_SubItem_VoteItemInfo> disposeItemList(List<InterfaceVote.pbui_SubItem_VoteItemInfo> infos) {
+        List<InterfaceVote.pbui_SubItem_VoteItemInfo> items = new ArrayList<>();
+        for (int i = 0; i < infos.size(); i++) {
+            InterfaceVote.pbui_SubItem_VoteItemInfo item = infos.get(i);
+            String trim = item.getText().toStringUtf8().trim();
+            if (!trim.isEmpty()) {
+                items.add(item);
+            }
+        }
+        return items;
+    }
+
     public void notitySelect() {
         InterfaceVote.pbui_Item_MeetVoteDetailInfo temp = null;
-        for (int i = 0; i < mData.size(); i++) {
-            if (selectedVote.getVoteid() == mData.get(i).getVoteid()) {
-                temp = mData.get(i);
-                break;
+        if (selectedVote != null) {
+            for (int i = 0; i < mData.size(); i++) {
+                if (selectedVote.getVoteid() == mData.get(i).getVoteid()) {
+                    temp = mData.get(i);
+                    break;
+                }
             }
         }
         selectedVote = temp;

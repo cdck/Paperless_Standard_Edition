@@ -57,7 +57,7 @@ import static xlk.paperless.standard.util.ConvertUtil.bs2bmp;
 /**
  * @author xlk
  * @date 2020/3/13
- * @Description:
+ * @desc
  */
 public class DrawPresenter extends BasePresenter {
     private final String TAG = "DrawPresenter-->";
@@ -263,7 +263,12 @@ public class DrawPresenter extends BasePresenter {
                 togetherIDs.add(opermemberid);
         }
         if (togetherIDs.contains(opermemberid)) {
-            view.drawZoomBmp(bs2bmp(rPicData));
+            Bitmap bitmap = bs2bmp(rPicData);
+            if (bitmap == null) {
+                LogUtil.e(TAG, "addPicInform 数组转bitmap得到空");
+                return;
+            }
+            view.drawZoomBmp(bitmap);
             /** **** **  保存  ** **** **/
             ArtBoard.DrawPath drawPath = new ArtBoard.DrawPath();
             drawPath.operid = operid;
@@ -594,7 +599,7 @@ public class DrawPresenter extends BasePresenter {
         for (int i = 0; i < memberInfos.size(); i++) {
             if (memberInfos.get(i).getPersonid() == opermemberid) {
                 String name = memberInfos.get(i).getName().toStringUtf8();
-                ToastUtil.show(cxt, name + something);
+                ToastUtil.show(name + something);
             }
         }
     }
@@ -742,7 +747,7 @@ public class DrawPresenter extends BasePresenter {
                 }
                 pop.dismiss();
             } else {
-                ToastUtil.show(cxt, cxt.getString(R.string.please_choose_member));
+                ToastUtil.show(cxt.getString(R.string.please_choose_member));
             }
         });
         inflate.findViewById(R.id.pop_artboard_cancel).setOnClickListener(v -> pop.dismiss());

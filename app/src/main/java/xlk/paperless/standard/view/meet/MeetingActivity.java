@@ -10,6 +10,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,12 +54,22 @@ import xlk.paperless.standard.view.fragment.web.MeetWebFragment;
 import xlk.paperless.standard.view.main.MainActivity;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static xlk.paperless.standard.data.Constant.fun_code_agenda_bulletin;
+import static xlk.paperless.standard.data.Constant.fun_code_meet_file;
+import static xlk.paperless.standard.data.Constant.fun_code_message;
+import static xlk.paperless.standard.data.Constant.fun_code_postil_file;
+import static xlk.paperless.standard.data.Constant.fun_code_shared_file;
+import static xlk.paperless.standard.data.Constant.fun_code_signinresult;
+import static xlk.paperless.standard.data.Constant.fun_code_video_stream;
+import static xlk.paperless.standard.data.Constant.fun_code_webbrowser;
+import static xlk.paperless.standard.data.Constant.fun_code_whiteboard;
 import static xlk.paperless.standard.view.fragment.live.MeetLiveVideoFragment.isManage;
 import static xlk.paperless.standard.view.fragment.score.MeetScoreFragment.isScoreManage;
 
 /**
  * @author xlk
  * @date 2020年3月9日
+ * @desc
  */
 public class MeetingActivity extends BaseActivity implements IMeet, View.OnClickListener {
 
@@ -202,7 +213,7 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
                 if (MyApplication.hasAllPermissions) {
                     showOtherFunPop();
                 } else {
-                    ToastUtil.show(this, getString(R.string.err_NoPermission));
+                    ToastUtil.show(getString(R.string.err_NoPermission));
                 }
                 break;
         }
@@ -309,6 +320,7 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
 
     @Override
     public void updateLogo(Drawable drawable) {
+        LogUtil.e(TAG, "updateLogo 设置logo图片 -->" + (drawable != null));
         meet_logo.setImageDrawable(drawable);
     }
 
@@ -360,11 +372,19 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
 
     @Override
     public void updateFunction(List<InterfaceMeetfunction.pbui_Item_MeetFunConfigDetailInfo> functions) {
-        LogUtil.d(TAG, "updateFunction -->");
+        LogUtil.d(TAG, "updateFunction --> saveFunCode= " + saveFunCode);
         funViews.clear();
         meet_fun_ll.removeAllViews();
+        //首次进入时，设置第一个为默认选中的功能
         if (saveFunCode == -1 && !functions.isEmpty()) {
-            saveFunCode = functions.get(0).getFuncode();
+            int funcode = functions.get(0).getFuncode();
+            if (funcode == fun_code_whiteboard) {
+                if (functions.size() > 1) {//如果第一个是电子白板则跳过
+                    saveFunCode = functions.get(1).getFuncode();
+                }
+            } else {
+                saveFunCode = funcode;
+            }
         }
         boolean has = false;
         for (int i = 0; i < functions.size(); i++) {
@@ -374,14 +394,16 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
                 break;
             }
         }
-        for (int i = 0; i < functions.size(); i++) {
-            InterfaceMeetfunction.pbui_Item_MeetFunConfigDetailInfo info = functions.get(i);
+        LogUtil.d(TAG, "updateFunction :  当前功能码 --> " + saveFunCode + ", has = " + has);
+        for (int index = 0; index < functions.size(); index++) {
+            InterfaceMeetfunction.pbui_Item_MeetFunConfigDetailInfo info = functions.get(index);
             int funcode = info.getFuncode();
-            if (funcode == 2 || funcode == 8) continue;
-            if (i == 0) {
+            if (funcode == fun_code_shared_file || funcode == Constant.fun_code_voteresult)
+                continue;
+            if (index == 0) {
                 firstFunCode = funcode;
             }
-            if (i == 1 && firstFunCode == 6) {//不保存电子白板的功能码
+            if (index == 1 && firstFunCode == 6) {//不保存电子白板的功能码
                 firstFunCode = funcode;
             }
             LinearLayout.LayoutParams ivParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -424,41 +446,41 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
     private void setFunUI(int funcode, ImageView iv, TextView tv) {
         String funName = "";
         switch (funcode) {
-            case 0:
+            case fun_code_agenda_bulletin:
                 funName = getString(R.string.meeting_agenda);
                 iv.setImageDrawable(getDrawable(R.drawable.icon_fun_agenda));
                 break;
-            case 1:
+            case fun_code_meet_file:
                 funName = getString(R.string.meeting_data);
                 iv.setImageDrawable(getDrawable(R.drawable.icon_fun_data));
                 break;
-            case 2:
+            case fun_code_shared_file:
                 funName = getString(R.string.meeting_shared_file);
                 break;
-            case 3:
+            case fun_code_postil_file:
                 funName = getString(R.string.meeting_annotation_view);
                 iv.setImageDrawable(getDrawable(R.drawable.icon_fun_annotation));
                 break;
-            case 4:
+            case fun_code_message:
                 funName = getString(R.string.meeting_chat);
                 iv.setImageDrawable(getDrawable(R.drawable.icon_fun_chat));
                 break;
-            case 5:
+            case fun_code_video_stream:
                 funName = getString(R.string.meeting_live_video);
                 iv.setImageDrawable(getDrawable(R.drawable.icon_fun_video));
                 break;
-            case 6:
+            case fun_code_whiteboard:
                 funName = getString(R.string.meeting_art_board);
                 iv.setImageDrawable(getDrawable(R.drawable.icon_fun_art));
                 break;
-            case 7:
+            case fun_code_webbrowser:
                 funName = getString(R.string.meeting_web_browsing);
                 iv.setImageDrawable(getDrawable(R.drawable.icon_fun_web));
                 break;
             case 8:
                 funName = getString(R.string.meeting_questionnaire);
                 break;
-            case 9:
+            case fun_code_signinresult:
                 funName = getString(R.string.meeting_sign_in_information);
                 iv.setImageDrawable(getDrawable(R.drawable.icon_fun_signin));
                 break;
@@ -494,7 +516,7 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
             showFragment(funCode);
         } else {
             showFragment(funCode);
-//            ToastUtil.show(this, R.string.no_function);
+//            ToastUtil.show(R.string.no_function);
         }
     }
 
@@ -505,44 +527,41 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
      *                =5视频直播，=6电子白板，=7网页浏览，=8问卷调查，=9签到信息，=31评分查看
      */
     private void showFragment(int funcode) {
-        if (funcode != 6) {
+        if (funcode != fun_code_whiteboard) {
             saveFunCode = funcode;
         }
         ft = getSupportFragmentManager().beginTransaction();
         hideFragment(ft);
         switch (funcode) {
-            case 0://会议议程
+            case fun_code_agenda_bulletin://会议议程
                 if (meetAgendaFragment == null) {
                     meetAgendaFragment = new MeetAgendaFragment();
                     ft.add(R.id.meet_frame_layout, meetAgendaFragment);
                 }
                 ft.show(meetAgendaFragment);
                 break;
-            case 1://会议资料
+            case fun_code_meet_file://会议资料
                 if (meetDataFragment == null) {
                     meetDataFragment = new MeetDataFragment();
                     ft.add(R.id.meet_frame_layout, meetDataFragment);
                 }
                 ft.show(meetDataFragment);
                 break;
-            case 2://共享文件
-
-                break;
-            case 3://批注查看
+            case fun_code_postil_file://批注查看
                 if (meetAnnotationFragment == null) {
                     meetAnnotationFragment = new MeetAnnotationFragment();
                     ft.add(R.id.meet_frame_layout, meetAnnotationFragment);
                 }
                 ft.show(meetAnnotationFragment);
                 break;
-            case 4://互动交流
+            case fun_code_message://互动交流
                 if (meetChatFragment == null) {
                     meetChatFragment = new MeetChatFragment();
                     ft.add(R.id.meet_frame_layout, meetChatFragment);
                 }
                 ft.show(meetChatFragment);
                 break;
-            case 5://视频直播
+            case fun_code_video_stream://视频直播
                 isManage = false;
                 if (meetLiveVideoFragment == null) {
                     meetLiveVideoFragment = new MeetLiveVideoFragment();
@@ -550,18 +569,14 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
                 }
                 ft.show(meetLiveVideoFragment);
                 break;
-            case 6://电子白板
-                break;
-            case 7://网页浏览
+            case fun_code_webbrowser://网页浏览
                 if (meetWebFragment == null) {
                     meetWebFragment = new MeetWebFragment();
                     ft.add(R.id.meet_frame_layout, meetWebFragment);
                 }
                 ft.show(meetWebFragment);
                 break;
-            case 8://问卷调查
-                break;
-            case 9://签到信息
+            case fun_code_signinresult://签到信息
                 if (meetSigninFragment == null) {
                     meetSigninFragment = new MeetSigninFragment();
                     ft.add(R.id.meet_frame_layout, meetSigninFragment);

@@ -70,7 +70,7 @@ import static xlk.paperless.standard.view.draw.DrawActivity.isDrawing;
 /**
  * @author xlk
  * @date 2020/3/23
- * @Description:
+ * @desc
  */
 public class FabService extends Service implements IFab {
     private final String TAG = "FabService-->";
@@ -98,6 +98,7 @@ public class FabService extends Service implements IFab {
     private int maxChooseCount = 1;//当前投票最多可以选择答案的个数
     private int currentChooseCount = 0;//当前投票已经选中的选项个数
     private View cameraView;
+    private int windowWidth,windowHeight;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -120,6 +121,8 @@ public class FabService extends Service implements IFab {
         cxt = getApplicationContext();
         //获取 WindowManager
         wm = (WindowManager) getSystemService(WINDOW_SERVICE);
+        windowWidth = wm.getDefaultDisplay().getWidth();
+        windowHeight = wm.getDefaultDisplay().getHeight();
         DisplayMetrics metrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(metrics);
         mScreenDensity = metrics.densityDpi;
@@ -209,7 +212,7 @@ public class FabService extends Service implements IFab {
         mParams.width = FrameLayout.LayoutParams.WRAP_CONTENT;
         mParams.height = FrameLayout.LayoutParams.WRAP_CONTENT;
         mParams.x = 0;
-        mParams.y = screen_width - 100;
+        mParams.y = windowHeight - 100;//使用windowHeight在首次拖动的时候才会有效
         mParams.windowAnimations = R.style.pop_Animation;
         /** **** **  弹框  ** **** **/
         defaultParams = new WindowManager.LayoutParams();
@@ -272,7 +275,7 @@ public class FabService extends Service implements IFab {
             if (Constant.hasPermission(1)) {
                 showScreenView(1);
             } else {
-                ToastUtil.show(cxt, R.string.err_NoPermission);
+                ToastUtil.show(R.string.err_NoPermission);
             }
         });
         //结束同屏
@@ -280,7 +283,7 @@ public class FabService extends Service implements IFab {
             if (Constant.hasPermission(1)) {
                 showScreenView(2);
             } else {
-                ToastUtil.show(cxt, R.string.err_NoPermission);
+                ToastUtil.show(R.string.err_NoPermission);
             }
         });
         //加入同屏
@@ -289,7 +292,7 @@ public class FabService extends Service implements IFab {
                 presenter.queryCanJoin();
                 showJoinView();
             } else {
-                ToastUtil.show(cxt, R.string.err_NoPermission);
+                ToastUtil.show(R.string.err_NoPermission);
             }
         });
         //发起投影
@@ -297,7 +300,7 @@ public class FabService extends Service implements IFab {
             if (Constant.hasPermission(2)) {
                 showProView(1);
             } else {
-                ToastUtil.show(cxt, R.string.err_NoPermission);
+                ToastUtil.show(R.string.err_NoPermission);
             }
         });
         //结束投影
@@ -305,7 +308,7 @@ public class FabService extends Service implements IFab {
             if (Constant.hasPermission(2)) {
                 showProView(2);
             } else {
-                ToastUtil.show(cxt, R.string.err_NoPermission);
+                ToastUtil.show(R.string.err_NoPermission);
             }
         });
     }
@@ -337,7 +340,7 @@ public class FabService extends Service implements IFab {
         holder.wm_pro_launch_pro.setOnClickListener(v -> {
             List<Integer> ids = projectorAdapter.getChooseIds();
             if (ids.isEmpty()) {
-                ToastUtil.show(cxt, cxt.getString(R.string.please_choose_projector_first));
+                ToastUtil.show(cxt.getString(R.string.please_choose_projector_first));
                 return;
             }
             boolean checked = holder.wm_pro_full.isChecked();
@@ -351,7 +354,7 @@ public class FabService extends Service implements IFab {
                 if (holder.wm_pro_flow4.isChecked()) res.add(4);
             }
             if (res.isEmpty()) {
-                ToastUtil.show(cxt, cxt.getString(R.string.please_choose_res_first));
+                ToastUtil.show(cxt.getString(R.string.please_choose_res_first));
                 return;
             }
             if (type == 1) {//发起投影
@@ -412,9 +415,9 @@ public class FabService extends Service implements IFab {
                 ids.add(chooseId1);
             }
             if (ids.size() > 1) {
-                ToastUtil.show(cxt, R.string.can_only_choose_one);
+                ToastUtil.show(R.string.can_only_choose_one);
             } else if (ids.isEmpty()) {
-                ToastUtil.show(cxt, R.string.err_target_NotNull);
+                ToastUtil.show(R.string.err_target_NotNull);
             } else {
                 List<Integer> res = new ArrayList<>();
                 res.add(0);
@@ -502,7 +505,7 @@ public class FabService extends Service implements IFab {
             List<Integer> ids = memberAdapter.getChooseIds();
             ids.addAll(projectorAdapter.getChooseIds());
             if (ids.isEmpty()) {
-                ToastUtil.show(cxt, R.string.err_target_NotNull);
+                ToastUtil.show(R.string.err_target_NotNull);
             } else {
                 List<Integer> temps = new ArrayList<>();
                 temps.add(0);
@@ -565,8 +568,10 @@ public class FabService extends Service implements IFab {
     //收到对讲通知
     @Override
     public void showView(int inviteflag, int operdeviceid) {
-        boolean isAsk = (inviteflag & InterfaceDevice.Pb_DeviceInviteFlag.Pb_DEVICE_INVITECHAT_FLAG_ASK_VALUE) == InterfaceDevice.Pb_DeviceInviteFlag.Pb_DEVICE_INVITECHAT_FLAG_ASK_VALUE;
-        if (!isAsk) {
+        //是否有询问
+        boolean isAsk = (inviteflag & InterfaceDevice.Pb_DeviceInviteFlag.Pb_DEVICE_INVITECHAT_FLAG_ASK_VALUE)
+                == InterfaceDevice.Pb_DeviceInviteFlag.Pb_DEVICE_INVITECHAT_FLAG_ASK_VALUE;
+        if (!isAsk) {//没有询问，对方强制要求加入
             if (!isChatingOpened) {
                 startActivity(new Intent(this, ChatVideoActivity.class)
                         .putExtra(Constant.extra_inviteflag, inviteflag)
@@ -582,6 +587,7 @@ public class FabService extends Service implements IFab {
             jni.replyDeviceIntercom(operdeviceid, flag);
             return;
         }
+        //有进行询问
         DialogUtil.createDialog(cxt, getString(R.string.deviceIntercom_Inform_title, presenter.getMemberNameByDevid(operdeviceid)),
                 getString(R.string.agree), getString(R.string.reject), new DialogUtil.onDialogClickListener() {
                     @Override
@@ -630,7 +636,7 @@ public class FabService extends Service implements IFab {
                 LogUtil.d(TAG, "强制的则直接同意：" + flag);
                 jni.replyDeviceIntercom(operdeviceid, flag);
             } else {
-                ToastUtil.show(cxt, R.string.no_camera_1);
+                ToastUtil.show(R.string.no_camera_1);
             }
         });
         cameraView.findViewById(R.id.wm_camera_back).setOnClickListener(v -> {
@@ -644,7 +650,7 @@ public class FabService extends Service implements IFab {
                 LogUtil.d(TAG, "强制的则直接同意：" + flag);
                 jni.replyDeviceIntercom(operdeviceid, flag);
             } else {
-                ToastUtil.show(cxt, R.string.no_camera_0);
+                ToastUtil.show(R.string.no_camera_0);
             }
         });
         cameraView.findViewById(R.id.wm_camera_reject).setOnClickListener(v -> {
@@ -687,6 +693,7 @@ public class FabService extends Service implements IFab {
         initCheckBox(holder, info);
         int selectItem = 0 | Constant.PB_VOTE_SELFLAG_CHECKIN;
         jni.submitVoteResult(1, currentVoteId, selectItem);
+        LogUtil.d(TAG, "当前倒计时 -->" + voteTimeouts);
         if (voteTimeouts <= 0) {
             holder.wm_vote_chronometer.setVisibility(View.GONE);
         } else {
@@ -723,7 +730,7 @@ public class FabService extends Service implements IFab {
                 jni.submitVoteResult(info.getSelectcount(), currentVoteId, answer);
                 closeVoteView();
             } else {
-                ToastUtil.show(cxt, R.string.please_choose_answer_first);
+                ToastUtil.show(R.string.please_choose_answer_first);
             }
         });
     }
@@ -737,7 +744,7 @@ public class FabService extends Service implements IFab {
                     checkBox.setChecked(checked);
                 } else {
                     checkBox.setChecked(!checked);
-                    ToastUtil.show(cxt, cxt.getString(R.string.max_choose_, String.valueOf(maxChooseCount)));
+                    ToastUtil.show(cxt.getString(R.string.max_choose_, String.valueOf(maxChooseCount)));
                 }
             } else {
                 currentChooseCount--;

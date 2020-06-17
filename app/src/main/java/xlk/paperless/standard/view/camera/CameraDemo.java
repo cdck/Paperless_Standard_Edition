@@ -16,7 +16,7 @@ import xlk.paperless.standard.util.AppUtil;
 /**
  * @author xlk
  * @date 2020/4/16
- * @Description:
+ * @desc
  */
 public class CameraDemo extends SurfaceView implements SurfaceHolder.Callback {
 

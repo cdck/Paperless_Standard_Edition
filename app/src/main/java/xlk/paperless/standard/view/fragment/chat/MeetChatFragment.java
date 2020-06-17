@@ -37,7 +37,7 @@ import static xlk.paperless.standard.view.meet.MeetingActivity.mBadge;
 /**
  * @author xlk
  * @date 2020/3/13
- * @Description: 互动交流
+ * @desc 互动交流
  */
 public class MeetChatFragment extends BaseFragment implements View.OnClickListener, IMeetChat {
     private final String TAG = "MeetChatFragment-->";
@@ -128,13 +128,13 @@ public class MeetChatFragment extends BaseFragment implements View.OnClickListen
             case R.id.m_c_f_send:
                 List<Integer> check = memberAdapter.getCheck();
                 if (check.isEmpty()) {
-                    ToastUtil.show(getContext(), R.string.choose_member_first);
+                    ToastUtil.show(R.string.choose_member_first);
                 } else {
                     String trim = m_c_f_edt.getText().toString().trim();
                     if (trim.isEmpty()) {
-                        ToastUtil.show(getContext(), R.string.please_enter_message);
+                        ToastUtil.show(R.string.please_enter_message);
                     } else if (trim.length() > 300) {
-                        ToastUtil.show(getContext(), R.string.exceed_max_words);
+                        ToastUtil.show(R.string.exceed_max_words);
                     } else {
                         presenter.sendChatMessage(trim, InterfaceMacro.Pb_MeetIMMSG_TYPE.Pb_MEETIM_CHAT_Message.getNumber(), check);
                         InterfaceIM.pbui_Type_MeetIM build = InterfaceIM.pbui_Type_MeetIM.newBuilder()

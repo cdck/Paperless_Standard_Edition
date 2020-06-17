@@ -14,7 +14,7 @@ import xlk.paperless.standard.util.LogUtil;
 /**
  * @author xlk
  * @date 2020/3/9
- * @Description:
+ * @desc
  */
 public class BaseActivity extends AppCompatActivity {
 
@@ -51,19 +51,20 @@ public class BaseActivity extends AppCompatActivity {
     protected void onStart() {
         LogUtil.i("A_life", this.getClass().getSimpleName() + ".onStart :   --->>> ");
         super.onStart();
+        register();
     }
 
     @Override
     protected void onResume() {
         LogUtil.i("A_life", this.getClass().getSimpleName() + ".onResume :   --->>> ");
-        register();
+//        register();
         super.onResume();
     }
 
     @Override
     protected void onPause() {
         LogUtil.i("A_life", this.getClass().getSimpleName() + ".onPause :   --->>> ");
-        unregister();
+//        unregister();
         super.onPause();
     }
 
@@ -71,6 +72,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onStop() {
         LogUtil.i("A_life", this.getClass().getSimpleName() + ".onStop :   --->>> ");
         super.onStop();
+        unregister();
     }
 
     @Override

@@ -24,7 +24,7 @@ import xlk.paperless.standard.view.MyApplication;
 /**
  * @author xlk
  * @date 2020/4/8
- * @Description:
+ * @desc
  */
 public class ScreenPresenter extends BasePresenter {
     private final String TAG = "ScreenPresenter-->";

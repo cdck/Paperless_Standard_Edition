@@ -93,7 +93,7 @@ public class ScoreActivity extends BaseActivity implements IScore, View.OnClickL
     @Override
     public void update(InterfaceFilescorevote.pbui_Type_Item_UserDefineFileScore info) {
         score_desc_tv.setText(info.getContent().toStringUtf8());
-        score_file_tv.setText(Constant.getFileName(info.getFileid()));
+        score_file_tv.setText(JniHandler.getInstance().getFileName(info.getFileid()));
         score_register_tv.setText(info.getMode() == 1 ? getString(R.string.mode_register) : getString(R.string.mode_anonymous));
         int selectcount = info.getSelectcount();
         List<ByteString> voteTextList = info.getVoteTextList();
@@ -163,7 +163,7 @@ public class ScoreActivity extends BaseActivity implements IScore, View.OnClickL
                     LogUtil.d(TAG, "输入的意见文本长度 -->" + length);
                     if (length > 50) {
                         //InterfaceFilescorevote.Pb_FILESCOREVOTE_LenLimit.Pb_MEET_FILESCORE_VOTECONTENT_MAXLEN_VALUE
-                        ToastUtil.show(this, getString(R.string.opinion_text_more_than, String.valueOf(50)));
+                        ToastUtil.show(getString(R.string.opinion_text_more_than, String.valueOf(50)));
                     } else {
                         String option1 = score_option1_edt.getText().toString().trim();
                         String option2 = score_option2_edt.getText().toString().trim();
@@ -178,7 +178,7 @@ public class ScoreActivity extends BaseActivity implements IScore, View.OnClickL
                         finish();
                     }
                 } else {
-                    ToastUtil.show(this, R.string.more_than_100);
+                    ToastUtil.show(R.string.more_than_100);
                 }
                 break;
             case R.id.score_give_up:

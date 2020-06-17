@@ -7,7 +7,7 @@ import xlk.paperless.standard.data.bean.VideoDev;
 /**
  * @author xlk
  * @date 2020/3/18
- * @Description:
+ * @desc
  */
 public interface IMeetLiveVideo {
     void updateRv(List<VideoDev> videoDevs);

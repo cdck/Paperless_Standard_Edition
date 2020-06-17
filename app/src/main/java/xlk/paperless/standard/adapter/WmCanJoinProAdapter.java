@@ -13,7 +13,7 @@ import xlk.paperless.standard.data.bean.JoinPro;
 /**
  * @author xlk
  * @date 2020/3/28
- * @Description: 可加入同屏的投影机
+ * @desc 可加入同屏的投影机
  */
 public class WmCanJoinProAdapter extends BaseQuickAdapter<JoinPro, BaseViewHolder> {
 

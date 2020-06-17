@@ -2,6 +2,8 @@ package xlk.paperless.standard.view.meet;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.CountDownTimer;
+import android.view.View;
 
 import com.SuperKotlin.pictureviewer.ImagePagerActivity;
 import com.SuperKotlin.pictureviewer.PictureConfig;
@@ -19,6 +21,8 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.data.Constant;
@@ -33,14 +37,16 @@ import xlk.paperless.standard.view.MyApplication;
 /**
  * @author xlk
  * @date 2020/3/9
- * @Description:
+ * @desc :
  */
 public class MeetingPresenter extends BasePresenter {
     private final String TAG = "MeetingPresenter-->";
     private final Context cxt;
     private final IMeet view;
     private JniHandler jni = JniHandler.getInstance();
+    List<String> picPath = new ArrayList<>();
     private List<InterfaceMeetfunction.pbui_Item_MeetFunConfigDetailInfo> functions = new ArrayList<>();
+    private CountDownTimer countDownTimer;
 
     public MeetingPresenter(Context cxt, IMeet view) {
         this.cxt = cxt;
@@ -62,8 +68,9 @@ public class MeetingPresenter extends BasePresenter {
     public void BusEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
             case Constant.BUS_NET_WORK:
-                if (!AppUtil.isNetworkAvailable(cxt)) {
-                    view.jump2main();
+                LogUtil.d(TAG, "网络变更通知 -->" + MyApplication.isOneline);
+                if (!MyApplication.isOneline) {
+                    close();
                 }
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_TIME_VALUE:
@@ -82,7 +89,8 @@ public class MeetingPresenter extends BasePresenter {
                 Drawable drawable = Drawable.createFromPath(o2);
                 view.updateLogo(drawable);
                 break;
-            case Constant.BUS_SUB_BG://子界面背景图下载完成
+//            case Constant.BUS_SUB_BG://子界面背景图下载完成
+            case Constant.BUS_MAIN_BG://背景图下载完成
                 String o1 = (String) msg.getObjs()[0];
                 Drawable drawable1 = Drawable.createFromPath(o1);
                 view.updateBg(drawable1);
@@ -113,7 +121,7 @@ public class MeetingPresenter extends BasePresenter {
                 if (bytes == null) {
                     LogUtil.d(TAG, "BusEvent -->" + "bytes为空 设置离线");
                     view.updateOnline(cxt.getString(R.string.offline));
-                    view.jump2main();
+                    close();
                     return;
                 }
                 InterfaceDevice.pbui_DeviceInt32uProperty pbui_deviceInt32uProperty = InterfaceDevice.pbui_DeviceInt32uProperty.parseFrom(bytes);
@@ -121,7 +129,7 @@ public class MeetingPresenter extends BasePresenter {
                 boolean isonline = propertyval == 1;
                 if (!isonline) {
                     LogUtil.d(TAG, "BusEvent -->" + "isonline为false 设置离线");
-                    view.jump2main();
+                    close();
                 } else {
                     view.updateOnline(cxt.getString(R.string.online));
                 }
@@ -149,7 +157,48 @@ public class MeetingPresenter extends BasePresenter {
         }
     }
 
-    List<String> picPath = new ArrayList<>();
+    private long lastTime = 0;
+
+    private void close() {
+        LogUtil.e(TAG, "close 进行倒计时关闭 --> " + lastTime + ", " + MyApplication.isOneline);
+        if (lastTime > 0) return;
+        lastTime = System.currentTimeMillis();
+        countDownTimer = new CountDownTimer(60 * 1000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                LogUtil.i(TAG, "CountDownTimer onTick -->" + millisUntilFinished + ", " + MyApplication.isOneline);
+                if (MyApplication.isOneline) {
+                    byte[] bytes = jni.queryDevicePropertiesById(InterfaceMacro.Pb_MeetDevicePropertyID.Pb_MEETDEVICE_PROPERTY_NETSTATUS_VALUE,
+                            MyApplication.localDeviceId);
+                    if (bytes != null) {
+                        InterfaceDevice.pbui_DeviceInt32uProperty pbui_deviceInt32uProperty = null;
+                        try {
+                            pbui_deviceInt32uProperty = InterfaceDevice.pbui_DeviceInt32uProperty.parseFrom(bytes);
+                            int propertyval = pbui_deviceInt32uProperty.getPropertyval();
+                            if (propertyval == 1) {
+                                //已经有网络了就停止
+                                LogUtil.i(TAG, "CountDownTimer onTick 停止");
+                                countDownTimer.cancel();
+                                countDownTimer = null;
+                                view.updateOnline(cxt.getString(R.string.online));
+                            }
+                        } catch (InvalidProtocolBufferException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                LogUtil.e(TAG, "CountDownTimer onFinish  完毕  " + MyApplication.isOneline);
+                countDownTimer = null;
+                view.jump2main();
+            }
+        };
+        countDownTimer.start();
+    }
 
     private void previewImage(int index) {
         if (picPath.isEmpty()) {
@@ -225,17 +274,21 @@ public class MeetingPresenter extends BasePresenter {
                 int flag = itemInfo.getFlag();
                 boolean isShow = (InterfaceMacro.Pb_MeetFaceFlag.Pb_MEET_FACEFLAG_SHOW_VALUE == (flag & InterfaceMacro.Pb_MeetFaceFlag.Pb_MEET_FACEFLAG_SHOW_VALUE));
                 if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_LOGO.getNumber()) {
-                    FileUtil.createDir(Constant.configuration_picture_dir);
-                    jni.creationFileDownload(Constant.configuration_picture_dir + Constant.MAIN_LOGO_PNG_TAG + ".png", itemInfo.getMediaid(), 1, 0, Constant.MAIN_LOGO_PNG_TAG);
                     view.setLogoVisibility(isShow);
-                    break;
-                } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_SUBBG_VALUE) {//子界面背景图
-                    LogUtil.d(TAG, "fun_queryInterFaceConfiguration -->" + "下载子界面背景图");
+                    if (isShow) {
+                        FileUtil.createDir(Constant.configuration_picture_dir);
+                        jni.creationFileDownload(Constant.configuration_picture_dir + Constant.MAIN_LOGO_PNG_TAG + ".png", itemInfo.getMediaid(), 1, 0, Constant.MAIN_LOGO_PNG_TAG);
+                    }
+                } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_MAINBG_VALUE) {//主界面背景图
                     FileUtil.createDir(Constant.configuration_picture_dir);
-                    jni.creationFileDownload(Constant.configuration_picture_dir + Constant.SUB_BG_PNG_TAG + ".png", itemInfo.getMediaid(), 1, 0, Constant.SUB_BG_PNG_TAG);
+                    jni.creationFileDownload(Constant.configuration_picture_dir + Constant.MAIN_BG_PNG_TAG + ".png", itemInfo.getMediaid(), 1, 0, Constant.MAIN_BG_PNG_TAG);
                 }
+//                else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_SUBBG_VALUE) {//子界面背景图
+//                    LogUtil.d(TAG, "fun_queryInterFaceConfiguration -->" + "下载子界面背景图");
+//                    FileUtil.createDir(Constant.configuration_picture_dir);
+//                    jni.creationFileDownload(Constant.configuration_picture_dir + Constant.SUB_BG_PNG_TAG + ".png", itemInfo.getMediaid(), 1, 0, Constant.SUB_BG_PNG_TAG);
+//                }
             }
-
             for (int i = 0; i < onlytextList.size(); i++) {
                 InterfaceFaceconfig.pbui_Item_FaceOnlyTextItemInfo info = onlytextList.get(i);
                 int faceid = info.getFaceid();
@@ -300,9 +353,9 @@ public class MeetingPresenter extends BasePresenter {
         try {
             InterfaceMember.pbui_Type_MemberPermission memberPermission = jni.queryAttendPeoplePermissions();
             if (memberPermission == null) return;
-            MyApplication.allMemberPermissions = memberPermission.getItemList();
-            for (int i = 0; i < MyApplication.allMemberPermissions.size(); i++) {
-                InterfaceMember.pbui_Item_MemberPermission permission = MyApplication.allMemberPermissions.get(i);
+            List<InterfaceMember.pbui_Item_MemberPermission> allMemberPermissions = memberPermission.getItemList();
+            for (int i = 0; i < allMemberPermissions.size(); i++) {
+                InterfaceMember.pbui_Item_MemberPermission permission = allMemberPermissions.get(i);
                 if (permission.getMemberid() == MyApplication.localMemberId) {
                     MyApplication.localPermissions = Constant.getChoose(permission.getPermission());
                     return;

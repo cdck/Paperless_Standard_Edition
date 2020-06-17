@@ -1,0 +1,3 @@
+E:/pa/android/Paperless_Standard_Edition/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/native-lib.dir
+E:/pa/android/Paperless_Standard_Edition/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/edit_cache.dir
+E:/pa/android/Paperless_Standard_Edition/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/rebuild_cache.dir

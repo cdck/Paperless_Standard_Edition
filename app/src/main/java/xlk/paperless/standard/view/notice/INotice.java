@@ -8,7 +8,7 @@ import com.mogujie.tt.protobuf.InterfaceFaceconfig;
 /**
  * @author xlk
  * @date 2020/4/8
- * @Description:
+ * @desc
  */
 public interface INotice {
     void updateText(InterfaceBullet.pbui_Item_BulletDetailInfo info);

@@ -5,7 +5,7 @@ import com.mogujie.tt.protobuf.InterfaceIM;
 /**
  * @author xlk
  * @date 2020/3/17
- * @Description: 会议交流的自定义信息
+ * @desc 会议交流的自定义信息
  */
 public class ChatMessage {
     private int type;

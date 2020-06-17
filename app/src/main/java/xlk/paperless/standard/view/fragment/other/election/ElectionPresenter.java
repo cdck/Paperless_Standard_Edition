@@ -25,7 +25,7 @@ import xlk.paperless.standard.view.BasePresenter;
 /**
  * @author xlk
  * @date 2020/4/7
- * @Description:
+ * @desc
  */
 public class ElectionPresenter extends BasePresenter {
     private final String TAG = "ElectionPresenter-->";

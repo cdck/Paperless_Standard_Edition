@@ -24,7 +24,7 @@ import xlk.paperless.standard.util.ToastUtil;
 /**
  * @author xlk
  * @date 2020/3/13
- * @Description: 会议议程
+ * @desc 会议议程
  */
 public class MeetAgendaFragment extends Fragment implements IMeetAgenda, TbsReaderView.ReaderCallback {
 
@@ -105,7 +105,7 @@ public class MeetAgendaFragment extends Fragment implements IMeetAgenda, TbsRead
                 e.printStackTrace();
             }
         } else {
-            ToastUtil.show(getContext().getApplicationContext(), R.string.not_supported);
+            ToastUtil.show(R.string.not_supported);
         }
     }
 

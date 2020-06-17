@@ -15,7 +15,7 @@ import xlk.paperless.standard.data.bean.DevMember;
 /**
  * @author xlk
  * @date 2020/3/17
- * @Description: 会议交流界面中 左边的在线参会人列表
+ * @desc 会议交流界面中 左边的在线参会人列表
  */
 public class MeetChatMemberAdapter extends BaseQuickAdapter<DevMember, BaseViewHolder> {
     List<Integer> ids = new ArrayList<>();

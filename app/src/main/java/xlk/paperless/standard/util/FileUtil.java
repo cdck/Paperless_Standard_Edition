@@ -35,7 +35,7 @@ import xlk.paperless.standard.data.WpsModel;
 /**
  * @author xlk
  * @date 2020/3/11
- * @Description:
+ * @desc
  */
 public class FileUtil {
     private static final String TAG = "FileUtil-->";
@@ -130,10 +130,10 @@ public class FileUtil {
         String fileEnd = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()).toLowerCase();
         return fileEnd.equals("mp4")
                 || fileEnd.equals("3gp")
-                || fileEnd.equals("wav")
-                || fileEnd.equals("mp3")
-                || fileEnd.equals("wmv")
-                || fileEnd.equals("ts")
+//                || fileEnd.equals("wav")
+//                || fileEnd.equals("mp3")
+//                || fileEnd.equals("wmv")
+//                || fileEnd.equals("ts")
                 || fileEnd.equals("rmvb")
                 || fileEnd.equals("mov")
                 || fileEnd.equals("m4v")
@@ -194,21 +194,21 @@ public class FileUtil {
                 || fileEnd.equals("doc")
                 || fileEnd.equals("docx")
                 || fileEnd.equals("log")
-                || fileEnd.equals("dot")
-                || fileEnd.equals("dotx")
+//                || fileEnd.equals("dot")
+//                || fileEnd.equals("dotx")
                 || fileEnd.equals("ppt")
                 || fileEnd.equals("pptx")
                 || fileEnd.equals("pps")
                 || fileEnd.equals("ppsx")
-                || fileEnd.equals("pot")
-                || fileEnd.equals("potx")
+//                || fileEnd.equals("pot")
+//                || fileEnd.equals("potx")
                 || fileEnd.equals("xls")
                 || fileEnd.equals("xlsx")
-                || fileEnd.equals("xlt")
-                || fileEnd.equals("xltx")
-                || fileEnd.equals("wpt")
+//                || fileEnd.equals("xlt")
+//                || fileEnd.equals("xltx")
+//                || fileEnd.equals("wpt")
                 || fileEnd.equals("wps")
-                || fileEnd.equals("csv")
+//                || fileEnd.equals("csv")
                 || fileEnd.equals("pdf");
     }
 
@@ -278,7 +278,7 @@ public class FileUtil {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            ToastUtil.show(context, R.string.no_wps_software_found);
+            ToastUtil.show(R.string.no_wps_software_found);
             e.printStackTrace();
         }
     }

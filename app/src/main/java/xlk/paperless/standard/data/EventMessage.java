@@ -3,7 +3,7 @@ package xlk.paperless.standard.data;
 /**
  * @author xlk
  * @date 2020/3/9
- * @Description:
+ * @desc
  */
 public class EventMessage {
     private int type;

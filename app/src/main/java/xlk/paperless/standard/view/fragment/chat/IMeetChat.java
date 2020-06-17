@@ -7,7 +7,7 @@ import xlk.paperless.standard.data.bean.DevMember;
 /**
  * @author xlk
  * @date 2020/3/17
- * @Description:
+ * @desc
  */
 public interface IMeetChat {
     void updateMemberRv(List<DevMember> onLineMembers);

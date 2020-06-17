@@ -18,7 +18,7 @@ import xlk.paperless.standard.data.bean.DevControlBean;
 /**
  * @author xlk
  * @date 2020/4/1
- * @Description: 终端控制adapter
+ * @desc 终端控制adapter
  */
 public class DevControlAdapter extends BaseQuickAdapter<DevControlBean, BaseViewHolder> {
     List<Integer> chooseIds = new ArrayList<>();

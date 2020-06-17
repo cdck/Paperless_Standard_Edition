@@ -10,7 +10,7 @@ import xlk.paperless.standard.data.bean.DevMember;
 /**
  * @author xlk
  * @date 2020/3/14
- * @Description:
+ * @desc
  */
 public interface IMeetData {
     void updateDir(List<InterfaceFile.pbui_Item_MeetDirDetailInfo> dirDetailInfos);

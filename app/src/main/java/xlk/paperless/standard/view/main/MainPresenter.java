@@ -50,7 +50,7 @@ import static xlk.paperless.standard.view.MyApplication.initializationIsOver;
 /**
  * @author xlk
  * @date 2020/3/9
- * @Description:
+ * @desc
  */
 public class MainPresenter extends BasePresenter {
     private final String TAG = "MainPresenter-->";
@@ -100,15 +100,6 @@ public class MainPresenter extends BasePresenter {
             copyTo("client.ini", Constant.INI_NAME);
         } else {
             LogUtil.d(TAG, "initConfFile :  已有ini文件 --> ");
-            iniUtil.loadFile(IniUtil.iniFile);
-            String streamprotol = iniUtil.get("selfinfo", "streamprotol");
-            String disablemulticast = iniUtil.get("Audio", "disablemulticast");
-            if (streamprotol == null || streamprotol.equals("") || disablemulticast == null || disablemulticast.equals("")) {
-                iniUtil.put("selfinfo", "streamprotol", 1);
-                iniUtil.put("Audio", "disablemulticast", 1);
-                iniUtil.store();//修改后提交
-                LogUtil.d(TAG, "initConfFile :  进行添加 streamprotol 和 disablemulticast--> ");
-            }
         }
         //设置版本信息
         setVersion();
@@ -178,9 +169,11 @@ public class MainPresenter extends BasePresenter {
                 hardver = packageInfo.versionName.substring(0, packageInfo.versionName.indexOf("."));
                 softver = packageInfo.versionName.substring(packageInfo.versionName.indexOf(".") + 1, packageInfo.versionName.length());
             }
-            iniUtil.put("selfinfo", "hardver", hardver);
-            iniUtil.put("selfinfo", "softver", softver);
-            iniUtil.store();
+            if (iniUtil.loadFile(IniUtil.iniFile)) {
+                iniUtil.put("selfinfo", "hardver", hardver);
+                iniUtil.put("selfinfo", "softver", softver);
+                iniUtil.store();
+            }
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -194,6 +187,12 @@ public class MainPresenter extends BasePresenter {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void BusEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
+            case Constant.BUS_NET_WORK:
+                LogUtil.i(TAG, "网络变更 -->" + MyApplication.isOneline);
+                if (MyApplication.isOneline) {
+                    view.get().checkNetWork();
+                }
+                break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_TIME_VALUE:
                 Object[] objs = msg.getObjs();
                 byte[] data = (byte[]) objs[0];
@@ -220,7 +219,7 @@ public class MainPresenter extends BasePresenter {
                 } else if (method == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_LOGON_VALUE) {
                     initializationIsOver = false;
                     LogUtil.i(TAG, "BusEvent -->" + "平台初始化失败");
-                    ToastUtil.show(cxt.get(), R.string.initialization_failed);
+                    ToastUtil.show(R.string.initialization_failed);
                 }
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEMEETSTATUS_VALUE://界面状态变更通知
@@ -264,8 +263,8 @@ public class MainPresenter extends BasePresenter {
                         view.get().jump2meet();
                     } else if (status == InterfaceMacro.Pb_DB_StatusCode.Pb_STATUS_PSWFAILED_VALUE) {
                         LogUtil.i(TAG, "BusEvent -->" + "签到密码错误");
-                        ToastUtil.show(cxt.get(), R.string.sign_in_password_error);
-                        view.get().signIn();
+                        ToastUtil.show(R.string.sign_in_password_error);
+                        view.get().readySignIn();
                     }
                 }
                 break;
@@ -410,6 +409,7 @@ public class MainPresenter extends BasePresenter {
                 LogUtil.d(TAG, "queryDevMeetInfo -->" + "是否是单位：" + unit);
                 view.get().updateUnit(unit);
             }
+            //查询备注
             InterfaceMember.pbui_Type_MeetMembeProperty info1 = jni.queryMemberProperty(InterfaceMacro.Pb_MemberPropertyID.Pb_MEETMEMBER_PROPERTY_COMMENT_VALUE, 0);
             if (info1 != null) {
                 view.get().updateNote(info1.getPropertytext().toStringUtf8());
@@ -512,12 +512,13 @@ public class MainPresenter extends BasePresenter {
             List<Integer> ids = new ArrayList<>();
             List<InterfaceRoom.pbui_Item_MeetSeatDetailInfo> seatDetailInfos = seatDetailInfo.getItemList();
             for (InterfaceRoom.pbui_Item_MeetSeatDetailInfo info : seatDetailInfos) {
-//                Log.i(TAG, "queryMeetRanking: 设备ID：" + info.getSeatid() + ", 参会人员ID：" + info.getNameId() + ", 人员身份：" + info.getRole()
-//                        + "，本机：" + MyApplication.localDeviceId + "," + MyApplication.localMemberId);
+                LogUtil.i(TAG, "queryMeetRanking: 设备id：" + info.getSeatid() + ", 参会人员id：" + info.getNameId() + ", 人员身份：" + info.getRole()
+                        + "，本机设备id和人员id：" + MyApplication.localDeviceId + "," + MyApplication.localMemberId);
                 if (info.getNameId() != 0) {//说明已经绑定了参会人
                     if (info.getSeatid() == MyApplication.localDeviceId) {
                         //本机已经绑定了参会人了
-                        LogUtil.d(TAG, "queryMeetRanking -->" + "本机已经绑定了参会人了");
+                        LogUtil.d(TAG, "queryMeetRanking -->" + "本机已经绑定了参会人了" + MyApplication.localDeviceId);
+                        queryDevMeetInfo();
                         return;
                     }
                     ids.add(info.getNameId());//收集已经绑定设备的人员ID

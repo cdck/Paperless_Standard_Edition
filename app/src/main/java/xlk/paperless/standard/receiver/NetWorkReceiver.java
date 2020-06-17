@@ -16,7 +16,7 @@ import xlk.paperless.standard.view.MyApplication;
 /**
  * @author xlk
  * @date 2020/4/25
- * @Description: 网络状态变更广播接收者
+ * @desc 网络状态变更广播接收者
  */
 public class NetWorkReceiver extends BroadcastReceiver {
     private final String TAG = "NetWorkReceiver-->";

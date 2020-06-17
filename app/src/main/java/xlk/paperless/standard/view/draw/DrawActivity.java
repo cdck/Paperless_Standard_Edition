@@ -35,6 +35,7 @@ import xlk.paperless.standard.ui.ColorPickerDialog;
 import xlk.paperless.standard.util.FileUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.ToastUtil;
+import xlk.paperless.standard.util.UriUtil;
 import xlk.paperless.standard.view.BaseActivity;
 import xlk.paperless.standard.view.MyApplication;
 
@@ -288,9 +289,9 @@ public class DrawActivity extends BaseActivity implements IDraw, View.OnClickLis
         builder.setPositiveButton(getResources().getString(R.string.save_server), (dialog, which) -> {
             String name = edt.getText().toString().trim();
             if (name.isEmpty()) {
-                ToastUtil.show(getApplicationContext(), R.string.please_enter_file_name);
+                ToastUtil.show( R.string.please_enter_file_name);
             } else if (!FileUtil.isLegalName(name)) {
-                ToastUtil.show(getApplicationContext(), R.string.tip_file_name_unlawfulness);
+                ToastUtil.show( R.string.tip_file_name_unlawfulness);
             } else {
                 presenter.savePicture(name, true, artBoard.getCanvasBmp());
                 dialog.dismiss();
@@ -299,12 +300,12 @@ public class DrawActivity extends BaseActivity implements IDraw, View.OnClickLis
         builder.setNeutralButton(getResources().getString(R.string.save_local), (dialog, which) -> {
             final String name = edt.getText().toString().trim();
             if (name.isEmpty()) {
-                ToastUtil.show(getApplicationContext(), R.string.please_enter_file_name);
+                ToastUtil.show( R.string.please_enter_file_name);
             } else if (!FileUtil.isLegalName(name)) {
-                ToastUtil.show(getApplicationContext(), R.string.tip_file_name_unlawfulness);
+                ToastUtil.show( R.string.tip_file_name_unlawfulness);
             } else {
                 presenter.savePicture(name, false, artBoard.getCanvasBmp());
-                ToastUtil.show(this, getResources().getString(R.string.tip_save_as, Constant.artboard_picture_dir));
+                ToastUtil.show(getResources().getString(R.string.tip_save_as, Constant.artboard_picture_dir));
                 dialog.dismiss();
             }
         });
@@ -364,11 +365,16 @@ public class DrawActivity extends BaseActivity implements IDraw, View.OnClickLis
             // 获取选中文件的uri
             LogUtil.d(TAG, "onActivityResult: data.toString : " + data.toString());
             Uri uri = data.getData();
-            String realPath = FileUtil.getRealPath(getApplicationContext(), uri);
+            String realPath = null;
+            try {
+                realPath = UriUtil.getFilePath(getApplicationContext(), uri);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             LogUtil.e(TAG, "DrawBoardActivity.onActivityResult :  选中的文件路径 --->>> " + realPath);
             if (realPath == null) {
                 LogUtil.e(TAG, "onActivityResult: 获取该文件的路径失败....");
-//                ToastUtil.showToast(getApplicationContext(), R.string.get_file_path_fail);
+                ToastUtil.show( R.string.get_file_path_fail);
             } else {
                 // 执行操作
                 Bitmap dstbmp = BitmapFactory.decodeFile(realPath);

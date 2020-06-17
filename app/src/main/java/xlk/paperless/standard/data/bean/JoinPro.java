@@ -5,7 +5,7 @@ import com.mogujie.tt.protobuf.InterfaceDevice;
 /**
  * @author xlk
  * @date 2020/3/28
- * @Description: 可加入同屏的投影机
+ * @desc 可加入同屏的投影机
  */
 public class JoinPro {
     InterfaceDevice.pbui_Item_DeviceResPlay resPlay;

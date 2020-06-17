@@ -11,7 +11,7 @@ import xlk.paperless.standard.ui.ArtBoard;
 /**
  * @author xlk
  * @date 2020/3/13
- * @Description:
+ * @desc
  */
 public interface IDraw {
     void drawZoomBmp(Bitmap bitmap);

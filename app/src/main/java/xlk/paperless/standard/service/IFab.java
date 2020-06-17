@@ -11,7 +11,7 @@ import xlk.paperless.standard.ui.CustomInterface.BaseInterface;
 /**
  * @author xlk
  * @date 2020/3/26
- * @Description:
+ * @desc
  */
 public interface IFab extends BaseInterface {
 
