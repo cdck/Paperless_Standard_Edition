@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/icon_meet_bg"
+    android:orientation="vertical"
+    tools:context=".view.admin.AdminActivity">
+
+
+    <TextView
+        android:id="@+id/admin_tv_meet_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/admin_iv_close"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/admin_iv_close"
+        tools:text="会议状态：正在进行..." />
+
+    <TextView
+        android:id="@+id/admin_tv_meet_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_20"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/admin_iv_close"
+        app:layout_constraintEnd_toStartOf="@+id/admin_tv_user"
+        app:layout_constraintStart_toEndOf="@+id/admin_tv_meet_status"
+        app:layout_constraintTop_toTopOf="@+id/admin_iv_close"
+        tools:text="第一次会议" />
+
+    <TextView
+        android:id="@+id/admin_tv_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/admin_iv_close"
+        app:layout_constraintEnd_toStartOf="@+id/admin_tv_1"
+        app:layout_constraintTop_toTopOf="@+id/admin_iv_close"
+        tools:text="用户：root" />
+
+    <TextView
+        android:id="@+id/admin_tv_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_5"
+        android:layout_marginEnd="@dimen/dp_5"
+        android:text="丨"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/admin_iv_close"
+        app:layout_constraintEnd_toStartOf="@+id/admin_tv_seat"
+        app:layout_constraintTop_toTopOf="@+id/admin_iv_close" />
+
+    <TextView
+        android:id="@+id/admin_tv_seat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/admin_iv_close"
+        app:layout_constraintEnd_toStartOf="@+id/admin_tv_2"
+        app:layout_constraintTop_toTopOf="@+id/admin_iv_close"
+        tools:text="席位：Ternimal-1100000" />
+
+    <TextView
+        android:id="@+id/admin_tv_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_5"
+        android:layout_marginEnd="@dimen/dp_5"
+        android:text="丨"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/admin_iv_close"
+        app:layout_constraintEnd_toStartOf="@+id/admin_tv_online"
+        app:layout_constraintTop_toTopOf="@+id/admin_iv_close" />
+
+    <TextView
+        android:id="@+id/admin_tv_online"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_30"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/admin_iv_close"
+        app:layout_constraintEnd_toStartOf="@+id/admin_iv_close"
+        app:layout_constraintTop_toTopOf="@+id/admin_iv_close"
+        tools:text="在线" />
+
+    <ImageView
+        android:id="@+id/admin_iv_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_5"
+        android:src="@drawable/icon_close_t"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/admin_ll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/admin_iv_close">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/admin_rv_level1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/dp_1"
+            android:layout_weight="1"
+            android:background="@color/admin_rv_bg" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/admin_rv_level2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/admin_rv_bg" />
+
+        <FrameLayout
+            android:id="@+id/admin_fl"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:background="@color/meet_fragment_bg" />
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

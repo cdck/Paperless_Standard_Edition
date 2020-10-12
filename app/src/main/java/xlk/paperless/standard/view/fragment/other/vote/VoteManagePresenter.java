@@ -6,6 +6,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.mogujie.tt.protobuf.InterfaceBase;
 import com.mogujie.tt.protobuf.InterfaceMacro;
 import com.mogujie.tt.protobuf.InterfaceMember;
+import com.mogujie.tt.protobuf.InterfaceRoom;
 import com.mogujie.tt.protobuf.InterfaceVote;
 
 import org.greenrobot.eventbus.EventBus;
@@ -17,9 +18,10 @@ import java.util.List;
 
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.data.EventMessage;
+import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.data.bean.SubmitMember;
 import xlk.paperless.standard.util.LogUtil;
-import xlk.paperless.standard.view.BasePresenter;
+import xlk.paperless.standard.base.BasePresenter;
 
 /**
  * @author xlk
@@ -32,26 +34,22 @@ public class VoteManagePresenter extends BasePresenter {
     private final Context cxt;
     public List<InterfaceVote.pbui_Item_MeetVoteDetailInfo> voteInfos = new ArrayList<>();
     public List<InterfaceMember.pbui_Item_MeetMemberDetailInfo> memberInfos = new ArrayList<>();
+    private List<Integer> filterMembers = new ArrayList<>();
     public List<SubmitMember> submitMembers = new ArrayList<>();
 
     public VoteManagePresenter(Context cxt, IVoteManage view) {
+        super();
         this.cxt = cxt;
         this.view = view;
     }
 
     @Override
-    public void register() {
-        EventBus.getDefault().register(this);
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
-    public void unregister() {
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void BusEvent(EventMessage msg) throws InvalidProtocolBufferException {
+    public void busEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETVOTEINFO_VALUE://投票变更通知
                 LogUtil.d(TAG, "BusEvent -->" + "投票变更通知");
@@ -63,7 +61,8 @@ public class VoteManagePresenter extends BasePresenter {
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETSEAT_VALUE://会议排位变更通知
                 LogUtil.d(TAG, "BusEvent -->" + "会议排位变更通知");
-                queryMember();
+                querySecretary();
+//                queryMember();
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEMBERPERMISSION_VALUE://参会人员权限变更通知
                 LogUtil.d(TAG, "BusEvent -->" + "参会人员权限变更通知");
@@ -94,7 +93,12 @@ public class VoteManagePresenter extends BasePresenter {
             InterfaceMember.pbui_Type_MeetMemberDetailInfo info = jni.queryAttendPeopleDetailed();
             memberInfos.clear();
             if (info != null) {
-                memberInfos.addAll(info.getItemList());
+                List<InterfaceMember.pbui_Item_MeetMemberDetailInfo> itemList = info.getItemList();
+                for (int i = 0; i < itemList.size(); i++) {
+                    InterfaceMember.pbui_Item_MeetMemberDetailInfo item = itemList.get(i);
+                    if (filterMembers.contains(item.getMemberid())) continue;
+                    memberInfos.add(item);
+                }
             }
             view.updateMemberRv();
         } catch (InvalidProtocolBufferException e) {
@@ -156,13 +160,17 @@ public class VoteManagePresenter extends BasePresenter {
                     //将 char 装换成int型整数
                     int a = c - '0';
                     if (a == 1) {
-                        selectedItem = length - j - 1;//索引从0开始
+                        //索引从0开始
+                        selectedItem = length - j - 1;
                         for (int k = 0; k < optionInfo.size(); k++) {
                             if (k == selectedItem) {
                                 InterfaceVote.pbui_SubItem_VoteItemInfo voteOptionsInfo = optionInfo.get(k);
                                 String text = voteOptionsInfo.getText().toStringUtf8();
-                                if (chooseText.length() == 0) chooseText = text;
-                                else chooseText += " | " + text;
+                                if (chooseText.length() == 0) {
+                                    chooseText = text;
+                                } else {
+                                    chooseText += " | " + text;
+                                }
                             }
                         }
                     }
@@ -186,10 +194,10 @@ public class VoteManagePresenter extends BasePresenter {
         int yingDao = yingDaoInfo == null ? 0 : yingDaoInfo.getPropertyval();
         int yiTou = yiTouInfo == null ? 0 : yiTouInfo.getPropertyval();
         int shiDao = shiDaoInfo == null ? 0 : shiDaoInfo.getPropertyval();
-        String yingDaoStr = "应到："+yingDao + "人 ";
-        String shiDaoStr = "实到："+shiDao + "人 ";
-        String yiTouStr = "已投："+yiTou + "人 ";
-        String weiTouStr = "未投："+(yingDao - yiTou) + "人";
+        String yingDaoStr = "应到：" + yingDao + "人 ";
+        String shiDaoStr = "实到：" + shiDao + "人 ";
+        String yiTouStr = "已投：" + yiTou + "人 ";
+        String weiTouStr = "未投：" + (yingDao - yiTou) + "人";
         LogUtil.d(TAG, "queryYd :  应到人数: " + yingDaoStr + "，实到：" + shiDaoStr + ", 已投人数: " + yiTouStr + "， 未投：" + weiTouStr);
         return new String[]{yingDaoStr, shiDaoStr, yiTouStr, weiTouStr};
     }
@@ -221,5 +229,23 @@ public class VoteManagePresenter extends BasePresenter {
                 return cxt.getString(R.string.state_has_ended);
         }
         return "";
+    }
+
+    public void querySecretary() {
+        try {
+            InterfaceRoom.pbui_Type_MeetSeatDetailInfo pbui_type_meetSeatDetailInfo = jni.queryMeetRanking();
+            if (pbui_type_meetSeatDetailInfo == null) return;
+            filterMembers.clear();
+            List<InterfaceRoom.pbui_Item_MeetSeatDetailInfo> itemList1 = pbui_type_meetSeatDetailInfo.getItemList();
+            for (int i = 0; i < itemList1.size(); i++) {
+                InterfaceRoom.pbui_Item_MeetSeatDetailInfo item = itemList1.get(i);
+                if (Values.isFilterSecretary && item.getRole() == InterfaceMacro.Pb_MeetMemberRole.Pb_role_member_secretary_VALUE) {
+                    filterMembers.add(item.getNameId());
+                }
+            }
+            queryMember();
+        } catch (InvalidProtocolBufferException e) {
+            e.printStackTrace();
+        }
     }
 }

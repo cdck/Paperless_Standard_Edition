@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Looper;
+import android.text.format.DateUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import xlk.paperless.standard.data.Constant;
+import xlk.paperless.standard.view.MyApplication;
 
 /**
  * Created by Administrator on 2018/2/25.
@@ -31,7 +33,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     private static CrashHandler INSTANCE = new CrashHandler();// CrashHandler实例
     private Context mContext;// 程序的Context对象
     private Map<String, String> info = new HashMap<>();// 用来存储设备信息和异常信息
-    private SimpleDateFormat format = new SimpleDateFormat(
+    private static final SimpleDateFormat format = new SimpleDateFormat(
             "yyyy-MM-dd_HH:mm:ss");// 用于格式化日期,作为日志文件名的一部分
 
     /**
@@ -88,14 +90,13 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         if (ex == null) {
             return false;
         }
-        new Thread() {
-            @Override
-            public void run() {
-                Looper.prepare();
-                ToastUtil.show( "很抱歉,程序出现异常,即将退出");
-                Looper.loop();
-            }
-        }.start();
+        MyApplication.threadPool.execute(() -> {
+//        new Thread() {
+            Looper.prepare();
+            ToastUtil.show("很抱歉,程序出现异常,即将退出");
+            Looper.loop();
+        });
+//        }.start();
         // 收集设备参数信息
         collectDeviceInfo(mContext);
         // 保存日志文件
@@ -174,7 +175,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         String fileName = "crash-" + time + "-" + timeStamp + ".log";
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             try {
-                File dir = new File(Constant.crash_log_dir);
+                File dir = new File(Constant.dir_crash_log);
                 LogUtil.i("CrashHandler", dir.toString());
                 if (!dir.exists()) {
                     dir.mkdir();

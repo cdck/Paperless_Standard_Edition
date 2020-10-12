@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
+import android.os.Process;
 import android.os.SystemClock;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.DisplayMetrics;
@@ -25,7 +26,6 @@ import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
-import android.widget.Chronometer;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -50,20 +50,25 @@ import xlk.paperless.standard.adapter.WmScreenMemberAdapter;
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.data.JniHandler;
+import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.ui.CustomBaseViewHolder;
 import xlk.paperless.standard.util.AppUtil;
-import xlk.paperless.standard.util.DateUtil;
 import xlk.paperless.standard.util.DialogUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.ToastUtil;
 import xlk.paperless.standard.view.CameraActivity;
-import xlk.paperless.standard.view.MyApplication;
 import xlk.paperless.standard.view.chatonline.ChatVideoActivity;
 import xlk.paperless.standard.view.draw.DrawActivity;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static xlk.paperless.standard.data.Constant.permission_code_projection;
+import static xlk.paperless.standard.data.Constant.permission_code_screen;
+import static xlk.paperless.standard.data.Constant.resource_0;
+import static xlk.paperless.standard.data.Constant.resource_1;
+import static xlk.paperless.standard.data.Constant.resource_2;
+import static xlk.paperless.standard.data.Constant.resource_3;
+import static xlk.paperless.standard.data.Constant.resource_4;
 import static xlk.paperless.standard.view.MyApplication.mMediaProjection;
-import static xlk.paperless.standard.view.MyApplication.screen_width;
 import static xlk.paperless.standard.view.chatonline.ChatVideoActivity.isChatingOpened;
 import static xlk.paperless.standard.view.draw.DrawActivity.isDrawing;
 
@@ -80,10 +85,10 @@ public class FabService extends Service implements IFab {
     private long downTime, upTime;
     private int mTouchStartX, mTouchStartY;
     private WindowManager.LayoutParams mParams, defaultParams, fullParams, wrapParams;
-    private ImageView hoverButton;
     private boolean hoverButtonIsShowing, menuViewIsShowing, serviceViewIsShowing, screenViewIsShowing,
-            joinViewIsShowing, proViewIsShowing, voteViewIsShowing;
-    private View menuView, serviceView, screenView, joinView, proView, voteView;
+            joinViewIsShowing, proViewIsShowing, voteViewIsShowing, voteEnsureViewIsShowing;
+    private ImageView hoverButton;
+    private View menuView, serviceView, screenView, joinView, proView, voteView, voteEnsureView;
     private FabPresenter presenter;
     private int mScreenDensity;
     private ImageReader mImageReader;
@@ -98,7 +103,7 @@ public class FabService extends Service implements IFab {
     private int maxChooseCount = 1;//当前投票最多可以选择答案的个数
     private int currentChooseCount = 0;//当前投票已经选中的选项个数
     private View cameraView;
-    private int windowWidth,windowHeight;
+    private int windowWidth, windowHeight;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -111,7 +116,6 @@ public class FabService extends Service implements IFab {
         LogUtil.d(TAG, "onCreate -->");
         presenter = new FabPresenter(this, this);
         presenter.queryMember();
-        presenter.register();
         showFab();
     }
 
@@ -126,7 +130,7 @@ public class FabService extends Service implements IFab {
         DisplayMetrics metrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(metrics);
         mScreenDensity = metrics.densityDpi;
-        mImageReader = ImageReader.newInstance(MyApplication.screen_width, MyApplication.screen_height, 0x1, 2);
+        mImageReader = ImageReader.newInstance(Values.screen_width, Values.screen_height, 0x1, 2);
         initHoverButton();
         initParams();
         hoverButtonIsShowing = true;
@@ -159,7 +163,7 @@ public class FabService extends Service implements IFab {
                 case MotionEvent.ACTION_UP:
                     upTime = System.currentTimeMillis();
                     if (upTime - downTime > 150) {
-                        mParams.x = 0;
+                        mParams.x = windowWidth - hoverButton.getWidth();
                         mParams.y = mTouchStartY - hoverButton.getHeight();
                         wm.updateViewLayout(hoverButton, mParams);
                     } else {
@@ -211,8 +215,8 @@ public class FabService extends Service implements IFab {
         mParams.gravity = Gravity.START | Gravity.TOP;
         mParams.width = FrameLayout.LayoutParams.WRAP_CONTENT;
         mParams.height = FrameLayout.LayoutParams.WRAP_CONTENT;
-        mParams.x = 0;
-        mParams.y = windowHeight - 100;//使用windowHeight在首次拖动的时候才会有效
+        mParams.x = windowWidth-hoverButton.getWidth();
+        mParams.y = windowHeight;//使用windowHeight在首次拖动的时候才会有效
         mParams.windowAnimations = R.style.pop_Animation;
         /** **** **  弹框  ** **** **/
         defaultParams = new WindowManager.LayoutParams();
@@ -221,8 +225,8 @@ public class FabService extends Service implements IFab {
         defaultParams.gravity = Gravity.CENTER;
 //        defaultParams.width = FrameLayout.LayoutParams.WRAP_CONTENT;
 //        defaultParams.height = FrameLayout.LayoutParams.WRAP_CONTENT;
-        defaultParams.width = MyApplication.screen_width / 2;
-        defaultParams.height = MyApplication.screen_height / 2;
+        defaultParams.width = Values.screen_width / 2;
+        defaultParams.height = Values.screen_height / 2;
         defaultParams.windowAnimations = R.style.pop_Animation;
         /** **** **  充满屏幕  ** **** **/
         fullParams = new WindowManager.LayoutParams();
@@ -272,7 +276,7 @@ public class FabService extends Service implements IFab {
         });
         //发起同屏
         holder.wm_menu_start_screen.setOnClickListener(v -> {
-            if (Constant.hasPermission(1)) {
+            if (Constant.hasPermission(permission_code_screen)) {
                 showScreenView(1);
             } else {
                 ToastUtil.show(R.string.err_NoPermission);
@@ -280,7 +284,7 @@ public class FabService extends Service implements IFab {
         });
         //结束同屏
         holder.wm_menu_stop_screen.setOnClickListener(v -> {
-            if (Constant.hasPermission(1)) {
+            if (Constant.hasPermission(permission_code_screen)) {
                 showScreenView(2);
             } else {
                 ToastUtil.show(R.string.err_NoPermission);
@@ -288,16 +292,16 @@ public class FabService extends Service implements IFab {
         });
         //加入同屏
         holder.wm_menu_join_screen.setOnClickListener(v -> {
-            if (Constant.hasPermission(1)) {
-                presenter.queryCanJoin();
-                showJoinView();
-            } else {
-                ToastUtil.show(R.string.err_NoPermission);
-            }
+//            if (Constant.hasPermission(permission_code_screen)) {
+            presenter.queryCanJoin();
+            showJoinView();
+//            } else {
+//                ToastUtil.show(R.string.err_NoPermission);
+//            }
         });
         //发起投影
         holder.wm_menu_start_projection.setOnClickListener(v -> {
-            if (Constant.hasPermission(2)) {
+            if (Constant.hasPermission(permission_code_projection)) {
                 showProView(1);
             } else {
                 ToastUtil.show(R.string.err_NoPermission);
@@ -305,7 +309,7 @@ public class FabService extends Service implements IFab {
         });
         //结束投影
         holder.wm_menu_stop_projection.setOnClickListener(v -> {
-            if (Constant.hasPermission(2)) {
+            if (Constant.hasPermission(permission_code_projection)) {
                 showProView(2);
             } else {
                 ToastUtil.show(R.string.err_NoPermission);
@@ -346,12 +350,12 @@ public class FabService extends Service implements IFab {
             boolean checked = holder.wm_pro_full.isChecked();
             List<Integer> res = new ArrayList<>();
             if (checked) {
-                res.add(0);
+                res.add(resource_0);
             } else {
-                if (holder.wm_pro_flow1.isChecked()) res.add(1);
-                if (holder.wm_pro_flow2.isChecked()) res.add(2);
-                if (holder.wm_pro_flow3.isChecked()) res.add(3);
-                if (holder.wm_pro_flow4.isChecked()) res.add(4);
+                if (holder.wm_pro_flow1.isChecked()) res.add(resource_1);
+                if (holder.wm_pro_flow2.isChecked()) res.add(resource_2);
+                if (holder.wm_pro_flow3.isChecked()) res.add(resource_3);
+                if (holder.wm_pro_flow4.isChecked()) res.add(resource_4);
             }
             if (res.isEmpty()) {
                 ToastUtil.show(cxt.getString(R.string.please_choose_res_first));
@@ -361,13 +365,14 @@ public class FabService extends Service implements IFab {
                 boolean isMandatory = holder.wm_pro_mandatory.isChecked();
                 int triggeruserval = isMandatory ? InterfaceMacro.Pb_TriggerUsedef.Pb_EXCEC_USERDEF_FLAG_NOCREATEWINOPER_VALUE
                         : InterfaceMacro.Pb_TriggerUsedef.Pb_EXCEC_USERDEF_FLAG_ZERO_VALUE;
-                jni.streamPlay(MyApplication.localDeviceId, 2, triggeruserval, res, ids);
+                jni.streamPlay(Values.localDeviceId, 2, triggeruserval, res, ids);
             } else {//结束投影
                 jni.stopResourceOperate(res, ids);
             }
             showPop(proView, hoverButton, mParams);
         });
         holder.wm_pro_cancel.setOnClickListener(v -> showPop(proView, hoverButton, mParams));
+        holder.wm_pro_all.performClick();
     }
 
     //加入同屏视图
@@ -420,9 +425,9 @@ public class FabService extends Service implements IFab {
                 ToastUtil.show(R.string.err_target_NotNull);
             } else {
                 List<Integer> res = new ArrayList<>();
-                res.add(0);
+                res.add(resource_0);
                 List<Integer> devs = new ArrayList<>();
-                devs.add(MyApplication.localDeviceId);
+                devs.add(Values.localDeviceId);
                 jni.streamPlay(ids.get(0), 2, 0, res, devs);
                 showPop(joinView, hoverButton, mParams);
             }
@@ -469,11 +474,12 @@ public class FabService extends Service implements IFab {
 
     //同屏视图事件
     private void screenViewHolderEvent(CustomBaseViewHolder.ScreenViewHolder holder, int type) {
-        holder.wm_screen_mandatory.setVisibility((type == 1) ? View.VISIBLE : View.INVISIBLE);
         if (type == 1) {
+            holder.wm_screen_mandatory.setVisibility(View.VISIBLE);
             holder.wm_screen_launch.setText(cxt.getString(R.string.launch_screen));
             holder.wm_screen_title.setText(cxt.getString(R.string.launch_screen_title));
         } else if (type == 2) {
+            holder.wm_screen_mandatory.setVisibility(View.INVISIBLE);
             holder.wm_screen_launch.setText(cxt.getString(R.string.stop_screen));
             holder.wm_screen_title.setText(cxt.getString(R.string.stop_screen_title));
         }
@@ -508,20 +514,22 @@ public class FabService extends Service implements IFab {
                 ToastUtil.show(R.string.err_target_NotNull);
             } else {
                 List<Integer> temps = new ArrayList<>();
-                temps.add(0);
+                temps.add(resource_0);
                 if (type == 1) {//发起同屏
                     int triggeruserval = 0;
                     if (holder.wm_screen_mandatory.isChecked()) {//是否强制同屏
                         triggeruserval = InterfaceMacro.Pb_TriggerUsedef.Pb_EXCEC_USERDEF_FLAG_NOCREATEWINOPER_VALUE;
                     }
-                    jni.streamPlay(MyApplication.localDeviceId, 2, triggeruserval, temps, ids);
+                    jni.streamPlay(Values.localDeviceId, 2, triggeruserval, temps, ids);
                 } else {//结束同屏
                     jni.stopResourceOperate(temps, ids);
                 }
                 showPop(screenView, hoverButton, mParams);
             }
         });
-
+        //默认全部选中
+        holder.wm_screen_cb_attendee.performClick();
+        holder.wm_screen_cb_projector.performClick();
     }
 
     boolean dialogIsShowing = false;
@@ -578,7 +586,7 @@ public class FabService extends Service implements IFab {
                         .putExtra(Constant.extra_operdeviceid, operdeviceid)
                         .setFlags(FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
             } else {
-                EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_CHAT_STATE).objs(inviteflag, operdeviceid).build());
+                EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_CHAT_STATE).objects(inviteflag, operdeviceid).build());
             }
 //            showOpenCamera(inviteflag, operdeviceid);
             //强制的
@@ -598,7 +606,7 @@ public class FabService extends Service implements IFab {
                                     .putExtra(Constant.extra_operdeviceid, operdeviceid)
                                     .setFlags(FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
                         } else {
-                            EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_CHAT_STATE).objs(inviteflag, operdeviceid).build());
+                            EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_CHAT_STATE).objects(inviteflag, operdeviceid).build());
                         }
 //                        showOpenCamera(inviteflag, operdeviceid);
                         int flag = inviteflag | InterfaceDevice.Pb_DeviceInviteFlag.Pb_DEVICE_INVITECHAT_FLAG_DEAL_VALUE;
@@ -667,6 +675,10 @@ public class FabService extends Service implements IFab {
             currentVoteId = -1;
             currentChooseCount = 0;
         }
+        if (voteEnsureViewIsShowing) {
+            wm.removeView(voteEnsureView);
+            voteEnsureViewIsShowing = false;
+        }
     }
 
     //投票视图
@@ -690,48 +702,89 @@ public class FabService extends Service implements IFab {
         String voteMode = getVoteMode(info);
         holder.wm_vote_title.setText(info.getContent().toStringUtf8());
         holder.wm_vote_type.setText(voteMode);
-        initCheckBox(holder, info);
+        int maintype = info.getMaintype();
         int selectItem = 0 | Constant.PB_VOTE_SELFLAG_CHECKIN;
         jni.submitVoteResult(1, currentVoteId, selectItem);
         LogUtil.d(TAG, "当前倒计时 -->" + voteTimeouts);
         if (voteTimeouts <= 0) {
-            holder.wm_vote_chronometer.setVisibility(View.GONE);
+            holder.wm_vote_countdown_ll.setVisibility(View.GONE);
         } else {
-            holder.wm_vote_chronometer.setVisibility(View.VISIBLE);
+            holder.wm_vote_countdown_ll.setVisibility(View.VISIBLE);
             holder.wm_vote_chronometer.setBase(SystemClock.elapsedRealtime());
             holder.wm_vote_chronometer.start();
-            holder.wm_vote_chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
-                @Override
-                public void onChronometerTick(Chronometer chronometer) {
-                    voteTimeouts--;
-                    if (voteTimeouts <= 0) {
-                        chronometer.stop();
-                        closeVoteView();
-                    } else {
-                        String str = DateUtil.formatSeconds(voteTimeouts);
-                        chronometer.setText(str);
+            holder.wm_vote_chronometer.setOnChronometerTickListener(chronometer -> {
+                voteTimeouts--;
+                if (voteTimeouts <= 0) {
+                    if (maintype == InterfaceMacro.Pb_MeetVoteType.Pb_VOTE_MAINTYPE_vote_VALUE) {
+                        //投票倒计时结束还没有进行选择，则默认弃权
+                        jni.submitVoteResult(info.getSelectcount(), currentVoteId, 4);
                     }
+                    chronometer.stop();
+                    closeVoteView();
+                } else {
+//                    String str = DateUtil.formatSeconds(voteTimeouts);
+                    String str = String.valueOf(voteTimeouts);
+                    chronometer.setText(str);
                 }
             });
         }
-        chooseEvent(holder.checkBox1);
-        chooseEvent(holder.checkBox2);
-        chooseEvent(holder.checkBox3);
-        chooseEvent(holder.checkBox4);
-        chooseEvent(holder.checkBox5);
-        holder.wm_vote_submit.setOnClickListener(v -> {
-            int answer = 0;
-            if (holder.checkBox1.isChecked()) answer += 1;
-            if (holder.checkBox2.isChecked()) answer += 2;
-            if (holder.checkBox3.isChecked()) answer += 4;
-            if (holder.checkBox4.isChecked()) answer += 8;
-            if (holder.checkBox5.isChecked()) answer += 16;
-            if (answer != 0) {
-                jni.submitVoteResult(info.getSelectcount(), currentVoteId, answer);
-                closeVoteView();
-            } else {
-                ToastUtil.show(R.string.please_choose_answer_first);
-            }
+        if (maintype == InterfaceMacro.Pb_MeetVoteType.Pb_VOTE_MAINTYPE_vote_VALUE) {//投票
+            holder.wm_vote_linear.setVisibility(View.VISIBLE);
+            holder.wm_vote_election.setVisibility(View.GONE);
+            holder.wm_vote_submit.setVisibility(View.GONE);
+            holder.vote_favour_tv.setOnClickListener(v -> showEnsureView(1, info));
+            holder.vote_against_tv.setOnClickListener(v -> showEnsureView(2, info));
+            holder.vote_waiver_tv.setOnClickListener(v -> showEnsureView(4, info));
+        } else {//选举
+            holder.wm_vote_linear.setVisibility(View.GONE);
+            holder.wm_vote_election.setVisibility(View.VISIBLE);
+            holder.wm_vote_submit.setVisibility(View.VISIBLE);
+            initCheckBox(holder, info);
+            chooseEvent(holder.checkBox1);
+            chooseEvent(holder.checkBox2);
+            chooseEvent(holder.checkBox3);
+            chooseEvent(holder.checkBox4);
+            chooseEvent(holder.checkBox5);
+            holder.wm_vote_submit.setOnClickListener(v -> {
+                int answer = 0;
+                if (holder.checkBox1.isChecked()) answer += 1;
+                if (holder.checkBox2.isChecked()) answer += 2;
+                if (holder.checkBox3.isChecked()) answer += 4;
+                if (holder.checkBox4.isChecked()) answer += 8;
+                if (holder.checkBox5.isChecked()) answer += 16;
+                if (answer != 0) {
+                    jni.submitVoteResult(info.getSelectcount(), currentVoteId, answer);
+                    closeVoteView();
+                } else {
+                    ToastUtil.show(R.string.please_choose_answer_first);
+                }
+            });
+        }
+    }
+
+    //是否提交投票视图
+    private void showEnsureView(int answer, InterfaceVote.pbui_Item_MeetOnVotingDetailInfo vote) {
+        voteEnsureView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.vote_ensure_view, null);
+        voteEnsureView.setTag("voteEnsureView");
+        CustomBaseViewHolder.SubmitViewHolder holder = new CustomBaseViewHolder.SubmitViewHolder(voteEnsureView);
+        SubmitViewHolderEvent(holder, answer, vote);
+        wm.addView(voteEnsureView, wrapParams);
+        voteEnsureViewIsShowing = true;
+    }
+
+    //是否提交投票视图事件
+    private void SubmitViewHolderEvent(CustomBaseViewHolder.SubmitViewHolder holder, int answer, InterfaceVote.pbui_Item_MeetOnVotingDetailInfo vote) {
+        holder.vote_submit_ensure.setOnClickListener(v -> {
+            jni.submitVoteResult(vote.getSelectcount(), currentVoteId, answer);
+            wm.removeView(voteEnsureView);
+            voteEnsureViewIsShowing = false;
+            wm.removeView(voteView);
+            voteViewIsShowing = false;
+            currentVoteId = -1;
+        });
+        holder.vote_submit_cancel.setOnClickListener(v -> {
+            wm.removeView(voteEnsureView);
+            voteEnsureViewIsShowing = false;
         });
     }
 
@@ -741,14 +794,14 @@ public class FabService extends Service implements IFab {
             if (checked) {//将要设置成选中
                 if (currentChooseCount < maxChooseCount) {
                     currentChooseCount++;
-                    checkBox.setChecked(checked);
+                    checkBox.setChecked(true);
                 } else {
-                    checkBox.setChecked(!checked);
+                    checkBox.setChecked(false);
                     ToastUtil.show(cxt.getString(R.string.max_choose_, String.valueOf(maxChooseCount)));
                 }
             } else {
                 currentChooseCount--;
-                checkBox.setChecked(checked);
+                checkBox.setChecked(false);
             }
         });
     }
@@ -835,7 +888,11 @@ public class FabService extends Service implements IFab {
     }
 
     private void screenshot() {
-        delAllView();
+//        delAllView();
+        if (menuViewIsShowing) {
+            wm.removeView(menuView);
+            menuViewIsShowing = false;
+        }
         new Handler().postDelayed(() -> {
             startVirtual();
             new Handler().postDelayed(() -> {
@@ -848,7 +905,7 @@ public class FabService extends Service implements IFab {
         try {
             Surface surface = mImageReader.getSurface();
             mVirtualDisplay = mMediaProjection.createVirtualDisplay("screen-mirror",
-                    MyApplication.screen_width, MyApplication.screen_height,
+                    Values.screen_width, Values.screen_height,
                     mScreenDensity, DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
                     surface, null, null);
             LogUtil.d(TAG, "virtual displayed surface是否为null： " + (surface == null));
@@ -862,7 +919,7 @@ public class FabService extends Service implements IFab {
     private Handler getBackgroundHandler() {
         if (backgroundHandler == null) {
             HandlerThread backgroundThread =
-                    new HandlerThread("catwindow", android.os.Process
+                    new HandlerThread("catwindow", Process
                             .THREAD_PRIORITY_BACKGROUND);
             backgroundThread.start();
             backgroundHandler = new Handler(backgroundThread.getLooper());
@@ -932,6 +989,7 @@ public class FabService extends Service implements IFab {
         if (joinViewIsShowing) wm.removeView(joinView);
         if (proViewIsShowing) wm.removeView(proView);
         if (voteViewIsShowing) wm.removeView(voteView);
+        if (voteEnsureViewIsShowing) wm.removeView(voteEnsureView);
     }
 
     private void setIsShowing(View remove, View add) {
@@ -959,6 +1017,9 @@ public class FabService extends Service implements IFab {
             case "voteView":
                 voteViewIsShowing = false;
                 break;
+            case "voteEnsureView":
+                voteEnsureViewIsShowing = false;
+                break;
         }
         switch (addTag) {
             case "hoverButton":
@@ -982,15 +1043,21 @@ public class FabService extends Service implements IFab {
             case "voteView":
                 voteViewIsShowing = true;
                 break;
+            case "voteEnsureView":
+                voteEnsureViewIsShowing = true;
+                break;
         }
     }
 
     @Override
     public void onDestroy() {
         LogUtil.d(TAG, "onDestroy -->");
-        delAllView();
-        presenter.unregister();
+        try {
+            delAllView();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        presenter.onDestroy();
         super.onDestroy();
     }
-
 }

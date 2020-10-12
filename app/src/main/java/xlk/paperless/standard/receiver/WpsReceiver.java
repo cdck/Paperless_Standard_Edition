@@ -15,6 +15,8 @@ import xlk.paperless.standard.data.WpsModel;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.view.meet.MeetingActivity;
 
+import static xlk.paperless.standard.data.Constant.ANNOTATION_FILE_DIRECTORY_ID;
+
 /**
  * @author xlk
  * @date 2020/4/26
@@ -30,7 +32,7 @@ public class WpsReceiver extends BroadcastReceiver {
         switch (action) {
             case WpsModel.Reciver.ACTION_CLOSE://关闭文件时的广播
                 //通知注销掉WPS广播
-                EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_WPS_RECEIVER).objs(false).build());
+                EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_WPS_RECEIVER).objects(false).build());
                 String closeFile = intent.getStringExtra(WpsModel.ReciverExtra.CLOSEFILE);
                 String thirdPackage1 = intent.getStringExtra(WpsModel.ReciverExtra.THIRDPACKAGE);
                 LogUtil.e(TAG, "onReceive :  关闭文件收到广播 --> closeFile：" + closeFile + ", \n thirdPackage：" + thirdPackage1);
@@ -38,7 +40,7 @@ public class WpsReceiver extends BroadcastReceiver {
                 break;
             case WpsModel.Reciver.ACTION_HOME://home键广播
                 //通知注销掉WPS广播
-                EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_WPS_RECEIVER).objs(false).build());
+                EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_WPS_RECEIVER).objects(false).build());
                 break;
             case WpsModel.Reciver.ACTION_SAVE://保存文件时的广播
                 String openFile = intent.getStringExtra(WpsModel.ReciverExtra.OPENFILE);
@@ -49,7 +51,7 @@ public class WpsReceiver extends BroadcastReceiver {
                 File file = new File(savePath);
                 int mediaId = Constant.getMediaId(savePath);
                 String fileName = file.getName();
-                JniHandler.getInstance().uploadFile(0, 2, 0, fileName, savePath, 0, mediaId, Constant.upload_wps_file);
+                JniHandler.getInstance().uploadFile(0, ANNOTATION_FILE_DIRECTORY_ID, 0, fileName, savePath, 0, mediaId, Constant.upload_wps_file);
                 break;
         }
     }

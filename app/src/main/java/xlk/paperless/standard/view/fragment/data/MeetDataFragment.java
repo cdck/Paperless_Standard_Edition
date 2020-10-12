@@ -40,14 +40,17 @@ import xlk.paperless.standard.adapter.PopPushMemberAdapter;
 import xlk.paperless.standard.adapter.PopPushProjectionAdapter;
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.JniHandler;
+import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.data.bean.DevMember;
 import xlk.paperless.standard.util.FileUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.PopUtil;
 import xlk.paperless.standard.util.ToastUtil;
 import xlk.paperless.standard.util.UriUtil;
-import xlk.paperless.standard.view.MyApplication;
-import xlk.paperless.standard.view.fragment.BaseFragment;
+import xlk.paperless.standard.base.BaseFragment;
+
+import static xlk.paperless.standard.data.Constant.permission_code_upload;
+import static xlk.paperless.standard.data.Constant.resource_0;
 
 /**
  * @author xlk
@@ -87,7 +90,6 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
         View inflate = inflater.inflate(R.layout.fragment_data, container, false);
         initView(inflate);
         presenter = new MeetDataPresenter(getContext(), this);
-        presenter.register();
         presenter.queryMeetDir();
         return inflate;
     }
@@ -95,7 +97,7 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onDestroy() {
         super.onDestroy();
-        presenter.unregister();
+        presenter.onDestroy();
     }
 
     private void initView(View inflate) {
@@ -217,15 +219,24 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
         fileAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             InterfaceFile.pbui_Item_MeetDirFileDetailInfo info = typeFileDetailInfos.get(position);
             if (view.getId() == R.id.i_m_d_file_download) {
-                presenter.downloadFile(info);
+                if (Constant.hasPermission(Constant.permission_code_download)) {
+                    presenter.downloadFile(info);
+                } else {
+                    ToastUtil.show(R.string.err_NoPermission);
+                }
             } else if (view.getId() == R.id.i_m_d_file_view) {
                 LogUtil.d(TAG, "rvFile -->" + "查看文件");
+//                if (Constant.isVideo(info.getMediaid())) {
                 if (FileUtil.isVideoFile(info.getName().toStringUtf8())) {
                     List<Integer> devIds = new ArrayList<>();
-                    devIds.add(MyApplication.localDeviceId);
-                    JniHandler.getInstance().mediaPlayOperate(info.getMediaid(), devIds, 0, 0, 0, 0);
+                    devIds.add(Values.localDeviceId);
+                    JniHandler.getInstance().mediaPlayOperate(info.getMediaid(), devIds, 0, resource_0, 0, 0);
                 } else {
-                    FileUtil.openFile(getContext(), Constant.data_file_dir, info.getName().toStringUtf8(), info.getMediaid());
+//                    if (Constant.hasPermission(Constant.permission_code_download)) {
+                        FileUtil.openFile(getContext(), Constant.dir_data_file, info.getName().toStringUtf8(), info.getMediaid());
+//                    } else {
+//                        ToastUtil.show(R.string.err_NoPermission);
+//                    }
                 }
             }
         });
@@ -241,7 +252,7 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
             pushProjectionAdapter.notifyChecks();
         } else {
             View inflate = LayoutInflater.from(getContext()).inflate(R.layout.pop_push_view, null);
-            pushPop = PopUtil.create(inflate, MyApplication.screen_width / 2, MyApplication.screen_height / 2, true, f_data_upload_file);
+            pushPop = PopUtil.create(inflate, Values.screen_width / 2, Values.screen_height / 2, true, f_data_upload_file);
             CheckBox pop_push_member_cb = inflate.findViewById(R.id.pop_push_member_cb);
             RecyclerView pop_push_member_rv = inflate.findViewById(R.id.pop_push_member_rv);
             pushMemberAdapter = new PopPushMemberAdapter(R.layout.item_single_button, onlineMembers);
@@ -289,7 +300,7 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
                     devIds.addAll(pushProjectionAdapter.getDevIds());
                     if (!devIds.isEmpty()) {
                         pushPop.dismiss();
-                        presenter.mediaPlayOperate(mediaId, devIds, 0, 0, 0, InterfaceMacro.Pb_MeetPlayFlag.Pb_MEDIA_PLAYFLAG_ZERO.getNumber());
+                        presenter.mediaPlayOperate(mediaId, devIds, 0, resource_0, 0, InterfaceMacro.Pb_MeetPlayFlag.Pb_MEDIA_PLAYFLAG_ZERO.getNumber());
                     } else {
                         ToastUtil.show(R.string.please_choose_push_target);
                     }
@@ -312,7 +323,7 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
         }
         List<InterfaceFile.pbui_Item_MeetDirFileDetailInfo> temps = new ArrayList<>(allFileDetailInfos);
         View inflate = LayoutInflater.from(getContext()).inflate(R.layout.pop_export_file, null);
-        PopupWindow exportPop = PopUtil.create(inflate, MyApplication.screen_width / 3 * 2, MyApplication.screen_height / 3 * 2, true, f_data_upload_file);
+        PopupWindow exportPop = PopUtil.create(inflate, Values.screen_width / 3 * 2, Values.screen_height / 3 * 2, true, f_data_upload_file);
         RecyclerView pop_export_rv = inflate.findViewById(R.id.pop_export_rv);
         Button pop_export_download = inflate.findViewById(R.id.pop_export_download);
         Button pop_export_back = inflate.findViewById(R.id.pop_export_back);
@@ -365,8 +376,6 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
 
     /**
      * 上传文件
-     *
-     * @param path
      */
     public void uploadFileDia(@NonNull String path) {
         File file = new File(path);
@@ -392,7 +401,7 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
                         int mediaid = Constant.getMediaId(path);
                         presenter.uploadFile(InterfaceMacro.Pb_Upload_Flag.Pb_MEET_UPLOADFLAG_ONLYENDCALLBACK_VALUE,
                                 currentDirId, 0, shareFileName + finalSuffix, path,
-                                Constant.USER_VAL_UPLOAD, mediaid, Constant.UPLOAD_MDF);
+                                0, mediaid, Constant.upload_choose_file);
                         dialogInterface.dismiss();
                     } else {
                         ToastUtil.show(R.string.please_enter_valid_file_name);
@@ -405,13 +414,13 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.f_data_upload_file://上传文件
-                if (Constant.hasPermission(3)) {
+                if (Constant.hasPermission(permission_code_upload)) {
                     Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                     intent.setType("*/*");//无类型限制
                     intent.addCategory(Intent.CATEGORY_OPENABLE);
                     startActivityForResult(intent, 1);
                 } else {
-                    ToastUtil.show(R.string.no_permission);
+                    ToastUtil.show(R.string.err_NoPermission);
                 }
                 break;
             case R.id.f_data_documentation:
@@ -477,7 +486,11 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
                 }
                 break;
             case R.id.f_data_export://导出资料
-                exportFile();
+                if (Constant.hasPermission(Constant.permission_code_download)) {
+                    exportFile();
+                } else {
+                    ToastUtil.show(R.string.err_NoPermission);
+                }
                 break;
             case R.id.f_data_previous_btn://上一页
 

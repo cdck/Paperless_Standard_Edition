@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
+<!--    &lt;!&ndash;物理路径相当于Context.getFilesDir() + /path/&ndash;&gt;-->
+<!--    <files-path name="name" path="path" />-->
+
+<!--    &lt;!&ndash;物理路径相当于Context.getCacheDir() + /path/&ndash;&gt;-->
+<!--    <cache-path name="name" path="path" />-->
+<!--    &lt;!&ndash; 物理路径相当于Environment.getExternalStorageDirectory() + /path/&ndash;&gt;-->
+<!--    <external-path name="name" path="path" />-->
+<!--    &lt;!&ndash; 物理路径相当于Context.getExternalFilesDir(String) + /path/&ndash;&gt;-->
+<!--    <external-files-path name="name" path="path" />-->
+<!--    &lt;!&ndash; 物理路径相当于Context.getExternalCacheDir() + /path/&ndash;&gt;-->
+<!--    <external-cache-path name="name" path="path" />-->
+
     <root-path
         name="root_path"
         path="." />

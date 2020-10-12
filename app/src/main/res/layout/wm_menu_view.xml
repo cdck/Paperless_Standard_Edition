@@ -24,7 +24,6 @@
             android:layout_weight="1"
             android:text="会议笔记" />
 
-
         <Button
             android:id="@+id/wm_menu_soft"
             style="@style/btn_pressed_style"

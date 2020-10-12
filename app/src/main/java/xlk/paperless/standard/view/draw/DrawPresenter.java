@@ -23,10 +23,6 @@ import com.mogujie.tt.protobuf.InterfaceMacro;
 import com.mogujie.tt.protobuf.InterfaceMember;
 import com.mogujie.tt.protobuf.InterfaceWhiteboard;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -40,6 +36,7 @@ import xlk.paperless.standard.R;
 import xlk.paperless.standard.adapter.DrawMemberAdapter;
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
+import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.data.bean.DevMember;
 import xlk.paperless.standard.service.FabService;
 import xlk.paperless.standard.ui.ArtBoard;
@@ -47,9 +44,9 @@ import xlk.paperless.standard.util.FileUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.PopUtil;
 import xlk.paperless.standard.util.ToastUtil;
-import xlk.paperless.standard.view.BasePresenter;
-import xlk.paperless.standard.view.MyApplication;
+import xlk.paperless.standard.base.BasePresenter;
 
+import static xlk.paperless.standard.data.Constant.ANNOTATION_FILE_DIRECTORY_ID;
 import static xlk.paperless.standard.ui.ArtBoard.LocalPathList;
 import static xlk.paperless.standard.ui.ArtBoard.artBoardWidth;
 import static xlk.paperless.standard.util.ConvertUtil.bs2bmp;
@@ -72,8 +69,8 @@ public class DrawPresenter extends BasePresenter {
     public static int disposePicSrcmemid;
     public static long disposePicSrcwbidd;
     public static List<Integer> togetherIDs = new ArrayList<>();//同屏的ID
-    public static int launchPersonId = MyApplication.localMemberId;//默认发起的人员ID是本机
-    public static int mSrcmemid = MyApplication.localMemberId;//发起的人员ID默认是本机
+    public static int launchPersonId = Values.localMemberId;//默认发起的人员ID是本机
+    public static int mSrcmemid = Values.localMemberId;//发起的人员ID默认是本机
     public static long mSrcwbid;//发起人的白板标识
     public static ByteString savePicData;//图片数据
     public static ByteString tempPicData;//临时图片数据
@@ -89,6 +86,11 @@ public class DrawPresenter extends BasePresenter {
     public DrawPresenter(Context cxt, IDraw view) {
         this.cxt = cxt;
         this.view = view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     public void setIsAddBitmap(boolean addScreenShot) {
@@ -121,7 +123,7 @@ public class DrawPresenter extends BasePresenter {
                 InterfaceDevice.pbui_Item_DeviceDetailInfo deviceInfo = pdevList.get(i);
                 if (deviceInfo.getNetstate() == 1 && deviceInfo.getFacestate() == 1) {
                     for (InterfaceMember.pbui_Item_MemberDetailInfo memberInfo : memberInfos) {
-                        if (memberInfo.getPersonid() == deviceInfo.getMemberid() && deviceInfo.getDevcieid() != MyApplication.localDeviceId) {
+                        if (memberInfo.getPersonid() == deviceInfo.getMemberid() && deviceInfo.getDevcieid() != Values.localDeviceId) {
                             onLineMembers.add(new DevMember(deviceInfo, memberInfo));
                         }
                     }
@@ -139,22 +141,12 @@ public class DrawPresenter extends BasePresenter {
         }
     }
 
-    @Override
-    public void register() {
-        EventBus.getDefault().register(this);
-    }
 
     @Override
-    public void unregister() {
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void BusEvent(EventMessage msg) throws InvalidProtocolBufferException {
+    public void busEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_WHITEBOARD_VALUE://会议白板
-                byte[] datas = (byte[]) msg.getObjs()[0];
+                byte[] datas = (byte[]) msg.getObjects()[0];
                 switch (msg.getMethod()) {
                     case InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_ASK_VALUE://收到打开白板操作
                         openArtBoard(datas);
@@ -186,7 +178,7 @@ public class DrawPresenter extends BasePresenter {
                 }
                 break;
             case Constant.BUS_SHARE_PIC:
-                InterfaceWhiteboard.pbui_Item_MeetWBPictureDetail object = (InterfaceWhiteboard.pbui_Item_MeetWBPictureDetail) msg.getObjs()[0];
+                InterfaceWhiteboard.pbui_Item_MeetWBPictureDetail object = (InterfaceWhiteboard.pbui_Item_MeetWBPictureDetail) msg.getObjects()[0];
                 addPicInform(object);
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEMBER_VALUE://参会人员变更通知
@@ -548,7 +540,7 @@ public class DrawPresenter extends BasePresenter {
                         togetherIDs.remove(i);//删除
                         i--;
                         whoTip(opermemberid, cxt.getString(R.string.tip_exit_the_shared));
-                        if (togetherIDs.size() == 0 && mSrcmemid == MyApplication.localMemberId) {
+                        if (togetherIDs.size() == 0 && mSrcmemid == Values.localMemberId) {
                             //自己发起的时才退出,因为如果是本人是发起人,
                             //可能还有其他人在共享中但是没有操作,所以你只是没有添加到集合中而已
                             LogUtil.e(TAG, "DrawBoardActivity.getEventMessage :  没有人在共享了,退出共享 --> ");
@@ -617,7 +609,7 @@ public class DrawPresenter extends BasePresenter {
             LogUtil.e(TAG, "DrawBoardActivity.receiveOpenWhiteBoard 619行:   --->>> 这是强制式打开白板");
             togetherIDs.clear();
             //强制打开白板  直接强制同意加入
-            jni.agreeJoin(MyApplication.localMemberId, disposePicSrcmemid, disposePicSrcwbidd);
+            jni.agreeJoin(Values.localMemberId, disposePicSrcmemid, disposePicSrcwbidd);
             isSharing = true;//如果同意加入就设置已经在共享中
             view.setBtnEnable(true);
             mSrcwbid = disposePicSrcwbidd;//发起人的白板标识
@@ -640,7 +632,7 @@ public class DrawPresenter extends BasePresenter {
         builder.setPositiveButton(cxt.getString(R.string.agree), (dialog, which) -> {
             togetherIDs.clear();
             //同意加入
-            jni.agreeJoin(MyApplication.localMemberId, srcmemid, srcwbId);
+            jni.agreeJoin(Values.localMemberId, srcmemid, srcwbId);
             isSharing = true;//如果同意加入就设置已经在共享中
             view.setBtnEnable(true);
             mSrcmemid = srcmemid;//设置发起的人员ID
@@ -653,8 +645,8 @@ public class DrawPresenter extends BasePresenter {
                 view.drawZoomBmp(bs2bmp(savePicData));
                 /** **** **  保存  ** **** **/
                 ArtBoard.DrawPath drawPath = new ArtBoard.DrawPath();
-                drawPath.operid = MyApplication.operid;
-                MyApplication.operid = 0;
+                drawPath.operid = Values.operid;
+                Values.operid = 0;
                 drawPath.srcwbid = srcwbId;
                 drawPath.srcmemid = srcmemid;
                 drawPath.opermemberid = opermemberid;
@@ -665,7 +657,7 @@ public class DrawPresenter extends BasePresenter {
             dialog.dismiss();
         });
         builder.setNegativeButton(cxt.getString(R.string.reject), (dialog, which) -> {
-            jni.rejectJoin(MyApplication.localMemberId, srcmemid, srcwbId);
+            jni.rejectJoin(Values.localMemberId, srcmemid, srcwbId);
             dialog.dismiss();
         });
         builder.create().show();
@@ -676,9 +668,9 @@ public class DrawPresenter extends BasePresenter {
         if (isSharing) {
             togetherIDs.clear();
             List<Integer> alluserid = new ArrayList<>();
-            alluserid.add(MyApplication.localMemberId);
+            alluserid.add(Values.localMemberId);
             jni.broadcastStopWhiteBoard(InterfaceMacro.Pb_MeetPostilOperType.Pb_MEETPOTIL_FLAG_EXIT.getNumber(),
-                    cxt.getString(R.string.exit_white_board), MyApplication.localMemberId, mSrcmemid, mSrcwbid, alluserid);
+                    cxt.getString(R.string.exit_white_board), Values.localMemberId, mSrcmemid, mSrcwbid, alluserid);
             isSharing = false;
             view.setBtnEnable(false);
             mSrcwbid = 0;
@@ -688,8 +680,8 @@ public class DrawPresenter extends BasePresenter {
     public void savePicture(String fileName, boolean isUpload, Bitmap bitmap) {
         //重新创建一个，画板获取的bitmap对象会自动回收掉
         Bitmap bitmap1 = Bitmap.createBitmap(bitmap);
-        FileUtil.createDir(Constant.artboard_picture_dir);
-        File uploadPicFile = new File(Constant.artboard_picture_dir, fileName + ".png");
+        FileUtil.createDir(Constant.dir_picture);
+        File uploadPicFile = new File(Constant.dir_picture, fileName + ".png");
         FileUtil.saveBitmap(bitmap1, uploadPicFile);
         Timer tupload = new Timer();
         TimerTask timerTask = new TimerTask() {
@@ -701,7 +693,7 @@ public class DrawPresenter extends BasePresenter {
                     int mediaid = Constant.getMediaId(path);
                     String fileEnd = path.substring(path.lastIndexOf(".") + 1, path.length()).toLowerCase();
                     jni.uploadFile(InterfaceMacro.Pb_Upload_Flag.Pb_MEET_UPLOADFLAG_ONLYENDCALLBACK.getNumber(),
-                            2, 0, fileName + "." + fileEnd, path, 0, mediaid, Constant.upload_draw_pic);
+                            ANNOTATION_FILE_DIRECTORY_ID, 0, fileName + "." + fileEnd, path, 0, mediaid, Constant.upload_draw_pic);
                 }
             }
         };
@@ -711,7 +703,7 @@ public class DrawPresenter extends BasePresenter {
     public void showMultiplayerAnnotation(View parent) {
         queryMember();
         View inflate = LayoutInflater.from(cxt).inflate(R.layout.pop_artboard_share, null);
-        PopupWindow pop = PopUtil.create(inflate, MyApplication.screen_width / 2, MyApplication.screen_height / 2, true, parent);
+        PopupWindow pop = PopUtil.create(inflate, Values.screen_width / 2, Values.screen_height / 2, true, parent);
         CheckBox cb = inflate.findViewById(R.id.pop_artboard_cb);
         RecyclerView rv = inflate.findViewById(R.id.pop_artboard_rv);
         rv.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
@@ -732,14 +724,14 @@ public class DrawPresenter extends BasePresenter {
                 if (mSrcmemid == 0) {
                     //当前已经在同屏中,并且自己是发起人;则操作ID不需要重新获取
                     launchSrcwbid = System.currentTimeMillis();
-                    launchSrcmemid = MyApplication.localMemberId;
+                    launchSrcmemid = Values.localMemberId;
                 } else {
                     launchSrcwbid = mSrcwbid;
                     launchSrcmemid = mSrcmemid;
                 }
                 LogUtil.d(TAG, "向这些B发起同屏：" + ids.toString());
                 jni.coerceStartWhiteBoard(InterfaceMacro.Pb_MeetPostilOperType.Pb_MEETPOTIL_FLAG_REQUESTOPEN.getNumber(),
-                        MyApplication.localMemberName, MyApplication.localMemberId,
+                        Values.localMemberName, Values.localMemberId,
                         launchSrcmemid, launchSrcwbid, ids);
                 if (DrawPresenter.this.isAddScreenShot) {//从截图批注端启动的画板
                     DrawPresenter.this.isAddScreenShot = false;
@@ -767,7 +759,7 @@ public class DrawPresenter extends BasePresenter {
             LocalPathList.add(drawPath);
             LocalSharingPathList.add(drawPath);
             LogUtil.d(TAG, "发起同屏时添加截图: LocalPathList.size() : " + LocalPathList.size());
-            jni.addPicture(operid, MyApplication.localMemberId, launchSrcmemid, launchSrcwbid, time,
+            jni.addPicture(operid, Values.localMemberId, launchSrcmemid, launchSrcwbid, time,
                     InterfaceMacro.Pb_MeetPostilFigureType.Pb_WB_FIGURETYPE_PICTURE.getNumber(), 0, 0, picdata);
         } catch (IOException e) {
             e.printStackTrace();

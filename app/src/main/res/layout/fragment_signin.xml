@@ -14,15 +14,18 @@
 
         <xlk.paperless.standard.ui.CustomAbsoluteLayout
             android:id="@+id/f_s_absolute"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="1300px"
+            android:layout_height="760px"
             android:visibility="visible" />
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dp_5">
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginEnd="@dimen/dp_20"
+        android:layout_marginBottom="@dimen/dp_5">
 
         <TextView
             android:id="@+id/f_s_yd"
@@ -59,7 +62,7 @@
             android:layout_centerVertical="true"
             android:layout_margin="@dimen/dp_2"
             android:layout_toStartOf="@+id/f_s_yqd_iv"
-            android:drawableStart="@drawable/shape_circle_black"
+            android:drawableStart="@drawable/shape_circle_red"
             android:drawablePadding="@dimen/dp_5"
             android:gravity="center"
             android:text="@string/not_checked_in"
@@ -72,7 +75,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_margin="@dimen/dp_2"
-            android:drawableStart="@drawable/shape_circle_red"
+            android:drawableStart="@drawable/shape_circle_green"
             android:drawablePadding="@dimen/dp_5"
             android:gravity="center"
             android:text="@string/checked_in"

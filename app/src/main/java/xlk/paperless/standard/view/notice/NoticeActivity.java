@@ -23,8 +23,9 @@ import java.util.HashMap;
 import java.util.Set;
 
 import xlk.paperless.standard.R;
-import xlk.paperless.standard.view.BaseActivity;
-import xlk.paperless.standard.view.MyApplication;
+import xlk.paperless.standard.data.Constant;
+import xlk.paperless.standard.data.Values;
+import xlk.paperless.standard.base.BaseActivity;
 
 public class NoticeActivity extends BaseActivity implements INotice, View.OnClickListener {
     public static HashMap<Integer, Activity> hashMap = new HashMap<>();
@@ -42,7 +43,9 @@ public class NoticeActivity extends BaseActivity implements INotice, View.OnClic
             activity.finish();
             hashMap.remove(bulletinId);
         } else {
-            context.startActivity(new Intent(context, NoticeActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra("bulletinId", bulletinId));
+            context.startActivity(new Intent(context, NoticeActivity.class)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    .putExtra(Constant.extra_bulletin_id, bulletinId));
         }
     }
 
@@ -51,12 +54,11 @@ public class NoticeActivity extends BaseActivity implements INotice, View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bulletin);
         initView();
-        bulletid = getIntent().getIntExtra("bulletinId", 0);
+        bulletid = getIntent().getIntExtra(Constant.extra_bulletin_id, 0);
         if (bulletid != 0) {
             hashMap.put(bulletid, this);
         }
         presenter = new NoticePresenter(this, this);
-        presenter.register();
         presenter.queryInterfaceConfig();
         presenter.queryAssignNotice(bulletid);
     }
@@ -205,8 +207,8 @@ public class NoticeActivity extends BaseActivity implements INotice, View.OnClic
         ConstraintSet set = new ConstraintSet();
         set.clone(notice_bg_view);
         //设置控件的大小
-        float width = (bx - lx) / 100 * MyApplication.screen_width;
-        float height = (by - ly) / 100 * MyApplication.screen_height;
+        float width = (bx - lx) / 100 * Values.screen_width;
+        float height = (by - ly) / 100 * Values.screen_height;
         set.constrainWidth(resid, (int) width);
         set.constrainHeight(resid, (int) height);
         float biasX, biasY;
@@ -234,7 +236,7 @@ public class NoticeActivity extends BaseActivity implements INotice, View.OnClic
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        presenter.unregister();
+        presenter.onDestroy();
     }
 
     private void initView() {

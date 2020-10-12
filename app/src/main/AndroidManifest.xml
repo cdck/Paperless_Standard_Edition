@@ -2,67 +2,57 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="xlk.paperless.standard">
-
-    <!-- 显示顶层浮窗 需要在清单文件中注册的原因是：要让设备识别是否需要该权限，
-    如果不在清单文件中注册，那么在跳转到开启悬浮窗权限时，应用列表中就找不到当前应用 -->
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <!-- 帧缓存权限 -->
+    <!--
+     显示顶层浮窗 需要在清单文件中注册的原因是：要让设备识别是否需要该权限，
+    如果不在清单文件中注册，那么在跳转到开启悬浮窗权限时，应用列表中就找不到当前应用
+    -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 帧缓存权限 -->
     <uses-permission
         android:name="android.permission.READ_FRAME_BUFFER"
-        tools:ignore="ProtectedPermissions" />
-
-    <!-- 正常权限（Normal Permissions） -->
+        tools:ignore="ProtectedPermissions" /> <!-- 正常权限（Normal Permissions） -->
     <!-- 网络权限 -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!-- 允许读取网络状态 -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- 允许读取wifi网络状态 -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!-- 唤醒和锁屏权限 -->
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <!-- 修改音频参数权限 -->
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <!-- 访问系统开机事件的权限 -->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <!-- 请求安装包权限 -->
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-
-    <!-- 危险权限（Dangerous Permissions） -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 允许读取网络状态 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 允许读取wifi网络状态 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 唤醒和锁屏权限 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- 修改音频参数权限 -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" /> <!-- 访问系统开机事件的权限 -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- 请求安装包权限 -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /> <!-- 危险权限（Dangerous Permissions） -->
     <!-- 文件的读写权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <!-- 录音权限 -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <!-- 摄像头权限 -->
-    <uses-permission android:name="android.permission.CAMERA" />
-    <!-- 读取手机状态权限 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- 录音权限 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- 摄像头权限 -->
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- 读取手机状态权限 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
-
-    <!-- Android P的系统上面默认所有Http的请求都被阻止了,TBS初始化会失败 -->
-    <!-- android:usesCleartextTraffic="true" -->
     <application
         android:name=".view.MyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="LockedOrientationActivity">
         <activity
             android:name=".view.main.MainActivity"
-            android:launchMode="singleTop"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity> <!-- android:windowSoftInputMode="stateHidden|adjustResize" -->
+        <!-- 添加下面这行让Activity旋转屏幕时不会走生命周期方法 -->
+        <!-- android:configChanges="orientation|screenSize|keyboardHidden" -->
         <activity
             android:name=".view.meet.MeetingActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".view.admin.AdminActivity"
             android:launchMode="singleTop"
             android:screenOrientation="landscape" />
         <activity
@@ -71,6 +61,7 @@
             android:windowSoftInputMode="adjustResize|adjustPan" />
         <activity
             android:name=".view.video.VideoActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="landscape" />
         <activity
             android:name=".view.notice.NoticeActivity"
@@ -81,11 +72,12 @@
         <activity
             android:name=".view.chatonline.ChatVideoActivity"
             android:screenOrientation="landscape" />
-        <!-- android:screenOrientation="landscape" -->
         <activity
             android:name=".view.CameraActivity"
             android:launchMode="singleInstance"
+            android:screenOrientation="landscape"
             android:theme="@style/Transparent" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.fileProvider"
@@ -94,9 +86,7 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
-        </provider>
-
-        <!--autosize屏幕适配-->
+        </provider> <!-- autosize屏幕适配 -->
         <meta-data
             android:name="design_width_in_dp"
             android:value="960" />

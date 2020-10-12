@@ -20,10 +20,12 @@ import xlk.paperless.standard.R;
 import xlk.paperless.standard.adapter.WmProjectorAdapter;
 import xlk.paperless.standard.adapter.WmScreenMemberAdapter;
 import xlk.paperless.standard.data.JniHandler;
+import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.data.bean.DevMember;
 import xlk.paperless.standard.util.ToastUtil;
-import xlk.paperless.standard.view.MyApplication;
-import xlk.paperless.standard.view.fragment.BaseFragment;
+import xlk.paperless.standard.base.BaseFragment;
+
+import static xlk.paperless.standard.data.Constant.resource_0;
 
 /**
  * @author xlk
@@ -53,7 +55,6 @@ public class ScreenFragment extends BaseFragment implements IScreen, View.OnClic
         View inflate = inflater.inflate(R.layout.fragment_screen, container, false);
         initView(inflate);
         presenter = new ScreenPresenter(getContext(), this);
-        presenter.register();
         initAdapter();
         presenter.queryDeviceInfo();
         return inflate;
@@ -146,9 +147,9 @@ public class ScreenFragment extends BaseFragment implements IScreen, View.OnClic
                 if (choose != null) {
                     int devcieid = choose.getDeviceDetailInfo().getDevcieid();
                     List<Integer> temps = new ArrayList<>();
-                    temps.add(0);
+                    temps.add(resource_0);
                     List<Integer> ids = new ArrayList<>();
-                    ids.add(MyApplication.localDeviceId);
+                    ids.add(Values.localDeviceId);
                     JniHandler.getInstance().streamPlay(devcieid, 2, 0, temps, ids);
                 } else {
                     ToastUtil.show(R.string.please_choose_source);
@@ -185,7 +186,7 @@ public class ScreenFragment extends BaseFragment implements IScreen, View.OnClic
             ids.addAll(projectorAdapter.getChooseIds());
             if (!ids.isEmpty()) {
                 List<Integer> temps = new ArrayList<>();
-                temps.add(0);
+                temps.add(resource_0);
                 int devcieid = choose.getDeviceDetailInfo().getDevcieid();
                 int triggeruserval = f_screen_mandatory_cb.isChecked() ? 1 : 0;
                 JniHandler.getInstance().streamPlay(devcieid, 2, triggeruserval, temps, ids);
@@ -200,6 +201,6 @@ public class ScreenFragment extends BaseFragment implements IScreen, View.OnClic
     @Override
     public void onDestroy() {
         super.onDestroy();
-        presenter.unregister();
+        presenter.onDestroy();
     }
 }

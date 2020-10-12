@@ -10,94 +10,297 @@ import java.util.List;
 
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.util.FileUtil;
-import xlk.paperless.standard.view.MyApplication;
+
+import static xlk.paperless.standard.data.Values.hasAllPermissions;
+import static xlk.paperless.standard.data.Values.localPermission;
+
 
 /**
  * @author xlk
  * @date 2020/3/9
- * @desc 常量类
+ * @desc 全局静态常量类
  */
 public class Constant {
     public static final String ROOT_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/PaperlessStandardEdition/";
     public static final String INI_NAME = "client.ini";
     public static final String DEV_NAME = "client.dev";
+    public static final String INI_FILE_PATH = ROOT_DIR + "/" + INI_NAME;
+    public static final String DEV_FILE_PATH = ROOT_DIR + "/" + DEV_NAME;
 
-    //目录
-    private static final String file_dir = ROOT_DIR + "/File/";
-    public static final String crash_log_dir = ROOT_DIR + "/Log/";
-    public static final String configuration_picture_dir = ROOT_DIR + "/picture/";
-    public static final String data_file_dir = file_dir + "/MeetingFile/";
-    public static final String annotation_file_dir = file_dir + "/AnnotationFile/";
-    public static final String agenda_file_dir = file_dir + "/AgendaFile/";
-    public static final String artboard_picture_dir = file_dir + "/ArtboardPicture/";
-    public static final String export_dir = file_dir + "/export/";
-    public static final String cache_file_dir = ROOT_DIR + "/Cache/";
 
-    //图片名称
+    private static final String DIR_FILES = ROOT_DIR + "File/";
+    public static final String dir_crash_log = ROOT_DIR + "Log/";
+    public static final String dir_picture = DIR_FILES + "图片/";
+    public static final String dir_data_file = DIR_FILES + "会议资料/";
+    public static final String dir_annotation_file = DIR_FILES + "批注文件/";
+    public static final String dir_export = DIR_FILES + "导出文件/";
+    public static final String dir_cache = DIR_FILES + "临时文件/";
+
+    //图片名称和下载标识
+
     public static final String MAIN_BG_PNG_TAG = "mian_bg";
     public static final String MAIN_LOGO_PNG_TAG = "mian_logo";
     public static final String SUB_BG_PNG_TAG = "sub_bg";
     public static final String ROOM_BG_PNG_TAG = "room_bg";
     public static final String NOTICE_BG_PNG_TAG = "notice_bg";
     public static final String NOTICE_LOGO_PNG_TAG = "notice_logo";
+    /**
+     * 会议发布文件
+     */
+    public static final String ADMIN_RELEASE_FILE = "release_file";
 
     //下载标识
-    public static final String MEETING_FILE_KEY = "MEETING_FILE_KEY";//下载会议文件时的标识
-    public static final String ANNOTATION_FILE_KEY = "ANNOTATION_FILE_KEY";//下载批注文件时的标识
-    public static final String SHOULD_OPEN_FILE_KEY = "SHOULD_OPEN_FILE_KEY";//下载完成应该打开的文件标识
-    public static final String AGENDA_FILE_KEY = "AGENDA_FILE_KEY";//会议议程的文件
+    /**
+     * 下载会议文件时的标识
+     */
+    public static final String download_meeting_file = "download_meeting_file";
+    /**
+     * 下载批注文件时的标识
+     */
+    public static final String download_annotation_file = "download_annotation_file";
+    /**
+     * 下载完成应该打开的文件标识
+     */
+    public static final String download_should_open_file = "download_should_open_file";
+    /**
+     * 会议议程的文件
+     */
+    public static final String download_agenda_file = "download_agenda_file";
 
     //上传文件时的标识
-    public static final int USER_VAL_UPLOAD = 1;
-    public static final String UPLOAD_MDF = "upload_mdf";
+
+    public static final String upload_choose_file = "upload_choose_file";
     public static final String upload_draw_pic = "upload_draw_pic";
     public static final String upload_wps_file = "upload_wps_file";
 
-    //自定义广播action
-    public static String action_screen_recording = "screen_recording";//开始屏幕录制
-    public static String action_stop_screen_recording = "stop_screen_recording";//停止屏幕录制
+    //Intent#putExtra的字符tag
 
-    //自定义Intent传值Extra名
-    public static final String extra_camrea_type = "extra_camrea_type";//传入摄像头前置/后置
-    public static final String extra_inviteflag = "extra_inviteflag";//设备对讲
-    public static final String extra_operdeviceid = "extra_operdeviceid";//设备对讲
+    /**
+     * 开始屏幕录制
+     */
+    public static final String action_screen_recording = "screen_recording";
+    /**
+     * 停止屏幕录制
+     */
+    public static final String action_stop_screen_recording = "stop_screen_recording";
+    /**
+     * 传入摄像头前置/后置
+     */
+    public static final String extra_camrea_type = "extra_camera_type";
+    /**
+     * 设备对讲
+     */
+    public static final String extra_inviteflag = "extra_inviteflag";
+    public static final String extra_operdeviceid = "extra_operdeviceid";
+    /**
+     * 文件评分ID
+     */
+    public static final String extra_vote_id = "extra_vote_id";
+    /**
+     * 发起播放的类型
+     */
+    public static final String extra_video_action = "extra_video_action";
+    /**
+     * 发起播放的设备ID
+     */
+    public static final String extra_video_device_id = "extra_video_device_id";
+    /**
+     * 发起播放的文件类型
+     */
+    public static final String extra_video_subtype = "extra_video_subtype";
+    /**
+     * 采集类型
+     */
+    public static final String extra_collection_type = "extra_collection_type";
+    /**
+     * 公告ID
+     */
+    public static final String extra_bulletin_id = "extra_bulletin_id";
+    /**
+     * 登录用户id
+     */
+    public static final String extra_admin_id = "extra_admin_id";
+    /**
+     * 登录用户名称
+     */
+    public static final String extra_admin_name = "extra_admin_name";
+    /**
+     * 登录时的密码
+     */
+    public static final String extra_admin_password = "extra_admin_password";
 
     //EventBus自定义发送的Type
+
     private static final int BUS_BASE = 1000000;
-    public static final int BUS_MAIN_LOGO = BUS_BASE + 1;//logo图标下载完成
-    public static final int BUS_MAIN_BG = BUS_BASE + 2;//主页背景图下载完成
-    public static final int BUS_ROOM_BG = BUS_BASE + 3;//会议室背景图下载完成
-    public static final int BUS_VIDEO_DECODE = BUS_BASE + 4;//后台播放数据
-    public static final int BUS_YUV_DISPLAY = BUS_BASE + 5;//后台播放数据
-    public static final int BUS_CLOSE_VIDEO = BUS_BASE + 6;//
-    public static final int BUS_AGENDA_FILE = BUS_BASE + 7;//议程文件下载完成
-    public static final int BUS_SHARE_PIC = BUS_BASE + 8;//添加图片通知
-    public static final int BUS_SCREEN_SHOT = BUS_BASE + 9;//绘制截图
-    public static final int BUS_SUB_BG = BUS_BASE + 10;//子界面北极图下载完成
-    public static final int BUS_NOTICE_LOGO = BUS_BASE + 11;//后台下载公告logo完成
-    public static final int BUS_NOTICE_BG = BUS_BASE + 12;//后台下载公告背景完成
-    public static final int BUS_MANDATORY = BUS_BASE + 13;//后台收到强制性播放了
-    public static final int BUS_COLLECT_CAMERA_START = BUS_BASE + 14;//后台收到开始采集摄像头通知
-    public static final int BUS_COLLECT_CAMERA_STOP = BUS_BASE + 15;//后台收到停止采集摄像头通知
-    public static final int BUS_CHAT_STATE = BUS_BASE + 16;//发送视频聊天的状态
-    public static final int BUS_NET_WORK = BUS_BASE + 17;//网络状态改变
-    public static final int BUS_PREVIEW_IMAGE = BUS_BASE + 18;//发送查看图片通知
-    public static final int BUS_WPS_RECEIVER = BUS_BASE + 19;//通知是否注册WPS广播监听
+    /**
+     * logo图标下载完成
+     */
+    public static final int BUS_MAIN_LOGO = BUS_BASE + 1;
+    /**
+     * 主页背景图下载完成
+     */
+    public static final int BUS_MAIN_BG = BUS_BASE + 2;
+    /**
+     * 会议室背景图下载完成
+     */
+    public static final int BUS_ROOM_BG = BUS_BASE + 3;
+    /**
+     * 后台播放数据
+     */
+    public static final int BUS_VIDEO_DECODE = BUS_BASE + 4;
+    /**
+     * 后台播放数据
+     */
+    public static final int BUS_YUV_DISPLAY = BUS_BASE + 5;
+    public static final int BUS_CLOSE_VIDEO = BUS_BASE + 6;
+    /**
+     * 议程文件下载完成
+     */
+    public static final int BUS_AGENDA_FILE = BUS_BASE + 7;
+    /**
+     * 添加图片通知
+     */
+    public static final int BUS_SHARE_PIC = BUS_BASE + 8;
+    /**
+     * 绘制截图
+     */
+    public static final int BUS_SCREEN_SHOT = BUS_BASE + 9;
+    /**
+     * 子界面北极图下载完成
+     */
+    public static final int BUS_SUB_BG = BUS_BASE + 10;
+    /**
+     * 后台下载公告logo完成
+     */
+    public static final int BUS_NOTICE_LOGO = BUS_BASE + 11;
+    /**
+     * 后台下载公告背景完成
+     */
+    public static final int BUS_NOTICE_BG = BUS_BASE + 12;
+    /**
+     * 后台收到强制性播放了
+     */
+    public static final int BUS_MANDATORY = BUS_BASE + 13;
+    /**
+     * 后台收到开始采集摄像头通知
+     */
+    public static final int BUS_COLLECT_CAMERA_START = BUS_BASE + 14;
+    /**
+     * 后台收到停止采集摄像头通知
+     */
+    public static final int BUS_COLLECT_CAMERA_STOP = BUS_BASE + 15;
+    /**
+     * 发送视频聊天的状态
+     */
+    public static final int BUS_CHAT_STATE = BUS_BASE + 16;
+    /**
+     * 网络状态改变
+     */
+    public static final int BUS_NET_WORK = BUS_BASE + 17;
+    /**
+     * 发送查看图片通知
+     */
+    public static final int BUS_PREVIEW_IMAGE = BUS_BASE + 18;
+    /**
+     * 通知是否注册WPS广播监听
+     */
+    public static final int BUS_WPS_RECEIVER = BUS_BASE + 19;
+    /**
+     * X5内核下加载完成
+     */
+    public static final int BUS_X5_INSTALL = BUS_BASE + 20;
 
     //会议功能码
-    public static final int fun_code_agenda_bulletin = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_AGENDA_BULLETIN_VALUE;//会议议程
-    public static final int fun_code_meet_file = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_MATERIAL_VALUE;//会议资料
-    public static final int fun_code_shared_file = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_SHAREDFILE_VALUE;//共享文件
-    public static final int fun_code_postil_file = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_POSTIL_VALUE;//批注文件
-    public static final int fun_code_message = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_MESSAGE_VALUE;//会议交流
-    public static final int fun_code_video_stream = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_VIDEOSTREAM_VALUE;//视频直播
-    public static final int fun_code_whiteboard = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_WHITEBOARD_VALUE;//电子白板
-    public static final int fun_code_webbrowser = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_WEBBROWSER_VALUE;//网页
-    public static final int fun_code_voteresult = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_VOTERESULT_VALUE;//投票
-    public static final int fun_code_signinresult = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_SIGNINRESULT_VALUE;//签到
-    public static final int fun_code_document = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_DOCUMENT_VALUE;//外部文档
+
+    /**
+     * 会议议程
+     */
+    public static final int fun_code_agenda_bulletin = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_AGENDA_BULLETIN_VALUE;
+    /**
+     * 会议资料
+     */
+    public static final int fun_code_meet_file = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_MATERIAL_VALUE;
+    /**
+     * 共享文件
+     */
+    public static final int fun_code_shared_file = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_SHAREDFILE_VALUE;
+    /**
+     * 批注文件
+     */
+    public static final int fun_code_postil_file = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_POSTIL_VALUE;
+    /**
+     * 会议交流
+     */
+    public static final int fun_code_message = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_MESSAGE_VALUE;
+    /**
+     * 视频直播
+     */
+    public static final int fun_code_video_stream = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_VIDEOSTREAM_VALUE;
+    /**
+     * 电子白板
+     */
+    public static final int fun_code_whiteboard = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_WHITEBOARD_VALUE;
+    /**
+     * 网页
+     */
+    public static final int fun_code_webbrowser = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_WEBBROWSER_VALUE;
+    /**
+     * 投票
+     */
+    public static final int fun_code_voteresult = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_VOTERESULT_VALUE;
+    /**
+     * 签到
+     */
+    public static final int fun_code_signinresult = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_SIGNINRESULT_VALUE;
+    /**
+     * 外部文档
+     */
+    public static final int fun_code_document = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_DOCUMENT_VALUE;
+
+    //资源ID
+
+    public static final int resource_0 = 0;
+    public static final int resource_1 = 1;
+    public static final int resource_2 = 2;
+    public static final int resource_3 = 3;
+    public static final int resource_4 = 4;
+    public static final int resource_10 = 10;
+    public static final int resource_11 = 11;
+
+    //固定的会议目录ID
+    /**
+     * 共享文件目录ID
+     */
+    public static final int SHARED_FILE_DIRECTORY_ID = 1;
+    /**
+     * 批注文件目录ID
+     */
+    public static final int ANNOTATION_FILE_DIRECTORY_ID = 2;
+    /**
+     * 会议资料目录ID
+     */
+    public static final int MEETDATA_FILE_DIRECTORY_ID = 3;
+
+    //限制范围阀值
+    /**
+     * 标题文本最大字数
+     */
+    public static final int MAX_TITLE_LENGTH = 30;
+    /**
+     * 内容文本最大字数
+     */
+    public static final int MAX_CONTENT_LENGTH = 106;
+    /**
+     * 屏幕录制最低比特率
+     */
+    public static final int MINIMUM_BITRATE = 500;
+    /**
+     * 屏幕录制最大比特率
+     */
+    public static final int MAXIMUM_BITRATE = 10000;
 
     //自定义其它功能的功能码
+
     public static final int fun_code = 200000;
     public static final int fun_code_terminal = fun_code + 1;
     public static final int fun_code_vote = fun_code + 2;
@@ -107,30 +310,32 @@ public class Constant {
     public static final int fun_code_bulletin = fun_code + 6;
     public static final int fun_code_score = fun_code + 7;
 
-    //投票时提交，用于签到参与投票
+    /**
+     * 投票时提交，用于签到参与投票
+     */
     public static final int PB_VOTE_SELFLAG_CHECKIN = 0x80000000;
 
     //编码类型
     /**
      * VP8 video (i.e. video in .webm)
      */
-    public static final String AMIME_VIDEO_VP8 = "video/x-vnd.on2.vp8";
+    public static final String MIME_VIDEO_VP8 = "video/x-vnd.on2.vp8";
     /**
      * VP9 video (i.e. video in .webm)
      */
-    public static final String AMIME_VIDEO_VP9 = "video/x-vnd.on2.vp9";
+    public static final String MIME_VIDEO_VP9 = "video/x-vnd.on2.vp9";
     /**
      * SCREEN_HEIGHT.264/AVC video
      */
-    public static final String AMIME_VIDEO_AVC = "video/avc";
+    public static final String MIME_VIDEO_AVC = "video/avc";
     /**
      * SCREEN_HEIGHT.265/HEVC video
      */
-    public static final String AMIME_VIDEO_HEVC = "video/hevc";
+    public static final String MIME_VIDEO_HEVC = "video/hevc";
     /**
      * MPEG4 video
      */
-    public static final String AMIME_VIDEO_MPEG4 = "video/mp4v-es";
+    public static final String MIME_VIDEO_MPEG4 = "video/mp4v-es";
 
     //文件类别
 
@@ -138,109 +343,138 @@ public class Constant {
     /**
      * 音频
      */
-    public static int MEDIA_FILE_TYPE_AUDIO = 0x00000000;
+    public static final int MEDIA_FILE_TYPE_AUDIO = 0x00000000;
     /**
      * 视频
      */
-    public static int MEDIA_FILE_TYPE_VIDEO = 0x20000000;
+    public static final int MEDIA_FILE_TYPE_VIDEO = 0x20000000;
     /**
      * 录制
      */
-    public static int MEDIA_FILE_TYPE_RECORD = 0x40000000;
+    public static final int MEDIA_FILE_TYPE_RECORD = 0x40000000;
     /**
      * 图片
      */
-    public static int MEDIA_FILE_TYPE_PICTURE = 0x60000000;
+    public static final int MEDIA_FILE_TYPE_PICTURE = 0x60000000;
     /**
      * 升级
      */
-    public static int MEDIA_FILE_TYPE_UPDATE = 0xe0000000;
+    public static final int MEDIA_FILE_TYPE_UPDATE = 0xe0000000;
     /**
      * 临时文件
      */
-    public static int MEDIA_FILE_TYPE_TEMP = 0x80000000;
+    public static final int MEDIA_FILE_TYPE_TEMP = 0x80000000;
     /**
      * 其它文件
      */
-    public static int MEDIA_FILE_TYPE_OTHER = 0xa0000000;
-    public static int MAIN_TYPE_BITMASK = 0xe0000000;
+    public static final int MEDIA_FILE_TYPE_OTHER = 0xa0000000;
+    public static final int MAIN_TYPE_BITMASK = 0xe0000000;
 
     //  小类
     /**
      * PCM文件
      */
-    public static int MEDIA_FILE_TYPE_PCM = 0x01000000;
+    public static final int MEDIA_FILE_TYPE_PCM = 0x01000000;
     /**
      * MP3文件
      */
-    public static int MEDIA_FILE_TYPE_MP3 = 0x02000000;
+    public static final int MEDIA_FILE_TYPE_MP3 = 0x02000000;
     /**
      * WAV文件
      */
-    public static int MEDIA_FILE_TYPE_ADPCM = 0x03000000;
+    public static final int MEDIA_FILE_TYPE_ADPCM = 0x03000000;
     /**
      * FLAC文件
      */
-    public static int MEDIA_FILE_TYPE_FLAC = 0x04000000;
+    public static final int MEDIA_FILE_TYPE_FLAC = 0x04000000;
     /**
      * MP4文件
      */
-    public static int MEDIA_FILE_TYPE_MP4 = 0x07000000;
+    public static final int MEDIA_FILE_TYPE_MP4 = 0x07000000;
     /**
      * MKV文件
      */
-    public static int MEDIA_FILE_TYPE_MKV = 0x08000000;
+    public static final int MEDIA_FILE_TYPE_MKV = 0x08000000;
     /**
      * RMVB文件
      */
-    public static int MEDIA_FILE_TYPE_RMVB = 0x09000000;
+    public static final int MEDIA_FILE_TYPE_RMVB = 0x09000000;
     /**
      * RM文件
      */
-    public static int MEDIA_FILE_TYPE_RM = 0x0a000000;
+    public static final int MEDIA_FILE_TYPE_RM = 0x0a000000;
     /**
      * AVI文件
      */
-    public static int MEDIA_FILE_TYPE_AVI = 0x0b000000;
+    public static final int MEDIA_FILE_TYPE_AVI = 0x0b000000;
     /**
      * bmp文件
      */
-    public static int MEDIA_FILE_TYPE_BMP = 0x0c000000;
+    public static final int MEDIA_FILE_TYPE_BMP = 0x0c000000;
     /**
      * jpeg文件
      */
-    public static int MEDIA_FILE_TYPE_JPEG = 0x0d000000;
+    public static final int MEDIA_FILE_TYPE_JPEG = 0x0d000000;
     /**
      * png文件
      */
-    public static int MEDIA_FILE_TYPE_PNG = 0x0e000000;
+    public static final int MEDIA_FILE_TYPE_PNG = 0x0e000000;
     /**
      * 其它文件
      */
-    public static int MEDIA_FILE_TYPE_OTHER_SUB = 0x10000000;
+    public static final int MEDIA_FILE_TYPE_OTHER_SUB = 0x10000000;
 
-    public static int SUB_TYPE_BITMASK = 0x1f000000;
+    public static final int SUB_TYPE_BITMASK = 0x1f000000;
 
+
+    /* **** **  权限码  ** **** */
+    /**
+     * 同屏权限
+     */
+    public static final int permission_code_screen = 1;
+    /**
+     * 投影权限
+     */
+    public static final int permission_code_projection = 2;
+    /**
+     * 上传权限
+     */
+    public static final int permission_code_upload = 4;
+    /**
+     * 下载权限
+     */
+    public static final int permission_code_download = 8;
+    /**
+     * 投票权限
+     */
+    public static final int permission_code_vote = 16;
 
     /**
      * 判断本机是否拥有某权限
-     *
-     * @param code 权限对应: 1 同屏权限, 2 投影权限, 3 上传权限, 4 下载权限, 5 投票权限
      */
     public static boolean hasPermission(int code) {
-        if (MyApplication.localPermissions != null) {//本机权限集合
-            return MyApplication.localPermissions.contains(code);
-        } else {
-            return false;
+        if (hasAllPermissions) {
+            return true;
         }
+        return (localPermission & code) == code;
     }
 
     /**
-     * 获取选中的项数
+     * 判断权限码是否有某一权限
+     *
+     * @param permission 权限
+     * @param code       某一权限的权限码
+     */
+    public static boolean isHasPermission(int permission, int code) {
+        return (permission & code) == code;
+    }
+
+    /**
+     * 将权限码转换成数字集合 权限对应： 1 同屏权限, 2 投影权限, 3 上传权限, 4 下载权限, 5 投票权限
      *
      * @param permission 10进制int型数据
      */
-    public static List<Integer> getChoose(int permission) {
+    public static List<Integer> permission2list(int permission) {
         List<Integer> ls = new ArrayList<>();
         //将10进制转换成2进制字符串 010001
         String to2 = Integer.toBinaryString(permission);
@@ -278,12 +512,13 @@ public class Constant {
     }
 
     /**
-     * 判断是否是视频文件
+     * 判断是否是视频或音频文件
      *
      * @param mediaid 文件ID
      */
     public static boolean isVideo(int mediaid) {
-        return (MAIN_TYPE_BITMASK & mediaid) == MEDIA_FILE_TYPE_VIDEO;
+        return (MAIN_TYPE_BITMASK & mediaid) == MEDIA_FILE_TYPE_VIDEO
+                || (MAIN_TYPE_BITMASK & mediaid) == MEDIA_FILE_TYPE_AUDIO;
     }
 
     /**
@@ -367,27 +602,27 @@ public class Constant {
     public static String getMimeType(int codecId) {
         switch (codecId) {
             case 12:
-                return AMIME_VIDEO_MPEG4;
+                return MIME_VIDEO_MPEG4;
             case 13:
-                return AMIME_VIDEO_MPEG4;
+                return MIME_VIDEO_MPEG4;
             case 27:
-                return AMIME_VIDEO_AVC;
+                return MIME_VIDEO_AVC;
             case 28:
-                return AMIME_VIDEO_AVC;
+                return MIME_VIDEO_AVC;
             case 139:
-                return AMIME_VIDEO_VP8;
+                return MIME_VIDEO_VP8;
             case 140:
-                return AMIME_VIDEO_VP8;
+                return MIME_VIDEO_VP8;
             case 167:
-                return AMIME_VIDEO_VP9;
+                return MIME_VIDEO_VP9;
             case 168:
-                return AMIME_VIDEO_VP9;
+                return MIME_VIDEO_VP9;
             case 173:
-                return AMIME_VIDEO_HEVC;
+                return MIME_VIDEO_HEVC;
             case 174:
-                return AMIME_VIDEO_HEVC;
+                return MIME_VIDEO_HEVC;
             default:
-                return AMIME_VIDEO_AVC;
+                return MIME_VIDEO_AVC;
         }
     }
 
@@ -406,6 +641,8 @@ public class Constant {
 
     /**
      * 获取该设备的类型名称
+     *
+     * @return 返回空表示是未识别的设备（服务器设备）
      */
     public static String getDeviceTypeName(Context context, int deviceId) {
         if (isThisDevType(InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetDBServer_VALUE, deviceId)) {
@@ -433,6 +670,7 @@ public class Constant {
             //PHP中转数据设备
         } else if (isThisDevType(InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetShare_VALUE, deviceId)) {
             //会议一键同屏设备
+            return context.getString(R.string.screen_dev);
         }
         return "";
     }
@@ -452,6 +690,5 @@ public class Constant {
         }
         return "";
     }
-
 
 }

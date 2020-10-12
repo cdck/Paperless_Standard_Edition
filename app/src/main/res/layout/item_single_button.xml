@@ -10,6 +10,9 @@
         android:id="@+id/item_single_btn"
         style="@style/btn_selected_style"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="2"
+        android:ellipsize="end"
         android:clickable="false"
         tools:text="张三" />
 </LinearLayout>

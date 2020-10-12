@@ -1,118 +1,209 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/shape_blue_rect">
+    android:background="@drawable/shape_blue_rect"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/wm_vote_title"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
-        android:textSize="@dimen/sp_12"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="测试投票" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/wm_vote_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        <TextView
+            android:id="@+id/wm_vote_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="测试投票" />
+
+        <TextView
+            android:id="@+id/wm_vote_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:textColor="@color/text_blue"
+            app:layout_constraintBaseline_toBaselineOf="@+id/wm_vote_title"
+            app:layout_constraintStart_toEndOf="@+id/wm_vote_title"
+            tools:text="(多选，记名)" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/wm_vote_election"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_marginStart="32dp"
-        android:textColor="@color/text_blue"
-        app:layout_constraintBaseline_toBaselineOf="@+id/wm_vote_title"
-        app:layout_constraintStart_toEndOf="@+id/wm_vote_title"
-        tools:text="(多选，记名)" />
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:visibility="visible">
 
-    <CheckBox
-        android:id="@+id/checkBox1"
+        <CheckBox
+            android:id="@+id/checkBox1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_8"
+            android:layout_weight="1"
+            android:clickable="false"
+            tools:text="A默认答案圣诞节疯狂了决胜巅峰" />
+
+        <CheckBox
+            android:id="@+id/checkBox2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_8"
+            android:layout_weight="1"
+            android:clickable="false"
+            tools:text="B默认答案圣诞节疯狂了决胜巅峰" />
+
+        <CheckBox
+            android:id="@+id/checkBox3"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_8"
+            android:layout_weight="1"
+            android:clickable="false"
+            tools:text="C速度快解放离开家第三方" />
+
+        <CheckBox
+            android:id="@+id/checkBox4"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_8"
+            android:layout_weight="1"
+            android:clickable="false"
+            tools:text="D默认答案圣诞节疯狂了决胜巅峰" />
+
+        <CheckBox
+            android:id="@+id/checkBox5"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_8"
+            android:layout_marginBottom="@dimen/dp_8"
+            android:layout_weight="1"
+            android:clickable="false"
+            tools:text="E默认答案圣诞节疯狂了决胜巅峰" />
+
+    </LinearLayout>
+
+    <!--投票布局-->
+    <LinearLayout
+        android:id="@+id/wm_vote_linear"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:clickable="false"
-        android:layout_marginStart="@dimen/dp_8"
-        android:layout_marginTop="@dimen/dp_8"
-        app:layout_constraintBottom_toTopOf="@+id/checkBox2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wm_vote_title"
-        tools:text="A" />
-
-    <CheckBox
-        android:id="@+id/checkBox2"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="@dimen/dp_8"
-        android:clickable="false"
-        android:layout_marginTop="@dimen/dp_8"
-        app:layout_constraintBottom_toTopOf="@+id/checkBox3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox1"
-        tools:text="B" />
-
-    <CheckBox
-        android:id="@+id/checkBox3"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="@dimen/dp_8"
-        android:clickable="false"
-        android:layout_marginTop="@dimen/dp_8"
-        app:layout_constraintBottom_toTopOf="@+id/checkBox4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox2"
-        tools:text="C" />
-
-    <CheckBox
-        android:id="@+id/checkBox4"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="@dimen/dp_8"
-        android:clickable="false"
-        android:layout_marginTop="@dimen/dp_8"
-        app:layout_constraintBottom_toTopOf="@+id/checkBox5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox3"
-        tools:text="D" />
-
-    <CheckBox
-        android:id="@+id/checkBox5"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="@dimen/dp_8"
-        android:clickable="false"
-        android:layout_marginTop="@dimen/dp_8"
-        android:layout_marginBottom="@dimen/dp_8"
-        app:layout_constraintBottom_toTopOf="@+id/wm_vote_chronometer"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox4"
-        tools:text="E" />
-
-    <Chronometer
-        android:id="@+id/wm_vote_chronometer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_8"
-        android:layout_marginEnd="@dimen/dp_8"
-        android:layout_marginBottom="32dp"
-        android:format="00:00:00"
+        android:layout_gravity="center"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_weight="3"
         android:gravity="center"
-        android:textColor="@color/red"
-        android:textSize="@dimen/sp_12"
-        app:layout_constraintBottom_toTopOf="@+id/wm_vote_submit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:orientation="horizontal"
+        android:padding="15dp"
+        android:visibility="gone">
 
-    <Button
-        android:id="@+id/wm_vote_submit"
-        style="@style/btn_pressed_style"
-        android:layout_width="@dimen/dp_110"
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/vote_favour_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:src="@drawable/icon_vote_approve" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/vote_against_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:src="@drawable/icon_vote_against" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/vote_waiver_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:src="@drawable/icon_vote_abstain" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_8"
-        android:layout_marginEnd="@dimen/dp_8"
-        android:layout_marginBottom="16dp"
-        android:text="@string/submit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-</android.support.constraint.ConstraintLayout>
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/wm_vote_submit"
+            style="@style/btn_pressed_style"
+            android:layout_width="@dimen/dp_140"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/submit" />
+
+        <LinearLayout
+            android:id="@+id/wm_vote_countdown_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/dp_8"
+                android:gravity="center"
+                android:text="@string/count_down"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/sp_16" />
+
+            <Chronometer
+                android:id="@+id/wm_vote_chronometer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/shape_time_down"
+                android:format="00"
+                android:gravity="center"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/sp_16" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

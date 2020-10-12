@@ -4,8 +4,6 @@ import android.support.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.google.protobuf.InvalidProtocolBufferException;
-import com.mogujie.tt.protobuf.InterfaceBase;
 import com.mogujie.tt.protobuf.InterfaceFilescorevote;
 import com.mogujie.tt.protobuf.InterfaceMacro;
 
@@ -13,7 +11,6 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import xlk.paperless.standard.R;
-import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.util.LogUtil;
 

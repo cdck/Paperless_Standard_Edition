@@ -7,13 +7,9 @@ import com.mogujie.tt.protobuf.InterfaceBase;
 import com.mogujie.tt.protobuf.InterfaceFilescorevote;
 import com.mogujie.tt.protobuf.InterfaceMacro;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.util.LogUtil;
-import xlk.paperless.standard.view.BasePresenter;
+import xlk.paperless.standard.base.BasePresenter;
 
 /**
  * @author xlk
@@ -26,27 +22,21 @@ public class ScorePresenter extends BasePresenter {
     private final Context cxt;
 
     public ScorePresenter(Context context, IScore view) {
+        super();
         this.cxt = context;
         this.view = view;
     }
 
     @Override
-    public void register() {
-        EventBus.getDefault().register(this);
+    public void onDestroy() {
+        super.onDestroy();
     }
-
     @Override
-    public void unregister() {
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void BusEvent(EventMessage msg) throws InvalidProtocolBufferException {
+    public void busEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_FILESCOREVOTE_VALUE:
                 if (msg.getMethod() == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_NOTIFY_VALUE) {
-                    byte[] o1 = (byte[]) msg.getObjs()[0];
+                    byte[] o1 = (byte[]) msg.getObjects()[0];
                     InterfaceBase.pbui_MeetNotifyMsg pbui_meetNotifyMsg = InterfaceBase.pbui_MeetNotifyMsg.parseFrom(o1);
                     int id = pbui_meetNotifyMsg.getId();
                     int opermethod = pbui_meetNotifyMsg.getOpermethod();

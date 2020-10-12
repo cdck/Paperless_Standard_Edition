@@ -12,6 +12,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,11 +20,12 @@ import xlk.paperless.standard.R;
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.data.JniHandler;
+import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.data.bean.DevMember;
 import xlk.paperless.standard.util.FileUtil;
 import xlk.paperless.standard.util.LogUtil;
-import xlk.paperless.standard.view.BasePresenter;
-import xlk.paperless.standard.view.MyApplication;
+import xlk.paperless.standard.util.ToastUtil;
+import xlk.paperless.standard.base.BasePresenter;
 
 /**
  * @author xlk
@@ -42,23 +44,19 @@ public class MeetDataPresenter extends BasePresenter {
     List<InterfaceDevice.pbui_Item_DeviceDetailInfo> onLineProjectors = new ArrayList<>();
 
     public MeetDataPresenter(Context cxt, IMeetData view) {
+        super();
         this.cxt = cxt;
         this.view = view;
     }
 
     @Override
-    public void register() {
-        EventBus.getDefault().register(this);
+    public void onDestroy() {
+        super.onDestroy();
     }
 
-    @Override
-    public void unregister() {
-        EventBus.getDefault().unregister(this);
-    }
 
     @Override
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void BusEvent(EventMessage msg) {
+    public void busEvent(EventMessage msg) {
         switch (msg.getType()) {
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETDIRECTORY_VALUE://会议目录
                 queryMeetDir();
@@ -83,7 +81,8 @@ public class MeetDataPresenter extends BasePresenter {
             List<InterfaceFile.pbui_Item_MeetDirDetailInfo> itemList = dirDetailInfo.getItemList();
             for (int i = 0; i < itemList.size(); i++) {
                 InterfaceFile.pbui_Item_MeetDirDetailInfo item = itemList.get(i);
-                if (item.getParentid() != 0 || item.getId() == 2) continue;//过滤掉子目录和批注文件目录
+                if (item.getParentid() != 0 || item.getId() == Constant.ANNOTATION_FILE_DIRECTORY_ID)
+                    continue;//过滤掉子目录和批注文件目录
                 LogUtil.i(TAG, "queryMeetDir  -->" + item.getId() + " , " + item.getName().toStringUtf8());
                 dirDetailInfos.add(item);
             }
@@ -116,9 +115,18 @@ public class MeetDataPresenter extends BasePresenter {
 
     public void downloadFile(InterfaceFile.pbui_Item_MeetDirFileDetailInfo fileDetailInfo) {
         LogUtil.d(TAG, "downloadFile -->" + "下载文件：" + fileDetailInfo.getName().toStringUtf8());
-        if (FileUtil.createDir(Constant.data_file_dir)) {
-            jni.creationFileDownload(Constant.data_file_dir + fileDetailInfo.getName().toStringUtf8(),
-                    fileDetailInfo.getMediaid(), 1, 0, Constant.MEETING_FILE_KEY);
+        if (FileUtil.createDir(Constant.dir_data_file)) {
+            String pathname = Constant.dir_data_file + fileDetailInfo.getName().toStringUtf8();
+            File file = new File(pathname);
+            if (!file.exists()) {
+                jni.creationFileDownload(pathname, fileDetailInfo.getMediaid(), 1, 0, Constant.download_meeting_file);
+            } else {
+                if (Values.downloadingFiles.contains(fileDetailInfo.getMediaid())) {
+                    ToastUtil.show(R.string.currently_downloading);
+                } else {
+                    ToastUtil.show(R.string.already_exists_locally);
+                }
+            }
         }
     }
 
@@ -146,7 +154,7 @@ public class MeetDataPresenter extends BasePresenter {
                         && netstate == 1) {
                     onLineProjectors.add(detailInfo);
                 }
-                if (netstate == 1 && facestate == 1 && devcieid != MyApplication.localDeviceId) {
+                if (netstate == 1 && facestate == 1 && devcieid != Values.localDeviceId) {
                     for (int j = 0; j < itemList.size(); j++) {
                         InterfaceMember.pbui_Item_MemberDetailInfo memberDetailInfo = itemList.get(j);
                         if (memberDetailInfo.getPersonid() == memberid) {

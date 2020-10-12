@@ -12,7 +12,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.data.JniHandler;
-import xlk.paperless.standard.view.BasePresenter;
+import xlk.paperless.standard.base.BasePresenter;
 
 /**
  * @author xlk
@@ -22,26 +22,20 @@ import xlk.paperless.standard.view.BasePresenter;
 public class MeetWebPresenter extends BasePresenter {
     private final IMeetWeb view;
     private final Context cxt;
-    private JniHandler jni = JniHandler.getInstance();
 
     public MeetWebPresenter(Context cxt, IMeetWeb view) {
+        super();
         this.cxt = cxt;
         this.view = view;
     }
 
     @Override
-    public void register() {
-        EventBus.getDefault().register(this);
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
-    public void unregister() {
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void BusEvent(EventMessage msg) throws InvalidProtocolBufferException {
+    public void busEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEFAULTURL_VALUE:
                 webQuery();

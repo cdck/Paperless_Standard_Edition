@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <include layout="@layout/item_admin_room" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_room"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_white_blue_rect" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/room_device"
+                android:textSize="@dimen/sp_22" />
+
+            <include layout="@layout/item_table_3" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_room_dev"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_white_blue_rect" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/dp_5"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_add_to"
+                style="@style/btn_pressed_style"
+                android:layout_width="wrap_content"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:text="@string/add_" />
+
+            <Button
+                android:id="@+id/btn_remove_to"
+                style="@style/btn_pressed_style"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:text="@string/remove_" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/all_device"
+                android:textSize="@dimen/sp_22" />
+
+            <include layout="@layout/item_table_3" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_all_dev"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_white_blue_rect" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/dp_10"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/name_" />
+
+        <EditText
+            android:id="@+id/edt_name"
+            android:layout_width="0dp"
+            android:maxLines="1"
+            android:lines="1"
+            android:ellipsize="end"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/address_" />
+
+        <EditText
+            android:id="@+id/edt_address"
+            android:layout_width="0dp"
+            android:maxLines="1"
+            android:lines="1"
+            android:ellipsize="end"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/remarks_" />
+
+        <EditText
+            android:id="@+id/edt_remarks"
+            android:layout_width="0dp"
+            android:maxLines="1"
+            android:lines="1"
+            android:ellipsize="end"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_add"
+            style="@style/btn_pressed_style"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:text="@string/add" />
+
+        <Button
+            android:id="@+id/btn_delete"
+            style="@style/btn_pressed_style"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:text="@string/delete" />
+
+        <Button
+            android:id="@+id/btn_modify"
+            style="@style/btn_pressed_style"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:text="@string/modify" />
+    </LinearLayout>
+</LinearLayout>

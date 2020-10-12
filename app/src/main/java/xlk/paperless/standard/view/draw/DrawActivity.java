@@ -21,7 +21,6 @@ import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.google.protobuf.ByteString;
 import com.mogujie.tt.protobuf.InterfaceMacro;
 
 import java.util.ArrayList;
@@ -29,6 +28,7 @@ import java.util.List;
 
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.data.Constant;
+import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.service.FabService;
 import xlk.paperless.standard.ui.ArtBoard;
 import xlk.paperless.standard.ui.ColorPickerDialog;
@@ -36,8 +36,7 @@ import xlk.paperless.standard.util.FileUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.ToastUtil;
 import xlk.paperless.standard.util.UriUtil;
-import xlk.paperless.standard.view.BaseActivity;
-import xlk.paperless.standard.view.MyApplication;
+import xlk.paperless.standard.base.BaseActivity;
 
 import static android.content.Intent.ACTION_OPEN_DOCUMENT;
 import static xlk.paperless.standard.util.ConvertUtil.bmp2bs;
@@ -305,7 +304,7 @@ public class DrawActivity extends BaseActivity implements IDraw, View.OnClickLis
                 ToastUtil.show( R.string.tip_file_name_unlawfulness);
             } else {
                 presenter.savePicture(name, false, artBoard.getCanvasBmp());
-                ToastUtil.show(getResources().getString(R.string.tip_save_as, Constant.artboard_picture_dir));
+                ToastUtil.show(getResources().getString(R.string.tip_save_as, Constant.dir_picture));
                 dialog.dismiss();
             }
         });
@@ -389,7 +388,7 @@ public class DrawActivity extends BaseActivity implements IDraw, View.OnClickLis
                     int operid = (int) (time / 10);
                     DrawPresenter.localOperids.add(operid);
                     DrawPresenter.LocalSharingPathList.add(drawPath);
-                    presenter.addPicture(operid, MyApplication.localMemberId, mSrcmemid, mSrcwbid, time,
+                    presenter.addPicture(operid, Values.localMemberId, mSrcmemid, mSrcwbid, time,
                             InterfaceMacro.Pb_MeetPostilFigureType.Pb_WB_FIGURETYPE_PICTURE.getNumber(), 0, 0, bmp2bs(bitmap));
                 }
             }
@@ -422,5 +421,6 @@ public class DrawActivity extends BaseActivity implements IDraw, View.OnClickLis
         ArtBoard.artBoardHeight = 0;
         artBoard.destroyDrawingCache();
         artBoard = null;
+        presenter.onDestroy();
     }
 }

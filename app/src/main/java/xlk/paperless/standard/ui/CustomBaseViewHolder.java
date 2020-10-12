@@ -7,6 +7,7 @@ import android.widget.CheckBox;
 import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import xlk.paperless.standard.R;
@@ -139,11 +140,17 @@ public class CustomBaseViewHolder {
         public View rootView;
         public TextView wm_vote_title;
         public TextView wm_vote_type;
+        public LinearLayout wm_vote_election;
         public CheckBox checkBox1;
         public CheckBox checkBox2;
         public CheckBox checkBox3;
         public CheckBox checkBox4;
         public CheckBox checkBox5;
+        public LinearLayout wm_vote_linear;
+        public ImageView vote_favour_tv;
+        public ImageView vote_against_tv;
+        public ImageView vote_waiver_tv;
+        public LinearLayout wm_vote_countdown_ll;
         public Chronometer wm_vote_chronometer;
         public Button wm_vote_submit;
 
@@ -151,13 +158,32 @@ public class CustomBaseViewHolder {
             this.rootView = rootView;
             this.wm_vote_title = (TextView) rootView.findViewById(R.id.wm_vote_title);
             this.wm_vote_type = (TextView) rootView.findViewById(R.id.wm_vote_type);
+            this.wm_vote_election = (LinearLayout) rootView.findViewById(R.id.wm_vote_election);
             this.checkBox1 = (CheckBox) rootView.findViewById(R.id.checkBox1);
             this.checkBox2 = (CheckBox) rootView.findViewById(R.id.checkBox2);
             this.checkBox3 = (CheckBox) rootView.findViewById(R.id.checkBox3);
             this.checkBox4 = (CheckBox) rootView.findViewById(R.id.checkBox4);
             this.checkBox5 = (CheckBox) rootView.findViewById(R.id.checkBox5);
+            this.wm_vote_linear = (LinearLayout) rootView.findViewById(R.id.wm_vote_linear);
+            this.vote_favour_tv = (ImageView) rootView.findViewById(R.id.vote_favour_tv);
+            this.vote_against_tv = (ImageView) rootView.findViewById(R.id.vote_against_tv);
+            this.vote_waiver_tv = (ImageView) rootView.findViewById(R.id.vote_waiver_tv);
+            this.wm_vote_countdown_ll = (LinearLayout) rootView.findViewById(R.id.wm_vote_countdown_ll);
             this.wm_vote_chronometer = (Chronometer) rootView.findViewById(R.id.wm_vote_chronometer);
             this.wm_vote_submit = (Button) rootView.findViewById(R.id.wm_vote_submit);
+        }
+
+    }
+
+    public static class SubmitViewHolder {
+        public View rootView;
+        public Button vote_submit_ensure;
+        public Button vote_submit_cancel;
+
+        public SubmitViewHolder(View rootView) {
+            this.rootView = rootView;
+            this.vote_submit_ensure = (Button) rootView.findViewById(R.id.vote_submit_ensure);
+            this.vote_submit_cancel = (Button) rootView.findViewById(R.id.vote_submit_cancel);
         }
 
     }

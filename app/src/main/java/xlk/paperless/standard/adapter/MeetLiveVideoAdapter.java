@@ -31,7 +31,7 @@ public class MeetLiveVideoAdapter extends BaseQuickAdapter<VideoDev, BaseViewHol
 
     @Override
     protected void convert(BaseViewHolder helper, VideoDev item) {
-        helper.setText(R.id.i_m_v_tv, item.getVideoDetailInfo().getName().toStringUtf8());
+        helper.setText(R.id.i_m_v_tv, item.getName());
         int deviceid = item.getVideoDetailInfo().getDeviceid();
         int id = item.getVideoDetailInfo().getId();
         boolean selected = (selectDevId == deviceid) && (selectId == id);

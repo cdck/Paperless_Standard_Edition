@@ -10,10 +10,7 @@ import com.mogujie.tt.protobuf.InterfaceMacro;
 import com.mogujie.tt.protobuf.InterfaceMember;
 import com.mogujie.tt.protobuf.InterfaceRoom;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,13 +18,13 @@ import xlk.paperless.standard.R;
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.data.JniHandler;
+import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.data.bean.DevMember;
 import xlk.paperless.standard.data.bean.SeatMember;
 import xlk.paperless.standard.util.FileUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.ToastUtil;
-import xlk.paperless.standard.view.BasePresenter;
-import xlk.paperless.standard.view.MyApplication;
+import xlk.paperless.standard.base.BasePresenter;
 
 /**
  * @author xlk
@@ -48,23 +45,19 @@ public class MeetAnnotationPresenter extends BasePresenter {
     List<InterfaceDevice.pbui_Item_DeviceDetailInfo> onLineProjectors = new ArrayList<>();
 
     public MeetAnnotationPresenter(Context cxt, IMeetAnnotation view) {
+        super();
         this.cxt = cxt;
         this.view = view;
     }
 
     @Override
-    public void register() {
-        EventBus.getDefault().register(this);
+    public void onDestroy() {
+        super.onDestroy();
     }
 
-    @Override
-    public void unregister() {
-        EventBus.getDefault().unregister(this);
-    }
 
     @Override
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void BusEvent(EventMessage msg) throws InvalidProtocolBufferException {
+    public void busEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETSEAT_VALUE://会议排位变更通知
                 queryMeetRanking();
@@ -74,9 +67,9 @@ public class MeetAnnotationPresenter extends BasePresenter {
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETDIRECTORYFILE_VALUE://会议目录文件变更通知
                 if (msg.getMethod() == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_NOTIFY.getNumber()) {
-                    byte[] o = (byte[]) msg.getObjs()[0];
+                    byte[] o = (byte[]) msg.getObjects()[0];
                     InterfaceBase.pbui_MeetNotifyMsgForDouble pbui_meetNotifyMsgForDouble = InterfaceBase.pbui_MeetNotifyMsgForDouble.parseFrom(o);
-                    if (pbui_meetNotifyMsgForDouble.getId() == 2) {
+                    if (pbui_meetNotifyMsgForDouble.getId() == Constant.ANNOTATION_FILE_DIRECTORY_ID) {
                         queryFile();
                     }
                 }
@@ -84,7 +77,7 @@ public class MeetAnnotationPresenter extends BasePresenter {
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEOPER_VALUE://设备交互
                 if (msg.getMethod() == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_RESPONSEPRIVELIGE.getNumber()) {
                     //收到参会人员权限请求回复
-                    byte[] o = (byte[]) msg.getObjs()[0];
+                    byte[] o = (byte[]) msg.getObjects()[0];
                     InterfaceDevice.pbui_Type_MeetRequestPrivilegeResponse object = InterfaceDevice.pbui_Type_MeetRequestPrivilegeResponse.parseFrom(o);
                     int returncode = object.getReturncode();
                     int deviceid = object.getDeviceid();
@@ -127,12 +120,6 @@ public class MeetAnnotationPresenter extends BasePresenter {
             }
             memberDetailInfos.clear();
             memberDetailInfos.addAll(attendPeople.getItemList());
-            for (int i = 0; i < memberDetailInfos.size(); i++) {
-                if (memberDetailInfos.get(i).getPersonid() == MyApplication.localMemberId) {
-                    memberDetailInfos.remove(i);
-                    break;
-                }
-            }
             queryMeetRanking();
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
@@ -151,6 +138,7 @@ public class MeetAnnotationPresenter extends BasePresenter {
                     InterfaceMember.pbui_Item_MemberDetailInfo memberDetailInfo = memberDetailInfos.get(j);
                     if (info.getNameId() == memberDetailInfo.getPersonid()) {
                         seatMembers.add(new SeatMember(memberDetailInfo, info));
+                        break;
                     }
                 }
             }
@@ -158,9 +146,7 @@ public class MeetAnnotationPresenter extends BasePresenter {
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
-
     }
-
 
     public void sendAttendRequestPermissions(int devId, int code) {
         jni.sendAttendRequestPermissions(devId, code);
@@ -168,7 +154,7 @@ public class MeetAnnotationPresenter extends BasePresenter {
 
     public void queryFile() {
         try {
-            InterfaceFile.pbui_Type_MeetDirFileDetailInfo dirFileDetailInfo = jni.queryMeetDirFile(2);
+            InterfaceFile.pbui_Type_MeetDirFileDetailInfo dirFileDetailInfo = jni.queryMeetDirFile(Constant.ANNOTATION_FILE_DIRECTORY_ID);
             fileDetailInfos.clear();
             if (dirFileDetailInfo == null) {
                 view.updateFileRv(fileDetailInfos);
@@ -185,12 +171,36 @@ public class MeetAnnotationPresenter extends BasePresenter {
         return saveConsentDevices.contains(devId);
     }
 
-
     public void downloadFile(InterfaceFile.pbui_Item_MeetDirFileDetailInfo fileDetailInfo) {
         LogUtil.d(TAG, "downloadFile -->" + "下载文件：" + fileDetailInfo.getName().toStringUtf8());
-        if (FileUtil.createDir(Constant.annotation_file_dir)) {
-            jni.creationFileDownload(Constant.annotation_file_dir + fileDetailInfo.getName().toStringUtf8(),
-                    fileDetailInfo.getMediaid(), 1, 0, Constant.ANNOTATION_FILE_KEY);
+        if (FileUtil.createDir(Constant.dir_annotation_file)) {
+            File file = new File(Constant.dir_annotation_file + fileDetailInfo.getName().toStringUtf8());
+            if (file.exists()) {
+                if (Values.downloadingFiles.contains(fileDetailInfo.getMediaid())) {
+                    ToastUtil.show(R.string.currently_downloading);
+                } else {
+                    ToastUtil.show(R.string.already_exists_locally);
+                }
+                return;
+            }
+            jni.creationFileDownload(Constant.dir_annotation_file + fileDetailInfo.getName().toStringUtf8(),
+                    fileDetailInfo.getMediaid(), 1, 0, Constant.download_annotation_file);
+        }
+    }
+
+    public void preViewFile(InterfaceFile.pbui_Item_MeetDirFileDetailInfo fileDetailInfo) {
+        if (FileUtil.createDir(Constant.dir_annotation_file)) {
+            File file = new File(Constant.dir_annotation_file + fileDetailInfo.getName().toStringUtf8());
+            if (file.exists()) {
+                if (Values.downloadingFiles.contains(fileDetailInfo.getMediaid())) {
+                    ToastUtil.show(R.string.currently_downloading);
+                } else {
+                    FileUtil.openFile(cxt, file);
+                }
+                return;
+            }
+            jni.creationFileDownload(Constant.dir_annotation_file + fileDetailInfo.getName().toStringUtf8(),
+                    fileDetailInfo.getMediaid(), 1, 0, Constant.download_should_open_file);
         }
     }
 
@@ -214,11 +224,11 @@ public class MeetAnnotationPresenter extends BasePresenter {
                 int netstate = detailInfo.getNetstate();
                 int memberid = detailInfo.getMemberid();
                 int facestate = detailInfo.getFacestate();
-                if (Constant.isThisDevType(InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetProjective_VALUE,devcieid)
+                if (Constant.isThisDevType(InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetProjective_VALUE, devcieid)
                         && netstate == 1) {
                     onLineProjectors.add(detailInfo);
                 }
-                if (netstate == 1 && facestate == 1 && devcieid != MyApplication.localDeviceId) {
+                if (netstate == 1 && facestate == 1 && devcieid != Values.localDeviceId) {
                     for (int j = 0; j < itemList.size(); j++) {
                         InterfaceMember.pbui_Item_MemberDetailInfo memberDetailInfo = itemList.get(j);
                         if (memberDetailInfo.getPersonid() == memberid) {

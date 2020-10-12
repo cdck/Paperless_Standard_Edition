@@ -40,13 +40,12 @@ import xlk.paperless.standard.adapter.VoteManageAdapter;
 import xlk.paperless.standard.adapter.VoteManageMemberAdapter;
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.exportbean.ExportSubmitMember;
-import xlk.paperless.standard.data.exportbean.ExportVoteInfo;
 import xlk.paperless.standard.util.DateUtil;
 import xlk.paperless.standard.util.JxlUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.ToastUtil;
 import xlk.paperless.standard.util.UriUtil;
-import xlk.paperless.standard.view.fragment.BaseFragment;
+import xlk.paperless.standard.base.BaseFragment;
 import xlk.paperless.standard.view.meet.MeetingActivity;
 
 import static xlk.paperless.standard.util.ConvertUtil.s2b;
@@ -77,6 +76,7 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
     private VoteManageMemberAdapter memberAdapter;
     private List<ChartData> chartDatas = new ArrayList<>();
     private PopupWindow chartPop;
+    private PopupWindow memberPop;
 
     @Nullable
     @Override
@@ -84,12 +84,12 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
         View inflate = inflater.inflate(R.layout.fragment_vote_manage, container, false);
         initView(inflate);
         presenter = new VoteManagePresenter(getContext(), this);
-        presenter.register();
         String[] stringArray = getResources().getStringArray(R.array.countdown_spinner);
         spAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, stringArray);
         vote_manage_time_sp.setAdapter(spAdapter);
         presenter.queryVote();
-        presenter.queryMember();
+        presenter.querySecretary();
+//        presenter.queryMember();
         return inflate;
     }
 
@@ -232,7 +232,8 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 startActivityForResult(intent, 1);
                 break;
-            case R.id.vote_manage_details:
+            //查看详情
+            case R.id.vote_manage_details: {
                 if (voteManageAdapter != null && voteManageAdapter.getSelectedVote() != null) {
                     InterfaceVote.pbui_Item_MeetVoteDetailInfo selectedVote = voteManageAdapter.getSelectedVote();
                     if (selectedVote.getMode() != InterfaceMacro.Pb_MeetVoteMode.Pb_VOTEMODE_agonymous_VALUE) {
@@ -246,7 +247,9 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
                     }
                 }
                 break;
-            case R.id.vote_manage_chart:
+            }
+            //查看图表
+            case R.id.vote_manage_chart: {
                 if (voteManageAdapter != null && voteManageAdapter.getSelectedVote() != null) {
                     InterfaceVote.pbui_Item_MeetVoteDetailInfo selectedVote = voteManageAdapter.getSelectedVote();
                     if (selectedVote.getVotestate() != InterfaceMacro.Pb_MeetVoteStatus.Pb_vote_notvote_VALUE) {
@@ -256,7 +259,9 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
                     }
                 }
                 break;
-            case R.id.vote_manage_launch:
+            }
+            //发起投票
+            case R.id.vote_manage_launch: {
                 if (voteManageAdapter != null && voteManageAdapter.getSelectedVote() != null) {
                     if (voteManageAdapter.getSelectedVote().getVotestate() != InterfaceMacro.Pb_MeetVoteStatus.Pb_vote_notvote_VALUE) {
                         ToastUtil.show(R.string.please_choose_not_vote);
@@ -272,7 +277,9 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
                     showMember();
                 }
                 break;
-            case R.id.vote_manage_stop:
+            }
+            //结束投票
+            case R.id.vote_manage_stop: {
                 if (voteManageAdapter != null && voteManageAdapter.getSelectedVote() != null) {
                     if (voteManageAdapter.getSelectedVote().getVotestate() != InterfaceMacro.Pb_MeetVoteStatus.Pb_vote_voteing_VALUE) {
                         ToastUtil.show(R.string.only_stop_voteing);
@@ -280,6 +287,9 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
                     }
                     presenter.stopVote(voteManageAdapter.getSelectedVote().getVoteid());
                 }
+                break;
+            }
+            default:
                 break;
         }
     }
@@ -346,23 +356,23 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
                 if (i == 0) {
                     holder.pop_option_a_ll.setVisibility(View.VISIBLE);
                     holder.pop_option_a_tv.setText(getString(R.string.vote_count, text, selcnt + ""));
-                    setChartData(count, selcnt, Color.parseColor("#FFFFFF"), Color.parseColor("#e61878"));
+                    setChartData(count, selcnt, Color.parseColor("#000000"), Color.parseColor("#FF0000"));
                 } else if (i == 1) {
                     holder.pop_option_b_ll.setVisibility(View.VISIBLE);
                     holder.pop_option_b_tv.setText(getString(R.string.vote_count, text, selcnt + ""));
-                    setChartData(count, selcnt, Color.parseColor("#FFFFFF"), Color.parseColor("#1ac534"));
+                    setChartData(count, selcnt, Color.parseColor("#000000"), Color.parseColor("#00FF00"));
                 } else if (i == 2) {
                     holder.pop_option_c_ll.setVisibility(View.VISIBLE);
                     holder.pop_option_c_tv.setText(getString(R.string.vote_count, text, selcnt + ""));
-                    setChartData(count, selcnt, Color.parseColor("#FFFFFF"), Color.parseColor("#2367b9"));
+                    setChartData(count, selcnt, Color.parseColor("#000000"), Color.parseColor("#0000FF"));
                 } else if (i == 3) {
                     holder.pop_option_d_ll.setVisibility(View.VISIBLE);
                     holder.pop_option_d_tv.setText(getString(R.string.vote_count, text, selcnt + ""));
-                    setChartData(count, selcnt, Color.parseColor("#000000"), Color.parseColor("#dbd827"));
+                    setChartData(count, selcnt, Color.parseColor("#000000"), Color.parseColor("#00FFFF"));
                 } else if (i == 4) {
                     holder.pop_option_e_ll.setVisibility(View.VISIBLE);
                     holder.pop_option_e_tv.setText(getString(R.string.vote_count, text, selcnt + ""));
-                    setChartData(count, selcnt, Color.parseColor("#000000"), Color.parseColor("#8a2eda"));
+                    setChartData(count, selcnt, Color.parseColor("#000000"), Color.parseColor("#FF00FF"));
                 }
             }
         }
@@ -374,7 +384,7 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
         }
         //如果没有数据会报错
         if (chartDatas.isEmpty()) {
-            chartDatas.add(new ChartData(getResources().getString(R.string.null_str), 100, Color.parseColor("#FFFFFF"), Color.parseColor("#676767")));
+            chartDatas.add(new ChartData(getResources().getString(R.string.null_str), 100, Color.parseColor("#FFFFFF"), Color.parseColor("#7D7D7D")));
         }
         holder.pop_chart.setChartData(chartDatas);
         holder.pop_chart.setVisibility(View.VISIBLE);
@@ -414,7 +424,7 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
         popupWindow.setOutsideTouchable(true);
         popupWindow.setFocusable(true);
         popupWindow.setAnimationStyle(R.style.pop_Animation);
-        popupWindow.showAtLocation(vote_manage_stop, Gravity.START | Gravity.BOTTOM, 0, 0);
+        popupWindow.showAtLocation(vote_manage_stop, Gravity.END | Gravity.BOTTOM, 0, 0);
         SubmitMemberAdapter adapter = new SubmitMemberAdapter(R.layout.item_submit_member, presenter.submitMembers);
         RecyclerView submit_member_rv = inflate.findViewById(R.id.submit_member_rv);
         submit_member_rv.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -428,10 +438,17 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
         });
     }
 
+    // TODO: 2020/10/12  虚拟按键显示或隐藏时需要动态改变已经显示的PopupWindow的大小
+    private void updatePopupWindowSize() {
+        if (memberPop != null && memberPop.isShowing()) {
+
+        }
+    }
+
     private void showMember() {
         presenter.queryMember();
         View inflate = LayoutInflater.from(getContext()).inflate(R.layout.pop_vote_member, null);
-        PopupWindow memberPop = new PopupWindow(inflate, MeetingActivity.frameLayoutWidth, MeetingActivity.frameLayoutHeight);
+        memberPop = new PopupWindow(inflate, MeetingActivity.frameLayoutWidth, MeetingActivity.frameLayoutHeight);
         memberPop.setBackgroundDrawable(new BitmapDrawable());
         // 设置popWindow弹出窗体可点击，这句话必须添加，并且是true
         memberPop.setTouchable(true);
@@ -439,7 +456,8 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
         memberPop.setOutsideTouchable(true);
         memberPop.setFocusable(true);
         memberPop.setAnimationStyle(R.style.pop_Animation);
-        memberPop.showAtLocation(vote_manage_stop, Gravity.START | Gravity.BOTTOM, 0, 0);
+        memberPop.showAtLocation(vote_manage_stop, Gravity.END | Gravity.BOTTOM, 0, 0);
+
         CheckBox pop_vote_all = inflate.findViewById(R.id.pop_vote_all);
         RecyclerView pop_vote_rv = inflate.findViewById(R.id.pop_vote_rv);
         pop_vote_rv.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -478,6 +496,10 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
         String content = vote_manage_title.getText().toString().trim();
         if (content.isEmpty()) {
             ToastUtil.show(R.string.vote_content_empty);
+            return;
+        }
+        if (content.length() > Constant.MAX_TITLE_LENGTH) {
+            ToastUtil.show(getString(R.string.err_title_max_length, Constant.MAX_TITLE_LENGTH + ""));
             return;
         }
         int timeouts = getTimeouts();
@@ -539,7 +561,7 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onDestroy() {
         super.onDestroy();
-        presenter.unregister();
+        presenter.onDestroy();
     }
 
     public static class ChartViewHolder {
@@ -578,6 +600,5 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
             this.pop_option_e_ll = (LinearLayout) rootView.findViewById(R.id.pop_option_e_ll);
             this.linearLayout3 = (LinearLayout) rootView.findViewById(R.id.linearLayout3);
         }
-
     }
 }

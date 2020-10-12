@@ -3,26 +3,20 @@ package xlk.paperless.standard.view.fragment.chat;
 import android.content.Context;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.mogujie.tt.protobuf.InterfaceBase;
 import com.mogujie.tt.protobuf.InterfaceDevice;
 import com.mogujie.tt.protobuf.InterfaceIM;
 import com.mogujie.tt.protobuf.InterfaceMacro;
 import com.mogujie.tt.protobuf.InterfaceMember;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.data.JniHandler;
+import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.data.bean.ChatMessage;
 import xlk.paperless.standard.data.bean.DevMember;
-import xlk.paperless.standard.view.BasePresenter;
-import xlk.paperless.standard.view.MyApplication;
+import xlk.paperless.standard.base.BasePresenter;
 
 import static xlk.paperless.standard.view.meet.MeetingActivity.chatIsShowing;
 import static xlk.paperless.standard.view.meet.MeetingActivity.chatMessages;
@@ -43,27 +37,22 @@ public class MeetChatPresenter extends BasePresenter {
 
 
     public MeetChatPresenter(Context cxt, IMeetChat view) {
+        super();
         this.cxt = cxt;
         this.view = view;
     }
 
     @Override
-    public void register() {
-        EventBus.getDefault().register(this);
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
-    public void unregister() {
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    @Override
-    public void BusEvent(EventMessage msg) throws InvalidProtocolBufferException {
+    public void busEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETIM_VALUE://会议交流
                 if (chatIsShowing) {
-                    byte[] o = (byte[]) msg.getObjs()[0];
+                    byte[] o = (byte[]) msg.getObjects()[0];
                     InterfaceIM.pbui_Type_MeetIM meetIM = InterfaceIM.pbui_Type_MeetIM.parseFrom(o);
                     if (meetIM.getMsgtype() == 0) {//文本类消息
                         chatMessages.add(new ChatMessage(0, meetIM));
@@ -72,7 +61,7 @@ public class MeetChatPresenter extends BasePresenter {
                 }
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEMEETSTATUS_VALUE://界面状态变更通知
-                int o = (int) msg.getObjs()[1];
+                int o = (int) msg.getObjects()[1];
                 if (o > 0) {
                     queryMember();
                 }
@@ -81,7 +70,7 @@ public class MeetChatPresenter extends BasePresenter {
                 queryMember();
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEINFO_VALUE://设备寄存器变更通知
-                int o1 = (int) msg.getObjs()[1];
+                int o1 = (int) msg.getObjects()[1];
                 if (msg.getMethod() == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_NOTIFY_VALUE
                         && o1 > 0) {
                     queryMember();
@@ -119,7 +108,7 @@ public class MeetChatPresenter extends BasePresenter {
                 int memberid = detailInfo.getMemberid();
                 int facestate = detailInfo.getFacestate();
                 int netstate = detailInfo.getNetstate();
-                if (facestate == 1 && netstate == 1 && devcieid != MyApplication.localDeviceId) {
+                if (facestate == 1 && netstate == 1 && devcieid != Values.localDeviceId) {
                     for (int j = 0; j < memberDetailInfos.size(); j++) {
                         InterfaceMember.pbui_Item_MemberDetailInfo memberDetailInfo = memberDetailInfos.get(j);
                         int personid = memberDetailInfo.getPersonid();

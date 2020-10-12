@@ -99,6 +99,7 @@
                 <EditText
                     android:id="@+id/pop_create_member_phone"
                     android:layout_width="0dp"
+                    android:inputType="phone"
                     android:layout_height="wrap_content"
                     android:layout_weight="5" />
             </LinearLayout>
@@ -118,6 +119,7 @@
                 <EditText
                     android:id="@+id/pop_create_member_email"
                     android:layout_width="0dp"
+                    android:inputType="textEmailAddress"
                     android:layout_height="wrap_content"
                     android:layout_weight="5" />
             </LinearLayout>
@@ -137,6 +139,7 @@
                 <EditText
                     android:id="@+id/pop_create_member_password"
                     android:layout_width="0dp"
+                    android:inputType="textVisiblePassword"
                     android:layout_height="wrap_content"
                     android:layout_weight="5" />
             </LinearLayout>

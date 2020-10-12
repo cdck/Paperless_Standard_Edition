@@ -1,10 +1,9 @@
 package xlk.paperless.standard.util;
 
 
-import android.content.Context;
-
 import com.google.protobuf.ByteString;
 import com.mogujie.tt.protobuf.InterfaceMacro;
+import com.mogujie.tt.protobuf.InterfacePerson;
 import com.mogujie.tt.protobuf.InterfaceVote;
 
 import java.io.File;
@@ -28,12 +27,12 @@ import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
-import jxl.write.biff.RowsExceededException;
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.bean.SubmitMember;
 import xlk.paperless.standard.data.exportbean.ExportSubmitMember;
-import xlk.paperless.standard.data.exportbean.ExportVoteInfo;
+
+import static xlk.paperless.standard.util.ConvertUtil.s2b;
 
 /**
  * @author xlk
@@ -75,10 +74,10 @@ public class JxlUtil {
      * 第三个参数：内容
      */
     public static void exportSubmitMember(ExportSubmitMember info) {
-        FileUtil.createDir(Constant.export_dir);
+        FileUtil.createDir(Constant.dir_export);
         String fileName = "参会人投票-选举详情";
         //1.创建Excel文件
-        File file = createXlsFile(Constant.export_dir + fileName);
+        File file = createXlsFile(Constant.dir_export + fileName);
         try {
             file.createNewFile();
             //2.创建工作簿
@@ -145,9 +144,9 @@ public class JxlUtil {
      * @param content  内容描述
      */
     public static void exportVoteInfo(List<InterfaceVote.pbui_Item_MeetVoteDetailInfo> votes, String fileName, String content) {
-        FileUtil.createDir(Constant.export_dir);
+        FileUtil.createDir(Constant.dir_export);
         //1.创建Excel文件
-        File file = createXlsFile(Constant.export_dir + fileName);
+        File file = createXlsFile(Constant.dir_export + fileName);
         try {
             file.createNewFile();
             //2.创建工作簿
@@ -271,7 +270,7 @@ public class JxlUtil {
                     String contents = cell.getContents();
                     switch (c) {//列数
                         case 0:// 投票内容
-                            builder.setContent(ConvertUtil.s2b(contents));
+                            builder.setContent(s2b(contents));
                             break;
                         case 1:// 是否记名
                             int mode = Integer.parseInt(contents);
@@ -311,7 +310,7 @@ public class JxlUtil {
                             LogUtil.d(TAG, "readVoteXls -->添加答案：" + contents);
                             if (!contents.isEmpty()) {
                                 selectcount++;
-                                all.add(ConvertUtil.s2b(contents));
+                                all.add(s2b(contents));
                             }
                             break;
                     }
@@ -333,4 +332,154 @@ public class JxlUtil {
         return temps;
     }
 
+    /**
+     * 将常用人员导出到Excel表格
+     *
+     * @param memberInfos 常用人员集合
+     */
+    public static void exportMember(List<InterfacePerson.pbui_Item_PersonDetailInfo> memberInfos) {
+        {
+            FileUtil.createDir(Constant.dir_export);
+            //1.创建Excel文件
+            File file = createXlsFile(Constant.dir_export + "常用参会人");
+            try {
+                file.createNewFile();
+                //2.创建工作簿
+                WritableWorkbook workbook = Workbook.createWorkbook(file);
+                //3.创建Sheet
+                WritableSheet ws = workbook.createSheet("常用人员", 0);
+                //4.创建单元格
+                Label label;
+                //配置单元格样式
+                WritableCellFormat wc = new WritableCellFormat();
+                wc.setAlignment(Alignment.CENTRE); // 设置居中
+                wc.setBorder(Border.ALL, BorderLineStyle.THIN); // 设置边框线
+                wc.setBackground(Colour.WHITE); // 设置单元格的背景颜色
+
+                label = new Label(0, 0, "人员姓名", wc);
+                ws.addCell(label);
+                label = new Label(1, 0, "单位", wc);
+                ws.addCell(label);
+                label = new Label(2, 0, "职位", wc);
+                ws.addCell(label);
+                label = new Label(3, 0, "备注", wc);
+                ws.addCell(label);
+                label = new Label(4, 0, "手机", wc);
+                ws.addCell(label);
+                label = new Label(5, 0, "邮箱", wc);
+                ws.addCell(label);
+                label = new Label(6, 0, "签到密码", wc);
+                ws.addCell(label);
+                label = new Label(7, 0, "人员ID", wc);
+                ws.addCell(label);
+                for (int i = 0; i < memberInfos.size(); i++) {
+                    InterfacePerson.pbui_Item_PersonDetailInfo info = memberInfos.get(i);
+                    //人员姓名
+                    String name = info.getName().toStringUtf8();
+                    label = new Label(0, i + 1, name, wc);
+                    ws.addCell(label);
+                    //单位
+                    String company = info.getCompany().toStringUtf8();
+                    label = new Label(1, i + 1, company, wc);
+                    ws.addCell(label);
+                    //职位
+                    String job = info.getJob().toStringUtf8();
+                    label = new Label(2, i + 1, job, wc);
+                    ws.addCell(label);
+                    //备注
+                    String comment = info.getComment().toStringUtf8();
+                    label = new Label(3, i + 1, comment, wc);
+                    ws.addCell(label);
+                    //手机
+                    String phone = info.getPhone().toStringUtf8();
+                    label = new Label(4, i + 1, phone, wc);
+                    ws.addCell(label);
+                    //邮箱
+                    String email = info.getEmail().toStringUtf8();
+                    label = new Label(5, i + 1, email, wc);
+                    ws.addCell(label);
+                    //签到密码
+                    String pwd = info.getPassword().toStringUtf8();
+                    label = new Label(6, i + 1, pwd, wc);
+                    ws.addCell(label);
+                    //人员id
+                    int id = info.getPersonid();
+                    label = new Label(7, i + 1, id + "", wc);
+                    ws.addCell(label);
+                }
+                //6.写入数据，一定记得写入数据，不然你都开始怀疑世界了，excel里面啥都没有
+                workbook.write();
+                //7.最后一步，关闭工作簿
+                workbook.close();
+                ToastUtil.show(R.string.export_successful);
+            } catch (IOException | WriteException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 从表格中读取常用参会人信息
+     */
+    public static List<InterfacePerson.pbui_Item_PersonDetailInfo> readMemberXls(String filePath) {
+        List<InterfacePerson.pbui_Item_PersonDetailInfo> memberInofs = new ArrayList<>();
+        File file = new File(filePath);
+        if (!file.exists()) {
+            LogUtil.e(TAG, "readMemberXls 没有找到该文件：" + filePath);
+            return memberInofs;
+        }
+        InterfacePerson.pbui_Item_PersonDetailInfo.Builder builder = InterfacePerson.pbui_Item_PersonDetailInfo.newBuilder();
+        try {
+            InputStream is = new FileInputStream(filePath);
+            //使用jxl
+            Workbook rwb = Workbook.getWorkbook(is);
+            //有多少张表
+            Sheet[] sheets = rwb.getSheets();
+            //获取表格
+            Sheet sheet = sheets[0];
+            //有多少列
+            int columns = sheet.getColumns();
+            //有多少行
+            int rows = sheet.getRows();
+            //r=1 过滤掉第一行的标题
+            for (int r = 1; r < rows; r++) {
+                for (int c = 0; c < columns; c++) {
+                    Cell cell = sheet.getCell(c, r);
+                    String contents = cell.getContents();
+                    switch (c) {//列数
+                        case 0:// 人员姓名
+                            builder.setName(s2b(contents));
+                            break;
+                        case 1:// 单位
+                            builder.setCompany(s2b(contents));
+                            break;
+                        case 2:// 职位
+                            builder.setJob(s2b(contents));
+                            break;
+                        case 3:// 备注
+                            builder.setComment(s2b(contents));
+                            break;
+                        case 4:// 手机
+                            builder.setPhone(s2b(contents));
+                            break;
+                        case 5:// 邮箱
+                            builder.setEmail(s2b(contents));
+                            break;
+                        case 6:// 签到密码
+                            builder.setPassword(s2b(contents));
+                            break;
+                        case 7:// 人员ID
+                            builder.setPersonid(Integer.parseInt(contents));
+                            break;
+                    }
+                }
+                InterfacePerson.pbui_Item_PersonDetailInfo build = builder.build();
+                memberInofs.add(build);
+            }
+            is.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return memberInofs;
+    }
 }

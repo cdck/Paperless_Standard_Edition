@@ -13,15 +13,14 @@ import android.widget.EditText;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.mogujie.tt.protobuf.InterfaceBullet;
-
 import java.util.ArrayList;
-import java.util.List;
 
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.adapter.BulletAdapter;
+import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.util.ToastUtil;
-import xlk.paperless.standard.view.fragment.BaseFragment;
+import xlk.paperless.standard.base.BaseFragment;
 
 import static xlk.paperless.standard.util.ConvertUtil.s2b;
 
@@ -48,7 +47,6 @@ public class BulletinFragment extends BaseFragment implements IBulletin, View.On
         View inflate = inflater.inflate(R.layout.fragment_bulletin, container, false);
         initView(inflate);
         presenter = new BulletinPresenter(getContext(), this);
-        presenter.register();
         presenter.queryNotice();
         return inflate;
     }
@@ -78,6 +76,10 @@ public class BulletinFragment extends BaseFragment implements IBulletin, View.On
                 String content = f_bulletin_content.getText().toString();
                 if (title.isEmpty() || content.isEmpty()) {
                     ToastUtil.show(R.string.please_enter_info);
+                } else if (title.length() > Constant.MAX_TITLE_LENGTH) {
+                    ToastUtil.show(getString(R.string.err_title_max_length, Constant.MAX_TITLE_LENGTH + ""));
+                } else if (content.length() > Constant.MAX_CONTENT_LENGTH) {
+                    ToastUtil.show(getString(R.string.err_bulletin_max_length, Constant.MAX_CONTENT_LENGTH + ""));
                 } else {
                     InterfaceBullet.pbui_Item_BulletDetailInfo build = InterfaceBullet.pbui_Item_BulletDetailInfo.newBuilder()
                             .setTitle(s2b(title))
@@ -98,6 +100,10 @@ public class BulletinFragment extends BaseFragment implements IBulletin, View.On
                     String content1 = f_bulletin_content.getText().toString();
                     if (title1.isEmpty() || content1.isEmpty()) {
                         ToastUtil.show(R.string.please_enter_info);
+                    } else if (title1.length() > Constant.MAX_TITLE_LENGTH) {
+                        ToastUtil.show(getString(R.string.err_title_max_length, Constant.MAX_TITLE_LENGTH + ""));
+                    } else if (content1.length() > Constant.MAX_CONTENT_LENGTH) {
+                        ToastUtil.show(getString(R.string.err_bulletin_max_length, Constant.MAX_CONTENT_LENGTH + ""));
                     } else {
                         InterfaceBullet.pbui_Item_BulletDetailInfo build = InterfaceBullet.pbui_Item_BulletDetailInfo.newBuilder()
                                 .setTitle(s2b(title1))
@@ -124,7 +130,6 @@ public class BulletinFragment extends BaseFragment implements IBulletin, View.On
                 break;
         }
     }
-
 
     @Override
     public void notifyAdapter() {
@@ -166,6 +171,6 @@ public class BulletinFragment extends BaseFragment implements IBulletin, View.On
     @Override
     public void onDestroy() {
         super.onDestroy();
-        presenter.unregister();
+        presenter.onDestroy();
     }
 }

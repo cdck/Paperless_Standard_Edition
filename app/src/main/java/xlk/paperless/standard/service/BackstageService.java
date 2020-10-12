@@ -25,12 +25,15 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
+import cc.shinichi.library.ImagePreview;
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.data.JniHandler;
+import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.data.WpsModel;
 import xlk.paperless.standard.data.bean.ChatMessage;
 import xlk.paperless.standard.receiver.WpsReceiver;
@@ -38,13 +41,12 @@ import xlk.paperless.standard.util.AppUtil;
 import xlk.paperless.standard.util.FileUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.ToastUtil;
-import xlk.paperless.standard.view.MyApplication;
 import xlk.paperless.standard.view.meet.MeetingActivity;
 import xlk.paperless.standard.view.notice.NoticeActivity;
 import xlk.paperless.standard.view.score.ScoreActivity;
 import xlk.paperless.standard.view.video.VideoActivity;
 
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static xlk.paperless.standard.data.Values.isMandatoryPlaying;
 import static xlk.paperless.standard.view.draw.DrawPresenter.disposePicOpermemberid;
 import static xlk.paperless.standard.view.draw.DrawPresenter.disposePicSrcmemid;
 import static xlk.paperless.standard.view.draw.DrawPresenter.disposePicSrcwbidd;
@@ -62,10 +64,11 @@ public class BackstageService extends Service {
 
     private final String TAG = "BackstageService-->";
     private JniHandler jni = JniHandler.getInstance();
-    public static boolean isVideoPlaying;//是否正在播放
-    public static boolean isMandatoryPlaying;//是否正在被强制性播放中
-    public static boolean haveNewPlayInform;
-    private WpsReceiver reciver;//WPS广播监听
+    /**
+     * 监听WPS广播
+     */
+    private WpsReceiver receiver;
+    List<String> picPath = new ArrayList<>();
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -85,36 +88,44 @@ public class BackstageService extends Service {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void BusEvent(EventMessage msg) throws InvalidProtocolBufferException {
+    public void onEventMessage(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
-            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DOWNLOAD_VALUE://平台下载
+            //平台下载
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DOWNLOAD_VALUE:
                 downloadInform(msg);
                 break;
-            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_UPLOAD_VALUE://上传进度通知
+            //上传进度通知
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_UPLOAD_VALUE:
                 uploadInform(msg);
                 break;
-            case Constant.BUS_WPS_RECEIVER://处理WPS广播监听
-                boolean isopen = (boolean) msg.getObjs()[0];
-                if (isopen) registerWpsBroadCase();
-                else unregisterWpsBroadCase();
+            //处理WPS广播监听
+            case Constant.BUS_WPS_RECEIVER:
+                boolean isopen = (boolean) msg.getObjects()[0];
+                if (isopen) {
+                    registerWpsBroadCase();
+                } else {
+                    unregisterWpsBroadCase();
+                }
                 break;
-            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEMBERPERMISSION_VALUE://参会人权限变更通知
+            //参会人权限变更通知
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEMBERPERMISSION_VALUE:
                 InterfaceMember.pbui_Type_MemberPermission o = jni.queryAttendPeoplePermissions();
-                List<InterfaceMember.pbui_Item_MemberPermission> allMemberPermissions = o.getItemList();
-                for (int i = 0; i < allMemberPermissions.size(); i++) {
-                    InterfaceMember.pbui_Item_MemberPermission item = allMemberPermissions.get(i);
-                    if (item.getMemberid() == MyApplication.localMemberId) {
-                        int permission = item.getPermission();
-                        MyApplication.localPermissions = Constant.getChoose(permission);
+                Values.allPermissions = o.getItemList();
+                for (int i = 0; i < Values.allPermissions.size(); i++) {
+                    InterfaceMember.pbui_Item_MemberPermission item = Values.allPermissions.get(i);
+                    if (item.getMemberid() == Values.localMemberId) {
+                        Values.localPermission = item.getPermission();
                         break;
                     }
                 }
                 break;
-            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETIM_VALUE://会议交流
+            //会议交流
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETIM_VALUE:
                 if (!chatIsShowing) {
-                    byte[] o1 = (byte[]) msg.getObjs()[0];
+                    byte[] o1 = (byte[]) msg.getObjects()[0];
                     InterfaceIM.pbui_Type_MeetIM meetIM = InterfaceIM.pbui_Type_MeetIM.parseFrom(o1);
-                    if (meetIM.getMsgtype() == 0) {//文本类消息
+                    if (meetIM.getMsgtype() == 0) {
+                        //文本类消息
                         int badgeNumber = mBadge.getBadgeNumber();
                         MeetingActivity.chatMessages.add(new ChatMessage(0, meetIM));
                         mBadge.setBadgeNumber(++badgeNumber);
@@ -122,22 +133,27 @@ public class BackstageService extends Service {
                 }
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_WHITEBOARD_VALUE:
-                if (msg.getMethod() == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_ADDPICTURE_VALUE) {//添加图片通知
-                    byte[] o1 = (byte[]) msg.getObjs()[0];
+                //添加图片通知
+                if (msg.getMethod() == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_ADDPICTURE_VALUE) {
+                    byte[] o1 = (byte[]) msg.getObjects()[0];
                     addPicInform(o1);
                 }
                 break;
-            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEDIAPLAY_VALUE://媒体播放通知
+            //媒体播放通知
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEDIAPLAY_VALUE:
                 mediaPlayInform(msg);
                 break;
-            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_STREAMPLAY_VALUE://流播放通知
+            //流播放通知
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_STREAMPLAY_VALUE:
                 streamPlayInform(msg);
                 break;
-            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICECONTROL_VALUE://设备控制
+            //设备控制
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICECONTROL_VALUE:
                 deviceControlInform(msg);
                 break;
-            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETBULLET_VALUE://公告
-                byte[] bulletin = (byte[]) msg.getObjs()[0];
+            //公告
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETBULLET_VALUE:
+                byte[] bulletin = (byte[]) msg.getObjects()[0];
                 if (msg.getMethod() == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_PUBLIST_VALUE) {
                     LogUtil.i(TAG, "发布公告通知");
                     InterfaceBullet.pbui_BulletDetailInfo detailInfo = InterfaceBullet.pbui_BulletDetailInfo.parseFrom(bulletin);
@@ -152,37 +168,76 @@ public class BackstageService extends Service {
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_FILESCOREVOTE_VALUE:
                 if (msg.getMethod() == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_START_VALUE) {
                     LogUtil.i(TAG, "BusEvent -->" + "自定义文件评分投票  发起");
-                    byte[] o1 = (byte[]) msg.getObjs()[0];
+                    byte[] o1 = (byte[]) msg.getObjects()[0];
                     InterfaceFilescorevote.pbui_Type_StartUserDefineFileScoreNotify info = InterfaceFilescorevote.pbui_Type_StartUserDefineFileScoreNotify.parseFrom(o1);
                     int voteid = info.getVoteid();
                     LogUtil.i(TAG, "BusEvent -->" + "收到发起文件自定义选项评分 voteid= " + voteid);
-                    startActivity(new Intent(this, ScoreActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra("voteid", voteid));
+                    startActivity(new Intent(this, ScoreActivity.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            .putExtra(Constant.extra_vote_id, voteid));
                 }
+                break;
+//            case Constant.BUS_PREVIEW_IMAGE:
+//                String filepath = (String) msg.getObjs()[0];
+//                int index;
+//                if (!picPath.contains(filepath)) {
+//                    picPath.add(filepath);
+//                    index = picPath.size() - 1;
+//                } else {
+//                    index = picPath.indexOf(filepath);
+//                }
+//                previewImage(index);
+//                break;
+            default:
                 break;
         }
     }
 
+    private void previewImage(int index) {
+        if (picPath.isEmpty()) {
+            return;
+        }
+        ImagePreview.getInstance()
+                .setContext(this)
+                //设置图片地址集合
+                .setImageList(picPath)
+                //设置开始的索引
+                .setIndex(index)
+                //设置是否显示下载按钮
+                .setShowDownButton(false)
+                //设置是否显示关闭按钮
+                .setShowCloseButton(false)
+                //设置是否开启下拉图片退出
+                .setEnableDragClose(true)
+                //设置是否开启上拉图片退出
+                .setEnableUpDragClose(true)
+                //设置是否开启点击图片退出
+                .setEnableClickClose(true)
+                .setShowErrorToast(true)
+                .start();
+    }
+
     private void registerWpsBroadCase() {
-        if (reciver == null) {
-            reciver = new WpsReceiver();
+        if (receiver == null) {
+            receiver = new WpsReceiver();
             IntentFilter filter = new IntentFilter();
             filter.addAction(WpsModel.Reciver.ACTION_SAVE);
             filter.addAction(WpsModel.Reciver.ACTION_CLOSE);
             filter.addAction(WpsModel.Reciver.ACTION_HOME);
 //            filter.addAction(WpsModel.Reciver.ACTION_BACK);
-            registerReceiver(reciver, filter);
+            registerReceiver(receiver, filter);
         }
     }
 
     private void unregisterWpsBroadCase() {
-        if (reciver != null) {
-            unregisterReceiver(reciver);
-            reciver = null;
+        if (receiver != null) {
+            unregisterReceiver(receiver);
+            receiver = null;
         }
     }
 
     private void deviceControlInform(EventMessage msg) throws InvalidProtocolBufferException {
-        byte[] o = (byte[]) msg.getObjs()[0];
+        byte[] o = (byte[]) msg.getObjects()[0];
         InterfaceDevice.pbui_Type_DeviceControl object = InterfaceDevice.pbui_Type_DeviceControl.parseFrom(o);
         int oper = object.getOper();//enum Pb_DeviceControlFlag
         int operval1 = object.getOperval1();//操作对应的参数 如更换主界面的媒体ID
@@ -217,7 +272,7 @@ public class BackstageService extends Service {
     }
 
     private void streamPlayInform(EventMessage msg) throws InvalidProtocolBufferException {
-        byte[] datas = (byte[]) msg.getObjs()[0];
+        byte[] datas = (byte[]) msg.getObjects()[0];
         InterfaceStream.pbui_Type_MeetStreamPlay meetStreamPlay = InterfaceStream.pbui_Type_MeetStreamPlay.parseFrom(datas);
         int res = meetStreamPlay.getRes();
         int createdeviceid = meetStreamPlay.getCreatedeviceid();
@@ -236,16 +291,22 @@ public class BackstageService extends Service {
                     return;
                 }
             }
-            //是否是强制性播放
-            isMandatoryPlaying = isMandatory;
-            haveNewPlayInform = true;
-            if (!isVideoPlaying) {
-                startActivity(new Intent(this, VideoActivity.class).setFlags(FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
-            } else {
-                if (isMandatoryPlaying) {
-                    EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_MANDATORY).build());
-                }
+            if (createdeviceid != Values.localDeviceId) {
+                //是否是强制性播放
+                isMandatoryPlaying = isMandatory;
             }
+            Values.haveNewPlayInform = true;
+//            if (!isVideoPlaying) {
+            startActivity(new Intent(this, VideoActivity.class)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    .putExtra(Constant.extra_video_action, InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_STREAMPLAY_VALUE)
+                    .putExtra(Constant.extra_video_device_id, deviceid)
+            );
+//            } else {
+//                if (isMandatoryPlaying) {
+//                    EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_MANDATORY).build());
+//                }
+//            }
         }
 //        else if (res == 11) {
 //            LogUtil.i(TAG, "streamPlayInform -->" + "会议视屏聊天 isChatingOpened= " + isChatingOpened);
@@ -260,31 +321,53 @@ public class BackstageService extends Service {
     }
 
     private void mediaPlayInform(EventMessage msg) throws InvalidProtocolBufferException {
-        byte[] datas = (byte[]) msg.getObjs()[0];
+        byte[] datas = (byte[]) msg.getObjects()[0];
         InterfacePlaymedia.pbui_Type_MeetMediaPlay mediaPlay = InterfacePlaymedia.pbui_Type_MeetMediaPlay.parseFrom(datas);
         int res = mediaPlay.getRes();
         LogUtil.i(TAG, "mediaPlayInform -->" + "媒体播放通知 res= " + res);
-        if (res != 0) return;//只处理资源ID为0的播放资源
+        if (res != 0) {
+            //只处理资源ID为0的播放资源
+            return;
+        }
         int mediaid = mediaPlay.getMediaid();
         int createdeviceid = mediaPlay.getCreatedeviceid();
         int triggerid = mediaPlay.getTriggerid();
         int triggeruserval = mediaPlay.getTriggeruserval();
+        boolean isMandatory = triggeruserval == InterfaceMacro.Pb_TriggerUsedef.Pb_EXCEC_USERDEF_FLAG_NOCREATEWINOPER_VALUE;
         int type = mediaid & Constant.MAIN_TYPE_BITMASK;
+        int subtype = mediaid & Constant.SUB_TYPE_BITMASK;
         if (type == Constant.MEDIA_FILE_TYPE_AUDIO || type == Constant.MEDIA_FILE_TYPE_VIDEO) {
-            LogUtil.i(TAG, "mediaPlayInform -->" + "媒体播放通知：isVideoPlaying= " + isVideoPlaying);
-            haveNewPlayInform = true;
-            if (!isVideoPlaying) {
-                startActivity(new Intent(this, VideoActivity.class).setFlags(FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
+            LogUtil.i(TAG, "mediaPlayInform -->" + "媒体播放通知：isVideoPlaying= " + Values.isVideoPlaying);
+            if (createdeviceid != Values.localDeviceId) {
+                isMandatoryPlaying = isMandatory;
             }
+            Values.haveNewPlayInform = true;
+//            if (!isVideoPlaying) {
+            startActivity(new Intent(this, VideoActivity.class)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    .putExtra(Constant.extra_video_action, InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEDIAPLAY_VALUE)
+                    .putExtra(Constant.extra_video_subtype, subtype)
+            );
+//            }
         } else {
             LogUtil.i(TAG, "mediaPlayInform -->" + "媒体播放通知：下载文件后打开");
             //创建好下载目录
-            FileUtil.createDir(Constant.ROOT_DIR);
+            FileUtil.createDir(Constant.dir_data_file);
             /** **** **  查询该媒体ID的文件名  ** **** **/
             byte[] bytes = jni.queryFileProperty(InterfaceMacro.Pb_MeetFilePropertyID.Pb_MEETFILE_PROPERTY_NAME.getNumber(), mediaid);
             InterfaceBase.pbui_CommonTextProperty pbui_commonTextProperty = InterfaceBase.pbui_CommonTextProperty.parseFrom(bytes);
             String fielName = pbui_commonTextProperty.getPropertyval().toStringUtf8();
-            jni.creationFileDownload(Constant.ROOT_DIR + fielName, mediaid, 0, 0, Constant.SHOULD_OPEN_FILE_KEY);
+            String pathname = Constant.dir_data_file + fielName;
+            File file = new File(pathname);
+            if (file.exists()) {
+                if (Values.downloadingFiles.contains(mediaid)) {
+                    ToastUtil.show(R.string.currently_downloading);
+                } else {
+                    FileUtil.openFile(this, file);
+                }
+                return;
+            }
+            jni.creationFileDownload(pathname, mediaid, 0, 0, Constant.download_should_open_file);
         }
     }
 
@@ -294,7 +377,7 @@ public class BackstageService extends Service {
         long rPicSrcwbid = object.getSrcwbid();
         ByteString rPicData = object.getPicdata();
         int opermemberid = object.getOpermemberid();
-        MyApplication.operid = object.getOperid();
+        Values.operid = object.getOperid();
         if (!isSharing) {
             if (disposePicOpermemberid == opermemberid && disposePicSrcmemid == rPicSrcmemid
                     && disposePicSrcwbidd == rPicSrcwbid) {
@@ -304,57 +387,87 @@ public class BackstageService extends Service {
                 disposePicSrcwbidd = 0;
             }
         } else {
-            EventBus.getDefault().postSticky(new EventMessage.Builder().type(Constant.BUS_SHARE_PIC).objs(object).build());
+            EventBus.getDefault().postSticky(new EventMessage.Builder().type(Constant.BUS_SHARE_PIC).objects(object).build());
         }
     }
 
     private void downloadInform(EventMessage msg) throws InvalidProtocolBufferException {
-        byte[] data2 = (byte[]) msg.getObjs()[0];
+        byte[] data2 = (byte[]) msg.getObjects()[0];
         InterfaceDownload.pbui_Type_DownloadCb pbui_type_downloadCb = InterfaceDownload.pbui_Type_DownloadCb.parseFrom(data2);
         int mediaid = pbui_type_downloadCb.getMediaid();
         int progress = pbui_type_downloadCb.getProgress();
         int nstate = pbui_type_downloadCb.getNstate();
+        int err = pbui_type_downloadCb.getErr();
         String filepath = pbui_type_downloadCb.getPathname().toStringUtf8();
-        String s = filepath.substring(filepath.lastIndexOf("/") + 1).toLowerCase();
         String userStr = pbui_type_downloadCb.getUserstr().toStringUtf8();
-        if (nstate == 4) {//下载退出---不管成功与否,下载结束最后一次的状态都是这个
-            File f = new File(filepath);
-            if (f.exists()) {
+        String fileName = filepath.substring(filepath.lastIndexOf("/") + 1).toLowerCase();
+        if (nstate == InterfaceMacro.Pb_Download_State.Pb_STATE_MEDIA_DOWNLOAD_WORKING_VALUE) {
+            //主页背景
+            if (!userStr.equals(Constant.MAIN_BG_PNG_TAG)
+                    //主页logo
+                    && !userStr.equals(Constant.MAIN_LOGO_PNG_TAG)
+                    //子界面背景
+                    && !userStr.equals(Constant.SUB_BG_PNG_TAG)
+                    //公告背景
+                    && !userStr.equals(Constant.NOTICE_BG_PNG_TAG)
+                    //公告logo
+                    && !userStr.equals(Constant.NOTICE_LOGO_PNG_TAG)
+                    //会场底图
+                    && !userStr.equals(Constant.ROOM_BG_PNG_TAG)
+                    //下载议程文件
+                    && !userStr.equals(Constant.download_agenda_file)
+            ) {
+                ToastUtil.show(getString(R.string.file_downloaded_percent, fileName, progress + "%"));
+            }
+        } else if (nstate == InterfaceMacro.Pb_Download_State.Pb_STATE_MEDIA_DOWNLOAD_EXIT_VALUE) {
+            //下载退出---不管成功与否,下载结束最后一次的状态都是这个
+            if (Values.downloadingFiles.contains(mediaid)) {
+                int index = Values.downloadingFiles.indexOf(mediaid);
+                Values.downloadingFiles.remove(index);
+            }
+            File file = new File(filepath);
+            if (file.exists()) {
                 LogUtil.i(TAG, "BusEvent -->" + "下载完成：" + filepath);
                 switch (userStr) {
                     case Constant.MAIN_BG_PNG_TAG:
-                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_MAIN_BG).objs(filepath).build());
+                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_MAIN_BG).objects(filepath).build());
                         break;
                     case Constant.SUB_BG_PNG_TAG:
-                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_SUB_BG).objs(filepath).build());
+                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_SUB_BG).objects(filepath).build());
                         break;
                     case Constant.NOTICE_BG_PNG_TAG:
-                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_NOTICE_BG).objs(filepath).build());
+                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_NOTICE_BG).objects(filepath).build());
                         break;
                     case Constant.NOTICE_LOGO_PNG_TAG:
-                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_NOTICE_LOGO).objs(filepath).build());
+                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_NOTICE_LOGO).objects(filepath).build());
                         break;
                     case Constant.MAIN_LOGO_PNG_TAG:
-                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_MAIN_LOGO).objs(filepath).build());
+                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_MAIN_LOGO).objects(filepath).build());
                         break;
                     case Constant.ROOM_BG_PNG_TAG:
-                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_ROOM_BG).objs(filepath).build());
+                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_ROOM_BG).objects(filepath).build());
                         break;
-                    case Constant.SHOULD_OPEN_FILE_KEY: //下载完成后需要打开的文件
-                        FileUtil.openFile(this, f);
+                    //下载完成后需要打开的文件
+                    case Constant.download_should_open_file:
+                        FileUtil.openFile(this, file);
                         break;
-                    case Constant.AGENDA_FILE_KEY: //下载的议程文件
-                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_AGENDA_FILE).objs(filepath).build());
+                    //下载的议程文件
+                    case Constant.download_agenda_file:
+                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_AGENDA_FILE).objects(filepath).build());
+                        break;
+                    default:
                         break;
                 }
             } else {
                 ToastUtil.show(R.string.err_download);
             }
+        } else {
+            LogUtil.i(TAG, "downloadInform 下载状态：" + nstate + ", 下载错误码：" + err + ", 文件名：" + fileName);
         }
     }
 
     private void uploadInform(EventMessage msg) throws InvalidProtocolBufferException {
-        byte[] datas = (byte[]) msg.getObjs()[0];
+        byte[] datas = (byte[]) msg.getObjects()[0];
         InterfaceUpload.pbui_TypeUploadPosCb uploadPosCb = InterfaceUpload.pbui_TypeUploadPosCb.parseFrom(datas);
         String pathName = uploadPosCb.getPathname().toStringUtf8();
         String userStr = uploadPosCb.getUserstr().toStringUtf8();
@@ -367,8 +480,10 @@ public class BackstageService extends Service {
         InterfaceBase.pbui_CommonTextProperty pbui_commonTextProperty = InterfaceBase.pbui_CommonTextProperty.parseFrom(bytes);
         String fileName = pbui_commonTextProperty.getPropertyval().toStringUtf8();
         LogUtil.i(TAG, "uploadInform -->" + "上传进度：" + per + "\npathName= " + pathName);
-        if (status == InterfaceMacro.Pb_Upload_State.Pb_UPLOADMEDIA_FLAG_HADEND_VALUE) {//结束上传
-            if (userStr.equals(Constant.upload_draw_pic)) {//从画板上传的图片
+        if (status == InterfaceMacro.Pb_Upload_State.Pb_UPLOADMEDIA_FLAG_HADEND_VALUE) {
+            //结束上传
+            if (userStr.equals(Constant.upload_draw_pic)) {
+                //从画板上传的图片
                 FileUtil.delFileByPath(pathName);
             }
             ToastUtil.show(getString(R.string.upload_completed, fileName));

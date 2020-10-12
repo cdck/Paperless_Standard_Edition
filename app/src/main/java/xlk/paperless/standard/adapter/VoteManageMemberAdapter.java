@@ -30,7 +30,8 @@ public class VoteManageMemberAdapter extends BaseQuickAdapter<InterfaceMember.pb
 
     @Override
     protected void convert(BaseViewHolder helper, InterfaceMember.pbui_Item_MeetMemberDetailInfo item) {
-        boolean ishas = Constant.getChoose(item.getPermission()).contains(5);
+//        boolean ishas = Constant.getChoose(item.getPermission()).contains(5);
+        boolean ishas = Constant.isHasPermission(item.getPermission(), Constant.permission_code_vote);
         boolean isonline = item.getMemberdetailflag() == InterfaceMember.Pb_MemberDetailFlag.Pb_MEMBERDETAIL_FLAG_ONLINE_VALUE;
         boolean isCan = false;
         int facestatus = item.getFacestatus();
@@ -83,7 +84,7 @@ public class VoteManageMemberAdapter extends BaseQuickAdapter<InterfaceMember.pb
 
     private boolean isCanChoose(InterfaceMember.pbui_Item_MeetMemberDetailInfo info) {
         boolean online = info.getMemberdetailflag() == InterfaceMember.Pb_MemberDetailFlag.Pb_MEMBERDETAIL_FLAG_ONLINE_VALUE;
-        return info.getDevid() != 0 && online && Constant.getChoose(info.getPermission()).contains(5);
+        return info.getDevid() != 0 && online && Constant.isHasPermission(info.getPermission(),Constant.permission_code_vote);
     }
 
     public List<Integer> getChoose() {

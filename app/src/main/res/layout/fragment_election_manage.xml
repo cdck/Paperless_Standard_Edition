@@ -36,6 +36,10 @@
         android:layout_marginStart="@dimen/dp_8"
         android:layout_marginEnd="@dimen/dp_8"
         android:background="@drawable/shape_edt_vote"
+        android:lines="1"
+        android:maxLength="30"
+        android:paddingStart="@dimen/dp_5"
+        android:singleLine="true"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView14"
         app:layout_constraintEnd_toStartOf="@+id/textView15"
         app:layout_constraintStart_toEndOf="@+id/textView14" />
@@ -62,17 +66,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/dp_8"
-        android:visibility="gone"
         android:text="@string/is_register"
+        android:visibility="gone"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView14"
         app:layout_constraintEnd_toStartOf="@+id/election_manage_mode_cb" />
 
     <CheckBox
         android:id="@+id/election_manage_mode_cb"
-        android:text="@string/register"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/dp_8"
+        android:text="@string/register"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView14"
         app:layout_constraintBottom_toBottomOf="@+id/textView16"
         app:layout_constraintEnd_toStartOf="@+id/election_manage_add" />
@@ -94,6 +98,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_8"
         android:background="@drawable/shape_edt_vote"
+        android:lines="1"
+        android:maxLength="30"
+        android:paddingStart="@dimen/dp_2"
+        android:singleLine="true"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView17"
         app:layout_constraintEnd_toStartOf="@+id/textView18"
         app:layout_constraintStart_toEndOf="@+id/textView17" />
@@ -114,6 +122,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_8"
         android:background="@drawable/shape_edt_vote"
+        android:lines="1"
+        android:maxLength="30"
+        android:paddingStart="@dimen/dp_2"
+        android:singleLine="true"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView17"
         app:layout_constraintEnd_toStartOf="@+id/textView19"
         app:layout_constraintStart_toEndOf="@+id/textView18" />
@@ -134,6 +146,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_8"
         android:background="@drawable/shape_edt_vote"
+        android:lines="1"
+        android:maxLength="30"
+        android:paddingStart="@dimen/dp_2"
+        android:singleLine="true"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView17"
         app:layout_constraintEnd_toStartOf="@+id/textView20"
         app:layout_constraintStart_toEndOf="@+id/textView19" />
@@ -154,6 +170,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_8"
         android:background="@drawable/shape_edt_vote"
+        android:lines="1"
+        android:maxLength="30"
+        android:paddingStart="@dimen/dp_2"
+        android:singleLine="true"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView17"
         app:layout_constraintEnd_toStartOf="@+id/textView21"
         app:layout_constraintStart_toEndOf="@+id/textView20" />
@@ -174,6 +194,10 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/dp_8"
         android:background="@drawable/shape_edt_vote"
+        android:lines="1"
+        android:maxLength="30"
+        android:paddingStart="@dimen/dp_2"
+        android:singleLine="true"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView17"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView21" />
@@ -184,8 +208,7 @@
         android:layout_marginEnd="@dimen/dp_8"
         android:text="@string/add"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView14"
-        app:layout_constraintEnd_toStartOf="@+id/election_manage_modify"
-        tools:layout_editor_absoluteY="426dp" />
+        app:layout_constraintEnd_toStartOf="@+id/election_manage_modify" />
 
     <Button
         android:id="@+id/election_manage_modify"
@@ -193,8 +216,7 @@
         android:layout_marginEnd="@dimen/dp_8"
         android:text="@string/modify"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView14"
-        app:layout_constraintEnd_toStartOf="@+id/election_manage_delete"
-        tools:layout_editor_absoluteY="433dp" />
+        app:layout_constraintEnd_toStartOf="@+id/election_manage_delete" />
 
     <Button
         android:id="@+id/election_manage_delete"
@@ -202,16 +224,15 @@
         android:layout_marginEnd="@dimen/dp_8"
         android:text="@string/delete"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView14"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="444dp" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/election_manage_export"
         style="@style/btn_pressed_style"
         android:layout_width="wrap_content"
-        android:padding="@dimen/dp_2"
         android:layout_marginStart="@dimen/dp_8"
         android:layout_marginEnd="@dimen/dp_8"
+        android:padding="@dimen/dp_2"
         android:text="@string/export_excel"
         app:layout_constraintBaseline_toBaselineOf="@+id/election_manage_import"
         app:layout_constraintEnd_toStartOf="@+id/textView22"
@@ -221,9 +242,9 @@
         android:id="@+id/election_manage_import"
         style="@style/btn_pressed_style"
         android:layout_width="wrap_content"
-        android:padding="@dimen/dp_2"
         android:layout_marginStart="@dimen/dp_8"
         android:layout_marginBottom="@dimen/dp_8"
+        android:padding="@dimen/dp_2"
         android:text="@string/import_excel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/election_manage_export"
@@ -253,8 +274,7 @@
         android:layout_marginEnd="@dimen/dp_8"
         android:text="@string/see_details"
         app:layout_constraintBaseline_toBaselineOf="@+id/election_manage_import"
-        app:layout_constraintEnd_toStartOf="@+id/election_manage_chart"
-        tools:layout_editor_absoluteY="451dp" />
+        app:layout_constraintEnd_toStartOf="@+id/election_manage_chart" />
 
     <Button
         android:id="@+id/election_manage_chart"
@@ -262,8 +282,7 @@
         android:layout_marginEnd="@dimen/dp_8"
         android:text="@string/see_chart"
         app:layout_constraintBaseline_toBaselineOf="@+id/election_manage_import"
-        app:layout_constraintEnd_toStartOf="@+id/election_manage_launch"
-        tools:layout_editor_absoluteY="465dp" />
+        app:layout_constraintEnd_toStartOf="@+id/election_manage_launch" />
 
     <Button
         android:id="@+id/election_manage_launch"
@@ -271,8 +290,7 @@
         android:layout_marginEnd="@dimen/dp_8"
         android:text="@string/launch_vote"
         app:layout_constraintBaseline_toBaselineOf="@+id/election_manage_import"
-        app:layout_constraintEnd_toStartOf="@+id/election_manage_stop"
-        tools:layout_editor_absoluteY="451dp" />
+        app:layout_constraintEnd_toStartOf="@+id/election_manage_stop" />
 
     <Button
         android:id="@+id/election_manage_stop"
@@ -280,7 +298,6 @@
         android:layout_marginEnd="@dimen/dp_8"
         android:text="@string/stop_vote"
         app:layout_constraintBaseline_toBaselineOf="@+id/election_manage_import"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="386dp" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

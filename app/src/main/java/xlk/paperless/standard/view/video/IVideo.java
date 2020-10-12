@@ -17,4 +17,8 @@ public interface IVideo {
     void close();
 
     void notifyOnLineAdapter();
+
+    void updateAnimator(int status);
+
+    void updateTopTitle(String title);
 }

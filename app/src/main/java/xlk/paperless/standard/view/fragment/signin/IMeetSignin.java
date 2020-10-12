@@ -14,5 +14,9 @@ public interface IMeetSignin {
 
     void updateSignin(int yqd, int yd);
 
-    void updateView(List<InterfaceRoom.pbui_Item_MeetRoomDevSeatDetailInfo> seatDetailInfo);
+    /**
+     * @param isShow 是否要显示席位图标
+     */
+    void updateView(List<InterfaceRoom.pbui_Item_MeetRoomDevSeatDetailInfo> seatDetailInfo, boolean isShow);
+
 }

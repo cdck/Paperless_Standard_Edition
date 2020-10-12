@@ -24,4 +24,8 @@ public class VideoDev {
     public InterfaceDevice.pbui_Item_DeviceDetailInfo getDeviceDetailInfo() {
         return deviceDetailInfo;
     }
+
+    public String getName() {
+        return videoDetailInfo.getDevicename().toStringUtf8() + "-" + videoDetailInfo.getName().toStringUtf8();
+    }
 }

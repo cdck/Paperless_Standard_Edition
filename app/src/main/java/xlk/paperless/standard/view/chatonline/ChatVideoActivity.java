@@ -28,12 +28,15 @@ import xlk.paperless.standard.adapter.MeetChatMemberAdapter;
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.data.JniHandler;
+import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.data.bean.DevMember;
 import xlk.paperless.standard.ui.videochat.VideoChatView;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.ToastUtil;
-import xlk.paperless.standard.view.BaseActivity;
-import xlk.paperless.standard.view.MyApplication;
+import xlk.paperless.standard.base.BaseActivity;
+
+import static xlk.paperless.standard.data.Constant.resource_10;
+import static xlk.paperless.standard.data.Constant.resource_11;
 
 public class ChatVideoActivity extends BaseActivity implements View.OnClickListener {
 
@@ -134,7 +137,7 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
                 int memberid = detailInfo.getMemberid();
                 int facestate = detailInfo.getFacestate();
                 int netstate = detailInfo.getNetstate();
-                if (facestate == 1 && netstate == 1 && devcieid != MyApplication.localDeviceId) {
+                if (facestate == 1 && netstate == 1 && devcieid != Values.localDeviceId) {
                     for (int j = 0; j < memberInfos.size(); j++) {
                         InterfaceMember.pbui_Item_MemberDetailInfo memberDetailInfo = memberInfos.get(j);
                         int personid = memberDetailInfo.getPersonid();
@@ -188,19 +191,19 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
     public void BusEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
             case Constant.BUS_VIDEO_DECODE://后台播放数据 DECODE
-                Object[] objs = msg.getObjs();
+                Object[] objs = msg.getObjects();
                 int obj = (int) objs[1];
                 LogUtil.v(TAG, "BusEvent 收到数据 --> resid = " + obj);
                 video_chat_view.setVideoDecode(objs);
                 break;
             case Constant.BUS_YUV_DISPLAY://后台播放数据 YUV
-                Object[] objs1 = msg.getObjs();
+                Object[] objs1 = msg.getObjects();
                 int o3 = (int) objs1[0];
                 LogUtil.v(TAG, "BusEvent 收到数据 --> resid = " + o3);
                 video_chat_view.setYuv(objs1);
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEMEETSTATUS_VALUE://界面状态变更通知
-                int o = (int) msg.getObjs()[1];
+                int o = (int) msg.getObjects()[1];
                 if (o > 0) {
                     queryAttendPeople();
                 }
@@ -209,7 +212,7 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
                 queryAttendPeople();
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEINFO_VALUE://设备寄存器变更通知
-                int o1 = (int) msg.getObjs()[1];
+                int o1 = (int) msg.getObjects()[1];
                 if (msg.getMethod() == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_NOTIFY_VALUE
                         && o1 > 0) {
                     queryAttendPeople();
@@ -223,12 +226,13 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
                 }
                 break;
             case Constant.BUS_CHAT_STATE://收到视屏聊天的工作状态
-                Object[] objs2 = msg.getObjs();
+                Object[] objs2 = msg.getObjects();
                 int inviteflag = (int) objs2[0];
                 int operdeviceid = (int) objs2[1];
                 LogUtil.i(TAG, "BusEvent -->" + "收到视屏聊天的工作状态 inviteflag= " + inviteflag + ", operdeviceid= " + operdeviceid);
                 mOperdeviceid = operdeviceid;
-                if ((inviteflag & InterfaceDevice.Pb_DeviceInviteFlag.Pb_DEVICE_INVITECHAT_FLAG_SIMPLEX_VALUE) == InterfaceDevice.Pb_DeviceInviteFlag.Pb_DEVICE_INVITECHAT_FLAG_SIMPLEX_VALUE) {
+                if ((inviteflag & InterfaceDevice.Pb_DeviceInviteFlag.Pb_DEVICE_INVITECHAT_FLAG_SIMPLEX_VALUE)
+                        == InterfaceDevice.Pb_DeviceInviteFlag.Pb_DEVICE_INVITECHAT_FLAG_SIMPLEX_VALUE) {
                     LogUtil.i(TAG, "BusEvent -->" + "新的状态：寻呼");
                     createPaging();
                 } else {
@@ -237,14 +241,14 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
                 }
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_STOPPLAY_VALUE://停止资源通知
-                byte[] o2 = (byte[]) msg.getObjs()[0];
+                byte[] o2 = (byte[]) msg.getObjects()[0];
                 if (msg.getMethod() == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_CLOSE_VALUE) {
                     //停止资源通知
                     InterfaceStop.pbui_Type_MeetStopResWork stopResWork = InterfaceStop.pbui_Type_MeetStopResWork.parseFrom(o2);
                     List<Integer> resList = stopResWork.getResList();
                     for (int resid : resList) {
                         LogUtil.i(TAG, "BusEvent -->" + "停止资源通知 resid: " + resid);
-                        if (resid == 10 || resid == 11 && mOperdeviceid == MyApplication.localDeviceId) {
+                        if ((resid == resource_10 || resid == resource_11) && mOperdeviceid == Values.localDeviceId) {
                             LogUtil.i(TAG, "BusEvent -->" + "工作状态下，自己是发起端，且自己的播放资源停止了");
                             if (work_state != 0) {
                                 LogUtil.i(TAG, "BusEvent -->" + "停止设备对讲");
@@ -258,7 +262,7 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
                     int resid = stopPlay.getRes();
                     int createdeviceid = stopPlay.getCreatedeviceid();
                     LogUtil.i(TAG, "BusEvent -->" + "停止播放通知 resid= " + resid + ", createdeviceid= " + createdeviceid);
-                    if (resid == 10 || resid == 11 && mOperdeviceid == MyApplication.localDeviceId) {
+                    if ((resid == resource_10 || resid == resource_11) && mOperdeviceid == Values.localDeviceId) {
                         LogUtil.i(TAG, "BusEvent -->" + "工作状态下，自己是发起端，且自己的播放资源停止了");
                         if (work_state != 0) {
                             LogUtil.i(TAG, "BusEvent -->" + "停止设备对讲");
@@ -272,7 +276,7 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
 
     //收到回复设备对讲的通知
     private void replyDeviceIntercomInform(EventMessage msg) throws InvalidProtocolBufferException {
-        byte[] bytes = (byte[]) msg.getObjs()[0];
+        byte[] bytes = (byte[]) msg.getObjects()[0];
         InterfaceDevice.pbui_Type_DeviceChat info = InterfaceDevice.pbui_Type_DeviceChat.parseFrom(bytes);
         int inviteflag = info.getInviteflag();
         int operdeviceid = info.getOperdeviceid();
@@ -308,13 +312,13 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
 
     //收到停止设备对讲通知
     private void stopDeviceIntercomInform(EventMessage msg) throws InvalidProtocolBufferException {
-        byte[] bytes = (byte[]) msg.getObjs()[0];
+        byte[] bytes = (byte[]) msg.getObjects()[0];
         InterfaceDevice.pbui_Type_ExitDeviceChat info = InterfaceDevice.pbui_Type_ExitDeviceChat.parseFrom(bytes);
         int exitdeviceid = info.getExitdeviceid();
         int operdeviceid = info.getOperdeviceid();
         LogUtil.i(TAG, "收到停止设备对讲通知 -->" + " exitdeviceid= " + exitdeviceid + ", operdeviceid= " + operdeviceid);
         if (work_state == 1) {//寻呼中
-            if (exitdeviceid == operdeviceid || exitdeviceid == MyApplication.localDeviceId) {//发起端退出了,自己才退出
+            if (exitdeviceid == operdeviceid || exitdeviceid == Values.localDeviceId) {//发起端退出了,自己才退出
                 LogUtil.i(TAG, "收到停止设备对讲通知 -->" + "发起端退出了或则自己退出");
                 stopAll();
                 video_chat_view.createDefaultView(1);
@@ -367,7 +371,7 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
                                     InterfaceDevice.Pb_DeviceInviteFlag.Pb_DEVICE_INVITECHAT_FLAG_AUDIO_VALUE;//音频
                         }
                         LogUtil.i(TAG, "发起寻呼 -->选中的设备ID= " + chooseDevids.toString());
-                        mOperdeviceid = MyApplication.localDeviceId;
+                        mOperdeviceid = Values.localDeviceId;
                         jni.deviceIntercom(chooseDevids, flag);
                         createPaging();
                     } else {
@@ -385,7 +389,7 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
                                 flag = InterfaceDevice.Pb_DeviceInviteFlag.Pb_DEVICE_INVITECHAT_FLAG_VIDEO_VALUE |//视频
                                         InterfaceDevice.Pb_DeviceInviteFlag.Pb_DEVICE_INVITECHAT_FLAG_AUDIO_VALUE;//音频
                             }
-                            mOperdeviceid = MyApplication.localDeviceId;
+                            mOperdeviceid = Values.localDeviceId;
                             jni.deviceIntercom(chooseDevids, flag);
                             createIntercom();
                         }
@@ -464,10 +468,10 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
         LogUtil.d(TAG, "stopAll -->" + "对讲或寻呼停止");
         EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_COLLECT_CAMERA_STOP).build());
         List<Integer> resids = new ArrayList<>();
-        resids.add(10);
-        resids.add(11);
+        resids.add(resource_10);
+        resids.add(resource_11);
         List<Integer> devids = new ArrayList<>();
-        devids.add(MyApplication.localDeviceId);
+        devids.add(Values.localDeviceId);
         jni.stopResourceOperate(resids, devids);
     }
 }

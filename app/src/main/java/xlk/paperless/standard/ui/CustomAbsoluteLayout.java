@@ -3,7 +3,6 @@ package xlk.paperless.standard.ui;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.AbsoluteLayout;
 
 import xlk.paperless.standard.util.LogUtil;
@@ -15,8 +14,16 @@ import xlk.paperless.standard.util.LogUtil;
  */
 public class CustomAbsoluteLayout extends AbsoluteLayout {
     private final String TAG = "CustomAbsoluteLayout-->";
-    private int width, height;
+    private int width = 1300, height = 760;//底图宽高
     private int viewWidth, viewHeight;//显示区域的宽高
+
+    /**
+     * 设置显示区域的宽高
+     */
+    public void setScreen(int viewWidth, int viewHeight) {
+        this.viewWidth = viewWidth;
+        this.viewHeight = viewHeight;
+    }
 
     public CustomAbsoluteLayout(Context context) {
         this(context, null);
@@ -34,22 +41,16 @@ public class CustomAbsoluteLayout extends AbsoluteLayout {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
+    /**
+     * 动态设置setLayoutParams后会执行
+     */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int width = MeasureSpec.getSize(widthMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
-        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         setMeasuredDimension(width, height);
         LogUtil.e(TAG, "onMeasure : --> width= " + width + ", height= " + height);
-//        if (widthMode == MeasureSpec.AT_MOST && heightMode == MeasureSpec.AT_MOST) {
-//            setMeasuredDimension(1300, 760);
-//        } else if (widthMode == MeasureSpec.AT_MOST) {
-//            setMeasuredDimension(1300, height);
-//        } else if (heightMode == MeasureSpec.AT_MOST) {
-//            setMeasuredDimension(width, 760);
-//        }
         this.width = width;
         this.height = height;
     }
@@ -69,6 +70,17 @@ public class CustomAbsoluteLayout extends AbsoluteLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        //是否可以左右拖动
+        boolean canMoveX = !(viewWidth >= width);
+        //是否可以上下拖动
+        boolean canMoveY = !(viewHeight >= height);
+        LogUtil.i(TAG, "onTouchEvent 显示宽高：" + viewWidth + "," + viewHeight +
+                ",底图宽高：" + width + "," + height + ",是否可以拖动：" + canMoveX + "," + canMoveY);
+        if (!canMoveY && !canMoveX) {
+            //已经可以完全显示底图
+            LogUtil.i(TAG, "onTouchEvent 已经可以完全显示底图");
+            return false;
+        }
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 downX = event.getX();
@@ -86,59 +98,58 @@ public class CustomAbsoluteLayout extends AbsoluteLayout {
                 int right = getRight();
                 int bottom = getBottom();
                 LogUtil.i(TAG, "四边 -->左：" + left + ",上：" + top + ",右：" + right + ",下：" + bottom);
-                //左
-                if (left == 0) {//当前左边已经封顶了
-                    if (dx < 0 && right >= viewWidth)//还往左边移动
-                        l = (int) (left + dx);
-                    else l = 0;
-                } else if (left < 0) {//当前已经超过最左边
-                    if (right >= viewWidth) {
-                        if (dx < 0)
+                if (canMoveX) {
+                    //左
+                    if (left == 0) {//当前左边已经封顶了
+                        if (dx < 0 && right >= viewWidth)//还往左边移动
                             l = (int) (left + dx);
-                        else if (dx > 0)
-                            l = (int) (left + dx);
+                        else l = 0;
+                    } else if (left < 0) {//当前已经超过最左边
+                        if (right >= viewWidth) {
+                            if (dx < 0)
+                                l = (int) (left + dx);
+                            else if (dx > 0)
+                                l = (int) (left + dx);
+                        }
+                    } else l = 0;
+                    //右
+                    r = width + l;
+                    int i1 = viewWidth - r;
+                    if (i1 > 0) {
+                        r = viewWidth;
+                        l += i1;
                     }
-                } else l = 0;
-                //上
-                if (top == 0) {
-                    if (dy < 0 && bottom > viewHeight)
-                        t = (int) (top + dy);
-                    else t = 0;
-                } else if (top < 0) {
-                    if (dy < 0 && bottom > viewHeight)
-                        t = (int) (top + dy);
-                    else if (dy > 0)
-                        t = (int) (top + dy);
-                } else t = 0;
-                LogUtil.e(TAG, "onTouchEvent 左和上 -->" + l + " , " + t + ", width= " + width + ", height= " + height);
-                //右
-                r = width + l;
-                int i1 = viewWidth - r;
-                if (i1 > 0) {
-                    r = viewWidth;
-                    l += i1;
+                } else {//不可以拖动X轴
+                    l = 0;
+                    r = width;
                 }
-                //下
-                b = height + t;
-                int i = viewHeight - b;
-                if (i > 0) {
-                    b = viewHeight;
-                    t += i;
+                if (canMoveY) {
+                    //上
+                    if (top == 0) {
+                        if (dy < 0 && bottom > viewHeight)
+                            t = (int) (top + dy);
+                        else t = 0;
+                    } else if (top < 0) {
+                        if (dy < 0 && bottom > viewHeight)
+                            t = (int) (top + dy);
+                        else if (dy > 0)
+                            t = (int) (top + dy);
+                    } else t = 0;
+                    //下
+                    b = height + t;
+                    int i = viewHeight - b;
+                    if (i > 0) {
+                        b = viewHeight;
+                        t += i;
+                    }
+                } else {//不可以拖动Y轴
+                    t = 0;
+                    b = height;
                 }
-
-//                l = (int) (left + dx);
-//                t = (int) (top + dy);
-//                r = width + l;
-//                b = height + t;
                 LogUtil.d(TAG, "更新位置 -->" + l + "," + t + "," + r + "," + b);
                 this.layout(l, t, r, b);
                 break;
         }
         return true;
-    }
-
-    public void setScreen(int viewWidth, int viewHeight) {
-        this.viewWidth = viewWidth;
-        this.viewHeight = viewHeight;
     }
 }

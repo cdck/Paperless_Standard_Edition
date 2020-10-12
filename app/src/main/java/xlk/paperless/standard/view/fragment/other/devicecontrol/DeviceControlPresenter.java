@@ -16,9 +16,9 @@ import java.util.List;
 
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
+import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.data.bean.DevControlBean;
-import xlk.paperless.standard.view.BasePresenter;
-import xlk.paperless.standard.view.MyApplication;
+import xlk.paperless.standard.base.BasePresenter;
 
 
 /**
@@ -34,32 +34,25 @@ public class DeviceControlPresenter extends BasePresenter {
     private List<InterfaceRoom.pbui_Item_MeetRoomDevSeatDetailInfo> seatInfos = new ArrayList<>();
 
     public DeviceControlPresenter(Context cxt, IDevControl view) {
+        super();
         this.cxt = cxt;
         this.view = view;
     }
 
     @Override
-    public void register() {
-        EventBus.getDefault().register(this);
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
-    public void unregister() {
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void BusEvent(EventMessage msg)  {
+    protected void busEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_ROOMDEVICE_VALUE://会场设备信息变更通知
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEMEETSTATUS_VALUE://界面状态变更通知
                 queryRankInfo();
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEINFO_VALUE://设备寄存器变更通知
                 queryDevice();
-                break;
-            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEMEETSTATUS_VALUE://界面状态变更通知
-                queryRankInfo();
                 break;
         }
     }
@@ -100,7 +93,7 @@ public class DeviceControlPresenter extends BasePresenter {
 
     public void queryRankInfo() {
         try {
-            InterfaceRoom.pbui_Type_MeetRoomDevSeatDetailInfo seatDetailInfo = jni.placeDeviceRankingInfo(MyApplication.localRoomId);
+            InterfaceRoom.pbui_Type_MeetRoomDevSeatDetailInfo seatDetailInfo = jni.placeDeviceRankingInfo(Values.localRoomId);
             if (seatDetailInfo == null) {
                 return;
             }

@@ -3,10 +3,7 @@ package xlk.paperless.standard.service;
 import com.mogujie.tt.protobuf.InterfaceDevice;
 import com.mogujie.tt.protobuf.InterfaceVote;
 
-import java.util.List;
-
-import xlk.paperless.standard.data.bean.DevMember;
-import xlk.paperless.standard.ui.CustomInterface.BaseInterface;
+import xlk.paperless.standard.base.BaseInterface;
 
 /**
  * @author xlk

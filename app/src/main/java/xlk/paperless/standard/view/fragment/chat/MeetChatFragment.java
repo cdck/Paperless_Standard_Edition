@@ -22,12 +22,12 @@ import java.util.List;
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.adapter.MeetChatMemberAdapter;
 import xlk.paperless.standard.adapter.MulitpleItemAdapter;
+import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.data.bean.ChatMessage;
 import xlk.paperless.standard.data.bean.DevMember;
 import xlk.paperless.standard.util.ToastUtil;
-import xlk.paperless.standard.view.MyApplication;
 import xlk.paperless.standard.view.chatonline.ChatVideoActivity;
-import xlk.paperless.standard.view.fragment.BaseFragment;
+import xlk.paperless.standard.base.BaseFragment;
 
 import static xlk.paperless.standard.util.ConvertUtil.s2b;
 import static xlk.paperless.standard.view.meet.MeetingActivity.chatIsShowing;
@@ -59,7 +59,6 @@ public class MeetChatFragment extends BaseFragment implements View.OnClickListen
         chatIsShowing = true;
         initView(inflate);
         presenter = new MeetChatPresenter(getContext(), this);
-        presenter.register();
         presenter.queryMember();
         return inflate;
     }
@@ -139,14 +138,14 @@ public class MeetChatFragment extends BaseFragment implements View.OnClickListen
                         presenter.sendChatMessage(trim, InterfaceMacro.Pb_MeetIMMSG_TYPE.Pb_MEETIM_CHAT_Message.getNumber(), check);
                         InterfaceIM.pbui_Type_MeetIM build = InterfaceIM.pbui_Type_MeetIM.newBuilder()
                                 .setMsgtype(0)
-                                .setRole(MyApplication.localRole)
-                                .setMemberid(MyApplication.localMemberId)
+                                .setRole(Values.localRole)
+                                .setMemberid(Values.localMemberId)
                                 .setMsg(s2b(trim))
                                 .setUtcsecond(System.currentTimeMillis() / 1000)//需要换算成秒单位
-                                .setMeetname(s2b(MyApplication.localMeetingName))
-                                .setRoomname(s2b(MyApplication.localRoomName))
-                                .setMembername(s2b(MyApplication.localMemberName))
-                                .setSeatename(s2b(MyApplication.localDeviceName))
+                                .setMeetname(s2b(Values.localMeetingName))
+                                .setRoomname(s2b(Values.localRoomName))
+                                .setMembername(s2b(Values.localMemberName))
+                                .setSeatename(s2b(Values.localDeviceName))
                                 .addAllUserids(check)
                                 .build();
                         chatMessages.add(new ChatMessage(1, build));
@@ -170,7 +169,7 @@ public class MeetChatFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onDestroy() {
         super.onDestroy();
-        presenter.unregister();
+        presenter.onDestroy();
     }
 
     @Override

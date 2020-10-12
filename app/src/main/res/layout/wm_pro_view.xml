@@ -57,6 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dp_8"
         android:text="@string/full_screen"
+        android:checked="true"
         app:layout_constraintBottom_toTopOf="@+id/wm_pro_launch_pro"
         app:layout_constraintEnd_toStartOf="@+id/wm_pro_flow1"
         app:layout_constraintStart_toStartOf="parent" />

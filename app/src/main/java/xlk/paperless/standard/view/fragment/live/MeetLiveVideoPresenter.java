@@ -9,21 +9,22 @@ import com.mogujie.tt.protobuf.InterfaceMember;
 import com.mogujie.tt.protobuf.InterfaceStop;
 import com.mogujie.tt.protobuf.InterfaceVideo;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.data.JniHandler;
+import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.data.bean.DevMember;
 import xlk.paperless.standard.data.bean.VideoDev;
 import xlk.paperless.standard.util.LogUtil;
-import xlk.paperless.standard.view.BasePresenter;
-import xlk.paperless.standard.view.MyApplication;
+import xlk.paperless.standard.base.BasePresenter;
+
+import static xlk.paperless.standard.data.Constant.resource_1;
+import static xlk.paperless.standard.data.Constant.resource_2;
+import static xlk.paperless.standard.data.Constant.resource_3;
+import static xlk.paperless.standard.data.Constant.resource_4;
 
 /**
  * @author xlk
@@ -48,25 +49,19 @@ public class MeetLiveVideoPresenter extends BasePresenter {
     }
 
     @Override
-    public void register() {
-        EventBus.getDefault().register(this);
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
-    public void unregister() {
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void BusEvent(EventMessage msg) throws InvalidProtocolBufferException {
+    public void busEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETVIDEO_VALUE://会议视频变更通知
                 queryMeetVedio();
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEINFO_VALUE://设备寄存器变更通知
-                byte[] datas = (byte[]) msg.getObjs()[0];
-                int datalen = (int) msg.getObjs()[1];
+                byte[] datas = (byte[]) msg.getObjects()[0];
+                int datalen = (int) msg.getObjects()[1];
                 InterfaceDevice.pbui_Type_MeetDeviceBaseInfo baseInfo = InterfaceDevice.pbui_Type_MeetDeviceBaseInfo.parseFrom(datas);
                 int deviceid = baseInfo.getDeviceid();
                 int attribid = baseInfo.getAttribid();
@@ -82,15 +77,15 @@ public class MeetLiveVideoPresenter extends BasePresenter {
                 queryDeviceInfo();
                 break;
             case Constant.BUS_VIDEO_DECODE://后台播放数据 DECODE
-                Object[] objs = msg.getObjs();
+                Object[] objs = msg.getObjects();
                 view.updateDecode(objs);
                 break;
             case Constant.BUS_YUV_DISPLAY://后台播放数据 YUV
-                Object[] objs1 = msg.getObjs();
+                Object[] objs1 = msg.getObjects();
                 view.updateYuv(objs1);
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_STOPPLAY_VALUE://停止资源通知
-                byte[] o1 = (byte[]) msg.getObjs()[0];
+                byte[] o1 = (byte[]) msg.getObjects()[0];
                 if (msg.getMethod() == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_CLOSE_VALUE) {
                     //停止资源通知
                     InterfaceStop.pbui_Type_MeetStopResWork stopResWork = InterfaceStop.pbui_Type_MeetStopResWork.parseFrom(o1);
@@ -154,24 +149,24 @@ public class MeetLiveVideoPresenter extends BasePresenter {
     }
 
     public void initVideoRes(int pvWidth, int pvHeight) {
-        jni.initVideoRes(1, pvWidth / 2, pvHeight / 2);
-        jni.initVideoRes(2, pvWidth / 2, pvHeight / 2);
-        jni.initVideoRes(3, pvWidth / 2, pvHeight / 2);
-        jni.initVideoRes(4, pvWidth / 2, pvHeight / 2);
+        jni.initVideoRes(resource_1, pvWidth / 2, pvHeight / 2);
+        jni.initVideoRes(resource_2, pvWidth / 2, pvHeight / 2);
+        jni.initVideoRes(resource_3, pvWidth / 2, pvHeight / 2);
+        jni.initVideoRes(resource_4, pvWidth / 2, pvHeight / 2);
     }
 
     public void releaseVideoRes() {
-        jni.releaseVideoRes(1);
-        jni.releaseVideoRes(2);
-        jni.releaseVideoRes(3);
-        jni.releaseVideoRes(4);
+        jni.releaseVideoRes(resource_1);
+        jni.releaseVideoRes(resource_2);
+        jni.releaseVideoRes(resource_3);
+        jni.releaseVideoRes(resource_4);
     }
 
     public void stopResource(int resId) {
         List<Integer> ids = new ArrayList<>();
         List<Integer> res = new ArrayList<>();
         res.add(resId);
-        ids.add(MyApplication.localDeviceId);
+        ids.add(Values.localDeviceId);
         jni.stopResourceOperate(res, ids);
     }
 
@@ -182,7 +177,7 @@ public class MeetLiveVideoPresenter extends BasePresenter {
         List<Integer> res = new ArrayList<>();
         res.add(resId);
         List<Integer> ids = new ArrayList<>();
-        ids.add(MyApplication.localDeviceId);
+        ids.add(Values.localDeviceId);
         jni.streamPlay(deviceid, subid, 0, res, ids);
     }
 
@@ -202,7 +197,7 @@ public class MeetLiveVideoPresenter extends BasePresenter {
                 int memberid = dev.getMemberid();
                 int netstate = dev.getNetstate();
                 int facestate = dev.getFacestate();
-                if (devcieid == MyApplication.localDeviceId) {
+                if (devcieid == Values.localDeviceId) {
                     continue;
                 }
                 if (netstate == 1) {//在线

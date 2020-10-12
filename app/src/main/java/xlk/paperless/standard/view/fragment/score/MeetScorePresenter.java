@@ -8,25 +8,17 @@ import com.mogujie.tt.protobuf.InterfaceDevice;
 import com.mogujie.tt.protobuf.InterfaceFilescorevote;
 import com.mogujie.tt.protobuf.InterfaceMacro;
 import com.mogujie.tt.protobuf.InterfaceMember;
-import com.mogujie.tt.protobuf.InterfaceVote;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import xlk.paperless.standard.data.EventMessage;
-import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.data.bean.DevMember;
 import xlk.paperless.standard.data.bean.ScoreMember;
 import xlk.paperless.standard.util.LogUtil;
-import xlk.paperless.standard.view.BasePresenter;
+import xlk.paperless.standard.base.BasePresenter;
 
-import static com.mogujie.tt.protobuf.InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_ASK_VALUE;
 import static com.mogujie.tt.protobuf.InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_NOTIFY_VALUE;
-import static com.mogujie.tt.protobuf.InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_QUERY_VALUE;
 
 /**
  * @author xlk
@@ -45,23 +37,18 @@ public class MeetScorePresenter extends BasePresenter {
     public List<DevMember> onlineMembers = new ArrayList<>();
 
     public MeetScorePresenter(Context cxt, IMeetScore view) {
+        super();
         this.cxt = cxt;
         this.view = view;
     }
 
     @Override
-    public void register() {
-        EventBus.getDefault().register(this);
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
-    public void unregister() {
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void BusEvent(EventMessage msg) throws InvalidProtocolBufferException {
+    public void busEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_FILESCOREVOTE_VALUE:
                 if (msg.getMethod() == Pb_METHOD_MEET_INTERFACE_NOTIFY_VALUE) {
@@ -82,7 +69,7 @@ public class MeetScorePresenter extends BasePresenter {
                 queryMember();
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_FILESCOREVOTESIGN_VALUE://会议评分
-                byte[] data = (byte[]) msg.getObjs()[0];
+                byte[] data = (byte[]) msg.getObjects()[0];
                 InterfaceBase.pbui_MeetNotifyMsg pbui_meetNotifyMsg = InterfaceBase.pbui_MeetNotifyMsg.parseFrom(data);
                 int id = pbui_meetNotifyMsg.getId();
                 int opermethod = pbui_meetNotifyMsg.getOpermethod();

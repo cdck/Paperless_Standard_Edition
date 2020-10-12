@@ -1,6 +1,5 @@
 # ninja log v5
-0	13	0	clean	81a0c8a35c45b8df
-7	150	610627520	CMakeFiles/native-lib.dir/src/main/cpp/wallet_net.cpp.o	51ddad379d1d07da
-13	180	610627520	CMakeFiles/native-lib.dir/src/main/cpp/helpers.c.o	57b9d271b5640e1f
-0	628	610627521	CMakeFiles/native-lib.dir/src/main/cpp/jni_wallet_netinit.cpp.o	65b8c991600af592
-629	751	610627521	../../../../build/intermediates/cmake/debug/obj/armeabi-v7a/libnative-lib.so	af5a5cb85e7af2fb
+11	502	624189322	CMakeFiles/native-lib.dir/src/main/cpp/wallet_net.cpp.o	b11d032875abe589
+25	634	624189322	CMakeFiles/native-lib.dir/src/main/cpp/helpers.c.o	5fec944266e3d044
+1	1636	624189323	CMakeFiles/native-lib.dir/src/main/cpp/jni_wallet_netinit.cpp.o	ec097710fdc5615c
+1637	2696	624189324	../../../../build/intermediates/cmake/debug/obj/armeabi-v7a/libnative-lib.so	55b654f2b283b553

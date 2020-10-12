@@ -126,7 +126,8 @@ class AvcEncoder {
 
     public void startEncoderThread() {
         LogUtil.d(TAG, "startEncoderThread -->");
-        Thread encoderThread = new Thread(() -> {
+        MyApplication.threadPool.execute(()->{
+//        Thread encoderThread = new Thread(() -> {
             isRuning = true;
             byte[] input = null;
             long presentationTimeUs;
@@ -185,7 +186,7 @@ class AvcEncoder {
                 }
             }
         });
-        encoderThread.start();
+//        encoderThread.start();
     }
 
     private void sendDatas() {

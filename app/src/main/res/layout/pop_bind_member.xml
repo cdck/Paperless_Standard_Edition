@@ -13,6 +13,7 @@
         android:text="@string/bind_member"
         android:textColor="@color/btn_normal_tv"
         android:gravity="center"
+        android:layout_margin="@dimen/dp_5"
         android:textSize="22sp"
         android:textStyle="bold" />
 
@@ -31,12 +32,17 @@
             android:id="@+id/pop_bind_member_determine"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            style="@style/btn_pressed_style"
+            android:layout_marginStart="@dimen/dp_5"
             android:layout_weight="1"
             android:text="@string/determine" />
         <Button
             android:id="@+id/pop_bind_member_create"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            style="@style/btn_pressed_style"
+            android:layout_marginStart="@dimen/dp_5"
+            android:layout_marginEnd="@dimen/dp_5"
             android:layout_weight="1"
             android:text="@string/create" />
 
@@ -44,6 +50,8 @@
             android:id="@+id/pop_bind_member_cancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            style="@style/btn_pressed_style"
+            android:layout_marginEnd="@dimen/dp_5"
             android:layout_weight="1"
             android:text="@string/cancel" />
     </LinearLayout>

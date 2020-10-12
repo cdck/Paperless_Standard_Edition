@@ -9,6 +9,7 @@ import android.text.TextUtils;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.mogujie.tt.protobuf.InterfaceAdmin;
 import com.mogujie.tt.protobuf.InterfaceBase;
 import com.mogujie.tt.protobuf.InterfaceContext;
 import com.mogujie.tt.protobuf.InterfaceDevice;
@@ -17,10 +18,6 @@ import com.mogujie.tt.protobuf.InterfaceMacro;
 import com.mogujie.tt.protobuf.InterfaceMeet;
 import com.mogujie.tt.protobuf.InterfaceMember;
 import com.mogujie.tt.protobuf.InterfaceRoom;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -36,16 +33,18 @@ import xlk.paperless.standard.R;
 import xlk.paperless.standard.data.Call;
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
+import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.util.AppUtil;
 import xlk.paperless.standard.util.CodecUtil;
 import xlk.paperless.standard.util.FileUtil;
 import xlk.paperless.standard.util.IniUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.ToastUtil;
-import xlk.paperless.standard.view.BasePresenter;
+import xlk.paperless.standard.base.BasePresenter;
 import xlk.paperless.standard.view.MyApplication;
 
-import static xlk.paperless.standard.view.MyApplication.initializationIsOver;
+import static xlk.paperless.standard.data.Values.localMemberId;
+
 
 /**
  * @author xlk
@@ -62,6 +61,7 @@ public class MainPresenter extends BasePresenter {
     private List<InterfaceMember.pbui_Item_MemberDetailInfo> chooseMemberDetailInfos = new ArrayList<>();
 
     public MainPresenter(Context cxt, IMain iMain) {
+        super();
         this.cxt = new WeakReference<>(cxt);
         this.view = new WeakReference<>(iMain);
     }
@@ -73,17 +73,8 @@ public class MainPresenter extends BasePresenter {
     }
 
     @Override
-    public void register() {
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void unregister() {
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
     public void onDestroy() {
+        super.onDestroy();
         cxt.clear();
         view.clear();
         memberDetailInfos.clear();
@@ -97,13 +88,14 @@ public class MainPresenter extends BasePresenter {
         //拷贝配置文件
         if (!IniUtil.iniFile.exists()) {
             LogUtil.d(TAG, "initConfFile :  拷贝配置文件 --> ");
-            copyTo("client.ini", Constant.INI_NAME);
+            copyTo(Constant.INI_NAME, Constant.INI_NAME);
         } else {
             LogUtil.d(TAG, "initConfFile :  已有ini文件 --> ");
         }
         //设置版本信息
         setVersion();
-        File devFile = new File(Constant.ROOT_DIR + "/" + Constant.DEV_NAME);
+        getMaxBitRate();
+        File devFile = new File(Constant.DEV_FILE_PATH);
         if (!devFile.exists()) {
             copyTo(Constant.DEV_NAME, Constant.DEV_NAME);
         } else {
@@ -112,20 +104,23 @@ public class MainPresenter extends BasePresenter {
         }
     }
 
+    private void getMaxBitRate() {
+        if (iniUtil.loadFile(IniUtil.iniFile)) {
+            String s = iniUtil.get("OtherConfiguration", "maxBitRate");
+            try {
+                MyApplication.maxBitRate = Integer.parseInt(s) * 1000;
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     /**
      * 复制文件
      */
     private void copyTo(String fromPath, String fileName) {
-        // 复制位置
-        // opPath：mnt/sdcard/lcuhg/health/
-        // mnt/sdcard：表示sdcard
+        FileUtil.createDir(Constant.ROOT_DIR);
         File toFile = new File(Constant.ROOT_DIR);
-        // 如果不存在，创建文件夹
-        if (!toFile.exists()) {
-            boolean isCreate = toFile.mkdirs();
-            // 打印创建结果
-            LogUtil.i("create dir", String.valueOf(isCreate));
-        }
         try {
             // 根据文件名获取assets文件夹下的该文件的inputstream
             InputStream fromFileIs = cxt.get().getResources().getAssets().open(fromPath);
@@ -148,7 +143,6 @@ public class MainPresenter extends BasePresenter {
             LogUtil.i(TAG, "copyTo方法 拷贝" + fromPath + "完成------");
             //确保有ini文件
             if (fromPath.equals(Constant.INI_NAME)) {
-                LogUtil.d(TAG, "进入设置版本信息。。。。");
                 iniUtil.loadFile(IniUtil.iniFile);
             }
         } catch (Exception e) {
@@ -170,6 +164,7 @@ public class MainPresenter extends BasePresenter {
                 softver = packageInfo.versionName.substring(packageInfo.versionName.indexOf(".") + 1, packageInfo.versionName.length());
             }
             if (iniUtil.loadFile(IniUtil.iniFile)) {
+                LogUtil.i(TAG, "setVersion 设置到ini文件中");
                 iniUtil.put("selfinfo", "hardver", hardver);
                 iniUtil.put("selfinfo", "softver", softver);
                 iniUtil.store();
@@ -180,86 +175,162 @@ public class MainPresenter extends BasePresenter {
     }
 
     public void initialization() {
-        new Thread(() -> jni.javaInitSys(AppUtil.getUniqueId(cxt.get()))).start();
+        MyApplication.threadPool.execute(() -> {
+            jni.javaInitSys(AppUtil.getUniqueId(cxt.get()));
+        });
     }
 
     @Override
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void BusEvent(EventMessage msg) throws InvalidProtocolBufferException {
+    public void busEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
-            case Constant.BUS_NET_WORK:
-                LogUtil.i(TAG, "网络变更 -->" + MyApplication.isOneline);
-                if (MyApplication.isOneline) {
-                    view.get().checkNetWork();
+            case Constant.BUS_NET_WORK: {
+                int isAvailable = (int) msg.getObjects()[0];
+                LogUtil.i(TAG, "网络变更 -->" + isAvailable);
+                if (Values.isOneline == -1) return;
+                if (Values.isOneline != isAvailable) {
+                    Values.isOneline = isAvailable;
+                    if (!Values.initializationIsOver) {
+                        view.get().checkNetWork();
+                    }
                 }
                 break;
-            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_TIME_VALUE:
-                Object[] objs = msg.getObjs();
+            }
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_TIME_VALUE: {
+                Object[] objs = msg.getObjects();
                 byte[] data = (byte[]) objs[0];
                 InterfaceBase.pbui_Time pbui_time = InterfaceBase.pbui_Time.parseFrom(data);
                 //微秒 转换成毫秒 除以 1000
                 view.get().updateTime(pbui_time.getUsec() / 1000);
                 break;
-            case Constant.BUS_MAIN_LOGO:
-                String filepath = (String) msg.getObjs()[0];
+            }
+            case Constant.BUS_MAIN_LOGO: {
+                String filepath = (String) msg.getObjects()[0];
                 Drawable drawable = Drawable.createFromPath(filepath);
                 view.get().updateLogo(drawable);
                 break;
-            case Constant.BUS_MAIN_BG:
-                String filepath1 = (String) msg.getObjs()[0];
+            }
+            case Constant.BUS_MAIN_BG: {
+                String filepath1 = (String) msg.getObjects()[0];
                 Drawable drawable1 = Drawable.createFromPath(filepath1);
                 view.get().updateBackground(drawable1);
                 break;
-            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_READY_VALUE:
+            }
+            //平台登陆验证返回
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEVALIDATE_VALUE: {
+                if (msg.getMethod() == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_NOTIFY_VALUE) {
+                    byte[] s = (byte[]) msg.getObjects()[0];
+                    InterfaceBase.pbui_Type_DeviceValidate deviceValidate = InterfaceBase.pbui_Type_DeviceValidate.parseFrom(s);
+                    int valflag = deviceValidate.getValflag();
+                    List<Integer> valList = deviceValidate.getValList();
+                    List<Long> user64BitdefList = deviceValidate.getUser64BitdefList();
+                    String binaryString = Integer.toBinaryString(valflag);
+                    LogUtil.i(TAG, "initFailed valflag=" + valflag + "，二进制：" + binaryString + ", valList=" + valList.toString() + ", user64List=" + user64BitdefList.toString());
+                    int count = 0, index;
+                    char[] chars = binaryString.toCharArray();//  1 1101 1111
+                    for (int i = 0; i < chars.length; i++) {
+                        if ((chars[chars.length - 1 - i]) == '1') {
+                            count++;//有效位个数+1
+                            index = count - 1;//有效位当前位于valList的索引（跟i是无关的）
+                            int code = valList.get(index);
+                            LogUtil.d(TAG, "initFailed 有效位：" + i + ",当前有效位的个数：" + count);
+                            switch (i) {
+                                case 0:
+                                    LogUtil.e(TAG, "initFailed 区域服务器ID：" + code);
+                                    break;
+                                case 1:
+                                    LogUtil.e(TAG, "initFailed 设备ID：" + code);
+                                    Values.localDeviceId = code;
+                                    break;
+                                case 2:
+                                    LogUtil.e(TAG, "initFailed 状态码：" + code);
+                                    ToastUtil.errorToast(code);
+                                    break;
+                                case 3:
+                                    LogUtil.e(TAG, "initFailed 到期时间：" + code);
+                                    break;
+                                case 4:
+                                    LogUtil.e(TAG, "initFailed 企业ID：" + code);
+                                    break;
+                                case 5:
+                                    LogUtil.e(TAG, "initFailed 协议版本：" + code);
+                                    break;
+                                case 6:
+                                    LogUtil.e(TAG, "initFailed 注册时自定义的32位整数值：" + code);
+                                    break;
+                                case 7:
+                                    LogUtil.e(TAG, "initFailed 当前在线设备数：" + code);
+                                    break;
+                                case 8:
+                                    LogUtil.e(TAG, "initFailed 最大在线设备数：" + code);
+                                    break;
+                            }
+                        }
+                    }
+                }
+                break;
+            }
+            //平台初始化结果
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_READY_VALUE: {
                 int method = msg.getMethod();
                 if (method == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_NOTIFY_VALUE) {
                     LogUtil.i(TAG, "BusEvent -->" + "平台初始化完毕");
-                    initializationIsOver = true;
+                    Values.initializationIsOver = true;
                     view.get().initialized();
                 } else if (method == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_LOGON_VALUE) {
-                    initializationIsOver = false;
+                    Values.initializationIsOver = false;
                     LogUtil.i(TAG, "BusEvent -->" + "平台初始化失败");
                     ToastUtil.show(R.string.initialization_failed);
                 }
                 break;
-            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEMEETSTATUS_VALUE://界面状态变更通知
-                LogUtil.i(TAG, "BusEvent -->" + "界面状态变更通知");
-                Object[] objs1 = msg.getObjs();
-                int datalen = (int) objs1[1];
-                if (datalen > 0) {
-                    queryInterFaceConfiguration();
-                }
-                break;
-            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEFACESHOW_VALUE://设备会议信息变更通知
+            }
+//            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEMEETSTATUS_VALUE://界面状态变更通知
+//                LogUtil.i(TAG, "BusEvent -->" + "界面状态变更通知");
+//                Object[] objs1 = msg.getObjs();
+//                int datalen = (int) objs1[1];
+//                if (datalen > 0) {
+//                    queryInterFaceConfiguration();
+//                }
+//                break;
+            //设备会议信息变更通知
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEFACESHOW_VALUE: {
                 LogUtil.i(TAG, "BusEvent -->" + "设备会议信息变更通知");
                 queryDevMeetInfo();
                 break;
-            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETINFO_VALUE://会议信息变更通知
+            }
+            //会议信息变更通知
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETINFO_VALUE: {
                 LogUtil.i(TAG, "BusEvent -->" + "会议信息变更通知");
                 queryMeetFromId();
                 break;
-            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEMBER_VALUE://参会人员变更通知
-                byte[] o = (byte[]) msg.getObjs()[0];
+            }
+            //参会人员变更通知
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEMBER_VALUE: {
+                byte[] o = (byte[]) msg.getObjects()[0];
                 InterfaceBase.pbui_MeetNotifyMsg pbui_meetNotifyMsg = InterfaceBase.pbui_MeetNotifyMsg.parseFrom(o);
                 int id = pbui_meetNotifyMsg.getId();
                 int opermethod = pbui_meetNotifyMsg.getOpermethod();
                 LogUtil.i(TAG, "BusEvent -->" + "参会人员变更通知 id= " + id + ", opermethod= " + opermethod);
                 queryAttendPeople();
                 break;
-            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETFACECONFIG_VALUE://界面配置变更通知
+            }
+            //界面配置变更通知
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETFACECONFIG_VALUE: {
                 LogUtil.i(TAG, "BusEvent -->" + "界面配置变更通知");
                 queryInterFaceConfiguration();
                 break;
-            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETSIGN_VALUE://会议签到结果返回
+            }
+            //会议签到结果返回
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETSIGN_VALUE: {
                 if (msg.getMethod() == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_LOGON_VALUE) {
                     //签到密码返回
-                    byte[] datas = (byte[]) msg.getObjs()[0];
+                    byte[] datas = (byte[]) msg.getObjects()[0];
                     InterfaceBase.pbui_Type_MeetDBServerOperError dbServerOperError = InterfaceBase.pbui_Type_MeetDBServerOperError.parseFrom(datas);
                     int type = dbServerOperError.getType();
                     int method1 = dbServerOperError.getMethod();
                     int status = dbServerOperError.getStatus();
                     if (status == InterfaceMacro.Pb_DB_StatusCode.Pb_STATUS_DONE_VALUE) {
                         LogUtil.i(TAG, "BusEvent -->" + "签到成功，进入会议");
+                        ToastUtil.show(R.string.sign_in_successfully);
                         view.get().jump2meet();
                     } else if (status == InterfaceMacro.Pb_DB_StatusCode.Pb_STATUS_PSWFAILED_VALUE) {
                         LogUtil.i(TAG, "BusEvent -->" + "签到密码错误");
@@ -268,16 +339,38 @@ public class MainPresenter extends BasePresenter {
                     }
                 }
                 break;
-            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEOPER_VALUE://设备交互信息
+            }
+            //设备交互信息
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEOPER_VALUE: {
                 if (msg.getMethod() == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_ENTER_VALUE) {
                     LogUtil.i(TAG, "BusEvent -->" + "辅助签到进入会议");
                     view.get().jump2meet();
                 }
                 break;
-            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETSEAT_VALUE://会议排位变更通知
-                LogUtil.d(TAG, "BusEvent -->" + "会议排位变更通知");
-                queryLocalRole();
+            }
+            //会议排位变更通知
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETSEAT_VALUE: {
+                byte[] datas = (byte[]) msg.getObjects()[0];
+                InterfaceBase.pbui_MeetNotifyMsg inform = InterfaceBase.pbui_MeetNotifyMsg.parseFrom(datas);
+                LogUtil.d(TAG, "BusEvent -->" + "会议排位变更通知 id=" + inform.getId() + ",operMethod=" + inform.getOpermethod());
+                if (inform.getId() == localMemberId) {
+                    queryLocalRole();
+                }
                 break;
+            }
+            //管理员登录返回
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_ADMIN_VALUE: {
+                if (msg.getMethod() == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_LOGON_VALUE) {
+                    LogUtil.i(TAG, "BusEvent 管理员登录返回");
+                    byte[] bytes = (byte[]) msg.getObjects()[0];
+                    InterfaceAdmin.pbui_Type_AdminLogonStatus info = InterfaceAdmin.pbui_Type_AdminLogonStatus.parseFrom(bytes);
+                    if (info != null) {
+                        view.get().loginStatus(info);
+                    }
+                }
+                break;
+            }
+            default:break;
         }
     }
 
@@ -299,14 +392,13 @@ public class MainPresenter extends BasePresenter {
     public void queryContextProperty() {
         try {
             InterfaceContext.pbui_MeetContextInfo pbui_meetContextInfo = jni.queryContextProperty(InterfaceMacro.Pb_ContextPropertyID.Pb_MEETCONTEXT_PROPERTY_SELFID_VALUE);
-            if (pbui_meetContextInfo == null) {
-                return;
+            if (pbui_meetContextInfo != null) {
+//                Values.localDeviceId = pbui_meetContextInfo.getPropertyval();
+                LogUtil.d(TAG, "queryContextProperty -->本机的设备ID：" + Values.localDeviceId);
+                setDevName();
+                queryDevMeetInfo();
+                queryInterFaceConfiguration();
             }
-            MyApplication.localDeviceId = pbui_meetContextInfo.getPropertyval();
-            LogUtil.d(TAG, "queryContextProperty -->本机的设备ID：" + MyApplication.localDeviceId);
-            setDevName();
-            queryDevMeetInfo();
-            queryInterFaceConfiguration();
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
@@ -322,6 +414,7 @@ public class MainPresenter extends BasePresenter {
             for (int i = 0; i < pictureList.size(); i++) {
                 InterfaceFaceconfig.pbui_Item_FacePictureItemInfo itemInfo = pictureList.get(i);
                 int faceid = itemInfo.getFaceid();
+                LogUtil.i(TAG, "queryInterFaceConfiguration pictureList faceid=" + faceid);
                 int mediaid = itemInfo.getMediaid();
                 String userStr = "";
                 if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_MAINBG_VALUE) {//主界面背景
@@ -330,17 +423,18 @@ public class MainPresenter extends BasePresenter {
                     userStr = Constant.MAIN_LOGO_PNG_TAG;
                 }
                 if (!TextUtils.isEmpty(userStr)) {
-                    FileUtil.createDir(Constant.configuration_picture_dir);
-                    jni.creationFileDownload(Constant.configuration_picture_dir + userStr + ".png", mediaid, 1, 0, userStr);
+                    FileUtil.createDir(Constant.dir_picture);
+                    jni.creationFileDownload(Constant.dir_picture + userStr + ".png", mediaid, 1, 0, userStr);
                 }
             }
             for (int i = 0; i < onlytextList.size(); i++) {
                 InterfaceFaceconfig.pbui_Item_FaceOnlyTextItemInfo itemInfo = onlytextList.get(i);
                 int faceid = itemInfo.getFaceid();
+                LogUtil.i(TAG, "queryInterFaceConfiguration onlytextList faceid=" + faceid);
                 String text = itemInfo.getText().toStringUtf8();
-                LogUtil.i(TAG, "queryInterFaceConfiguration onlytextList-->" + faceid + ", text= " + text);
                 if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_COLTDTEXT_VALUE) {//公司名称
                     view.get().updateCompany(text);
+                    break;
                 }
 //                else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_MEMBERCOMPANY_VALUE) {//参会人单位
 //                    view.updateUnit(text);
@@ -352,7 +446,7 @@ public class MainPresenter extends BasePresenter {
             for (int i = 0; i < textList.size(); i++) {
                 InterfaceFaceconfig.pbui_Item_FaceTextItemInfo itemInfo = textList.get(i);
                 int faceid = itemInfo.getFaceid();
-                LogUtil.i(TAG, "queryInterFaceConfiguration -->" + "faceid= " + faceid);
+                LogUtil.i(TAG, "queryInterFaceConfiguration textList faceid=" + faceid);
                 if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_MEETNAME_VALUE) {//会议名称
                     view.get().updateTv(R.id.meet_tv_main, itemInfo);
                 } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_MEMBERCOMPANY_VALUE) {//参会人单位
@@ -375,7 +469,7 @@ public class MainPresenter extends BasePresenter {
 //                    view.updateEnterView(R.id.slideview_main, itemInfo);
                     view.get().updateBtn(R.id.enter_btn_main, itemInfo);
                 } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACE_manage_GEO_VALUE) {//进入后台 text
-                    view.get().updateBtn(R.id.set_btn_main, itemInfo);
+//                    view.get().updateBtn(R.id.set_btn_main, itemInfo);
                 } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACE_topstatus_GEO_VALUE) {//会议状态
                     view.get().updateTv(R.id.meet_state, itemInfo);
                 } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACE_remark_GEO_VALUE) {//备注信息
@@ -395,33 +489,48 @@ public class MainPresenter extends BasePresenter {
         try {
             InterfaceDevice.pbui_Type_DeviceFaceShowDetail devMeetInfo = jni.queryDeviceMeetInfo();
             if (devMeetInfo == null) return;
+//            Values.localDeviceId = devMeetInfo.getDeviceid();
+            Values.localMeetingId = devMeetInfo.getMeetingid();
+            Values.localMemberId = devMeetInfo.getMemberid();
+            Values.localRoomId = devMeetInfo.getRoomid();
+            Values.localSigninType = devMeetInfo.getSigninType();
+            Values.localMeetingName = devMeetInfo.getMeetingname().toStringUtf8();
+            Values.localMemberName = devMeetInfo.getMembername().toStringUtf8();
+
             view.get().updateUI(devMeetInfo);
+
             //缓存参会人信息(不然收不到参会人变更通知)
             jni.cacheData(InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEMBER_VALUE);
             //缓存会议信息
             jni.cacheData(InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETINFO_VALUE);
             //缓存排位信息(不然收不到排位变更通知)
             jni.cacheData(InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETSEAT_VALUE);
-            //查询参会人单位
-            InterfaceMember.pbui_Type_MeetMembeProperty info = jni.queryMemberProperty(InterfaceMacro.Pb_MemberPropertyID.Pb_MEETMEMBER_PROPERTY_COMPANY_VALUE, 0);
-            if (info != null) {
-                String unit = info.getPropertytext().toStringUtf8();
-                LogUtil.d(TAG, "queryDevMeetInfo -->" + "是否是单位：" + unit);
-                view.get().updateUnit(unit);
+
+            if (Values.localMeetingId != 0) {
+                queryMeetingState();
             }
-            //查询备注
-            InterfaceMember.pbui_Type_MeetMembeProperty info1 = jni.queryMemberProperty(InterfaceMacro.Pb_MemberPropertyID.Pb_MEETMEMBER_PROPERTY_COMMENT_VALUE, 0);
-            if (info1 != null) {
-                view.get().updateNote(info1.getPropertytext().toStringUtf8());
+            if (Values.localMemberId != 0) {
+                //查询参会人单位
+                InterfaceMember.pbui_Type_MeetMembeProperty info = jni.queryMemberProperty(InterfaceMacro.Pb_MemberPropertyID.Pb_MEETMEMBER_PROPERTY_COMPANY_VALUE, 0);
+                if (info != null) {
+                    String unit = info.getPropertytext().toStringUtf8();
+                    LogUtil.d(TAG, "queryDevMeetInfo -->" + "是否是单位：" + unit);
+                    view.get().updateUnit(unit);
+                }
+                //查询备注
+                InterfaceMember.pbui_Type_MeetMembeProperty info1 = jni.queryMemberProperty(InterfaceMacro.Pb_MemberPropertyID.Pb_MEETMEMBER_PROPERTY_COMMENT_VALUE, 0);
+                if (info1 != null) {
+                    view.get().updateNote(info1.getPropertytext().toStringUtf8());
+                }
+                queryLocalRole();
             }
-            queryLocalRole();
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
     }
 
-    public void queryMeetingState(int meetingid) {
-        byte[] bytes = jni.queryMeetingProperty(InterfaceMacro.Pb_MeetPropertyID.Pb_MEET_PROPERTY_STATUS_VALUE, meetingid, 0);
+    public void queryMeetingState() {
+        byte[] bytes = jni.queryMeetingProperty(InterfaceMacro.Pb_MeetPropertyID.Pb_MEET_PROPERTY_STATUS_VALUE, Values.localMeetingId, 0);
         if (bytes == null) {
             return;
         }
@@ -435,17 +544,17 @@ public class MainPresenter extends BasePresenter {
         }
     }
 
-    public void queryLocalRole() {
+    void queryLocalRole() {
         try {
             InterfaceBase.pbui_CommonInt32uProperty property = jni.queryMeetRankingProperty(0, InterfaceMacro.Pb_MeetSeatPropertyID.Pb_MEETSEAT_PROPERTY_ROLEBYMEMBERID.getNumber());
             if (property == null) return;
             int propertyval = property.getPropertyval();
-            MyApplication.localRole = propertyval;
+            Values.localRole = propertyval;
             if (propertyval == InterfaceMacro.Pb_MeetMemberRole.Pb_role_member_compere.getNumber()
                     || propertyval == InterfaceMacro.Pb_MeetMemberRole.Pb_role_member_secretary.getNumber()
                     || propertyval == InterfaceMacro.Pb_MeetMemberRole.Pb_role_admin.getNumber()) {
                 //当前是主持人或秘书或管理员，设置拥有所有权限
-                MyApplication.hasAllPermissions = true;
+                Values.hasAllPermissions = true;
                 if (propertyval == InterfaceMacro.Pb_MeetMemberRole.Pb_role_member_compere.getNumber()) {
                     view.get().updateMemberRole(cxt.get().getString(R.string.member_role_host));
                 } else if (propertyval == InterfaceMacro.Pb_MeetMemberRole.Pb_role_member_secretary.getNumber()) {
@@ -454,7 +563,7 @@ public class MainPresenter extends BasePresenter {
                     view.get().updateMemberRole(cxt.get().getString(R.string.member_role_admin));
                 }
             } else {
-                MyApplication.hasAllPermissions = false;
+                Values.hasAllPermissions = false;
                 view.get().updateMemberRole(cxt.get().getString(R.string.member_role_ordinary));
             }
         } catch (InvalidProtocolBufferException e) {
@@ -463,31 +572,31 @@ public class MainPresenter extends BasePresenter {
     }
 
     private void setDevName() throws InvalidProtocolBufferException {
-        if (MyApplication.localDeviceId == 0) return;
-        InterfaceDevice.pbui_Type_DeviceDetailInfo devInfoById = jni.queryDevInfoById(MyApplication.localDeviceId);
+        if (Values.localDeviceId == 0) return;
+        InterfaceDevice.pbui_Type_DeviceDetailInfo devInfoById = jni.queryDevInfoById(Values.localDeviceId);
         if (devInfoById == null) return;
         InterfaceDevice.pbui_Item_DeviceDetailInfo info = devInfoById.getPdevList().get(0);
         view.get().updateSeatName(info.getDevname().toStringUtf8());
     }
 
-    public void bindMeeting(int meetingid, int roomId) {
+    void bindMeeting(int meetingid, int roomId) {
         LogUtil.d(TAG, "bindMeeting -->" + "会议ID：" + meetingid);
-        MyApplication.localMeetingId = meetingid;
+        Values.localMeetingId = meetingid;
         jni.setInterfaceState(InterfaceMacro.Pb_ContextPropertyID.Pb_MEETCONTEXT_PROPERTY_CURMEETINGID_VALUE, meetingid);
         queryMeetFromId();
     }
 
     private void queryMeetFromId() {
         try {
-            InterfaceMeet.pbui_Type_MeetMeetInfo pbui_type_meetMeetInfo = jni.queryMeetFromId(MyApplication.localMeetingId);
+            InterfaceMeet.pbui_Type_MeetMeetInfo pbui_type_meetMeetInfo = jni.queryMeetFromId(Values.localMeetingId);
             if (pbui_type_meetMeetInfo == null) return;
             List<InterfaceMeet.pbui_Item_MeetMeetInfo> itemList = pbui_type_meetMeetInfo.getItemList();
             InterfaceMeet.pbui_Item_MeetMeetInfo info = itemList.get(0);
             LogUtil.d(TAG, "MainActivity.fun_queryMeetFromId :  查询指定ID的会议 --> " + info.getId());
             int roomId = info.getRoomId();
-            MyApplication.localRoomId = roomId;
-            MyApplication.localRoomName = info.getRoomname().toStringUtf8();
-            jni.addPlaceDevice(roomId, MyApplication.localDeviceId);
+            Values.localRoomId = roomId;
+            Values.localRoomName = info.getRoomname().toStringUtf8();
+            jni.addPlaceDevice(roomId, Values.localDeviceId);
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
@@ -512,12 +621,13 @@ public class MainPresenter extends BasePresenter {
             List<Integer> ids = new ArrayList<>();
             List<InterfaceRoom.pbui_Item_MeetSeatDetailInfo> seatDetailInfos = seatDetailInfo.getItemList();
             for (InterfaceRoom.pbui_Item_MeetSeatDetailInfo info : seatDetailInfos) {
-                LogUtil.i(TAG, "queryMeetRanking: 设备id：" + info.getSeatid() + ", 参会人员id：" + info.getNameId() + ", 人员身份：" + info.getRole()
-                        + "，本机设备id和人员id：" + MyApplication.localDeviceId + "," + MyApplication.localMemberId);
+//                LogUtil.i(TAG, "queryMeetRanking: 设备id：" + info.getSeatid() + ", 参会人员id：" + info.getNameId() + ", 人员身份：" + info.getRole()
+//                        + "，本机设备id和人员id：" + Values.localDeviceId + "," + Values.localMemberId);
                 if (info.getNameId() != 0) {//说明已经绑定了参会人
-                    if (info.getSeatid() == MyApplication.localDeviceId) {
+                    if (info.getSeatid() == Values.localDeviceId) {
                         //本机已经绑定了参会人了
-                        LogUtil.d(TAG, "queryMeetRanking -->" + "本机已经绑定了参会人了" + MyApplication.localDeviceId);
+                        LogUtil.d(TAG, "queryMeetRanking -->" + "本机已经绑定了参会人了 参会人id=" + info.getNameId() + ", seatId=" + info.getSeatid()
+                                + ",本机设备id=" + Values.localDeviceId + ",本机名称=" + Values.localDeviceName);
                         queryDevMeetInfo();
                         return;
                     }
@@ -538,7 +648,7 @@ public class MainPresenter extends BasePresenter {
     }
 
     public void joinMeeting(int memberId) {
-        jni.modifMeetRanking(memberId, InterfaceMacro.Pb_MeetMemberRole.Pb_role_member_normal_VALUE, MyApplication.localDeviceId);
+        jni.modifMeetRanking(memberId, InterfaceMacro.Pb_MeetMemberRole.Pb_role_member_normal_VALUE, Values.localDeviceId);
     }
 
     public void addAttendPeople(InterfaceMember.pbui_Item_MemberDetailInfo memberDetailInfo) {
@@ -547,5 +657,9 @@ public class MainPresenter extends BasePresenter {
 
     public void sendSign(int memberid, int signType, String pwd, ByteString picdata) {
         jni.sendSign(memberid, signType, pwd, picdata);
+    }
+
+    public void login(String user, String pwd, int isAscill, int loginMode) {
+        jni.login(user, pwd, isAscill, loginMode);
     }
 }

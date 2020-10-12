@@ -2,6 +2,7 @@ package xlk.paperless.standard.view.main;
 
 import android.graphics.drawable.Drawable;
 
+import com.mogujie.tt.protobuf.InterfaceAdmin;
 import com.mogujie.tt.protobuf.InterfaceDevice;
 import com.mogujie.tt.protobuf.InterfaceFaceconfig;
 import com.mogujie.tt.protobuf.InterfaceMember;
@@ -73,4 +74,6 @@ public interface IMain {
     void updateNote(String noteinfo);
 
     void checkNetWork();
+
+    void loginStatus(InterfaceAdmin.pbui_Type_AdminLogonStatus info);
 }

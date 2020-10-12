@@ -29,8 +29,8 @@ import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.util.LogUtil;
 
 import static android.media.MediaCodecList.ALL_CODECS;
-import static xlk.paperless.standard.view.MyApplication.camera_height;
-import static xlk.paperless.standard.view.MyApplication.camera_width;
+import static xlk.paperless.standard.data.Values.camera_height;
+import static xlk.paperless.standard.data.Values.camera_width;
 
 public class CameraActivity extends Activity implements SurfaceHolder.Callback,
         PreviewCallback {

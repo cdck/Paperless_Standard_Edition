@@ -17,7 +17,6 @@ import android.support.v4.content.FileProvider;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,6 +29,7 @@ import xlk.paperless.standard.R;
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.data.JniHandler;
+import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.data.WpsModel;
 
 /**
@@ -127,11 +127,11 @@ public class FileUtil {
             return false;
         }
         //获取文件的扩展名  mp3/mp4...
-        String fileEnd = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()).toLowerCase();
+        String fileEnd = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
         return fileEnd.equals("mp4")
                 || fileEnd.equals("3gp")
 //                || fileEnd.equals("wav")
-//                || fileEnd.equals("mp3")
+                || fileEnd.equals("mp3")
 //                || fileEnd.equals("wmv")
 //                || fileEnd.equals("ts")
                 || fileEnd.equals("rmvb")
@@ -216,8 +216,17 @@ public class FileUtil {
     public static void openFile(Context context, String dir, String filename, int mediaid) {
         createDir(dir);
         String pathname = dir + filename;
-        LogUtil.d(TAG, "openFile -->" + "下载将要打开的文件 pathname= " + pathname);
-        JniHandler.getInstance().creationFileDownload(pathname, mediaid, 1, 0, Constant.SHOULD_OPEN_FILE_KEY);
+        File file = new File(pathname);
+        if (!file.exists()) {
+            LogUtil.d(TAG, "openFile -->" + "下载将要打开的文件 pathname= " + pathname);
+            JniHandler.getInstance().creationFileDownload(pathname, mediaid, 1, 0, Constant.download_should_open_file);
+        } else {
+            if (Values.downloadingFiles.contains(mediaid)) {
+                ToastUtil.show(R.string.currently_downloading);
+            } else {
+                openFile(context, file);
+            }
+        }
     }
 
     /**
@@ -227,17 +236,17 @@ public class FileUtil {
      */
     public static void openFile(Context context, File file) {
         String filename = file.getName();
-        LogUtil.e(TAG, "openFile :   --> " + filename);
+        LogUtil.e(TAG, "openFile :   --> " + file.getAbsolutePath());
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
         if (FileUtil.isVideoFile(filename)) {
             return;
         } else if (FileUtil.isPictureFile(filename)) {
-            EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_PREVIEW_IMAGE).objs(file.getAbsolutePath()).build());
+            EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_PREVIEW_IMAGE).objects(file.getAbsolutePath()).build());
             return;
         } else if (FileUtil.isDocumentFile(filename)) {
             //通知注册WPS广播
-            EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_WPS_RECEIVER).objs(true).build());
+            EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_WPS_RECEIVER).objects(true).build());
             /** **** **  如果是文档类文件并且不是pdf文件，设置只能使用WPS软件打开  ** **** **/
             Bundle bundle = new Bundle();
             bundle.putString(WpsModel.OPEN_MODE, WpsModel.OpenMode.NORMAL); // 打开模式

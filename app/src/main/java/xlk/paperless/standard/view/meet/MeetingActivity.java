@@ -10,7 +10,6 @@ import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,11 +30,12 @@ import q.rorbin.badgeview.Badge;
 import q.rorbin.badgeview.QBadgeView;
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.data.Constant;
+import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.data.bean.ChatMessage;
 import xlk.paperless.standard.util.DateUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.ToastUtil;
-import xlk.paperless.standard.view.BaseActivity;
+import xlk.paperless.standard.base.BaseActivity;
 import xlk.paperless.standard.view.MyApplication;
 import xlk.paperless.standard.view.draw.DrawActivity;
 import xlk.paperless.standard.view.fragment.agenda.MeetAgendaFragment;
@@ -53,12 +53,10 @@ import xlk.paperless.standard.view.fragment.signin.MeetSigninFragment;
 import xlk.paperless.standard.view.fragment.web.MeetWebFragment;
 import xlk.paperless.standard.view.main.MainActivity;
 
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static xlk.paperless.standard.data.Constant.fun_code_agenda_bulletin;
 import static xlk.paperless.standard.data.Constant.fun_code_meet_file;
 import static xlk.paperless.standard.data.Constant.fun_code_message;
 import static xlk.paperless.standard.data.Constant.fun_code_postil_file;
-import static xlk.paperless.standard.data.Constant.fun_code_shared_file;
 import static xlk.paperless.standard.data.Constant.fun_code_signinresult;
 import static xlk.paperless.standard.data.Constant.fun_code_video_stream;
 import static xlk.paperless.standard.data.Constant.fun_code_webbrowser;
@@ -107,30 +105,27 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
     public static boolean chatIsShowing = false;
     public static List<ChatMessage> chatMessages = new ArrayList<>();
     public static Badge mBadge;
-    private FragmentTransaction ft;
     List<LinearLayout> funViews = new ArrayList<>();
     private PopupWindow funPop;
-    private int funWidth;
-    private int funHeight;
+    private int funWidth, funHeight;//功能模块的宽高，用于决定PopupWindow的宽高
     private int firstFunCode;//保存第一个功能的功能码
     private VoteManageFragment voteManageFragment;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meeting);
         initView();
-        ft = getSupportFragmentManager().beginTransaction();
         presenter = new MeetingPresenter(this, this);
-        presenter.register();
         meet_frame_layout.post(() -> {
             frameLayoutWidth = meet_frame_layout.getWidth();
             frameLayoutHeight = meet_frame_layout.getHeight();
+            LogUtil.i(TAG, "onCreate FragmentLayout大小=" + frameLayoutWidth + "," + frameLayoutHeight);
         });
         meet_fun_all_ll.post(() -> {
             funWidth = meet_fun_all_ll.getWidth();
             funHeight = meet_fun_all_ll.getHeight();
+            LogUtil.i(TAG, "onCreate 功能菜单布局大小=" + frameLayoutWidth + "," + frameLayoutHeight);
         });
         presenter.initial();
         presenter.initVideoRes();
@@ -182,16 +177,21 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        presenter.unregister();
+        presenter.onDestroy();
         ((MyApplication) getApplication()).openFabService(false);
     }
 
     @Override
     public void jump2main() {
-        if (isFinishing()) return;
+        LogUtil.d(TAG, "jump2main -->isFinishing = " + isFinishing());
+        if (isFinishing()) {
+            return;
+        }
         presenter.releaseVideoRes();
         finish();
-        startActivity(new Intent(this, MainActivity.class).addFlags(FLAG_ACTIVITY_NEW_TASK));
+        //.addFlags(FLAG_ACTIVITY_NEW_TASK)导致的问题：如果期间返回到MainActivity后，再进入MeetingActivity，
+        // 点击最小化或者Home键回到桌面，再次启动的会进入到MainActivity
+        startActivity(new Intent(this, MainActivity.class));
     }
 
     @Override
@@ -200,17 +200,24 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
             case R.id.meet_chat:
                 setDefaultFun(4);
                 break;
-            case R.id.meet_min:
+            case R.id.meet_min://最小化，回到桌面
+                //方法一：
+//                moveTaskToBack(true);
+                /*
+                方法二：需要在AndroidManifest中的当前Activity添加
+                    android:windowSoftInputMode="stateHidden|adjustResize"
+                    android:configChanges="orientation|screenSize|keyboardHidden"
+                 */
                 Intent intent = new Intent(Intent.ACTION_MAIN);
                 intent.addCategory(Intent.CATEGORY_HOME);
-                intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 break;
             case R.id.meet_close:
                 exit();
                 break;
             case R.id.meet_others:
-                if (MyApplication.hasAllPermissions) {
+                if (Values.hasAllPermissions) {
                     showOtherFunPop();
                 } else {
                     ToastUtil.show(getString(R.string.err_NoPermission));
@@ -229,8 +236,8 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
         // true:设置触摸外面时消失
         funPop.setOutsideTouchable(true);
         funPop.setFocusable(true);
-        funPop.setAnimationStyle(R.style.pop_lr_animation);
-        funPop.showAsDropDown(meet_fun_all_ll, -funWidth, 0);
+//        funPop.setAnimationStyle(R.style.pop_rl_animation);
+        funPop.showAsDropDown(meet_fun_all_ll, funWidth, 0);
         inflate.findViewById(R.id.pop_fun_terminal_control).setOnClickListener(v -> {
             setDefaultFun(Constant.fun_code_terminal);
             funPop.dismiss();
@@ -296,8 +303,8 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
         ConstraintSet set = new ConstraintSet();
         set.clone(meet_root_id);
         //设置控件的大小
-        float width = (bx - lx) / 100 * MyApplication.screen_width;
-        float height = (by - ly) / 100 * MyApplication.screen_height;
+        float width = (bx - lx) / 100 * Values.screen_width;
+        float height = (by - ly) / 100 * Values.screen_height;
         set.constrainWidth(resid, (int) width);
         set.constrainHeight(resid, (int) height);
         LogUtil.d(TAG, "updateLogoSize: 控件大小 当前控件宽= " + width + ", 当前控件高= " + height);
@@ -326,7 +333,7 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
 
     @Override
     public void updateBg(Drawable drawable) {
-        meet_root_id.setBackground(drawable);
+//        meet_root_id.setBackground(drawable);
     }
 
     @Override
@@ -342,7 +349,7 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
 
     @Override
     public void updateMemberRole(String roleStr) {
-        meet_member.setText(roleStr + MyApplication.localMemberName);
+        meet_member.setText(roleStr + Values.localMemberName);
     }
 
     @Override
@@ -386,26 +393,24 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
                 saveFunCode = funcode;
             }
         }
+        //这里主要判断不是第一次进入时之前的功能模块是否还在
         boolean has = false;
         for (int i = 0; i < functions.size(); i++) {
             int funcode = functions.get(i).getFuncode();
+            if (i == 0) {
+                firstFunCode = funcode;
+            }
+            if (i == 1 && firstFunCode == Constant.fun_code_whiteboard) {//不保存电子白板的功能码
+                firstFunCode = funcode;
+            }
             if (saveFunCode == funcode) {
                 has = true;
-                break;
             }
         }
         LogUtil.d(TAG, "updateFunction :  当前功能码 --> " + saveFunCode + ", has = " + has);
         for (int index = 0; index < functions.size(); index++) {
             InterfaceMeetfunction.pbui_Item_MeetFunConfigDetailInfo info = functions.get(index);
             int funcode = info.getFuncode();
-            if (funcode == fun_code_shared_file || funcode == Constant.fun_code_voteresult)
-                continue;
-            if (index == 0) {
-                firstFunCode = funcode;
-            }
-            if (index == 1 && firstFunCode == 6) {//不保存电子白板的功能码
-                firstFunCode = funcode;
-            }
             LinearLayout.LayoutParams ivParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             LinearLayout.LayoutParams tvParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             tvParams.setMarginStart(5);
@@ -436,10 +441,10 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
             funViews.add(ll);
             meet_fun_ll.addView(ll);
         }
-        if (has) {
+        if (has) {//之前保存的功能还在
             setDefaultFun(saveFunCode);
-        } else {
-            hideFragment(ft);
+        } else {//之前保存的功能不存在了就展示第一个功能模块
+            setDefaultFun(firstFunCode);
         }
     }
 
@@ -453,9 +458,6 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
             case fun_code_meet_file:
                 funName = getString(R.string.meeting_data);
                 iv.setImageDrawable(getDrawable(R.drawable.icon_fun_data));
-                break;
-            case fun_code_shared_file:
-                funName = getString(R.string.meeting_shared_file);
                 break;
             case fun_code_postil_file:
                 funName = getString(R.string.meeting_annotation_view);
@@ -530,7 +532,7 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
         if (funcode != fun_code_whiteboard) {
             saveFunCode = funcode;
         }
-        ft = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         hideFragment(ft);
         switch (funcode) {
             case fun_code_agenda_bulletin://会议议程

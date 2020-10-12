@@ -27,6 +27,8 @@
         android:layout_marginTop="@dimen/dp_1"
         android:layout_marginBottom="@dimen/dp_1"
         android:layout_weight="1"
+        android:lines="2"
+        android:ellipsize="end"
         android:background="@color/white"
         android:gravity="center"
         tools:text="@string/name" />

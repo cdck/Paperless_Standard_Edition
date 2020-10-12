@@ -1,5 +1,7 @@
 package xlk.paperless.standard.view.video;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -11,39 +13,40 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
+import com.mogujie.tt.protobuf.InterfaceMacro;
 import org.greenrobot.eventbus.EventBus;
-
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.adapter.WmProjectorAdapter;
 import xlk.paperless.standard.adapter.WmScreenMemberAdapter;
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
-import xlk.paperless.standard.service.BackstageService;
+import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.service.FabService;
 import xlk.paperless.standard.ui.video.MyGLSurfaceView;
 import xlk.paperless.standard.ui.video.WlOnGlSurfaceViewOncreateListener;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.PopUtil;
 import xlk.paperless.standard.util.ToastUtil;
-import xlk.paperless.standard.view.BaseActivity;
-import xlk.paperless.standard.view.MyApplication;
+import xlk.paperless.standard.base.BaseActivity;
 import xlk.paperless.standard.view.draw.DrawActivity;
 
-import static xlk.paperless.standard.service.BackstageService.haveNewPlayInform;
+import static xlk.paperless.standard.data.Values.haveNewPlayInform;
+import static xlk.paperless.standard.data.Values.isMandatoryPlaying;
 import static xlk.paperless.standard.view.draw.DrawActivity.isDrawing;
 
-public class VideoActivity extends BaseActivity implements IVideo {
+public class VideoActivity extends BaseActivity implements IVideo, WlOnGlSurfaceViewOncreateListener {
 
     private final String TAG = "VideoActivity-->";
     private ConstraintLayout video_root_layout;
@@ -51,49 +54,67 @@ public class VideoActivity extends BaseActivity implements IVideo {
     private VideoPresenter presenter;
     private PopupWindow popView;
     private SeekBar seekBar;
-    private TextView pop_video_time;
-    private int lastPer;
-    private String lastCurrentTime;
-    private String lastTotalTime;
+    private TextView pop_video_time, pop_video_current_time;
     private WmScreenMemberAdapter memberAdapter;
     private WmProjectorAdapter projectorAdapter;
     private PopupWindow popScreen;
     private VideoActivity cxt;
+    private LinearLayout pop_video_schedule;
+    private RelativeLayout play_mp3_view;
+    private ImageView opticalDisk, plectrum;
+    private TextView video_top_title;
+    private ObjectAnimator opticalDiskAnimator;
+    private ObjectAnimator plectrumAnimator;
+    private int playAction;
+    private int mStatus = -1;
+    private int lastPer;
+    private String lastSec;
+    private String lastTotal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
-        BackstageService.isVideoPlaying = true;
         cxt = this;
         initView();
-        if (BackstageService.isMandatoryPlaying) {
-            setCanNotExit();
-        }
         presenter = new VideoPresenter(this, this);
         presenter.queryMember();
         initAdapter();
-        video_view.setOnGlSurfaceViewOncreateListener(new WlOnGlSurfaceViewOncreateListener() {
-            @Override
-            public void onGlSurfaceViewOncreate(Surface surface) {
-                presenter.setSurface(surface);
-                presenter.register();
-            }
+        showVideoOrMusicUI(getIntent());
+    }
 
-            @Override
-            public void onCutVideoImg(Bitmap bitmap) {
-                LogUtil.i(TAG, "onCutVideoImg -->" + "截图成功");
-                if (bitmap != null) {
-                    FabService.screenShotBitmap = bitmap;
-                    if (isDrawing) {
-                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_SCREEN_SHOT).build());
-                    } else {
-                        Intent intent = new Intent(cxt, DrawActivity.class);
-                        startActivity(intent);
-                    }
-                }
+    private void showVideoOrMusicUI(Intent intent) {
+        Values.isVideoPlaying = true;
+        if (isMandatoryPlaying) {
+            setCanNotExit();
+        }
+        playAction = intent.getIntExtra(Constant.extra_video_action, -1);
+        int subtype = intent.getIntExtra(Constant.extra_video_subtype, -1);
+        int deivceid = intent.getIntExtra(Constant.extra_video_device_id, -1);
+        if (subtype == Constant.MEDIA_FILE_TYPE_MP3) {
+            //如果当前播放的是mp3文件，则只显示MP3控件
+            play_mp3_view.setVisibility(View.VISIBLE);
+            video_view.setVisibility(View.GONE);
+            presenter.releasePlay();
+        } else {
+            play_mp3_view.setVisibility(View.GONE);
+            video_view.setVisibility(View.VISIBLE);
+            video_view.setOnGlSurfaceViewOncreateListener(this);
+            if (playAction == InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_STREAMPLAY_VALUE) {
+                String devName = presenter.queryDevName(deivceid);
+                LogUtil.i(TAG, "showVideoOrMusicUI devName=" + devName);
+                video_top_title.setText(devName);
             }
-        });
+        }
+        if (popView != null && popView.isShowing()) {
+            pop_video_schedule.setVisibility(playAction == InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_STREAMPLAY_VALUE ? View.GONE : View.VISIBLE);
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        showVideoOrMusicUI(intent);
     }
 
     private void initAdapter() {
@@ -118,7 +139,7 @@ public class VideoActivity extends BaseActivity implements IVideo {
         if (popView != null && popView.isShowing()) {
             popView.dismiss();
         }
-        video_view.setClickable(false);
+        video_root_layout.setClickable(false);
     }
 
     @Override
@@ -134,24 +155,31 @@ public class VideoActivity extends BaseActivity implements IVideo {
 
     @Override
     public void updateProgressUi(int per, String currentTime, String totalTime) {
-        if (seekBar != null && pop_video_time != null) {
+        if (seekBar != null && pop_video_time != null && pop_video_current_time != null) {
             lastPer = per;
-            lastCurrentTime = currentTime;
-            lastTotalTime = currentTime;
+            lastSec = currentTime;
+            lastTotal = totalTime;
             seekBar.setProgress(per);
-            pop_video_time.setText(currentTime + " / " + totalTime);
+            pop_video_current_time.setText(currentTime);
+            pop_video_time.setText(totalTime);
         }
     }
 
     private void initView() {
         video_root_layout = (ConstraintLayout) findViewById(R.id.video_root_layout);
+        play_mp3_view = (RelativeLayout) findViewById(R.id.play_mp3_view);
+        opticalDisk = (ImageView) findViewById(R.id.opticalDisk);
+        plectrum = (ImageView) findViewById(R.id.plectrum);
+        video_top_title = (TextView) findViewById(R.id.video_top_title);
         video_view = (MyGLSurfaceView) findViewById(R.id.video_view);
-        video_view.setOnClickListener(v -> {
+        video_root_layout.setOnClickListener(v -> {
             if (popView != null && popView.isShowing()) {
+                video_top_title.setVisibility(View.GONE);
                 popView.dismiss();
-            } else {
-                createPop();
+                return;
             }
+            video_top_title.setVisibility(View.VISIBLE);
+            createPop();
         });
     }
 
@@ -166,7 +194,17 @@ public class VideoActivity extends BaseActivity implements IVideo {
         popView.setFocusable(true);
         popView.setAnimationStyle(R.style.pop_Animation);
         popView.showAtLocation(video_root_layout, Gravity.BOTTOM, 0, 0);
+        pop_video_current_time = inflate.findViewById(R.id.pop_video_current_time);
         pop_video_time = inflate.findViewById(R.id.pop_video_time);
+        seekBar = inflate.findViewById(R.id.pop_video_seekBar);
+        pop_video_schedule = inflate.findViewById(R.id.pop_video_schedule);
+        pop_video_schedule.setVisibility(playAction == InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_STREAMPLAY_VALUE ? View.GONE : View.VISIBLE);
+
+        /**  手动设置隐藏PopupWindow时保存的信息  */
+        seekBar.setProgress(lastPer);
+        pop_video_current_time.setText(lastSec);
+        pop_video_time.setText(lastTotal);
+
         inflate.findViewById(R.id.pop_video_play).setOnClickListener(v -> {
             presenter.playOrPause();
         });
@@ -186,7 +224,6 @@ public class VideoActivity extends BaseActivity implements IVideo {
 //            showScreenPop(2);
             presenter.stopPlay();
         });
-        seekBar = inflate.findViewById(R.id.pop_video_seekBar);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -203,12 +240,13 @@ public class VideoActivity extends BaseActivity implements IVideo {
                 presenter.setPlayPlace(seekBar.getProgress());
             }
         });
+        popView.setOnDismissListener(() -> video_top_title.setVisibility(View.GONE));
     }
 
     private void showScreenPop(int type) {
         View inflate = LayoutInflater.from(this).inflate(R.layout.wm_screen_view, null);
-        popScreen = PopUtil.create(inflate, MyApplication.screen_width / 2, MyApplication.screen_height / 2, true, video_view);
-        inflate.findViewById(R.id.wm_screen_mandatory).setVisibility(View.INVISIBLE);
+        popScreen = PopUtil.create(inflate, Values.screen_width / 2, Values.screen_height / 2, true, video_view);
+        CheckBox cb_mandatory = inflate.findViewById(R.id.wm_screen_mandatory);
         TextView title = inflate.findViewById(R.id.wm_screen_title);
         CheckBox cb_attendee = inflate.findViewById(R.id.wm_screen_cb_attendee);
         CheckBox cb_projector = inflate.findViewById(R.id.wm_screen_cb_projector);
@@ -248,14 +286,66 @@ public class VideoActivity extends BaseActivity implements IVideo {
                 ToastUtil.show(R.string.err_target_NotNull);
             } else {
                 if (type == 1) {//发起
-                    presenter.mediaPlayOperate(ids);
+                    int value = cb_mandatory.isChecked() ? InterfaceMacro.Pb_TriggerUsedef.Pb_EXCEC_USERDEF_FLAG_NOCREATEWINOPER_VALUE : 0;
+                    presenter.mediaPlayOperate(ids,value);
                 } else {//结束
                     presenter.stopPlay();
                 }
                 popScreen.dismiss();
             }
         });
+        //默认全选
+        cb_attendee.performClick();
+        cb_projector.performClick();
+    }
 
+    @Override
+    public void updateTopTitle(String title) {
+        video_top_title.setText(title);
+    }
+
+    @Override
+    public void updateAnimator(int status) {
+        if (mStatus == status) return;
+        mStatus = status;
+        LogUtil.i(TAG, "updateAnimator 新的状态：" + mStatus);
+        //0=播放中，1=暂停，2=停止,3=恢复
+        switch (mStatus) {
+            case 0:
+                startAnimator();
+                break;
+            case 1:
+                stopAnimator();
+                break;
+        }
+    }
+
+    private void plectrum(float from, float to, long duration) {
+        plectrumAnimator = ObjectAnimator.ofFloat(plectrum, "rotation", from, to);
+        plectrum.setPivotX(1);
+        plectrum.setPivotY(1);
+        plectrumAnimator.setDuration(duration);
+        plectrumAnimator.start();
+    }
+
+    private void startAnimator() {
+        LogUtil.i(TAG, "startAnimator ");
+        plectrum(0f, 30f, 500);
+        opticalDiskAnimator = ObjectAnimator.ofFloat(opticalDisk, "rotation", 0f, 360f);
+        opticalDiskAnimator.setDuration(3000);
+        opticalDiskAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        opticalDiskAnimator.setRepeatMode(ValueAnimator.RESTART);
+        opticalDiskAnimator.setInterpolator(new LinearInterpolator());
+        opticalDiskAnimator.start();
+    }
+
+    private void stopAnimator() {
+        LogUtil.i(TAG, "stopAnimator ");
+        if (opticalDiskAnimator != null) {
+            opticalDiskAnimator.cancel();
+            opticalDiskAnimator = null;
+        }
+        plectrum(30f, 0f, 500L);
     }
 
     @Override
@@ -279,7 +369,7 @@ public class VideoActivity extends BaseActivity implements IVideo {
 
     @Override
     public void onBackPressed() {
-        if (!BackstageService.isMandatoryPlaying) {
+        if (!isMandatoryPlaying) {
             super.onBackPressed();
         }
     }
@@ -290,11 +380,30 @@ public class VideoActivity extends BaseActivity implements IVideo {
             popView.dismiss();
         }
         super.onDestroy();
-        BackstageService.isVideoPlaying = false;
-        BackstageService.isMandatoryPlaying = false;
-        presenter.unregister();
+        Values.isVideoPlaying = false;
+        isMandatoryPlaying = false;
+        presenter.onDestroy();
         presenter.stopPlay();
         presenter.releaseMediaRes();
+        presenter.releasePlay();
     }
 
+    @Override
+    public void onGlSurfaceViewOncreate(Surface surface) {
+        presenter.setSurface(surface);
+    }
+
+    @Override
+    public void onCutVideoImg(Bitmap bitmap) {
+        LogUtil.i(TAG, "onCutVideoImg -->" + "截图成功");
+        if (bitmap != null) {
+            FabService.screenShotBitmap = bitmap;
+            if (isDrawing) {
+                EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_SCREEN_SHOT).build());
+            } else {
+                Intent intent = new Intent(cxt, DrawActivity.class);
+                startActivity(intent);
+            }
+        }
+    }
 }

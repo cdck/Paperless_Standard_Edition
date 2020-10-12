@@ -1,78 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/video_bottom"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/video_pop_bg"
+    android:orientation="vertical">
 
-    <SeekBar
-        android:id="@+id/pop_video_seekBar"
+    <LinearLayout
+        android:id="@+id/pop_video_schedule"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_8"
-        android:layout_marginTop="@dimen/dp_8"
-        android:layout_marginEnd="@dimen/dp_8"
-        android:thumb="@drawable/shape_circle_red"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/pop_video_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:textSize="@dimen/sp_12"
-        app:layout_constraintBaseline_toBaselineOf="@+id/pop_video_play"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="00:00:00 / 00:00:00" />
+        <TextView
+            android:id="@+id/pop_video_current_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/video_time"
+            tools:text="00:00:00" />
 
-    <Button
-        android:id="@+id/pop_video_play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_8"
-        android:layout_marginEnd="@dimen/dp_8"
-        android:layout_marginBottom="@dimen/dp_8"
-        android:text="@string/play_pause"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/pop_video_stop"
-        app:layout_constraintTop_toBottomOf="@+id/pop_video_seekBar" />
+        <SeekBar
+            android:id="@+id/pop_video_seekBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:layout_weight="1"
+            android:thumb="@drawable/shape_circle_red" />
 
-    <Button
-        android:id="@+id/pop_video_stop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/dp_8"
-        android:text="@string/stop"
-        app:layout_constraintBaseline_toBaselineOf="@+id/pop_video_play"
-        app:layout_constraintEnd_toStartOf="@+id/pop_video_screen_shot" />
+        <TextView
+            android:id="@+id/pop_video_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/video_time"
+            tools:text="00:00:00" />
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/pop_video_screen_shot"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/dp_8"
-        android:text="@string/screen_shot"
-        app:layout_constraintBaseline_toBaselineOf="@+id/pop_video_play"
-        app:layout_constraintEnd_toStartOf="@+id/pop_video_launch_screen" />
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/dp_10"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/pop_video_launch_screen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/dp_8"
-        android:text="@string/launch_screen"
-        app:layout_constraintBaseline_toBaselineOf="@+id/pop_video_play"
-        app:layout_constraintEnd_toStartOf="@+id/pop_video_stop_screen" />
+        <Button
+            android:id="@+id/pop_video_play"
+            android:background="@drawable/shape_btn_pressed"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_35"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:layout_weight="1"
+            android:text="@string/play_pause" />
 
-    <Button
-        android:id="@+id/pop_video_stop_screen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:text="@string/stop_screen"
-        app:layout_constraintBaseline_toBaselineOf="@+id/pop_video_play"
-        app:layout_constraintEnd_toEndOf="parent" />
-</android.support.constraint.ConstraintLayout>
+        <Button
+            android:id="@+id/pop_video_stop"
+            android:background="@drawable/shape_btn_pressed"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_35"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:layout_weight="1"
+            android:text="@string/stop" />
+
+        <Button
+            android:id="@+id/pop_video_screen_shot"
+            android:background="@drawable/shape_btn_pressed"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_35"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:layout_weight="1"
+            android:text="@string/screen_shot" />
+
+        <Button
+            android:id="@+id/pop_video_launch_screen"
+            android:background="@drawable/shape_btn_pressed"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_35"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:layout_weight="1"
+            android:text="@string/launch_screen" />
+
+        <Button
+            android:id="@+id/pop_video_stop_screen"
+            android:background="@drawable/shape_btn_pressed"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_35"
+            android:layout_weight="1"
+            android:text="@string/stop_screen" />
+
+    </LinearLayout>
+</LinearLayout>

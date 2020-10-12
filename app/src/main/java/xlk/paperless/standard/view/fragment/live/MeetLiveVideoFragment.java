@@ -10,9 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.mogujie.tt.protobuf.InterfaceMacro;
@@ -29,6 +27,7 @@ import xlk.paperless.standard.adapter.WmProjectorAdapter;
 import xlk.paperless.standard.adapter.WmScreenMemberAdapter;
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.JniHandler;
+import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.data.bean.VideoDev;
 import xlk.paperless.standard.ui.CustomBaseViewHolder;
 import xlk.paperless.standard.ui.CustomInterface.ViewClickListener;
@@ -36,8 +35,15 @@ import xlk.paperless.standard.ui.video.CustomVideoView;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.PopUtil;
 import xlk.paperless.standard.util.ToastUtil;
-import xlk.paperless.standard.view.MyApplication;
-import xlk.paperless.standard.view.fragment.BaseFragment;
+import xlk.paperless.standard.base.BaseFragment;
+
+import static xlk.paperless.standard.data.Constant.permission_code_projection;
+import static xlk.paperless.standard.data.Constant.permission_code_screen;
+import static xlk.paperless.standard.data.Constant.resource_0;
+import static xlk.paperless.standard.data.Constant.resource_1;
+import static xlk.paperless.standard.data.Constant.resource_2;
+import static xlk.paperless.standard.data.Constant.resource_3;
+import static xlk.paperless.standard.data.Constant.resource_4;
 
 /**
  * @author xlk
@@ -70,10 +76,10 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
         View inflate = inflater.inflate(R.layout.fragment_live_video, container, false);
         initView(inflate);
         presenter = new MeetLiveVideoPresenter(getContext(), this);
-        ids.add(1);
-        ids.add(2);
-        ids.add(3);
-        ids.add(4);
+        ids.add(resource_1);
+        ids.add(resource_2);
+        ids.add(resource_3);
+        ids.add(resource_4);
         initAdapter();
         f_l_v_v.post(() -> {
             pvWidth = f_l_v_v.getWidth();
@@ -107,7 +113,7 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
     public void onDestroy() {
         super.onDestroy();
         stop();
-        presenter.unregister();
+        presenter.onDestroy();
     }
 
     private void initView(View inflate) {
@@ -163,7 +169,7 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                 break;
             case R.id.f_l_v_stop_pro:
                 if (adapter != null && adapter.getSelected() != null) {
-                    if (Constant.hasPermission(2)) {
+                    if (Constant.hasPermission(permission_code_projection)) {
                         showProPop(false, adapter.getSelected());
                     } else {
                         ToastUtil.show(R.string.err_NoPermission);
@@ -172,7 +178,7 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                 break;
             case R.id.f_l_v_start_pro:
                 if (adapter != null && adapter.getSelected() != null) {
-                    if (Constant.hasPermission(2)) {
+                    if (Constant.hasPermission(permission_code_projection)) {
                         showProPop(true, adapter.getSelected());
                     } else {
                         ToastUtil.show(R.string.err_NoPermission);
@@ -181,7 +187,7 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                 break;
             case R.id.f_l_v_stop_screen:
                 if (adapter != null && adapter.getSelected() != null) {
-                    if (Constant.hasPermission(1)) {
+                    if (Constant.hasPermission(permission_code_screen)) {
                         showScreenPop(false, adapter.getSelected());
                     } else {
                         ToastUtil.show(R.string.err_NoPermission);
@@ -190,7 +196,7 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                 break;
             case R.id.f_l_v_start_screen:
                 if (adapter != null && adapter.getSelected() != null) {
-                    if (Constant.hasPermission(1)) {
+                    if (Constant.hasPermission(permission_code_screen)) {
                         showScreenPop(true, adapter.getSelected());
                     } else {
                         ToastUtil.show(R.string.err_NoPermission);
@@ -202,7 +208,7 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
 
     private void showProPop(boolean isStart, VideoDev videoDev) {
         View inflate = LayoutInflater.from(getContext()).inflate(R.layout.wm_pro_view, null);
-        proPop = PopUtil.create(inflate, MyApplication.screen_width / 2, MyApplication.screen_height / 2, true, f_l_v_stop_pro);
+        proPop = PopUtil.create(inflate, Values.screen_width / 2, Values.screen_height / 2, true, f_l_v_stop_pro);
         CustomBaseViewHolder.ProViewHolder holder = new CustomBaseViewHolder.ProViewHolder(inflate);
         proHolderEvent(holder, isStart, videoDev);
     }
@@ -232,12 +238,12 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
             boolean checked = holder.wm_pro_full.isChecked();
             List<Integer> res = new ArrayList<>();
             if (checked) {
-                res.add(0);
+                res.add(resource_0);
             } else {
-                if (holder.wm_pro_flow1.isChecked()) res.add(1);
-                if (holder.wm_pro_flow2.isChecked()) res.add(2);
-                if (holder.wm_pro_flow3.isChecked()) res.add(3);
-                if (holder.wm_pro_flow4.isChecked()) res.add(4);
+                if (holder.wm_pro_flow1.isChecked()) res.add(resource_1);
+                if (holder.wm_pro_flow2.isChecked()) res.add(resource_2);
+                if (holder.wm_pro_flow3.isChecked()) res.add(resource_3);
+                if (holder.wm_pro_flow4.isChecked()) res.add(resource_4);
             }
             if (res.isEmpty()) {
                 ToastUtil.show(R.string.please_choose_res_first);
@@ -259,7 +265,7 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
 
     private void showScreenPop(boolean isStart, VideoDev videoDev) {
         View inflate = LayoutInflater.from(getContext()).inflate(R.layout.wm_screen_view, null);
-        screenPop = PopUtil.create(inflate, MyApplication.screen_width / 2, MyApplication.screen_height / 2, true, f_l_v_stop_pro);
+        screenPop = PopUtil.create(inflate, Values.screen_width / 2, Values.screen_height / 2, true, f_l_v_stop_pro);
         CustomBaseViewHolder.ScreenViewHolder holder = new CustomBaseViewHolder.ScreenViewHolder(inflate);
         holderEvent(holder, isStart, videoDev);
     }
@@ -304,7 +310,7 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                 ToastUtil.show(R.string.err_target_NotNull);
             } else {
                 List<Integer> temps = new ArrayList<>();
-                temps.add(0);
+                temps.add(resource_0);
                 int deviceid = videoDev.getVideoDetailInfo().getDeviceid();
                 int subid = videoDev.getVideoDetailInfo().getSubid();
                 if (isStart) {//发起同屏
@@ -365,7 +371,7 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
     @Override
     public void click(int res) {
         switch (res) {
-            case 1:
+            case resource_1:
                 f_l_v_v.setSelectResId(res);
                 if (System.currentTimeMillis() - oneTime < 500) {
                     f_l_v_v.zoom(res);
@@ -373,7 +379,7 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                     oneTime = System.currentTimeMillis();
                 }
                 break;
-            case 2:
+            case resource_2:
                 f_l_v_v.setSelectResId(res);
                 if (System.currentTimeMillis() - twoTime < 500) {
                     f_l_v_v.zoom(res);
@@ -381,7 +387,7 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                     twoTime = System.currentTimeMillis();
                 }
                 break;
-            case 3:
+            case resource_3:
                 f_l_v_v.setSelectResId(res);
                 if (System.currentTimeMillis() - threeTime < 500) {
                     f_l_v_v.zoom(res);
@@ -389,7 +395,7 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                     threeTime = System.currentTimeMillis();
                 }
                 break;
-            case 4:
+            case resource_4:
                 f_l_v_v.setSelectResId(res);
                 if (System.currentTimeMillis() - fourTime < 500) {
                     f_l_v_v.zoom(res);
@@ -425,61 +431,4 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
         super.onHiddenChanged(hidden);
     }
 
-//    public static class ScreenViewHolder {
-//        public View rootView;
-//        public CheckBox wm_screen_mandatory;
-//        public TextView wm_screen_title;
-//        public TextView textView2;
-//        public CheckBox wm_screen_cb_attendee;
-//        public Button wm_screen_launch;
-//        public Button wm_screen_cancel;
-//        public CheckBox wm_screen_cb_projector;
-//        public RecyclerView wm_screen_rv_attendee;
-//        public RecyclerView wm_screen_rv_projector;
-//
-//        public ScreenViewHolder(View rootView) {
-//            this.rootView = rootView;
-//            this.wm_screen_mandatory = (CheckBox) rootView.findViewById(R.id.wm_screen_mandatory);
-//            this.wm_screen_title = (TextView) rootView.findViewById(R.id.wm_screen_title);
-//            this.textView2 = (TextView) rootView.findViewById(R.id.textView2);
-//            this.wm_screen_cb_attendee = (CheckBox) rootView.findViewById(R.id.wm_screen_cb_attendee);
-//            this.wm_screen_launch = (Button) rootView.findViewById(R.id.wm_screen_launch);
-//            this.wm_screen_cancel = (Button) rootView.findViewById(R.id.wm_screen_cancel);
-//            this.wm_screen_cb_projector = (CheckBox) rootView.findViewById(R.id.wm_screen_cb_projector);
-//            this.wm_screen_rv_attendee = (RecyclerView) rootView.findViewById(R.id.wm_screen_rv_attendee);
-//            this.wm_screen_rv_projector = (RecyclerView) rootView.findViewById(R.id.wm_screen_rv_projector);
-//        }
-//
-//    }
-//
-//    public static class ProViewHolder {
-//        public View rootView;
-//        public CheckBox wm_pro_mandatory;
-//        public TextView wm_pro_title;
-//        public CheckBox wm_pro_all;
-//        public RecyclerView wm_pro_rv;
-//        public CheckBox wm_pro_full;
-//        public CheckBox wm_pro_flow1;
-//        public CheckBox wm_pro_flow2;
-//        public CheckBox wm_pro_flow3;
-//        public CheckBox wm_pro_flow4;
-//        public Button wm_pro_launch_pro;
-//        public Button wm_pro_cancel;
-//
-//        public ProViewHolder(View rootView) {
-//            this.rootView = rootView;
-//            this.wm_pro_mandatory = (CheckBox) rootView.findViewById(R.id.wm_pro_mandatory);
-//            this.wm_pro_title = (TextView) rootView.findViewById(R.id.wm_pro_title);
-//            this.wm_pro_all = (CheckBox) rootView.findViewById(R.id.wm_pro_all);
-//            this.wm_pro_rv = (RecyclerView) rootView.findViewById(R.id.wm_pro_rv);
-//            this.wm_pro_full = (CheckBox) rootView.findViewById(R.id.wm_pro_full);
-//            this.wm_pro_flow1 = (CheckBox) rootView.findViewById(R.id.wm_pro_flow1);
-//            this.wm_pro_flow2 = (CheckBox) rootView.findViewById(R.id.wm_pro_flow2);
-//            this.wm_pro_flow3 = (CheckBox) rootView.findViewById(R.id.wm_pro_flow3);
-//            this.wm_pro_flow4 = (CheckBox) rootView.findViewById(R.id.wm_pro_flow4);
-//            this.wm_pro_launch_pro = (Button) rootView.findViewById(R.id.wm_pro_launch_pro);
-//            this.wm_pro_cancel = (Button) rootView.findViewById(R.id.wm_pro_cancel);
-//        }
-//
-//    }
 }

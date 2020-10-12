@@ -15,7 +15,7 @@ import java.util.List;
 
 import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.util.LogUtil;
-import xlk.paperless.standard.view.BasePresenter;
+import xlk.paperless.standard.base.BasePresenter;
 
 
 /**
@@ -30,18 +30,14 @@ public class BulletinPresenter extends BasePresenter {
     public List<InterfaceBullet.pbui_Item_BulletDetailInfo> bulletInfos = new ArrayList<>();
 
     public BulletinPresenter(Context context, IBulletin view) {
+        super();
         this.cxt = context;
         this.view = view;
     }
 
     @Override
-    public void register() {
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void unregister() {
-        EventBus.getDefault().unregister(this);
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     public void queryNotice() {
@@ -59,8 +55,7 @@ public class BulletinPresenter extends BasePresenter {
     }
 
     @Override
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void BusEvent(EventMessage msg) {
+    public void busEvent(EventMessage msg) {
         switch (msg.getType()) {
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETBULLET_VALUE:
                 if (msg.getMethod() == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_NOTIFY_VALUE) {

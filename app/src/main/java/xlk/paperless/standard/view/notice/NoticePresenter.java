@@ -9,11 +9,6 @@ import com.mogujie.tt.protobuf.InterfaceBullet;
 import com.mogujie.tt.protobuf.InterfaceFaceconfig;
 import com.mogujie.tt.protobuf.InterfaceMacro;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.io.File;
 import java.util.List;
 
 import xlk.paperless.standard.R;
@@ -21,7 +16,7 @@ import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.util.FileUtil;
 import xlk.paperless.standard.util.LogUtil;
-import xlk.paperless.standard.view.BasePresenter;
+import xlk.paperless.standard.base.BasePresenter;
 
 /**
  * @author xlk
@@ -34,31 +29,26 @@ public class NoticePresenter extends BasePresenter {
     private final Context cxt;
 
     public NoticePresenter(Context context, INotice view) {
+        super();
         this.cxt = context;
         this.view = view;
     }
 
     @Override
-    public void register() {
-        EventBus.getDefault().register(this);
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
-    public void unregister() {
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void BusEvent(EventMessage msg) throws InvalidProtocolBufferException {
+    public void busEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
             case Constant.BUS_NOTICE_BG:
-                String filepath = (String) msg.getObjs()[0];
+                String filepath = (String) msg.getObjects()[0];
                 Drawable drawable = Drawable.createFromPath(filepath);
                 view.updateNoticeBg(drawable);
                 break;
             case Constant.BUS_NOTICE_LOGO:
-                String filepath1 = (String) msg.getObjs()[0];
+                String filepath1 = (String) msg.getObjects()[0];
                 Drawable drawable1 = Drawable.createFromPath(filepath1);
                 view.updateNoticeLogo(drawable1);
                 break;
@@ -108,8 +98,8 @@ public class NoticePresenter extends BasePresenter {
                     }
                 }
                 if (!userStr.isEmpty()) {
-                    FileUtil.createDir(Constant.ROOT_DIR);
-                    jni.creationFileDownload(Constant.ROOT_DIR + userStr + ".png", mediaid, 1, 0, userStr);
+                    FileUtil.createDir(Constant.dir_picture);
+                    jni.creationFileDownload(Constant.dir_picture + userStr + ".png", mediaid, 1, 0, userStr);
                 }
             }
             for (int i = 0; i < textList.size(); i++) {

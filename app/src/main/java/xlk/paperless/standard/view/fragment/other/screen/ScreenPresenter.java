@@ -18,8 +18,7 @@ import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.data.bean.DevMember;
 import xlk.paperless.standard.util.LogUtil;
-import xlk.paperless.standard.view.BasePresenter;
-import xlk.paperless.standard.view.MyApplication;
+import xlk.paperless.standard.base.BasePresenter;
 
 /**
  * @author xlk
@@ -37,23 +36,18 @@ public class ScreenPresenter extends BasePresenter {
     public List<DevMember> targetMembers = new ArrayList<>();
 
     public ScreenPresenter(Context context, IScreen view) {
+        super();
         this.cxt = context;
         this.view = view;
     }
 
     @Override
-    public void register() {
-        EventBus.getDefault().register(this);
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
-    public void unregister() {
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void BusEvent(EventMessage msg) throws InvalidProtocolBufferException {
+    public void busEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEINFO_VALUE://设备寄存器变更通知
                 LogUtil.d(TAG, "BusEvent -->" + "设备寄存器变更通知 ");
@@ -101,7 +95,7 @@ public class ScreenPresenter extends BasePresenter {
                 int memberid = dev.getMemberid();
                 int netstate = dev.getNetstate();
                 int facestate = dev.getFacestate();
-//                if (devcieid == MyApplication.localDeviceId) {
+//                if (devcieid == Values.localDeviceId) {
 //                    continue;
 //                }
                 if (netstate == 1) {//在线

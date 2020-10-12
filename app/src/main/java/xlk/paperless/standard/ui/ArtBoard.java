@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import xlk.paperless.standard.data.JniHandler;
+import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.util.ConvertUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.view.MyApplication;
@@ -360,7 +361,7 @@ public class ArtBoard extends View {
         long utcstamp = System.currentTimeMillis();
         int operid = (int) (utcstamp / 10);
         localOperids.add(operid);
-        int opermemberid = MyApplication.localMemberId;
+        int opermemberid = Values.localMemberId;
         int figuretype = InterfaceMacro.Pb_MeetPostilFigureType.Pb_WB_FIGURETYPE_INK.getNumber();
         jni.addInk(operid, opermemberid, srcmemid, srcwbid, utcstamp, figuretype, paintWidth, paintColor, allpt);
     }
@@ -370,7 +371,7 @@ public class ArtBoard extends View {
         long utcstamp = System.currentTimeMillis();
         int operid = (int) (utcstamp / 10);
         localOperids.add(operid);
-        int opermemberid = MyApplication.localMemberId;
+        int opermemberid = Values.localMemberId;
         int srcmemid = mSrcmemid;
         for (int i = 0; i < allpt.size(); i++) {
             LogUtil.e(TAG, "addDrawShape   --->>> " + allpt.get(i));
@@ -398,7 +399,7 @@ public class ArtBoard extends View {
                     long utcstamp = System.currentTimeMillis();
                     //操作ID 发送之前最后一个的操作ID
                     int operid = localOperids.get(i);
-                    int opermemberid = MyApplication.localMemberId;
+                    int opermemberid = Values.localMemberId;
                     int srcmemid = mSrcmemid;
                     int figuretype = InterfaceMacro.Pb_MeetPostilFigureType.Pb_WB_FIGURETYPE_ZERO.getNumber();
                     jni.whiteBoardDeleteRecord(opermemberid, operid, opermemberid, srcmemid, srcwbid, utcstamp, figuretype);
@@ -554,7 +555,7 @@ public class ArtBoard extends View {
         long time = System.currentTimeMillis();
         int operid = (int) (time / 10);
         localOperids.add(operid);
-        jni.addText(operid, MyApplication.localMemberId, launchPersonId, mSrcwbid,
+        jni.addText(operid, Values.localMemberId, launchPersonId, mSrcwbid,
                 time, InterfaceMacro.Pb_MeetPostilFigureType.Pb_WB_FIGURETYPE_FREETEXT.getNumber(),
                 finalSize, 2, paintColor, "宋体", x, y, drawText);
     }
@@ -598,7 +599,7 @@ public class ArtBoard extends View {
             long utcstamp = System.currentTimeMillis();
             //操作ID 发送之前最后一个的操作ID
             int operid = localOperids.get(localOperids.size() - 1);
-            int opermemberid = MyApplication.localMemberId;
+            int opermemberid = Values.localMemberId;
             int srcmemid = mSrcmemid;
             int figuretype = InterfaceMacro.Pb_MeetPostilFigureType.Pb_WB_FIGURETYPE_ZERO.getNumber();
             jni.whiteBoardDeleteRecord(opermemberid, operid, opermemberid, srcmemid, srcwbid, utcstamp, figuretype);
@@ -650,7 +651,7 @@ public class ArtBoard extends View {
         if (isSharing) {
             long utcstamp = System.currentTimeMillis();
             int operid = (int) (utcstamp / 10);
-            int opermemberid = MyApplication.localMemberId;
+            int opermemberid = Values.localMemberId;
             int srcmemid = mSrcmemid;
             long srcwbid = mSrcwbid;
             int figuretype = InterfaceMacro.Pb_MeetPostilFigureType.Pb_WB_FIGURETYPE_ZERO.getNumber();

@@ -3,17 +3,19 @@ package xlk.paperless.standard.data;
 /**
  * @author xlk
  * @date 2020/3/9
- * @desc
+ * @desc EventBus消息结构体
  */
 public class EventMessage {
     private int type;
     private int method;
-    private Object[] objs;
+    private Object object;
+    private Object[] objects;
 
-    public EventMessage(Builder builder) {
+    private EventMessage(Builder builder) {
         this.type = builder.type;
         this.method = builder.method;
-        this.objs = builder.objs;
+        this.object = builder.object;
+        this.objects = builder.objects;
     }
 
     public int getType() {
@@ -24,14 +26,19 @@ public class EventMessage {
         return method;
     }
 
-    public Object[] getObjs() {
-        return objs;
+    public Object getObject() {
+        return object;
+    }
+
+    public Object[] getObjects() {
+        return objects;
     }
 
     public static class Builder {
         private int type;
         private int method;
-        private Object[] objs;
+        private Object object;
+        private Object[] objects;
 
         public Builder type(int type) {
             this.type = type;
@@ -43,8 +50,13 @@ public class EventMessage {
             return this;
         }
 
-        public Builder objs(Object... objs) {
-            this.objs = objs;
+        public Builder object(Object object) {
+            this.object = object;
+            return this;
+        }
+
+        public Builder objects(Object... objects) {
+            this.objects = objects;
             return this;
         }
 

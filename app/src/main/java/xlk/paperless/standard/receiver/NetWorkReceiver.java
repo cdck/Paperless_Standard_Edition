@@ -11,7 +11,6 @@ import org.greenrobot.eventbus.EventBus;
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.util.LogUtil;
-import xlk.paperless.standard.view.MyApplication;
 
 /**
  * @author xlk
@@ -27,15 +26,16 @@ public class NetWorkReceiver extends BroadcastReceiver {
             LogUtil.d(TAG, "网络状态改变");
             ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+            int isAvailable;
             if (info != null && info.isAvailable()) {
                 String name = info.getTypeName();
-                MyApplication.isOneline = true;
+                isAvailable = 1;
                 LogUtil.d(TAG, "当前网络名称：" + name);
             } else {
-                MyApplication.isOneline = false;
+                isAvailable = 0;
                 LogUtil.d(TAG, "没有可用网络");
             }
-            EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_NET_WORK).build());
+            EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_NET_WORK).objects(isAvailable).build());
         }
     }
 }

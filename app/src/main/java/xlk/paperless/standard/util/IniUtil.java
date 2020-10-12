@@ -2,10 +2,8 @@ package xlk.paperless.standard.util;
 
 import org.ini4j.Config;
 import org.ini4j.Ini;
-import org.ini4j.InvalidFileFormatException;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -17,11 +15,11 @@ import xlk.paperless.standard.data.Constant;
  * @desc
  */
 public class IniUtil {
-
     private static IniUtil instance;
     private final Ini ini;
     private File file;
-    public static File iniFile = new File(Constant.ROOT_DIR + "/" + Constant.INI_NAME);
+    public static File iniFile = new File(Constant.INI_FILE_PATH);
+
 
     private IniUtil() {
         ini = new Ini();

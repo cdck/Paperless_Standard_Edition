@@ -3,9 +3,6 @@ package xlk.paperless.standard.service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
-import android.support.v7.app.AlertDialog;
-import android.view.WindowManager;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mogujie.tt.protobuf.InterfaceBase;
@@ -15,17 +12,13 @@ import com.mogujie.tt.protobuf.InterfaceMember;
 import com.mogujie.tt.protobuf.InterfaceVote;
 import com.mogujie.tt.protobuf.InterfaceWhiteboard;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
+import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.data.bean.DevMember;
 import xlk.paperless.standard.data.bean.JoinPro;
 import xlk.paperless.standard.ui.ArtBoard;
@@ -33,9 +26,8 @@ import xlk.paperless.standard.util.AppUtil;
 import xlk.paperless.standard.util.DialogUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.ToastUtil;
-import xlk.paperless.standard.view.BasePresenter;
+import xlk.paperless.standard.base.BasePresenter;
 import xlk.paperless.standard.view.CameraActivity;
-import xlk.paperless.standard.view.MyApplication;
 import xlk.paperless.standard.view.draw.DrawActivity;
 import xlk.paperless.standard.view.draw.DrawPresenter;
 
@@ -67,23 +59,18 @@ public class FabPresenter extends BasePresenter {
     public List<JoinPro> canJoinPros = new ArrayList<>();
 
     public FabPresenter(Context context, IFab view) {
+        super();
         this.cxt = context;
         this.view = view;
     }
 
     @Override
-    public void register() {
-        EventBus.getDefault().register(this);
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
-    public void unregister() {
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void BusEvent(EventMessage msg) throws InvalidProtocolBufferException {
+    public void busEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_WHITEBOARD_VALUE:
                 if (msg.getMethod() == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_ASK_VALUE) {//收到打开白板通知
@@ -106,7 +93,7 @@ public class FabPresenter extends BasePresenter {
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETONVOTING_VALUE://会议发起投票
                 LogUtil.i(TAG, "BusEvent -->" + "会议发起投票");
-                byte[] o = (byte[]) msg.getObjs()[0];
+                byte[] o = (byte[]) msg.getObjects()[0];
                 InterfaceBase.pbui_MeetNotifyMsg pbui_meetNotifyMsg = InterfaceBase.pbui_MeetNotifyMsg.parseFrom(o);
                 int opermethod = pbui_meetNotifyMsg.getOpermethod();
                 int id = pbui_meetNotifyMsg.getId();
@@ -115,7 +102,7 @@ public class FabPresenter extends BasePresenter {
                 }
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETVOTEINFO_VALUE://投票变更通知
-                byte[] o1 = (byte[]) msg.getObjs()[0];
+                byte[] o1 = (byte[]) msg.getObjects()[0];
                 InterfaceBase.pbui_MeetNotifyMsg pbui_meetNotifyMsg1 = InterfaceBase.pbui_MeetNotifyMsg.parseFrom(o1);
                 int opermethod1 = pbui_meetNotifyMsg1.getOpermethod();
                 int id1 = pbui_meetNotifyMsg1.getId();
@@ -125,18 +112,18 @@ public class FabPresenter extends BasePresenter {
                 }
                 break;
             case Constant.BUS_COLLECT_CAMERA_START:
-                int type = (int) msg.getObjs()[0];
+                int type = (int) msg.getObjects()[0];
                 LogUtil.i(TAG, "BusEvent -->" + "收到开始采集摄像头通知 type= " + type);
-                if (AppUtil.checkCamera(cxt, 0)) {
-                    ToastUtil.show(R.string.opening_camera);
-                    Intent intent = new Intent(cxt, CameraActivity.class);
-                    intent.putExtra(Constant.extra_camrea_type, 0);
-                    intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
-                    cxt.startActivity(intent);
-                } else if (AppUtil.checkCamera(cxt, 1)) {
+                if (AppUtil.checkCamera(cxt, 1)) {
                     ToastUtil.show(R.string.opening_camera);
                     Intent intent = new Intent(cxt, CameraActivity.class);
                     intent.putExtra(Constant.extra_camrea_type, 1);
+                    intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                    cxt.startActivity(intent);
+                } else if (AppUtil.checkCamera(cxt, 0)) {
+                    ToastUtil.show(R.string.opening_camera);
+                    Intent intent = new Intent(cxt, CameraActivity.class);
+                    intent.putExtra(Constant.extra_camrea_type, 0);
                     intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                     cxt.startActivity(intent);
                 } else {
@@ -146,7 +133,7 @@ public class FabPresenter extends BasePresenter {
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEOPER_VALUE://设备交互信息
                 if (msg.getMethod() == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_REQUESTINVITE_VALUE) {
-                    byte[] o2 = (byte[]) msg.getObjs()[0];
+                    byte[] o2 = (byte[]) msg.getObjects()[0];
                     InterfaceDevice.pbui_Type_DeviceChat info = InterfaceDevice.pbui_Type_DeviceChat.parseFrom(o2);
                     int inviteflag = info.getInviteflag();
                     int operdeviceid = info.getOperdeviceid();
@@ -154,7 +141,7 @@ public class FabPresenter extends BasePresenter {
                     view.showView(inviteflag, operdeviceid);
                 } else if (msg.getMethod() == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_REQUESTPRIVELIGE_VALUE) {
                     LogUtil.i(TAG, "BusEvent -->" + "收到参会人权限请求");
-                    byte[] o2 = (byte[]) msg.getObjs()[0];
+                    byte[] o2 = (byte[]) msg.getObjects()[0];
                     InterfaceDevice.pbui_Type_MeetRequestPrivilegeNotify info = InterfaceDevice.pbui_Type_MeetRequestPrivilegeNotify.parseFrom(o2);
                     view.applyPermissionsInform(info);
                 }
@@ -184,6 +171,7 @@ public class FabPresenter extends BasePresenter {
 
     /**
      * 查询发起的投票
+     *
      * @param voteid
      */
     private void queryInitiateVote(int voteid) {
@@ -207,7 +195,7 @@ public class FabPresenter extends BasePresenter {
 
 
     private void openArtBoardInform(EventMessage msg) throws InvalidProtocolBufferException {
-        byte[] o = (byte[]) msg.getObjs()[0];
+        byte[] o = (byte[]) msg.getObjects()[0];
         InterfaceWhiteboard.pbui_Type_MeetStartWhiteBoard object = InterfaceWhiteboard.pbui_Type_MeetStartWhiteBoard.parseFrom(o);
         int operflag = object.getOperflag();//指定操作标志 参见Pb_MeetPostilOperType
         String medianame = object.getMedianame().toStringUtf8();//白板操作描述
@@ -216,7 +204,7 @@ public class FabPresenter extends BasePresenter {
         disposePicSrcwbidd = object.getSrcwbid();//发起人的白板标识 取微秒级的时间作标识 白板标识使用
         if (operflag == InterfaceMacro.Pb_MeetPostilOperType.Pb_MEETPOTIL_FLAG_FORCEOPEN.getNumber()) {
             LogUtil.i(TAG, "eventOpenBoard: 强制打开白板  直接强制同意加入..");
-            jni.agreeJoin(MyApplication.localMemberId, disposePicSrcmemid, disposePicSrcwbidd);
+            jni.agreeJoin(Values.localMemberId, disposePicSrcmemid, disposePicSrcwbidd);
             Intent intent = new Intent(cxt, DrawActivity.class);
             intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
             cxt.startActivity(intent);
@@ -235,23 +223,21 @@ public class FabPresenter extends BasePresenter {
                     @Override
                     public void positive(DialogInterface dialog) {
                         //同意加入
-                        jni.agreeJoin(MyApplication.localMemberId, srcmemid, srcwbidd);
+                        jni.agreeJoin(Values.localMemberId, srcmemid, srcwbidd);
                         isSharing = true;//如果同意加入就设置已经在共享中
                         mSrcmemid = srcmemid;//设置发起的人员ID
                         mSrcwbid = srcwbidd;
                         Intent intent1 = new Intent(cxt, DrawActivity.class);
                         if (tempPicData != null) {
                             savePicData = tempPicData;
-                            intent1.putExtra("have_pic", "have_pic");
-                            LogUtil.i(TAG, "WhetherOpen:  putExtra 'have_pic' ");
                             /** **** **  作为接收者保存  ** **** **/
                             ArtBoard.DrawPath drawPath = new ArtBoard.DrawPath();
-                            drawPath.operid = MyApplication.operid;
+                            drawPath.operid = Values.operid;
                             drawPath.srcwbid = srcwbidd;
                             drawPath.srcmemid = srcmemid;
                             drawPath.opermemberid = opermemberid;
                             drawPath.picdata = savePicData;
-                            MyApplication.operid = 0;
+                            Values.operid = 0;
                             tempPicData = null;
                             //将路径保存到共享中绘画信息
                             DrawPresenter.pathList.add(drawPath);
@@ -268,7 +254,7 @@ public class FabPresenter extends BasePresenter {
 
                     @Override
                     public void negative(DialogInterface dialog) {
-                        jni.rejectJoin(MyApplication.localMemberId, srcmemid, srcwbidd);
+                        jni.rejectJoin(Values.localMemberId, srcmemid, srcwbidd);
                         dialog.dismiss();
                     }
 
@@ -308,7 +294,7 @@ public class FabPresenter extends BasePresenter {
                 int memberid = detailInfo.getMemberid();
                 int netstate = detailInfo.getNetstate();
                 int facestate = detailInfo.getFacestate();
-                if (devcieid == MyApplication.localDeviceId) {
+                if (devcieid == Values.localDeviceId) {
                     continue;
                 }
                 if (netstate == 1) {//在线

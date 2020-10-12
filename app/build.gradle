@@ -1,14 +1,20 @@
 apply plugin: 'com.android.application'
 
 android {
-//    signingConfigs {
-//        release {
-//            keyAlias 'paperless_standard_release'
-//            keyPassword 'android'
-//            storeFile file('../release.keystore')
-//            storePassword 'android'
-//        }
-//    }
+    signingConfigs {
+        release {
+            keyAlias 'paperless_standard_release'
+            keyPassword 'android'
+            storeFile file('../keystore/release.keystore')
+            storePassword 'android'
+        }
+        debug {
+            keyAlias 'paperless_standard_debug'
+            keyPassword 'android'
+            storeFile file('../keystore/debug.keystore')
+            storePassword 'android'
+        }
+    }
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
     defaultConfig {
@@ -40,7 +46,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//            signingConfig signingConfigs.release
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
@@ -53,35 +59,69 @@ android {
             outputFileName = "无纸化标准版-V${variant.versionName}.apk"
         }
     }
+    //解决API 28只创建arm64目录，导致找不到库的问题
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'armeabi-v7a'
+            universalApk false
+        }
+    }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'com.android.support.constraint:constraint-layout:2.0.1'
+    implementation 'com.android.support:design:28.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation 'org.greenrobot:eventbus:3.2.0'
-    implementation 'com.hjq:xxpermissions:6.2'
-    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.46'
     implementation files('libs/ini4j-0.5.2.jar')
     implementation files('libs/protobuf-java-3.3.0.jar')
-    implementation 'com.android.support:design:28.0.0'
-    //二维码扫描库
-    implementation 'com.acker:simplezxing:1.5'
-    //类似qq拖拽消息
-    implementation 'q.rorbin:badgeview:1.1.3'
+
+    //腾讯TBS
     implementation files('libs/tbs_sdk_thirdapp_v4.3.0.3_43903_sharewithdownloadwithfile_withoutGame_obfs_20200402_121309.jar')
-    //网页加载进度
-    implementation 'com.wang.avi:library:2.1.3'
     //Excel表格相关
     implementation files('libs/jxl.jar')
-    //图形百分比
-    implementation 'com.github.IntruderShanky:scatter-piechart:1.0.0'
-    //屏幕适配
-    implementation 'me.jessyan:autosize:1.2.1'
-    //图片查看
-    implementation 'com.github.SuperKotlin:PictureViewer:2.0.1'
 
+    //二维码扫描库:https://github.com/GuoJinyu/SimpleZXing
+    implementation 'com.acker:simplezxing:1.5'
+
+    //类似qq拖拽消息:https://github.com/qstumn/BadgeView
+    implementation 'q.rorbin:badgeview:1.1.3'
+
+    //网页加载进度:https://github.com/81813780/AVLoadingIndicatorView
+    implementation 'com.wang.avi:library:2.1.3'
+
+    //图形百分比：https://github.com/IntruderShanky/Scatter-PieChart
+    implementation 'com.github.IntruderShanky:scatter-piechart:1.0.0'
+
+    //https://github.com/greenrobot/EventBus
+    implementation 'org.greenrobot:eventbus:3.2.0'
+
+    //权限申请框架：https://github.com/getActivity/XXPermissions
+    implementation 'com.hjq:xxpermissions:6.5'
+
+    //https://github.com/CymChad/BaseRecyclerViewAdapterHelper
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.46'
+
+    //屏幕适配：https://github.com/JessYanCoding/AndroidAutoSize
+    implementation 'me.jessyan:autosize:1.2.1'
+
+    //图片加载框架:https://github.com/bumptech/glide
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+//    当前不需要网络加载图片
+//    implementation 'com.github.bumptech.glide:okhttp3-integration:4.8.0'
+
+    //查看大图：https://github.com/SherlockGougou/BigImageViewPager
+    implementation 'com.github.SherlockGougou:BigImageViewPager:v4_6.0.0'
+
+    //表格控件：https://github.com/RmondJone/LockTableView
+//    implementation 'com.github.RmondJone:LockTableView:1.1.2'
+
+    //内存泄漏检测：https://github.com/square/leakcanary
+//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
 }

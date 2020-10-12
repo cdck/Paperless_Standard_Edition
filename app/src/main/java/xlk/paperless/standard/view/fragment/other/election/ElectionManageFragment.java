@@ -38,13 +38,14 @@ import xlk.paperless.standard.R;
 import xlk.paperless.standard.adapter.SubmitMemberAdapter;
 import xlk.paperless.standard.adapter.VoteManageAdapter;
 import xlk.paperless.standard.adapter.VoteManageMemberAdapter;
+import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.exportbean.ExportSubmitMember;
 import xlk.paperless.standard.util.DateUtil;
 import xlk.paperless.standard.util.JxlUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.ToastUtil;
 import xlk.paperless.standard.util.UriUtil;
-import xlk.paperless.standard.view.fragment.BaseFragment;
+import xlk.paperless.standard.base.BaseFragment;
 import xlk.paperless.standard.view.meet.MeetingActivity;
 
 import static xlk.paperless.standard.util.ConvertUtil.s2b;
@@ -89,7 +90,6 @@ public class ElectionManageFragment extends BaseFragment implements View.OnClick
         View inflate = inflater.inflate(R.layout.fragment_election_manage, container, false);
         initView(inflate);
         presenter = new ElectionPresenter(getContext(), this);
-        presenter.register();
         String[] stringArray = getResources().getStringArray(R.array.countdown_spinner);
         timeSpAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, stringArray);
         election_manage_countdown_sp.setAdapter(timeSpAdapter);
@@ -97,7 +97,8 @@ public class ElectionManageFragment extends BaseFragment implements View.OnClick
         typeSpAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, type_Array);
         election_manage_type_sp.setAdapter(typeSpAdapter);
         presenter.queryVote();
-        presenter.queryMember();
+        presenter.querySecretary();
+//        presenter.queryMember();
         return inflate;
     }
 
@@ -195,6 +196,10 @@ public class ElectionManageFragment extends BaseFragment implements View.OnClick
         String content = election_manage_title.getText().toString().trim();
         if (content.isEmpty()) {
             ToastUtil.show(R.string.vote_content_empty);
+            return;
+        }
+        if (content.length() > Constant.MAX_TITLE_LENGTH) {
+            ToastUtil.show(getString(R.string.err_title_max_length, Constant.MAX_TITLE_LENGTH + ""));
             return;
         }
         String option1 = election_manage_option1.getText().toString().trim();
@@ -382,7 +387,7 @@ public class ElectionManageFragment extends BaseFragment implements View.OnClick
         memberPop.setOutsideTouchable(true);
         memberPop.setFocusable(true);
         memberPop.setAnimationStyle(R.style.pop_Animation);
-        memberPop.showAtLocation(election_manage_stop, Gravity.START | Gravity.BOTTOM, 0, 0);
+        memberPop.showAtLocation(election_manage_stop, Gravity.END | Gravity.BOTTOM, 0, 0);
         CheckBox pop_vote_all = inflate.findViewById(R.id.pop_vote_all);
         RecyclerView pop_vote_rv = inflate.findViewById(R.id.pop_vote_rv);
         pop_vote_rv.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -533,7 +538,7 @@ public class ElectionManageFragment extends BaseFragment implements View.OnClick
         popupWindow.setOutsideTouchable(true);
         popupWindow.setFocusable(true);
         popupWindow.setAnimationStyle(R.style.pop_Animation);
-        popupWindow.showAtLocation(election_manage_stop, Gravity.START | Gravity.BOTTOM, 0, 0);
+        popupWindow.showAtLocation(election_manage_stop, Gravity.END | Gravity.BOTTOM, 0, 0);
         SubmitMemberAdapter adapter = new SubmitMemberAdapter(R.layout.item_submit_member, presenter.submitMembers);
         RecyclerView submit_member_rv = inflate.findViewById(R.id.submit_member_rv);
         submit_member_rv.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -585,23 +590,23 @@ public class ElectionManageFragment extends BaseFragment implements View.OnClick
                 if (i == 0) {
                     holder.pop_option_a_ll.setVisibility(View.VISIBLE);
                     holder.pop_option_a_tv.setText(getString(R.string.vote_count, text, selcnt + ""));
-                    setChartData(count, selcnt, Color.parseColor("#FFFFFF"), Color.parseColor("#e61878"));
+                    setChartData(count, selcnt, Color.parseColor("#000000"), Color.parseColor("#FF0000"));
                 } else if (i == 1) {
                     holder.pop_option_b_ll.setVisibility(View.VISIBLE);
                     holder.pop_option_b_tv.setText(getString(R.string.vote_count, text, selcnt + ""));
-                    setChartData(count, selcnt, Color.parseColor("#FFFFFF"), Color.parseColor("#1ac534"));
+                    setChartData(count, selcnt, Color.parseColor("#000000"), Color.parseColor("#00FF00"));
                 } else if (i == 2) {
                     holder.pop_option_c_ll.setVisibility(View.VISIBLE);
                     holder.pop_option_c_tv.setText(getString(R.string.vote_count, text, selcnt + ""));
-                    setChartData(count, selcnt, Color.parseColor("#FFFFFF"), Color.parseColor("#2367b9"));
+                    setChartData(count, selcnt, Color.parseColor("#000000"), Color.parseColor("#0000FF"));
                 } else if (i == 3) {
                     holder.pop_option_d_ll.setVisibility(View.VISIBLE);
                     holder.pop_option_d_tv.setText(getString(R.string.vote_count, text, selcnt + ""));
-                    setChartData(count, selcnt, Color.parseColor("#000000"), Color.parseColor("#dbd827"));
+                    setChartData(count, selcnt, Color.parseColor("#000000"), Color.parseColor("#00FFFF"));
                 } else if (i == 4) {
                     holder.pop_option_e_ll.setVisibility(View.VISIBLE);
                     holder.pop_option_e_tv.setText(getString(R.string.vote_count, text, selcnt + ""));
-                    setChartData(count, selcnt, Color.parseColor("#000000"), Color.parseColor("#8a2eda"));
+                    setChartData(count, selcnt, Color.parseColor("#000000"), Color.parseColor("#FF00FF"));
                 }
             }
         }
@@ -613,7 +618,7 @@ public class ElectionManageFragment extends BaseFragment implements View.OnClick
         }
         //如果没有数据会报错
         if (chartDatas.isEmpty()) {
-            chartDatas.add(new ChartData(getResources().getString(R.string.null_str), 100, Color.parseColor("#FFFFFF"), Color.parseColor("#676767")));
+            chartDatas.add(new ChartData(getResources().getString(R.string.null_str), 100, Color.parseColor("#FFFFFF"), Color.parseColor("#7D7D7D")));
         }
         holder.pop_chart.setChartData(chartDatas);
         holder.pop_chart.setVisibility(View.VISIBLE);
@@ -684,6 +689,6 @@ public class ElectionManageFragment extends BaseFragment implements View.OnClick
     @Override
     public void onDestroy() {
         super.onDestroy();
-        presenter.unregister();
+        presenter.onDestroy();
     }
 }

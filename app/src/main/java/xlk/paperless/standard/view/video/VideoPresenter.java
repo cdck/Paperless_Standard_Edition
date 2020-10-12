@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.MediaCodec;
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
+import android.os.Environment;
 import android.util.Range;
 import android.view.Surface;
 
@@ -16,9 +17,10 @@ import com.mogujie.tt.protobuf.InterfacePlaymedia;
 import com.mogujie.tt.protobuf.InterfaceStop;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -27,17 +29,19 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
+import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.data.bean.DevMember;
 import xlk.paperless.standard.data.bean.MediaBean;
-import xlk.paperless.standard.ui.video.MyGLSurfaceView;
 import xlk.paperless.standard.util.DateUtil;
 import xlk.paperless.standard.util.LogUtil;
-import xlk.paperless.standard.view.BasePresenter;
+import xlk.paperless.standard.base.BasePresenter;
 import xlk.paperless.standard.view.MyApplication;
 
 import static xlk.paperless.standard.data.Constant.BUS_VIDEO_DECODE;
 import static xlk.paperless.standard.data.Constant.BUS_YUV_DISPLAY;
 import static xlk.paperless.standard.data.Constant.getMimeType;
+import static xlk.paperless.standard.data.Constant.resource_0;
+import static xlk.paperless.standard.view.MyApplication.read2file;
 
 /**
  * @author xlk
@@ -70,22 +74,17 @@ public class VideoPresenter extends BasePresenter {
     public List<InterfaceMember.pbui_Item_MemberDetailInfo> memberDetailInfos = new ArrayList<>();
     public List<InterfaceDevice.pbui_Item_DeviceDetailInfo> onLineProjectors = new ArrayList<>();
     public List<DevMember> onLineMember = new ArrayList<>();
+    private int mValue;
 
     public VideoPresenter(Context cxt, IVideo view) {
+        super();
         this.cxt = cxt;
         this.view = view;
     }
 
     @Override
-    public void register() {
-        LogUtil.d(TAG, "register -->EventBus");
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void unregister() {
-        LogUtil.d(TAG, "unregister -->EventBus");
-        EventBus.getDefault().unregister(this);
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     public void queryMember() {
@@ -117,7 +116,7 @@ public class VideoPresenter extends BasePresenter {
                 int memberid = detailInfo.getMemberid();
                 int netstate = detailInfo.getNetstate();
                 int facestate = detailInfo.getFacestate();
-                if (devcieid == MyApplication.localDeviceId) {
+                if (devcieid == Values.localDeviceId) {
                     continue;
                 }
                 if (netstate == 1) {//在线
@@ -143,8 +142,7 @@ public class VideoPresenter extends BasePresenter {
     }
 
     @Override
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void BusEvent(EventMessage msg) throws InvalidProtocolBufferException {
+    public void busEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
             case Constant.BUS_MANDATORY:
                 view.setCanNotExit();
@@ -153,7 +151,7 @@ public class VideoPresenter extends BasePresenter {
                 playInfo(msg);
                 break;
             case BUS_YUV_DISPLAY:
-                Object[] objs = msg.getObjs();
+                Object[] objs = msg.getObjects();
                 int res = (int) objs[0];
                 int w = (int) objs[1];
                 int h = (int) objs[2];
@@ -167,7 +165,7 @@ public class VideoPresenter extends BasePresenter {
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_STOPPLAY_VALUE:
                 if (msg.getMethod() == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_NOTIFY_VALUE) {
-                    byte[] o = (byte[]) msg.getObjs()[0];
+                    byte[] o = (byte[]) msg.getObjects()[0];
                     InterfaceStop.pbui_Type_MeetStopPlay stopPlay = InterfaceStop.pbui_Type_MeetStopPlay.parseFrom(o);
                     if (stopPlay.getRes() == 0) {
                         LogUtil.d(TAG, "BusEvent -->" + "停止播放通知");
@@ -191,7 +189,7 @@ public class VideoPresenter extends BasePresenter {
     }
 
     private void videoInfos(EventMessage msg) {
-        Object[] objs = msg.getObjs();
+        Object[] objs = msg.getObjects();
         int iskeyframe = (int) objs[0];
         int res = (int) objs[1];
         int codecid = (int) objs[2];
@@ -213,6 +211,7 @@ public class VideoPresenter extends BasePresenter {
                 saveMimeType = mimeType;
                 initCodec(width, height, codecdata);
             }
+            read2file(packet, codecdata);
         }
         mediaCodecDecode(packet, length, pts, iskeyframe);
         if (timeThread == null && !isStop) {
@@ -244,16 +243,8 @@ public class VideoPresenter extends BasePresenter {
             Integer lower1 = supportedHeights.getLower();
             initW = w;
             initH = h;
-            if (w > upper) {
-                w = upper;
-            } else if (w < lower) {
-                w = lower;
-            }
-            if (h > upper1) {
-                h = upper1;
-            } else if (h < lower1) {
-                h = lower1;
-            }
+            w = supportedWidths.clamp(w);
+            h = supportedHeights.clamp(h);
             LogUtil.e(TAG, "initCodec :   --> " + upper + ", " + lower + " ,,高：" + upper1 + ", " + lower1);
             initMediaFormat(w, h, codecdata);
             boolean formatSupported = capabilitiesForType.isFormatSupported(mediaFormat);
@@ -277,7 +268,29 @@ public class VideoPresenter extends BasePresenter {
             }
             //3.调用start()方法使其转入执行状态（Executing）
             mediaCodec.start();
-//            initMediaMuxer();
+            initMediaMuxer();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private BufferedOutputStream outputStream;
+
+    private void initMediaMuxer() throws IOException {
+        if (!read2file) return;
+        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/temp.mp4");
+        if (file.exists()) {
+            file.delete();
+        }
+//        muxer = new MediaMuxer(savepath, MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4);
+        outputStream = new BufferedOutputStream(new FileOutputStream(file));
+    }
+
+    public void read2file(byte[] outData, byte[] codecdata) {
+        if (!read2file) return;
+        try {
+            outputStream.write(outData, 0, outData.length);
+            outputStream.write(codecdata, 0, codecdata.length);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -379,7 +392,7 @@ public class VideoPresenter extends BasePresenter {
     }
 
     private void playInfo(EventMessage msg) throws InvalidProtocolBufferException {
-        byte[] datas = (byte[]) msg.getObjs()[0];
+        byte[] datas = (byte[]) msg.getObjects()[0];
         InterfacePlaymedia.pbui_Type_PlayPosCb playPos = InterfacePlaymedia.pbui_Type_PlayPosCb.parseFrom(datas);
         int mediaId = playPos.getMediaId();
         //当status>0时，为文件ID号
@@ -396,7 +409,13 @@ public class VideoPresenter extends BasePresenter {
             InterfaceBase.pbui_CommonInt32uProperty commonInt32uProperty = InterfaceBase.pbui_CommonInt32uProperty.parseFrom(timedata);
             int propertyval = commonInt32uProperty.getPropertyval();
             view.updateProgressUi(per, DateUtil.convertTime((long) sec * 1000), DateUtil.convertTime((long) propertyval));
+
+            byte[] fileName = jni.queryFileProperty(InterfaceMacro.Pb_MeetFilePropertyID.Pb_MEETFILE_PROPERTY_NAME.getNumber(),
+                    this.mMediaId);
+            InterfaceBase.pbui_CommonTextProperty pbui_commonTextProperty = InterfaceBase.pbui_CommonTextProperty.parseFrom(fileName);
+            view.updateTopTitle(pbui_commonTextProperty.getPropertyval().toStringUtf8());
         }
+        if (status == 0 || status == 1) view.updateAnimator(status);
     }
 
     public void setSurface(Surface surface) {
@@ -408,11 +427,17 @@ public class VideoPresenter extends BasePresenter {
         isStop = true;
         List<Integer> a = new ArrayList<>();
         List<Integer> b = new ArrayList<>();
-        a.add(0);
-        b.add(MyApplication.localDeviceId);
+        a.add(resource_0);
+        b.add(Values.localDeviceId);
         /** ************ ******  停止资源操作  ****** ************ **/
         jni.stopResourceOperate(a, b);
-        timeThread = null;
+    }
+
+    public void releasePlay() {
+        if (timeThread != null) {
+            timeThread.interrupt();
+            timeThread = null;
+        }
         releaseMediaCodec();
     }
 
@@ -420,7 +445,7 @@ public class VideoPresenter extends BasePresenter {
      * 释放资源
      */
     private void releaseMediaCodec() {
-        new Thread(() -> {
+        MyApplication.threadPool.execute(() -> {
             if (mediaCodec != null) {
                 try {
                     LogUtil.e(TAG, "releaseMediaCodec :   --> ");
@@ -441,7 +466,7 @@ public class VideoPresenter extends BasePresenter {
             }
             mediaCodec = null;
             mediaFormat = null;
-        }).start();
+        });
     }
 
     /**
@@ -472,39 +497,38 @@ public class VideoPresenter extends BasePresenter {
     public void cutVideoImg() {
         if (isPlaying()) {
             List<Integer> devIds = new ArrayList<>();
-            devIds.add(MyApplication.localDeviceId);
-            jni.setPlayStop(0, devIds);
+            devIds.add(Values.localDeviceId);
+            jni.setPlayStop(resource_0, devIds);
         }
     }
 
     public void playOrPause() {
         List<Integer> devIds = new ArrayList<>();
-        devIds.add(MyApplication.localDeviceId);
+        devIds.add(Values.localDeviceId);
         if (isShareing) {
             devIds.addAll(currentShareIds);
         }
         if (isPlaying()) {
-            jni.setPlayStop(0, devIds);
+            jni.setPlayStop(resource_0, devIds);
         } else {
-            jni.setPlayRecover(0, devIds);
+            jni.setPlayRecover(resource_0, devIds);
         }
     }
 
-
     public void setPlayPlace(int progress) {
         List<Integer> devIds = new ArrayList<>();
-        devIds.add(MyApplication.localDeviceId);
+        devIds.add(Values.localDeviceId);
         if (isShareing) {
             devIds.addAll(currentShareIds);
         }
-        jni.setPlayPlace(0, progress, devIds, 1, 0);
+        jni.setPlayPlace(resource_0, progress, devIds, mValue, 0);
     }
 
     //停止同屏
     public void stopPlay() {
         if (isShareing) {
             List<Integer> res = new ArrayList<>();
-            res.add(0);
+            res.add(resource_0);
             jni.stopResourceOperate(res, currentShareIds);
             currentShareIds.clear();
             isShareing = false;
@@ -512,7 +536,7 @@ public class VideoPresenter extends BasePresenter {
     }
 
     //发起同屏
-    public void mediaPlayOperate(List<Integer> ids) {
+    public void mediaPlayOperate(List<Integer> ids, int value) {
         for (int id : ids) {
             if (!currentShareIds.contains(id)) {
                 currentShareIds.add(id);
@@ -520,9 +544,24 @@ public class VideoPresenter extends BasePresenter {
         }
         isShareing = true;
         List<Integer> temps = new ArrayList<>(currentShareIds);
-        temps.add(MyApplication.localDeviceId);
-        jni.mediaPlayOperate(mMediaId, temps, currentPre, 0, 0, 0);
+        temps.add(Values.localDeviceId);
+        mValue = value;
+        jni.mediaPlayOperate(mMediaId, temps, currentPre, resource_0, value, 0);
     }
+
+    public String queryDevName(int deivceid) {
+        try {
+            InterfaceDevice.pbui_Type_DeviceDetailInfo deviceDetailInfo = jni.queryDevInfoById(deivceid);
+            if (deviceDetailInfo != null) {
+                InterfaceDevice.pbui_Item_DeviceDetailInfo pdev = deviceDetailInfo.getPdev(0);
+                return pdev.getDevname().toStringUtf8();
+            }
+        } catch (InvalidProtocolBufferException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
 
     class releaseThread extends Thread {
 
@@ -539,7 +578,7 @@ public class VideoPresenter extends BasePresenter {
                     LogUtil.v(TAG, "releaseThread 手动发送空数据 -->");
                     EventBus.getDefault().post(new EventMessage.Builder()
                             .type(Constant.BUS_VIDEO_DECODE)
-                            .objs(0, 0, 0, 0, 0, null, 1L, null)
+                            .objects(0, 0, 0, 0, 0, null, 1L, null)
                             .build()
                     );
                     try {

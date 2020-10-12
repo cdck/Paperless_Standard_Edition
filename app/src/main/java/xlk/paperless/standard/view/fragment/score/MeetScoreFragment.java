@@ -28,6 +28,7 @@ import xlk.paperless.standard.adapter.ScoreMemberAdapter;
 import xlk.paperless.standard.adapter.WmScreenMemberAdapter;
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.JniHandler;
+import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.util.PopUtil;
 import xlk.paperless.standard.util.ToastUtil;
 import xlk.paperless.standard.view.MyApplication;
@@ -67,7 +68,6 @@ public class MeetScoreFragment extends Fragment implements IMeetScore, View.OnCl
         View inflate = inflater.inflate(R.layout.fragment_score, container, false);
         initView(inflate);
         presenter = new MeetScorePresenter(getContext(), this);
-        presenter.register();
         initAdapter();
         start();
         return inflate;
@@ -109,7 +109,7 @@ public class MeetScoreFragment extends Fragment implements IMeetScore, View.OnCl
     @Override
     public void onDestroy() {
         super.onDestroy();
-        presenter.unregister();
+        presenter.onDestroy();
     }
 
     @Override
@@ -124,6 +124,7 @@ public class MeetScoreFragment extends Fragment implements IMeetScore, View.OnCl
     public void updateScoreRv(List<InterfaceFilescorevote.pbui_Type_Item_UserDefineFileScore> scoreInfos) {
         if (scoreAdapter == null) {
             scoreAdapter = new MeetScoreAdapter(R.layout.item_score_list, scoreInfos);
+//            scoreAdapter.addHeaderView(createHeaderView());
             scoreAdapter.setHasStableIds(true);
             f_score_rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
             f_score_rv.setAdapter(scoreAdapter);
@@ -143,6 +144,11 @@ public class MeetScoreFragment extends Fragment implements IMeetScore, View.OnCl
                 setDefault(null);
             }
         }
+    }
+
+    private View createHeaderView() {
+
+        return null;
     }
 
     private void setDefault(InterfaceFilescorevote.pbui_Type_Item_UserDefineFileScore score) {
@@ -284,7 +290,7 @@ public class MeetScoreFragment extends Fragment implements IMeetScore, View.OnCl
 
     private void scoreOper(int voteid) {
         View inflate = LayoutInflater.from(getContext()).inflate(R.layout.pop_online_member, null);
-        PopupWindow popupWindow = PopUtil.create(inflate, MyApplication.screen_width / 2, MyApplication.screen_height / 2, true, f_score_start);
+        PopupWindow popupWindow = PopUtil.create(inflate, Values.screen_width / 2, Values.screen_height / 2, true, f_score_start);
         RecyclerView pop_score_rv = inflate.findViewById(R.id.pop_score_rv);
         CheckBox pop_score_check_all = inflate.findViewById(R.id.pop_score_check_all);
         pop_score_rv.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));

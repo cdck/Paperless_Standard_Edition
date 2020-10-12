@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/meet_root_id"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/meet_content"
+    android:background="@drawable/icon_meet_bg"
     tools:context=".view.meet.MeetingActivity">
 
     <LinearLayout
@@ -108,21 +107,21 @@
                     android:id="@+id/meet_min"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_20"
-                    android:scaleType="fitXY"
                     android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/dp_20"
                     android:layout_toStartOf="@+id/meet_close"
+                    android:scaleType="fitXY"
                     android:src="@drawable/icon_min" />
 
                 <ImageView
                     android:id="@+id/meet_close"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_20"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/dp_20"
                     android:scaleType="fitXY"
-                    android:src="@drawable/icon_close" />
+                    android:src="@drawable/icon_close_t" />
             </RelativeLayout>
 
         </LinearLayout>
@@ -131,7 +130,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@color/meet_content"
+            android:background="@color/meet_top_bar"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -149,13 +148,6 @@
             android:layout_weight="8"
             android:background="@color/meet_content"
             android:orientation="horizontal">
-
-            <FrameLayout
-                android:id="@+id/meet_frame_layout"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="5"
-                android:background="@color/meet_fragment_bg" />
 
             <LinearLayout
                 android:id="@+id/meet_fun_all_ll"
@@ -201,6 +193,14 @@
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/meet_frame_layout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:background="@color/meet_fragment_bg" />
+
         </LinearLayout>
     </LinearLayout>
 
@@ -208,7 +208,7 @@
         android:id="@+id/meet_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:scaleType="fitXY"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:scaleType="fitXY" />
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

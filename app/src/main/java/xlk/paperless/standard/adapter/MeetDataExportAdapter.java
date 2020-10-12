@@ -29,8 +29,7 @@ public class MeetDataExportAdapter extends BaseQuickAdapter<InterfaceFile.pbui_I
         List<InterfaceFile.pbui_Item_MeetDirFileDetailInfo> files = new ArrayList<>();
         for (int i = 0; i < mData.size(); i++) {
             InterfaceFile.pbui_Item_MeetDirFileDetailInfo info = mData.get(i);
-            long mediaid = info.getMediaid();
-            if (ids.contains(mediaid)) {
+            if (ids.contains(info.getMediaid())) {
                 files.add(info);
             }
         }

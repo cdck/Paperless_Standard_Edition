@@ -1,7 +1,6 @@
 package xlk.paperless.standard.view.score;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,10 +15,10 @@ import java.util.List;
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.JniHandler;
+import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.ToastUtil;
-import xlk.paperless.standard.view.BaseActivity;
-import xlk.paperless.standard.view.MyApplication;
+import xlk.paperless.standard.base.BaseActivity;
 
 public class ScoreActivity extends BaseActivity implements IScore, View.OnClickListener {
 
@@ -48,15 +47,14 @@ public class ScoreActivity extends BaseActivity implements IScore, View.OnClickL
         setContentView(R.layout.activity_score);
         initView();
         presenter = new ScorePresenter(this, this);
-        presenter.register();
-        voteid = getIntent().getIntExtra("voteid", 0);
+        voteid = getIntent().getIntExtra(Constant.extra_vote_id, 0);
         presenter.queryScoreById(voteid);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        presenter.unregister();
+        presenter.onDestroy();
     }
 
     private void initView() {
@@ -174,7 +172,7 @@ public class ScoreActivity extends BaseActivity implements IScore, View.OnClickL
                         allscore.add(Integer.parseInt(option2));
                         allscore.add(Integer.parseInt(option3));
                         allscore.add(Integer.parseInt(option4));
-                        JniHandler.getInstance().submitScore(voteid, MyApplication.localMemberId, opinion, allscore);
+                        JniHandler.getInstance().submitScore(voteid, Values.localMemberId, opinion, allscore);
                         finish();
                     }
                 } else {

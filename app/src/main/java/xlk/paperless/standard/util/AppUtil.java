@@ -7,8 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
-import android.media.MediaCodecInfo;
-import android.media.MediaCodecList;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -19,7 +17,6 @@ import android.view.View;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import xlk.paperless.standard.view.main.MainActivity;
 
 /**
  * @author xlk

@@ -6,21 +6,18 @@
         <item name="windowNoTitle">true</item>
         <!-- 隐藏状态栏 -->
         <item name="android:windowFullscreen">true</item>
-        <!-- Customize your theme here. -->"
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="Transparent">
-        <item name="android:windowFullscreen">true</item>
+    <!-- 摄像头CameraActivity使用 -->
+    <style name="Transparent" parent="AppTheme">
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowDisablePreview">true</item>
         <item name="android:windowBackground">@color/transparent</item>
         <!--<item name="android:windowIsTranslucent">true</item>-->
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
-        <!--设置是否要去掉标题-->
-        <item name="android:windowNoTitle">true</item>
     </style>
 
     <style name="btn_pressed_style">
@@ -36,7 +33,7 @@
         <item name="android:textColor">@drawable/white_black_text_selected</item>
         <item name="android:textSize">@dimen/sp_12</item>
         <item name="android:layout_width">@dimen/dp_60</item>
-        <item name="android:layout_height">@dimen/dp_25</item>
+        <item name="android:layout_height">@dimen/dp_30</item>
         <!--<item name="android:layout_width">wrap_content</item>-->
         <!--<item name="android:layout_height">wrap_content</item>-->
     </style>
@@ -86,5 +83,9 @@
     <style name="pop_lr_animation">
         <item name="android:windowEnterAnimation">@anim/popshow_end_start</item>
         <item name="android:windowExitAnimation">@anim/pophide_start_end</item>
+    </style>
+    <style name="pop_rl_animation">
+        <item name="android:windowEnterAnimation">@anim/popshow_start_end</item>
+        <item name="android:windowExitAnimation">@anim/pophide_end_start</item>
     </style>
 </resources>

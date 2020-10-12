@@ -18,7 +18,7 @@ import com.wang.avi.AVLoadingIndicatorView;
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.ui.X5WebView;
 import xlk.paperless.standard.util.LogUtil;
-import xlk.paperless.standard.view.fragment.BaseFragment;
+import xlk.paperless.standard.base.BaseFragment;
 
 /**
  * @author xlk
@@ -43,7 +43,6 @@ public class MeetWebFragment extends BaseFragment implements View.OnClickListene
         View inflate = inflater.inflate(R.layout.fragment_web, container, false);
         initView(inflate);
         presenter = new MeetWebPresenter(getContext(), this);
-        presenter.register();
         initEvent();
         presenter.webQuery();
         return inflate;
@@ -145,7 +144,7 @@ public class MeetWebFragment extends BaseFragment implements View.OnClickListene
             //webview清理历史记录
             f_web_x5view.clearHistory();
         }
-        presenter.unregister();
+        presenter.onDestroy();
         super.onDestroy();
     }
 

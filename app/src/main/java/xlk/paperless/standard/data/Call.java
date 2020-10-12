@@ -2,14 +2,13 @@ package xlk.paperless.standard.data;
 
 import android.content.Intent;
 
-import com.mogujie.tt.protobuf.InterfaceMacro;
-
 import org.greenrobot.eventbus.EventBus;
 
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.view.MyApplication;
 
-import static xlk.paperless.standard.view.MyApplication.lbm;
+import static xlk.paperless.standard.data.Values.lbm;
+
 
 /**
  * @author xlk
@@ -89,9 +88,10 @@ public class Call {
 //                return 1920;1836
                 switch (type) {
                     case 2:
-                        return MyApplication.screen_width;
+                        return MyApplication.width;
+//                        return 1280;
                     case 3:
-                        return MyApplication.camera_width;
+                        return Values.camera_width;
                 }
 
             }
@@ -100,9 +100,10 @@ public class Call {
 //                return 1080;1200
                 switch (type) {
                     case 2:
-                        return MyApplication.screen_height;
+                        return MyApplication.height;
+//                        return 720;
                     case 3:
-                        return MyApplication.camera_height;
+                        return Values.camera_height;
                 }
 
             }
@@ -112,10 +113,10 @@ public class Call {
                 if (type == 2) {
                     Intent intent = new Intent();
                     intent.setAction(Constant.action_screen_recording);
-                    intent.putExtra("type", type);
+                    intent.putExtra(Constant.extra_collection_type, type);
                     lbm.sendBroadcast(intent);
                 } else if (type == 3) {
-                    EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_COLLECT_CAMERA_START).objs(type).build());
+                    EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_COLLECT_CAMERA_START).objects(type).build());
                 }
                 return 0;
             }
@@ -125,15 +126,16 @@ public class Call {
                 if (type == 2) {
                     Intent intent = new Intent();
                     intent.setAction(Constant.action_stop_screen_recording);
-                    intent.putExtra("type", type);
+                    intent.putExtra(Constant.extra_collection_type, type);
                     lbm.sendBroadcast(intent);
                 } else if (type == 3) {
                     EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_COLLECT_CAMERA_STOP).build());
                 }
                 return 0;
             }
+            default:
+                return 0;
         }
-        return 0;
     }
 
     /**
@@ -142,8 +144,8 @@ public class Call {
      * @return
      */
     public int callback_yuvdisplay(int res, int w, int h, byte[] y, byte[] u, byte[] v) {
-        LogUtil.v("xlk_log", "callback_yuvdisplay -->" + "后台YUV数据");
-        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_YUV_DISPLAY).objs(res, w, h, y, u, v).build());
+        LogUtil.v("videodata", "callback_yuvdisplay -->" + "后台YUV数据");
+        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_YUV_DISPLAY).objects(res, w, h, y, u, v).build());
         return 0;
     }
 
@@ -156,9 +158,9 @@ public class Call {
      */
     public int callback_videodecode(int isKeyframe, int res, int codecid, int w, int h, byte[] packet, long pts, byte[] codecdata) {
         if (packet != null) {
-            LogUtil.v("xlk_log", "callback_videodecode -->" + "后台videodecode数据");
+            LogUtil.v("videodata", "callback_videodecode -->" + "后台videodecode数据");
             EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_VIDEO_DECODE)
-                    .objs(isKeyframe, res, codecid, w, h, packet, pts, codecdata).build());
+                    .objects(isKeyframe, res, codecid, w, h, packet, pts, codecdata).build());
         }
         return 0;
     }
@@ -172,7 +174,7 @@ public class Call {
     }
 
     public void error_ret(int type, int method, int ret) {
-
+        LogUtil.v("后台错误回调", "error_ret type=" + type + ",method=" + method + ",ret=" + ret);
     }
 
     //无纸化功能接口回调接口
@@ -182,11 +184,10 @@ public class Call {
     //datalen data有数据时 datalen就有长度
     //返回0即可
     public int callback_method(int type, int method, byte[] data, int datalen) {
-        if (type == InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEMBER_VALUE &&
-                method == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_QUERYPROPERTY_VALUE) {
-            LogUtil.e("后台回调", "queryMemberProperty 查询属性---- ");
+        if (type != 1) {
+            LogUtil.v("后台回调", "callback_method type=" + type + ",method=" + method);
         }
-        EventBus.getDefault().post(new EventMessage.Builder().type(type).method(method).objs(data, datalen).build());
+        EventBus.getDefault().post(new EventMessage.Builder().type(type).method(method).objects(data, datalen).build());
         return 0;
     }
 }

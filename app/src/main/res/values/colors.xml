@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
-    <color name="video_bottom">#b8b8b8</color>
+    <color name="video_pop_bg">#99000000</color>
 
     <color name="table_line_color">#c0dcf2</color>
     <color name="table_selected">#55a1ec</color>
@@ -18,23 +18,24 @@
     <color name="yellow">#d8c81b</color>
     <color name="white">#ffffff</color>
     <color name="blue">#4ea7eb</color>
+    <color name="light_blue">#77AAD3</color>
     <color name="black">#28282d</color>
     <color name="pink">#d931e8</color>
+
     <color name="meet_fragment_bg">#cfcfcf</color>
     <color name="wm_view_bg">#ebebeb</color>
 
     <color name="enable_t">#a0a0a0</color>
     <color name="enable_f">#b9d6d6d6</color>
 
-
     <color name="btn_choosed_tv">#ffffff</color>
     <color name="btn_normal_tv">#3e3e3e</color>
     <color name="btn_choosed">#12e6fe</color>
     <color name="btn_normal">#c6efee</color>
 
-    <color name="meet_top_bar">#3e58c9</color>
+    <color name="meet_top_bar">#BC1467B0</color>
 
-    <color name="meet_content">#1467b0</color>
+    <color name="meet_content">#1467B0</color>
     <color name="meet_content_t">#4ea7eb</color>
 
     <color name="table_tv_out">#5ca2fb</color>
@@ -45,22 +46,27 @@
     <drawable name="text_color_white">#ffffff</drawable>
     <drawable name="text_color_black">#4a4a4a</drawable>
 
-    <color name="text_color_white">#ffffff</color>
+    <color name="text_color_white">#FFFFFF</color>
     <color name="text_color_black">#4a4a4a</color>
 
-    <color name="seat_bg">#2b8c8585</color>
+    <color name="seat_bg">#2BEBE7EB</color>
 
     <color name="bullet_select_t">#669eeaff</color>
     <color name="bullet_select_f">#ffffff</color>
 
     <color name="chart_title">#d63ac2</color>
     <color name="chart_content">#0d68d8</color>
-    <color name="option_a">#e61878</color>
-    <color name="option_b">#1ac534</color>
-    <color name="option_c">#2367b9</color>
-    <color name="option_d">#dbd827</color>
-    <color name="option_e">#8a2eda</color>
+    <color name="chart_empty">#7D7D7D</color>
+    <color name="option_a">#FF0000</color>
+    <color name="option_b">#00FF00</color>
+    <color name="option_c">#0000FF</color>
+    <color name="option_d">#00FFFF</color>
+    <color name="option_e">#FF00FF</color>
+    <color name="video_time">#45F24C</color>
 
-
-
+    <color name="admin_rv_bg">#1E2F47</color>
+    <color name="admin_table_title_bg">#738494</color>
+    
+    <color name="text_color_red">#E10000</color>
+    <color name="text_color_green">#00B400</color>
 </resources>

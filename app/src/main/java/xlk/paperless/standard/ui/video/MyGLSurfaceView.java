@@ -20,6 +20,7 @@ import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.data.bean.MediaBean;
 import xlk.paperless.standard.util.LogUtil;
+import xlk.paperless.standard.view.MyApplication;
 
 
 /**
@@ -274,7 +275,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
      * 释放资源
      */
     private void releaseMediaCodec() {
-        new Thread(() -> {
+        MyApplication.threadPool.execute(()->{
             if (mediaCodec != null) {
                 try {
                     LogUtil.e(TAG, "releaseMediaCodec :   --> ");
@@ -295,7 +296,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
             }
             mediaCodec = null;
             mediaFormat = null;
-        }).start();
+        });
     }
 
     public void setResId(int resid) {
@@ -335,7 +336,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
             while (!isStop) {
                 if (System.currentTimeMillis() - lastPushTime >= framepersecond) {
                     LogUtil.v(TAG, "releaseThread 手动发送空数据 -->");
-                    EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_VIDEO_DECODE).objs(0, resId, 0, 0, 0, null, 1L, null).build());
+                    EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_VIDEO_DECODE).objects(0, resId, 0, 0, 0, null, 1L, null).build());
                     try {
                         sleep(25);
                     } catch (InterruptedException e) {

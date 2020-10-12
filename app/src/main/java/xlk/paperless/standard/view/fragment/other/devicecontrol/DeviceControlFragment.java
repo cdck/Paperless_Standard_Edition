@@ -22,7 +22,7 @@ import xlk.paperless.standard.R;
 import xlk.paperless.standard.adapter.DevControlAdapter;
 import xlk.paperless.standard.util.PopUtil;
 import xlk.paperless.standard.util.ToastUtil;
-import xlk.paperless.standard.view.fragment.BaseFragment;
+import xlk.paperless.standard.base.BaseFragment;
 
 /**
  * @author xlk
@@ -55,7 +55,6 @@ public class DeviceControlFragment extends BaseFragment implements View.OnClickL
         View inflate = inflater.inflate(R.layout.fragment_device_control, container, false);
         initView(inflate);
         presenter = new DeviceControlPresenter(getContext(), this);
-        presenter.register();
         String[] stringArray = getResources().getStringArray(R.array.role);
         adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, stringArray);
         presenter.queryRankInfo();
@@ -86,7 +85,7 @@ public class DeviceControlFragment extends BaseFragment implements View.OnClickL
     @Override
     public void onDestroy() {
         super.onDestroy();
-        presenter.unregister();
+        presenter.onDestroy();
     }
 
     private void initView(View inflate) {
