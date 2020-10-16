@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Looper;
-import android.text.format.DateUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -175,7 +174,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         String fileName = "crash-" + time + "-" + timeStamp + ".log";
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             try {
-                File dir = new File(Constant.dir_crash_log);
+                File dir = new File(Constant.DIR_CRASH_LOG);
                 LogUtil.i("CrashHandler", dir.toString());
                 if (!dir.exists()) {
                     dir.mkdir();

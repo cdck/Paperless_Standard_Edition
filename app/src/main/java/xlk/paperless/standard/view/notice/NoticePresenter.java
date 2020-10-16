@@ -68,10 +68,10 @@ public class NoticePresenter extends BasePresenter {
 
 
     private void close(int bulletid){
-        if (NoticeActivity.hashMap.containsKey(bulletid)) {
-            Activity activity = NoticeActivity.hashMap.get(bulletid);
+        if (BulletinActivity.hashMap.containsKey(bulletid)) {
+            Activity activity = BulletinActivity.hashMap.get(bulletid);
             activity.finish();
-            NoticeActivity.hashMap.remove(bulletid);
+            BulletinActivity.hashMap.remove(bulletid);
         }
     }
 
@@ -98,8 +98,8 @@ public class NoticePresenter extends BasePresenter {
                     }
                 }
                 if (!userStr.isEmpty()) {
-                    FileUtil.createDir(Constant.dir_picture);
-                    jni.creationFileDownload(Constant.dir_picture + userStr + ".png", mediaid, 1, 0, userStr);
+                    FileUtil.createDir(Constant.DIR_PICTURE);
+                    jni.creationFileDownload(Constant.DIR_PICTURE + userStr + ".png", mediaid, 1, 0, userStr);
                 }
             }
             for (int i = 0; i < textList.size(); i++) {

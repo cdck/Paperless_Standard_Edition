@@ -74,10 +74,10 @@ public class JxlUtil {
      * 第三个参数：内容
      */
     public static void exportSubmitMember(ExportSubmitMember info) {
-        FileUtil.createDir(Constant.dir_export);
+        FileUtil.createDir(Constant.DIR_EXPORT);
         String fileName = "参会人投票-选举详情";
         //1.创建Excel文件
-        File file = createXlsFile(Constant.dir_export + fileName);
+        File file = createXlsFile(Constant.DIR_EXPORT + fileName);
         try {
             file.createNewFile();
             //2.创建工作簿
@@ -144,9 +144,9 @@ public class JxlUtil {
      * @param content  内容描述
      */
     public static void exportVoteInfo(List<InterfaceVote.pbui_Item_MeetVoteDetailInfo> votes, String fileName, String content) {
-        FileUtil.createDir(Constant.dir_export);
+        FileUtil.createDir(Constant.DIR_EXPORT);
         //1.创建Excel文件
-        File file = createXlsFile(Constant.dir_export + fileName);
+        File file = createXlsFile(Constant.DIR_EXPORT + fileName);
         try {
             file.createNewFile();
             //2.创建工作簿
@@ -339,9 +339,9 @@ public class JxlUtil {
      */
     public static void exportMember(List<InterfacePerson.pbui_Item_PersonDetailInfo> memberInfos) {
         {
-            FileUtil.createDir(Constant.dir_export);
+            FileUtil.createDir(Constant.DIR_EXPORT);
             //1.创建Excel文件
-            File file = createXlsFile(Constant.dir_export + "常用参会人");
+            File file = createXlsFile(Constant.DIR_EXPORT + "常用参会人");
             try {
                 file.createNewFile();
                 //2.创建工作簿

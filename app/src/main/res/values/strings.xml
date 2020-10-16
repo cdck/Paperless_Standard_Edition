@@ -246,7 +246,7 @@
     <string name="mode_register">记名</string>
     <string name="mode_anonymous">匿名</string>
     <string name="state_not_initiated">未发起</string>
-    <string name="state_ongoing">正在进行...</string>
+    <string name="state_ongoing">正在进行&#8230;</string>
     <string name="state_has_ended">已经结束</string>
     <string name="agree_count">赞成：%1$s</string>
     <string name="against_count">反对：%1$s</string>
@@ -423,7 +423,7 @@
     <string name="please_enter_user_name">请输入用户名</string>
     <string name="user_">用户：%1$s</string>
     <string name="meet_status_not_initiated">会议状态：未开始会议</string>
-    <string name="meet_status_ongoing">会议状态：正在进行...</string>
+    <string name="meet_status_ongoing">会议状态：正在进行&#8230;</string>
     <string name="meet_status_isover">会议状态：已经结束</string>
     <string name="device_name_">设备名称：</string>
     <string name="device_IP_">设备IP:</string>
@@ -491,7 +491,53 @@
     <string name="conent_isEmpty">内容不能为空</string>
     <string name="no_select_meet">未选择会议！</string>
     <string name="meet_status_no_select_meet">会议状态：未选择会议！</string>
-    <string name="undefined">未定义...</string>
+    <string name="undefined">未定义&#8230;</string>
+    <string name="login_error_0">初始化成功</string>
+    <string name="login_error_1">不存在</string>
+    <string name="login_error_2">不在线</string>
+    <string name="login_error_3">无法找到可用的服务器</string>
+    <string name="login_error_4">拒绝操作</string>
+    <string name="login_error_5">密码错误</string>
+    <string name="login_error_6">格式错误</string>
+    <string name="login_error_7">无权限操作</string>
+    <string name="login_error_8">已存在</string>
+    <string name="login_error_9">升级的版本号低于系统正在使用的版本号</string>
+    <string name="login_error_10">数据库没连接上</string>
+    <string name="login_error_11">未联接到区域服务</string>
+    <string name="login_error_12">没有资源了</string>
+    <string name="login_error_13">超时</string>
+    <string name="login_error_14">数据为0</string>
+    <string name="login_error_15">区域服务器操作出错</string>
+    <string name="login_error_16">没有足够的空间了</string>
+    <string name="login_error_17">数据操作错误</string>
+    <string name="login_error_18">没有标识码</string>
+    <string name="login_error_19">超过最大在线设备数</string>
+    <string name="login_error_20">超过最大错误次数数,拒绝登陆</string>
+    <string name="login_error_21">区域服务器认证失败</string>
+    <string name="login_error_22">协议版本不匹配</string>
+    <string name="login_error_23">区域服务器已经过期了</string>
+    <string name="login_error_24">协议版本不匹配,拒绝请求</string>
+    <string name="login_error_25">超出范围</string>
+    <string name="login_error_26">无法打开</string>
+    <string name="login_error_27">强行停止</string>
+    <string name="login_error_28">登陆错误</string>
+    <string name="login_error_29">超过最大并发设备数,拒绝登陆</string>
+    <string name="hint_Search_meetings">搜索会议</string>
+    <string name="copy_meeting">复制会议</string>
+    <string name="switch_meeting">切换到会议编辑</string>
+    <string name="meeting_name_">会议名称：</string>
+    <string name="meeting_room_">会议室：</string>
+    <string name="confidential_">是否保密：</string>
+    <string name="meeting_filter_">会议过滤：</string>
+    <string name="start_time_">开始时间：</string>
+    <string name="end_time_">结束时间：</string>
+    <string name="singn_in_type_">签到类型：</string>
+    <string name="meet_booker_">会议预约者：</string>
+    <string name="start_meet">开始会议</string>
+    <string name="end_meet">结束会议</string>
+    <string name="pause_meet">暂停会议</string>
+    <string name="please_sign_first">请先进行签名</string>
+    <string name="sign_in_hint">请在下面空白处进行手写签名</string>
     <string-array name="role">
         <item>无</item>
         <item>普通参会人</item>
@@ -517,5 +563,21 @@
         <item>5选3</item>
         <item>5选2</item>
         <item>3选2</item>
+    </string-array>
+    <string-array name="confidential_spinner">
+        <item>是</item>
+        <item>否</item>
+    </string-array>
+    <string-array name="meet_filter_spinner">
+        <item>当前会议</item>
+        <item>全部会议</item>
+        <item>未来会议</item>
+        <item>历史会议</item>
+    </string-array>
+    <string-array name="singin_type_spinner">
+        <item>直接签到</item>
+        <item>个人密码签到</item>
+        <item>拍照（手写）签到</item>
+        <item>会议密码签到</item>
     </string-array>
 </resources>

@@ -56,15 +56,15 @@ public class Values {
     /**
      * 本机的参会人ID
      */
-    public static int localMemberId = -1;
+    public static int localMemberId = 0;
     /**
      * 本机当前参加的会议ID
      */
-    public static int localMeetingId = -1;
+    public static int localMeetingId = 0;
     /**
      * 本机设备ID
      */
-    public static int localDeviceId = -1;
+    public static int localDeviceId = 0;
     /**
      * 本机角色
      */

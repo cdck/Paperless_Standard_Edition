@@ -52,7 +52,7 @@
     <Button
         android:id="@+id/wm_screen_launch"
         style="@style/btn_pressed_style"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_marginStart="@dimen/dp_8"
         android:layout_marginEnd="@dimen/dp_8"
         android:layout_marginBottom="4dp"
@@ -64,7 +64,7 @@
     <Button
         android:id="@+id/wm_screen_cancel"
         style="@style/btn_pressed_style"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_marginStart="@dimen/dp_8"
         android:layout_marginEnd="@dimen/dp_8"
         android:text="@string/cancel"

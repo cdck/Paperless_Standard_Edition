@@ -85,7 +85,7 @@ public class AdminPresenter extends BasePresenter {
                 currentMeetId = info.getMeetingid();
                 LogUtil.i(TAG, "queryCurrentMeeting meetName=" + meetName + ", currentMeetId=" + currentMeetId);
             }
-            view.get().updateMeetStatus(currentMeetId,-1);
+            view.get().updateMeetStatus(currentMeetId, -1);
             if (currentMeetId != 0) {
                 queryMeetingById(currentMeetId);
                 view.get().updateMeetName(meetName);
@@ -102,7 +102,7 @@ public class AdminPresenter extends BasePresenter {
             InterfaceMeet.pbui_Type_MeetMeetInfo info = jni.queryMeetFromId(meetId);
             if (info != null) {
                 InterfaceMeet.pbui_Item_MeetMeetInfo item = info.getItemList().get(0);
-                view.get().updateMeetStatus(meetId,item.getStatus());
+                view.get().updateMeetStatus(meetId, item.getStatus());
             }
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
@@ -110,15 +110,11 @@ public class AdminPresenter extends BasePresenter {
     }
 
     void queryLocalDeviceInfo() {
-        try {
-            InterfaceDevice.pbui_Type_DeviceDetailInfo info = jni.queryDevInfoById(Values.localDeviceId);
-            if (info != null) {
-                InterfaceDevice.pbui_Item_DeviceDetailInfo detailInfo = info.getPdevList().get(0);
-                String devName = detailInfo.getDevname().toStringUtf8();
-                view.get().updateDeviceName(devName);
-            }
-        } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
+        InterfaceDevice.pbui_Type_DeviceDetailInfo info = jni.queryDevInfoById(Values.localDeviceId);
+        if (info != null) {
+            InterfaceDevice.pbui_Item_DeviceDetailInfo detailInfo = info.getPdevList().get(0);
+            String devName = detailInfo.getDevname().toStringUtf8();
+            view.get().updateDeviceName(devName);
         }
     }
 

@@ -21,10 +21,10 @@ import xlk.paperless.standard.data.bean.VideoDev;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.base.BasePresenter;
 
-import static xlk.paperless.standard.data.Constant.resource_1;
-import static xlk.paperless.standard.data.Constant.resource_2;
-import static xlk.paperless.standard.data.Constant.resource_3;
-import static xlk.paperless.standard.data.Constant.resource_4;
+import static xlk.paperless.standard.data.Constant.RESOURCE_1;
+import static xlk.paperless.standard.data.Constant.RESOURCE_2;
+import static xlk.paperless.standard.data.Constant.RESOURCE_3;
+import static xlk.paperless.standard.data.Constant.RESOURCE_4;
 
 /**
  * @author xlk
@@ -149,17 +149,17 @@ public class MeetLiveVideoPresenter extends BasePresenter {
     }
 
     public void initVideoRes(int pvWidth, int pvHeight) {
-        jni.initVideoRes(resource_1, pvWidth / 2, pvHeight / 2);
-        jni.initVideoRes(resource_2, pvWidth / 2, pvHeight / 2);
-        jni.initVideoRes(resource_3, pvWidth / 2, pvHeight / 2);
-        jni.initVideoRes(resource_4, pvWidth / 2, pvHeight / 2);
+        jni.initVideoRes(RESOURCE_1, pvWidth / 2, pvHeight / 2);
+        jni.initVideoRes(RESOURCE_2, pvWidth / 2, pvHeight / 2);
+        jni.initVideoRes(RESOURCE_3, pvWidth / 2, pvHeight / 2);
+        jni.initVideoRes(RESOURCE_4, pvWidth / 2, pvHeight / 2);
     }
 
     public void releaseVideoRes() {
-        jni.releaseVideoRes(resource_1);
-        jni.releaseVideoRes(resource_2);
-        jni.releaseVideoRes(resource_3);
-        jni.releaseVideoRes(resource_4);
+        jni.releaseVideoRes(RESOURCE_1);
+        jni.releaseVideoRes(RESOURCE_2);
+        jni.releaseVideoRes(RESOURCE_3);
+        jni.releaseVideoRes(RESOURCE_4);
     }
 
     public void stopResource(int resId) {

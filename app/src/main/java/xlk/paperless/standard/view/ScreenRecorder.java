@@ -6,12 +6,10 @@ import android.media.MediaCodec;
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
 import android.media.projection.MediaProjection;
-import android.text.TextUtils;
+import android.util.Log;
+import android.util.Range;
 import android.view.Surface;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -20,17 +18,27 @@ import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.MathUtil;
 
-import static xlk.paperless.standard.view.MyApplication.read2file;
-
 /**
  * @author Gowcage
  */
 public class ScreenRecorder extends Thread {
     private final String TAG = "ScreenRecorder-->";
-    private static final String MIME_TYPE = "video/avc";// h.264编码
-    private static final int FRAME_RATE = 18;// 帧率
-    private static final int I_FRAME_INTERVAL = 2;// 关键帧间隔  两关键帧之间的其它帧 = 18*2
-    private static final int TIMEOUT_US = 10 * 1000;// 超时
+    /**
+     *  h.264编码
+     */
+    private static final String MIME_TYPE = "video/avc";
+    /**
+     * 帧率
+     */
+    private static final int FRAME_RATE = 18;
+    /**
+     * 关键帧间隔  两关键帧之间的其它帧 = 18*2
+     */
+    private static final int I_FRAME_INTERVAL = 2;
+    /**
+     * 超时
+     */
+    private static final int TIMEOUT_US = 10 * 1000;
     private final String savePath;
 
     private int width;
@@ -92,6 +100,18 @@ public class ScreenRecorder extends Thread {
         LogUtil.v(TAG, "prepareEncoder---------------------------");
         // 创建MediaCodec实例 这里创建的是编码器
         encoder = MediaCodec.createEncoderByType(MIME_TYPE);
+
+        MediaCodecInfo codecInfo = encoder.getCodecInfo();
+        MediaCodecInfo.CodecCapabilities capabilitiesForType = codecInfo.getCapabilitiesForType(MIME_TYPE);
+        MediaCodecInfo.VideoCapabilities videoCapabilities = capabilitiesForType.getVideoCapabilities();
+        Range<Integer> supportedWidths = videoCapabilities.getSupportedWidths();
+        Range<Integer> supportedHeights = videoCapabilities.getSupportedHeights();
+        // TODO: 2020/9/26 解决宽高不适配的问题 Fix:android.media.MediaCodec$CodecException: Error 0xfffffc0e
+        width = supportedWidths.clamp(width);
+        height = supportedHeights.clamp(height);
+        Log.e(TAG, "prepareEncoder 录制时使用的宽高：width=" + width + ",height=" + height + ",bitrate=" + bitrate);
+
+
         MediaFormat format = MediaFormat.createVideoFormat(MIME_TYPE, width, height);
         // 码率 越高越清晰 仅编码器需要设置
         format.setInteger(MediaFormat.KEY_BIT_RATE, bitrate);
@@ -127,7 +147,6 @@ public class ScreenRecorder extends Thread {
         mSurface = encoder.createInputSurface();
         LogUtil.v(TAG, "created input surface: " + mSurface);
         encoder.start();// 开始编码
-        createFile();
     }
 
     public byte[] configbyte;
@@ -183,7 +202,6 @@ public class ScreenRecorder extends Thread {
                 Thread.sleep(millis);
                 LogUtil.v(TAG, "timePush-> 睡眠：" + millis + ",当前时间：" + System.currentTimeMillis());
                 lastTime = System.currentTimeMillis();
-                read2File(data);
                 jni.call(channelIndex, iskeyframe, presentationTimeUs, data);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -191,7 +209,6 @@ public class ScreenRecorder extends Thread {
         } else {
             LogUtil.v(TAG, "timePush-> 直接发送出去 hm= " + hm + ", useTime= " + useTime);
             lastTime = System.currentTimeMillis();
-            read2File(data);
             jni.call(channelIndex, iskeyframe, presentationTimeUs, data);
         }
     }
@@ -210,39 +227,10 @@ public class ScreenRecorder extends Thread {
             if (display != null) {
                 display.release();
             }
-            if (outputStream != null) {
-                outputStream.close();
-                outputStream.flush();
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private BufferedOutputStream outputStream;
 
-    private void createFile() {
-        if (read2file && !TextUtils.isEmpty(savePath)) {
-            File file = new File(savePath);
-            if (file.exists()) {
-                file.delete();
-            }
-            try {
-                outputStream = new BufferedOutputStream(new FileOutputStream(file));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void read2File(byte[] outData) {
-        try {
-            if (outputStream != null) {
-                LogUtil.v(TAG, "read2File 录屏数据写入文件");
-                outputStream.write(outData, 0, outData.length);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

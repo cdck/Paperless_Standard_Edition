@@ -50,7 +50,7 @@ import xlk.paperless.standard.util.UriUtil;
 import xlk.paperless.standard.base.BaseFragment;
 
 import static xlk.paperless.standard.data.Constant.permission_code_upload;
-import static xlk.paperless.standard.data.Constant.resource_0;
+import static xlk.paperless.standard.data.Constant.RESOURCE_0;
 
 /**
  * @author xlk
@@ -230,10 +230,10 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
                 if (FileUtil.isVideoFile(info.getName().toStringUtf8())) {
                     List<Integer> devIds = new ArrayList<>();
                     devIds.add(Values.localDeviceId);
-                    JniHandler.getInstance().mediaPlayOperate(info.getMediaid(), devIds, 0, resource_0, 0, 0);
+                    JniHandler.getInstance().mediaPlayOperate(info.getMediaid(), devIds, 0, RESOURCE_0, 0, 0);
                 } else {
 //                    if (Constant.hasPermission(Constant.permission_code_download)) {
-                        FileUtil.openFile(getContext(), Constant.dir_data_file, info.getName().toStringUtf8(), info.getMediaid());
+                    FileUtil.openFile(getContext(), Constant.DIR_DATA_FILE, info.getName().toStringUtf8(), info.getMediaid());
 //                    } else {
 //                        ToastUtil.show(R.string.err_NoPermission);
 //                    }
@@ -293,6 +293,7 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
                     pushProjectionAdapter.setChooseAll(checked);
                 }
             });
+            //推送文件
             inflate.findViewById(R.id.pop_push_determine).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -300,12 +301,29 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
                     devIds.addAll(pushProjectionAdapter.getDevIds());
                     if (!devIds.isEmpty()) {
                         pushPop.dismiss();
-                        presenter.mediaPlayOperate(mediaId, devIds, 0, resource_0, 0, InterfaceMacro.Pb_MeetPlayFlag.Pb_MEDIA_PLAYFLAG_ZERO.getNumber());
+                        presenter.mediaPlayOperate(mediaId, devIds, 0, RESOURCE_0, 0, InterfaceMacro.Pb_MeetPlayFlag.Pb_MEDIA_PLAYFLAG_ZERO.getNumber());
                     } else {
                         ToastUtil.show(R.string.please_choose_push_target);
                     }
                 }
             });
+            //停止推送
+            inflate.findViewById(R.id.pop_push_stop).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    List<Integer> devIds = pushMemberAdapter.getDevIds();
+                    devIds.addAll(pushProjectionAdapter.getDevIds());
+                    if (!devIds.isEmpty()) {
+                        pushPop.dismiss();
+                        List<Integer> temps = new ArrayList<>();
+                        temps.add(0);
+                        presenter.stopPush(temps, devIds);
+                    } else {
+                        ToastUtil.show(R.string.please_choose_push_target);
+                    }
+                }
+            });
+            //取消
             inflate.findViewById(R.id.pop_push_cancel).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -401,7 +419,7 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
                         int mediaid = Constant.getMediaId(path);
                         presenter.uploadFile(InterfaceMacro.Pb_Upload_Flag.Pb_MEET_UPLOADFLAG_ONLYENDCALLBACK_VALUE,
                                 currentDirId, 0, shareFileName + finalSuffix, path,
-                                0, mediaid, Constant.upload_choose_file);
+                                0, mediaid, Constant.UPLOAD_CHOOSE_FILE);
                         dialogInterface.dismiss();
                     } else {
                         ToastUtil.show(R.string.please_enter_valid_file_name);
@@ -485,18 +503,23 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
                     }
                 }
                 break;
-            case R.id.f_data_export://导出资料
+            //导出资料
+            case R.id.f_data_export:
                 if (Constant.hasPermission(Constant.permission_code_download)) {
                     exportFile();
                 } else {
                     ToastUtil.show(R.string.err_NoPermission);
                 }
                 break;
-            case R.id.f_data_previous_btn://上一页
+            //上一页
+            case R.id.f_data_previous_btn:
 
                 break;
-            case R.id.f_data_nextpage_btn://下一页
+            //下一页
+            case R.id.f_data_nextpage_btn:
 
+                break;
+            default:
                 break;
         }
     }

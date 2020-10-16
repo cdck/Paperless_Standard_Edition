@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_wm_bg">
+
+    <Button
+        android:id="@+id/wm_menu_service"
+        style="@style/btn_pressed_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_5"
+        android:text="@string/Call_service"
+        app:layout_constraintBottom_toTopOf="@+id/wm_menu_start_projection"
+        app:layout_constraintEnd_toStartOf="@+id/wm_menu_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/wm_menu_back"
+        style="@style/btn_pressed_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_5"
+        android:text="@string/back"
+        app:layout_constraintBaseline_toBaselineOf="@+id/wm_menu_service"
+        app:layout_constraintEnd_toStartOf="@+id/wm_menu_start_screen"
+        app:layout_constraintStart_toEndOf="@+id/wm_menu_service"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/wm_menu_start_screen"
+        style="@style/btn_pressed_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_5"
+        android:text="@string/Initiate_the_same_screen"
+        app:layout_constraintBaseline_toBaselineOf="@+id/wm_menu_service"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/wm_menu_back"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <Button
+        android:id="@+id/wm_menu_start_projection"
+        style="@style/btn_pressed_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Initiate_projection"
+        app:layout_constraintBottom_toTopOf="@+id/wm_menu_join_screen"
+        app:layout_constraintEnd_toEndOf="@+id/wm_menu_back"
+        app:layout_constraintStart_toStartOf="@+id/wm_menu_service"
+        app:layout_constraintTop_toBottomOf="@+id/wm_menu_service" />
+
+    <Button
+        android:id="@+id/wm_menu_stop_projection"
+        style="@style/btn_pressed_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/End_projection"
+        app:layout_constraintBaseline_toBaselineOf="@+id/wm_menu_start_projection"
+        app:layout_constraintEnd_toEndOf="@+id/wm_menu_start_screen"
+        app:layout_constraintStart_toStartOf="@+id/wm_menu_back"
+        app:layout_constraintTop_toBottomOf="@+id/wm_menu_service" />
+
+    <Button
+        android:id="@+id/wm_menu_join_screen"
+        style="@style/btn_pressed_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_5"
+        android:text="@string/Join_screen"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/wm_menu_stop_screen"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wm_menu_start_projection" />
+
+    <Button
+        android:id="@+id/wm_menu_stop_screen"
+        style="@style/btn_pressed_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_5"
+        android:text="@string/End_screen"
+        app:layout_constraintBaseline_toBaselineOf="@+id/wm_menu_join_screen"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/wm_menu_screenshot"
+        app:layout_constraintStart_toEndOf="@+id/wm_menu_join_screen"
+        app:layout_constraintTop_toBottomOf="@+id/wm_menu_start_projection" />
+
+    <Button
+        android:id="@+id/wm_menu_screenshot"
+        style="@style/btn_pressed_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_5"
+        android:text="@string/Screenshot_annotation"
+        app:layout_constraintBaseline_toBaselineOf="@+id/wm_menu_join_screen"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/wm_menu_stop_screen"
+        app:layout_constraintTop_toBottomOf="@+id/wm_menu_start_projection" />
+</android.support.constraint.ConstraintLayout>

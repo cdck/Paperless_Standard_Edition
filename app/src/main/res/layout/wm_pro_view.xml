@@ -101,6 +101,7 @@
     <Button
         android:id="@+id/wm_pro_launch_pro"
         style="@style/btn_pressed_style"
+        android:layout_width="@dimen/dp_200"
         android:layout_marginEnd="@dimen/dp_8"
         android:layout_marginBottom="@dimen/dp_8"
         android:text="@string/launch_pro"
@@ -111,6 +112,7 @@
     <Button
         android:id="@+id/wm_pro_cancel"
         style="@style/btn_pressed_style"
+        android:layout_width="@dimen/dp_200"
         android:layout_marginEnd="@dimen/dp_8"
         android:layout_marginBottom="@dimen/dp_8"
         android:text="@string/cancel"

@@ -5,7 +5,7 @@
     android:id="@+id/notice_bg_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="xlk.paperless.standard.view.notice.NoticeActivity">
+    tools:context="xlk.paperless.standard.view.notice.BulletinActivity">
 
     <TextView
         android:id="@+id/notice_ac_title_tv"
@@ -34,6 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/close"
+        style="@style/btn_pressed_style"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"

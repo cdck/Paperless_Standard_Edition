@@ -162,8 +162,8 @@ public class MeetSigninPresenter extends BasePresenter {
         try {
             int mediaId = jni.queryMeetRoomProperty(Values.localRoomId);
             if (mediaId != 0) {
-                FileUtil.createDir(Constant.dir_picture);
-                jni.creationFileDownload(Constant.dir_picture + Constant.ROOM_BG_PNG_TAG + ".png", mediaId, 1, 0, Constant.ROOM_BG_PNG_TAG);
+                FileUtil.createDir(Constant.DIR_PICTURE);
+                jni.creationFileDownload(Constant.DIR_PICTURE + Constant.ROOM_BG_PNG_TAG + ".png", mediaId, 1, 0, Constant.ROOM_BG_PNG_TAG);
                 return;
             }
             placeDeviceRankingInfo();

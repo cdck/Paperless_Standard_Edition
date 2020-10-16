@@ -112,8 +112,8 @@ public class Call {
                 LogUtil.i("Call", "callback -->" + "通知采集流 type= " + type);
                 if (type == 2) {
                     Intent intent = new Intent();
-                    intent.setAction(Constant.action_screen_recording);
-                    intent.putExtra(Constant.extra_collection_type, type);
+                    intent.setAction(Constant.ACTION_SCREEN_RECORDING);
+                    intent.putExtra(Constant.EXTRA_COLLECTION_TYPE, type);
                     lbm.sendBroadcast(intent);
                 } else if (type == 3) {
                     EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_COLLECT_CAMERA_START).objects(type).build());
@@ -125,8 +125,8 @@ public class Call {
                 LogUtil.i("Call", "callback -->" + "通知停止采集流 type= " + type);
                 if (type == 2) {
                     Intent intent = new Intent();
-                    intent.setAction(Constant.action_stop_screen_recording);
-                    intent.putExtra(Constant.extra_collection_type, type);
+                    intent.setAction(Constant.ACTION_STOP_SCREEN_RECORDING);
+                    intent.putExtra(Constant.EXTRA_COLLECTION_TYPE, type);
                     lbm.sendBroadcast(intent);
                 } else if (type == 3) {
                     EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_COLLECT_CAMERA_STOP).build());

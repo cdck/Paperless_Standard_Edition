@@ -114,17 +114,22 @@ public class JniHandler {
         return InterfaceContext.pbui_MeetContextInfo.parseFrom(array);
     }
 
-    public InterfaceDevice.pbui_Type_DeviceDetailInfo queryDevInfoById(int devid) throws InvalidProtocolBufferException {
+    public InterfaceDevice.pbui_Type_DeviceDetailInfo queryDevInfoById(int devid) {
         InterfaceBase.pbui_QueryInfoByID build = InterfaceBase.pbui_QueryInfoByID.newBuilder()
                 .setId(devid).build();
         byte[] array = jni.call_method(InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEINFO_VALUE,
                 InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_SINGLEQUERYBYID_VALUE, build.toByteArray());
         if (array == null) {
-            LogUtil.e(TAG, "queryDevInfoById :  查询指定ID的设备信息失败 --> ");
+            LogUtil.e(TAG, "queryDevInfoById :  查询指定ID的设备信息失败 --> devid="+devid);
             return null;
         }
-        LogUtil.e(TAG, "queryDevInfoById :  查询指定ID的设备信息成功 --> ");
-        return InterfaceDevice.pbui_Type_DeviceDetailInfo.parseFrom(array);
+        LogUtil.e(TAG, "queryDevInfoById :  查询指定ID的设备信息成功 --> devid="+devid);
+        try {
+            return InterfaceDevice.pbui_Type_DeviceDetailInfo.parseFrom(array);
+        } catch (InvalidProtocolBufferException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -202,7 +207,7 @@ public class JniHandler {
         InterfaceBase.pbui_MeetCacheOper.Builder builder = InterfaceBase.pbui_MeetCacheOper.newBuilder();
         builder.setCacheflag(InterfaceMacro.Pb_CacheFlag.Pb_MEET_CACEH_FLAG_ZERO.getNumber());
         builder.setId(1);
-        jni.call_method(type, InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_CACHE.getNumber(), builder.build().toByteArray());
+        jni.call_method(type, InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_CACHE_VALUE, builder.build().toByteArray());
         LogUtil.e(TAG, "cacheData :  缓存会议数据 --> " + type);
     }
 
@@ -466,10 +471,10 @@ public class JniHandler {
         byte[] bytes = jni.call_method(InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETINFO_VALUE,
                 InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_QUERYPROPERTY_VALUE, build.toByteArray());
         if (bytes == null) {
-            LogUtil.e(TAG, "queryMeetingProperty -->" + "查询会议属性失败");
+            LogUtil.e(TAG, "queryMeetingProperty -->" + "查询会议属性失败 propertyid=" + propertyid + ", val1=" + val1 + ", val2=" + val2);
             return null;
         }
-        LogUtil.d(TAG, "queryMeetingProperty -->" + "查询会议属性成功");
+        LogUtil.d(TAG, "queryMeetingProperty -->" + "查询会议属性成功 propertyid=" + propertyid + ", val1=" + val1 + ", val2=" + val2);
         return bytes;
     }
 
@@ -601,21 +606,22 @@ public class JniHandler {
     }
 
     /**
-     * 查询会议排位属性
-     *
+     * 查询会议排位属性(用于查询参会人角色)
+     * @param propertyid    数据ID
      * @return
-     * @throws InvalidProtocolBufferException
      */
-    public InterfaceBase.pbui_CommonInt32uProperty queryMeetRankingProperty(int parameterval, int propertyid) throws InvalidProtocolBufferException {
-        InterfaceBase.pbui_CommonQueryProperty.Builder builder = InterfaceBase.pbui_CommonQueryProperty.newBuilder();
-        builder.setParameterval(parameterval);
-        builder.setPropertyid(propertyid);
-        byte[] array = jni.call_method(InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETSEAT.getNumber(), InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_QUERYPROPERTY.getNumber(), builder.build().toByteArray());
+    public InterfaceBase.pbui_CommonInt32uProperty queryMeetRankingProperty(int propertyid) throws InvalidProtocolBufferException {
+        InterfaceBase.pbui_CommonQueryProperty build = InterfaceBase.pbui_CommonQueryProperty.newBuilder()
+//                .setParameterval(parameterval)
+                .setPropertyid(propertyid)
+                .build();
+        byte[] array = jni.call_method(InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETSEAT_VALUE,
+                InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_QUERYPROPERTY_VALUE, build.toByteArray());
         if (array == null) {
-            LogUtil.e(TAG, "queryMeetRankingProperty :  查询会议排位属性失败 --> ");
+            LogUtil.e(TAG, "queryMeetRankingProperty :  查询会议排位属性 失败 --> ");
             return null;
         }
-        LogUtil.e(TAG, "queryMeetRankingProperty :  查询会议排位属性成功 --> ");
+        LogUtil.e(TAG, "queryMeetRankingProperty :  查询会议排位属性 成功 --> ");
         return InterfaceBase.pbui_CommonInt32uProperty.parseFrom(array);
     }
 
@@ -627,12 +633,13 @@ public class JniHandler {
      * @throws InvalidProtocolBufferException
      */
     public int queryMeetRoomProperty(int roomid) throws InvalidProtocolBufferException {
-        InterfaceBase.pbui_CommonQueryProperty.Builder builder = InterfaceBase.pbui_CommonQueryProperty.newBuilder();
-        builder.setParameterval(roomid);
-        builder.setParameterval2(roomid);
-        builder.setPropertyid(InterfaceMacro.Pb_MeetRoomPropertyID.Pb_MEETROOM_PROPERTY_BGPHOTOID.getNumber());
+        InterfaceBase.pbui_CommonQueryProperty build = InterfaceBase.pbui_CommonQueryProperty.newBuilder()
+                .setParameterval(roomid)
+                .setParameterval2(roomid)
+                .setPropertyid(InterfaceMacro.Pb_MeetRoomPropertyID.Pb_MEETROOM_PROPERTY_BGPHOTOID.getNumber())
+                .build();
         byte[] bytes = jni.call_method(InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_ROOM.getNumber(),
-                InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_QUERYPROPERTY.getNumber(), builder.build().toByteArray());
+                InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_QUERYPROPERTY.getNumber(), build.toByteArray());
         int propertyval = 0;
         if (bytes != null) {
             InterfaceBase.pbui_CommonInt32uProperty pbui_commonInt32uProperty = InterfaceBase.pbui_CommonInt32uProperty.parseFrom(bytes);

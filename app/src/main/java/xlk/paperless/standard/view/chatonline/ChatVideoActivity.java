@@ -35,8 +35,8 @@ import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.ToastUtil;
 import xlk.paperless.standard.base.BaseActivity;
 
-import static xlk.paperless.standard.data.Constant.resource_10;
-import static xlk.paperless.standard.data.Constant.resource_11;
+import static xlk.paperless.standard.data.Constant.RESOURCE_10;
+import static xlk.paperless.standard.data.Constant.RESOURCE_11;
 
 public class ChatVideoActivity extends BaseActivity implements View.OnClickListener {
 
@@ -67,8 +67,8 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
         setContentView(R.layout.activity_chat_video);
         initView();
         isChatingOpened = true;
-        mInviteflag = getIntent().getIntExtra(Constant.extra_inviteflag, -1);
-        mOperdeviceid = getIntent().getIntExtra(Constant.extra_operdeviceid, -1);
+        mInviteflag = getIntent().getIntExtra(Constant.EXTRA_INVITE_FLAG, -1);
+        mOperdeviceid = getIntent().getIntExtra(Constant.EXTRA_OPERATING_DEVICE_ID, -1);
         LogUtil.d(TAG, "onCreate --> 收到该设备ID的设备交互= " + mOperdeviceid);
         initial();
         EventBus.getDefault().register(this);
@@ -248,7 +248,7 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
                     List<Integer> resList = stopResWork.getResList();
                     for (int resid : resList) {
                         LogUtil.i(TAG, "BusEvent -->" + "停止资源通知 resid: " + resid);
-                        if ((resid == resource_10 || resid == resource_11) && mOperdeviceid == Values.localDeviceId) {
+                        if ((resid == RESOURCE_10 || resid == RESOURCE_11) && mOperdeviceid == Values.localDeviceId) {
                             LogUtil.i(TAG, "BusEvent -->" + "工作状态下，自己是发起端，且自己的播放资源停止了");
                             if (work_state != 0) {
                                 LogUtil.i(TAG, "BusEvent -->" + "停止设备对讲");
@@ -262,7 +262,7 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
                     int resid = stopPlay.getRes();
                     int createdeviceid = stopPlay.getCreatedeviceid();
                     LogUtil.i(TAG, "BusEvent -->" + "停止播放通知 resid= " + resid + ", createdeviceid= " + createdeviceid);
-                    if ((resid == resource_10 || resid == resource_11) && mOperdeviceid == Values.localDeviceId) {
+                    if ((resid == RESOURCE_10 || resid == RESOURCE_11) && mOperdeviceid == Values.localDeviceId) {
                         LogUtil.i(TAG, "BusEvent -->" + "工作状态下，自己是发起端，且自己的播放资源停止了");
                         if (work_state != 0) {
                             LogUtil.i(TAG, "BusEvent -->" + "停止设备对讲");
@@ -468,8 +468,8 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
         LogUtil.d(TAG, "stopAll -->" + "对讲或寻呼停止");
         EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_COLLECT_CAMERA_STOP).build());
         List<Integer> resids = new ArrayList<>();
-        resids.add(resource_10);
-        resids.add(resource_11);
+        resids.add(RESOURCE_10);
+        resids.add(RESOURCE_11);
         List<Integer> devids = new ArrayList<>();
         devids.add(Values.localDeviceId);
         jni.stopResourceOperate(resids, devids);

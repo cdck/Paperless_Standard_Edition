@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ import xlk.paperless.standard.R;
 import xlk.paperless.standard.ui.CustomAbsoluteLayout;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.base.BaseFragment;
+import xlk.paperless.standard.view.MyApplication;
 
 /**
  * @author xlk
@@ -40,8 +42,14 @@ public class MeetSigninFragment extends BaseFragment implements IMeetSignin {
     private TextView f_s_yd;
     private TextView f_s_yqd;
     private TextView f_s_wqd;
-    private int width = 1300, height = 760;//view的宽高，会根据底图大小变动
-    private int viewWidth, viewHeight;//表示显示区域的宽高,是不变的
+    /**
+     * view的宽高，会根据底图大小变动
+     */
+    private int width = 1300, height = 760;
+    /**
+     * 表示显示区域的宽高,是不变的
+     */
+    private int viewWidth, viewHeight;
 
     @Nullable
     @Override
@@ -65,6 +73,7 @@ public class MeetSigninFragment extends BaseFragment implements IMeetSignin {
     }
 
     private void start() {
+//        presenter.queryMeetRoomBg();
         presenter.queryInterFaceConfiguration();
 //        presenter.queryMember();
     }
@@ -183,8 +192,9 @@ public class MeetSigninFragment extends BaseFragment implements IMeetSignin {
         if (!TextUtils.isEmpty(memberName)) {
             item_seat_member.setText(memberName);
             item_seat_member.setTextColor((item.getIssignin() == 1)
-                    ? Color.argb(100, 0, 180, 0)
-                    : Color.argb(100, 225, 0, 0));
+                    ? MyApplication.applicationContext.getColor(R.color.text_color_green)
+                    : MyApplication.applicationContext.getColor(R.color.text_color_red)
+            );
         } else {
             item_seat_member.setVisibility(View.GONE);
         }

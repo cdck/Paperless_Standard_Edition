@@ -51,7 +51,7 @@ public class WpsReceiver extends BroadcastReceiver {
                 File file = new File(savePath);
                 int mediaId = Constant.getMediaId(savePath);
                 String fileName = file.getName();
-                JniHandler.getInstance().uploadFile(0, ANNOTATION_FILE_DIRECTORY_ID, 0, fileName, savePath, 0, mediaId, Constant.upload_wps_file);
+                JniHandler.getInstance().uploadFile(0, ANNOTATION_FILE_DIRECTORY_ID, 0, fileName, savePath, 0, mediaId, Constant.UPLOAD_WPS_FILE);
                 break;
         }
     }

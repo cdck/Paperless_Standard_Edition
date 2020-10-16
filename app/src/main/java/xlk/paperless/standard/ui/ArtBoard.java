@@ -45,33 +45,57 @@ import static xlk.paperless.standard.view.draw.DrawPresenter.localOperids;
 public class ArtBoard extends View {
 
     private final String TAG = "ArtBoard-->";
-    private int screenWidth,screenHeight;//显示区域的宽高，是不变的
-    public static int artBoardWidth,artBoardHeight;//画板的宽高，会根据图片大小改变
-    private boolean isCreate;//=true表示是通过构造器动态创建
+    /**
+     * 显示区域的宽高，是不变的
+     */
+    private int screenWidth, screenHeight;
+    /**
+     * 画板的宽高，会根据图片大小改变
+     */
+    public static int artBoardWidth, artBoardHeight;
+    /**
+     * =true表示是通过构造器动态创建
+     */
+    private boolean isCreate;
     private Paint mPaint;
-    private int paintWidth = 10;//画笔宽度
-    private int paintColor = Color.BLACK;//画笔默认颜色
+    /**
+     * 画笔宽度
+     */
+    private int paintWidth = 10;
+    /**
+     * 画笔默认颜色
+     */
+    private int paintColor = Color.BLACK;
 
     //设置画图样式
-    public static final int DRAW_SLINE = 1;//曲线
-    public static final int DRAW_CIRCLE = 2;//圆
-    public static final int DRAW_RECT = 3;//矩形
-    public static final int DRAW_LINE = 4;//直线
-    public static final int DRAW_TEXT = 5;//文本
-    public static final int DRAW_ERASER = 6;//橡皮擦
-    private int currentDrawGraphics = DRAW_SLINE;//当前画笔默认是曲线
+    public static final int DRAW_SLINE = 1;
+    public static final int DRAW_CIRCLE = 2;
+    public static final int DRAW_RECT = 3;
+    public static final int DRAW_LINE = 4;
+    public static final int DRAW_TEXT = 5;
+    public static final int DRAW_ERASER = 6;
+    /**
+     * 当前画笔默认是曲线
+     */
+    private int currentDrawGraphics = DRAW_SLINE;
     private Paint mBitmapPaint;
     private Bitmap mBitmap;
     private Canvas mCanvas;
     private Path mPath;
     private DrawPath drawPath;
-    public static final List<DrawPath> LocalPathList = new ArrayList<>();//存放自己操作的path，撤销时使用
+    /**
+     * 存放自己操作的path，撤销时使用
+     */
+    public static final List<DrawPath> LocalPathList = new ArrayList<>();
     private final int WRAP_WIDTH = 300;
     private final int WRAP_HEIGHT = 300;
     private final JniHandler jni = JniHandler.getInstance();
     private DrawTextListener mListener;
     private boolean drawAgain;
-    public boolean drag = false;//是否拖动画板
+    /**
+     * 是否拖动画板
+     */
+    public boolean drag = false;
 
     public ArtBoard(Context context) {
         this(context, null);
@@ -95,6 +119,15 @@ public class ArtBoard extends View {
 //        currentArtBoardWidth = width;
 //        currentArtBoardHeight = height;
         initial();
+    }
+
+    /**
+     * 判断画板是否有绘制信息
+     *
+     * @return =false 没有绘制信息，=true 有绘制信息
+     */
+    public boolean isNotEmpty() {
+        return !LocalPathList.isEmpty();
     }
 
     private void initial() {
@@ -198,8 +231,11 @@ public class ArtBoard extends View {
         return true;
     }
 
-    private float downX, downY;//拖动时按下
-    private int l = 0, t = 0, r, b;//拖动时
+    /**
+     * 拖动时按下
+     */
+    private float downX, downY;
+    private int l = 0, t = 0, r, b;
 
     private void drag(MotionEvent event) {
         switch (event.getAction()) {
@@ -210,34 +246,46 @@ public class ArtBoard extends View {
             case MotionEvent.ACTION_MOVE:
                 float moveX = event.getX();
                 float moveY = event.getY();
-                float dx = moveX - downX;//负数,说明是向左滑动
-                float dy = moveY - downY;//负数,说明是向上滑动
+                //负数,说明是向左滑动
+                float dx = moveX - downX;
+                //负数,说明是向上滑动
+                float dy = moveY - downY;
                 int left = getLeft();
                 int top = getTop();
                 //左
                 if (left == 0) {
-                    if (dx < 0 && getRight() >= screenWidth)
+                    if (dx < 0 && getRight() >= screenWidth) {
                         l = (int) (left + dx);
-                    else l = 0;
+                    } else {
+                        l = 0;
+                    }
                 } else if (left < 0) {
                     if (getRight() >= screenWidth) {
-                        if (dx < 0)
+                        if (dx < 0) {
                             l = (int) (left + dx);
-                        else if (dx > 0)
+                        } else if (dx > 0) {
                             l = (int) (left + dx);
+                        }
                     }
-                } else l = 0;
+                } else {
+                    l = 0;
+                }
                 //上
                 if (top == 0) {
-                    if (dy < 0 && getBottom() > screenHeight)
+                    if (dy < 0 && getBottom() > screenHeight) {
                         t = (int) (top + dy);
-                    else t = 0;
+                    } else {
+                        t = 0;
+                    }
                 } else if (top < 0) {
-                    if (dy < 0 && getBottom() > screenHeight)
+                    if (dy < 0 && getBottom() > screenHeight) {
                         t = (int) (top + dy);
-                    else if (dy > 0)
+                    } else if (dy > 0) {
                         t = (int) (top + dy);
-                } else t = 0;
+                    }
+                } else {
+                    t = 0;
+                }
                 LogUtil.e(TAG, "drag -->artBoard= (" + artBoardWidth + ", " + artBoardHeight + "), screen= (" + screenWidth + "," + screenHeight + ")");
                 //右
                 r = artBoardWidth + l;
@@ -258,11 +306,16 @@ public class ArtBoard extends View {
 //                currentArtBoardHeight = b - t;
 //                LogUtil.d(TAG, "drag -->" + "拖动后画板的宽高：" + currentArtBoardWidth + " , " + currentArtBoardHeight);
                 break;
+            default:
+                break;
         }
     }
 
     private float startX, startY;
-    private float tempX, tempY;//临时坐标点
+    /**
+     * 临时坐标点
+     */
+    private float tempX, tempY;
 
     private void draw(MotionEvent event) {
         float x = event.getX();
@@ -276,32 +329,42 @@ public class ArtBoard extends View {
                 tempX = x;
                 tempY = y;
                 initPaint();
-                if (currentDrawGraphics == DRAW_SLINE) {//只有绘制曲线的时候才去添加
-                    points.add(new PointF(x, y));//添加按下时的点
+                //只有绘制曲线的时候才去添加
+                if (currentDrawGraphics == DRAW_SLINE) {
+                    //添加按下时的点
+                    points.add(new PointF(x, y));
                 }
                 invalidate();
                 break;
             case MotionEvent.ACTION_MOVE:
                 switch (currentDrawGraphics) {
                     case DRAW_SLINE:
-                        points.add(new PointF(x, y));//添加移动时的点
-                        drawSLine(x, y);//曲线
+                        //添加移动时的点
+                        points.add(new PointF(x, y));
+                        //曲线
+                        drawSLine(x, y);
                         break;
-                    case DRAW_CIRCLE://圆
+                    //圆
+                    case DRAW_CIRCLE:
                         drawOval(x, y);
                         break;
-                    case DRAW_RECT://矩形
+                    //矩形
+                    case DRAW_RECT:
                         drawRect(x, y);
                         break;
-                    case DRAW_LINE://直线
+                    //直线
+                    case DRAW_LINE:
                         drawLine(x, y);
                         break;
-                    case DRAW_ERASER://橡皮搽
+                    //橡皮搽
+                    case DRAW_ERASER:
                         if (isSharing) {
                             eraserPath(x, y);
                         } else {
                             eraser(x, y);
                         }
+                        break;
+                    default:
                         break;
                 }
                 tempX = x;
@@ -326,8 +389,13 @@ public class ArtBoard extends View {
                     mPath = null;
                     invalidate();
                 }
-                if (isSharing) shareDraw(x, y);
-                points.clear();//不管有没有同屏都要删除
+                if (isSharing) {
+                    shareDraw(x, y);
+                }
+                //不管有没有同屏都要删除
+                points.clear();
+                break;
+            default:
                 break;
         }
     }
@@ -351,10 +419,16 @@ public class ArtBoard extends View {
             case DRAW_SLINE:
                 addInk(points);
                 break;
+            default:
+                break;
         }
     }
 
-    //添加墨迹
+    /**
+     * 添加墨迹
+     *
+     * @param allpt 绘制产生的点集合
+     */
     private void addInk(List<PointF> allpt) {
         long srcwbid = mSrcwbid;
         int srcmemid = mSrcmemid;
@@ -366,7 +440,12 @@ public class ArtBoard extends View {
         jni.addInk(operid, opermemberid, srcmemid, srcwbid, utcstamp, figuretype, paintWidth, paintColor, allpt);
     }
 
-    //添加圆形、矩形、直线
+    /**
+     * 添加圆形、矩形、直线
+     *
+     * @param type  see InterfaceMacro.Pb_MeetPostilFigureType
+     * @param allpt 点集合
+     */
     private void addDrawShape(int type, List<Float> allpt) {
         long utcstamp = System.currentTimeMillis();
         int operid = (int) (utcstamp / 10);
@@ -573,20 +652,30 @@ public class ArtBoard extends View {
         return bitmap;
     }
 
-    //设置画板大小
+    /**
+     * 设置画板大小
+     */
     public void setCanvasSize(int w, int h) {
         if (w > artBoardWidth || h > artBoardHeight) {
-            if (w > artBoardWidth) artBoardWidth = w;
-            if (h > artBoardHeight) artBoardHeight = h;
-        } else return;
+            if (w > artBoardWidth) {
+                artBoardWidth = w;
+            }
+            if (h > artBoardHeight) {
+                artBoardHeight = h;
+            }
+        } else {
+            return;
+        }
         initCanvas();
         drawAgain(LocalPathList);
         drawAgain(pathList);
     }
 
-    //撤销
+    /**
+     * 撤销
+     */
     public void revoke() {
-        if (LocalPathList != null && LocalPathList.size() > 0) {
+        if (!LocalPathList.isEmpty()) {
             initCanvas();
             LocalPathList.remove(LocalPathList.size() - 1);
             //重新绘制本机存储的path
@@ -640,7 +729,9 @@ public class ArtBoard extends View {
         }
     }
 
-    //清空
+    /**
+     * 清空
+     */
     public void clear() {
         initCanvas();
         invalidate();

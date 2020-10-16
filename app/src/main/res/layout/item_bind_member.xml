@@ -5,12 +5,15 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+<!--    android:background="@drawable/btn_choose_s"-->
     <Button
         android:id="@+id/item_bind_member_btn"
         android:layout_margin="@dimen/dp_5"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        style="@style/btn_selected_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="2"
+        android:ellipsize="end"
         android:clickable="false"
-        android:background="@drawable/btn_choose_s"
         tools:text="参会人" />
 </LinearLayout>

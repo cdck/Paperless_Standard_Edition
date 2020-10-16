@@ -25,9 +25,9 @@ import xlk.paperless.standard.util.FileUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.base.BasePresenter;
 
-import static xlk.paperless.standard.data.Constant.resource_0;
-import static xlk.paperless.standard.data.Constant.resource_10;
-import static xlk.paperless.standard.data.Constant.resource_11;
+import static xlk.paperless.standard.data.Constant.RESOURCE_0;
+import static xlk.paperless.standard.data.Constant.RESOURCE_10;
+import static xlk.paperless.standard.data.Constant.RESOURCE_11;
 
 /**
  * @author xlk
@@ -147,6 +147,7 @@ public class MeetingPresenter extends BasePresenter {
                 }
                 previewImage(index);
                 break;
+            default:break;
         }
     }
 
@@ -245,18 +246,22 @@ public class MeetingPresenter extends BasePresenter {
         jni.cacheData(InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETVIDEO.getNumber());
     }
 
-    //查询会议功能
+    /**
+     * 查询会议功能
+     */
     public void queryMeetFunction() {
         try {
             InterfaceMeetfunction.pbui_Type_MeetFunConfigDetailInfo funConfigDetailInfo = jni.queryMeetFunction();
-            if (funConfigDetailInfo == null) return;
+            if (funConfigDetailInfo == null) {
+                return;
+            }
             functions.clear();
             List<InterfaceMeetfunction.pbui_Item_MeetFunConfigDetailInfo> itemList = funConfigDetailInfo.getItemList();
             for (int i = 0; i < itemList.size(); i++) {
                 InterfaceMeetfunction.pbui_Item_MeetFunConfigDetailInfo item = itemList.get(i);
                 LogUtil.i(TAG, "queryMeetFunction -->funcode=" + item.getFuncode() + ", position=" + item.getPosition());
-                if (item.getFuncode() != Constant.fun_code_shared_file
-                        && item.getFuncode() != Constant.fun_code_voteresult) {
+                if (item.getFuncode() != Constant.FUN_CODE_SHARED_FILE
+                        && item.getFuncode() != Constant.FUN_CODE_VOTE_RESULT) {
                     functions.add(item);
                 }
             }
@@ -282,8 +287,8 @@ public class MeetingPresenter extends BasePresenter {
                 if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_LOGO.getNumber()) {
                     view.setLogoVisibility(isShow);
                     if (isShow) {
-                        FileUtil.createDir(Constant.dir_picture);
-                        jni.creationFileDownload(Constant.dir_picture + Constant.MAIN_LOGO_PNG_TAG + ".png", itemInfo.getMediaid(), 1, 0, Constant.MAIN_LOGO_PNG_TAG);
+                        FileUtil.createDir(Constant.DIR_PICTURE);
+                        jni.creationFileDownload(Constant.DIR_PICTURE + Constant.MAIN_LOGO_PNG_TAG + ".png", itemInfo.getMediaid(), 1, 0, Constant.MAIN_LOGO_PNG_TAG);
                     }
                 }
 //                else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_MAINBG_VALUE) {//主界面背景图
@@ -375,7 +380,7 @@ public class MeetingPresenter extends BasePresenter {
 
     public void queryLocalRole() {
         try {
-            InterfaceBase.pbui_CommonInt32uProperty property = jni.queryMeetRankingProperty(0, InterfaceMacro.Pb_MeetSeatPropertyID.Pb_MEETSEAT_PROPERTY_ROLEBYMEMBERID.getNumber());
+            InterfaceBase.pbui_CommonInt32uProperty property = jni.queryMeetRankingProperty(InterfaceMacro.Pb_MeetSeatPropertyID.Pb_MEETSEAT_PROPERTY_ROLEBYMEMBERID.getNumber());
             if (property == null) return;
             int propertyval = property.getPropertyval();
             Values.localRole = propertyval;
@@ -403,14 +408,14 @@ public class MeetingPresenter extends BasePresenter {
     }
 
     public void initVideoRes() {
-        jni.initVideoRes(resource_0, Values.screen_width, Values.screen_height);
-        jni.initVideoRes(resource_10, Values.screen_width, Values.screen_height);
-        jni.initVideoRes(resource_11, Values.screen_width, Values.screen_height);
+        jni.initVideoRes(RESOURCE_0, Values.screen_width, Values.screen_height);
+        jni.initVideoRes(RESOURCE_10, Values.screen_width, Values.screen_height);
+        jni.initVideoRes(RESOURCE_11, Values.screen_width, Values.screen_height);
     }
 
     public void releaseVideoRes() {
-        jni.releaseVideoRes(resource_0);
-        jni.releaseVideoRes(resource_10);
-        jni.releaseVideoRes(resource_11);
+        jni.releaseVideoRes(RESOURCE_0);
+        jni.releaseVideoRes(RESOURCE_10);
+        jni.releaseVideoRes(RESOURCE_11);
     }
 }

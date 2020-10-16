@@ -37,7 +37,7 @@ import xlk.paperless.standard.util.PopUtil;
 import xlk.paperless.standard.util.ToastUtil;
 import xlk.paperless.standard.base.BaseFragment;
 
-import static xlk.paperless.standard.data.Constant.resource_0;
+import static xlk.paperless.standard.data.Constant.RESOURCE_0;
 
 /**
  * @author xlk
@@ -56,11 +56,15 @@ public class MeetAnnotationFragment extends BaseFragment implements View.OnClick
     private RecyclerView f_annotation_file_rv;
     private MeetAnnotationPresenter presenter;
     private MeetAnnotationAdapter memberAdapter;
-    private String currentMemberName = "";
+    private int currentMemberId;
+    //    private String currentMemberName = "";
     List<InterfaceFile.pbui_Item_MeetDirFileDetailInfo> allFiles = new ArrayList<>();
     List<InterfaceFile.pbui_Item_MeetDirFileDetailInfo> currentFiles = new ArrayList<>();
     private MeetDataFileAdapter fileAdapter;
-    private int currentType = -1;//=0,1,2,3 为指定类别 =其它值 表示全部
+    /**
+     * =0,1,2,3 为指定类别 =其它值 表示全部
+     */
+    private int currentType = -1;
     private PopupWindow pushPop;
     private PopPushMemberAdapter pushMemberAdapter;
     private PopPushProjectionAdapter pushProjectionAdapter;
@@ -130,6 +134,8 @@ public class MeetAnnotationFragment extends BaseFragment implements View.OnClick
                     ToastUtil.show(R.string.err_NoPermission);
                 }
                 break;
+            default:
+                break;
         }
     }
 
@@ -181,9 +187,10 @@ public class MeetAnnotationFragment extends BaseFragment implements View.OnClick
             memberAdapter.setOnItemClickListener((adapter, view, position) -> {
                 currentType = -1;//设置显示全部
                 int currentDevId = seatMembers.get(position).getSeatDetailInfo().getSeatid();
-                currentMemberName = seatMembers.get(position).getMemberDetailInfo().getName().toStringUtf8();
+                currentMemberId = seatMembers.get(position).getMemberDetailInfo().getPersonid();
                 memberAdapter.setSelect(currentDevId);
-                if (presenter.hasPermission(currentDevId) || currentDevId == Values.localDeviceId) {
+                LogUtil.i(TAG, "updateMemberRv currentDevId=" + currentDevId + ",currentMemberId=" + currentMemberId);
+                if (presenter.hasPermission(currentDevId)) {
                     showFile();
                 } else {
                     clean();
@@ -194,7 +201,7 @@ public class MeetAnnotationFragment extends BaseFragment implements View.OnClick
             memberAdapter.notifyDataSetChanged();
             memberAdapter.notifySelect();
             if (memberAdapter.getSelectedDevId() == -1) {
-                currentMemberName = "";
+                currentMemberId = 0;
             }
         }
     }
@@ -203,15 +210,21 @@ public class MeetAnnotationFragment extends BaseFragment implements View.OnClick
     public void updateFileRv(List<InterfaceFile.pbui_Item_MeetDirFileDetailInfo> fileDetailInfos) {
         allFiles.clear();
         allFiles.addAll(fileDetailInfos);
+        for (int i = 0; i < allFiles.size(); i++) {
+            InterfaceFile.pbui_Item_MeetDirFileDetailInfo item = allFiles.get(i);
+            LogUtil.i(TAG, "updateFileRv 文件=" + item.getName().toStringUtf8() + ", 上传者=" + item.getUploaderName().toStringUtf8());
+        }
         if (memberAdapter != null) {
-            if (!currentMemberName.isEmpty()) {
+            if (currentMemberId != 0) {
                 showFile();
             }
         }
     }
 
     public void showFile() {
-        if (currentMemberName == null || currentMemberName.isEmpty()) return;
+        if (currentMemberId == 0) {
+            return;
+        }
         currentFiles.clear();
         if (!presenter.hasPermission(memberAdapter.getSelectedDevId())) {
             clean();
@@ -219,8 +232,9 @@ public class MeetAnnotationFragment extends BaseFragment implements View.OnClick
         }
         for (int i = 0; i < allFiles.size(); i++) {
             InterfaceFile.pbui_Item_MeetDirFileDetailInfo info = allFiles.get(i);
+            int uploaderid = info.getUploaderid();
             String uploadName = info.getUploaderName().toStringUtf8();
-            if (uploadName.equals(currentMemberName)) {
+            if (uploaderid == currentMemberId) {
                 switch (currentType) {
                     case 0:
 //                        if (Constant.isDocument(info.getMediaid())) {
@@ -252,6 +266,7 @@ public class MeetAnnotationFragment extends BaseFragment implements View.OnClick
                 }
             }
         }
+        LogUtil.i(TAG, "showFile currentMemberId=" + currentMemberId + ", currentFiles=" + currentFiles.size());
         if (fileAdapter == null) {
             fileAdapter = new MeetDataFileAdapter(R.layout.item_meet_data_file, currentFiles);
             f_annotation_file_rv.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -272,6 +287,7 @@ public class MeetAnnotationFragment extends BaseFragment implements View.OnClick
     }
 
     private void clean() {
+        LogUtil.i(TAG, "clean " + (fileAdapter != null));
         if (fileAdapter != null) {
             currentFiles.clear();
             fileAdapter.notifyDataSetChanged();
@@ -325,9 +341,26 @@ public class MeetAnnotationFragment extends BaseFragment implements View.OnClick
                 devIds.addAll(pushProjectionAdapter.getDevIds());
                 if (!devIds.isEmpty()) {
                     pushPop.dismiss();
-                    presenter.mediaPlayOperate(mediaId, devIds, 0, resource_0, 0, InterfaceMacro.Pb_MeetPlayFlag.Pb_MEDIA_PLAYFLAG_ZERO.getNumber());
+                    presenter.mediaPlayOperate(mediaId, devIds, 0, RESOURCE_0, 0, InterfaceMacro.Pb_MeetPlayFlag.Pb_MEDIA_PLAYFLAG_ZERO.getNumber());
                 } else {
                     ToastUtil.show(R.string.please_choose_push_target);
+                }
+            });
+
+            //停止推送
+            inflate.findViewById(R.id.pop_push_stop).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    List<Integer> devIds = pushMemberAdapter.getDevIds();
+                    devIds.addAll(pushProjectionAdapter.getDevIds());
+                    if (!devIds.isEmpty()) {
+                        pushPop.dismiss();
+                        List<Integer> temps = new ArrayList<>();
+                        temps.add(0);
+                        presenter.stopPush(temps, devIds);
+                    } else {
+                        ToastUtil.show(R.string.please_choose_push_target);
+                    }
                 }
             });
             inflate.findViewById(R.id.pop_push_cancel).setOnClickListener(v -> {

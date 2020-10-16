@@ -39,11 +39,11 @@ import xlk.paperless.standard.base.BaseFragment;
 
 import static xlk.paperless.standard.data.Constant.permission_code_projection;
 import static xlk.paperless.standard.data.Constant.permission_code_screen;
-import static xlk.paperless.standard.data.Constant.resource_0;
-import static xlk.paperless.standard.data.Constant.resource_1;
-import static xlk.paperless.standard.data.Constant.resource_2;
-import static xlk.paperless.standard.data.Constant.resource_3;
-import static xlk.paperless.standard.data.Constant.resource_4;
+import static xlk.paperless.standard.data.Constant.RESOURCE_0;
+import static xlk.paperless.standard.data.Constant.RESOURCE_1;
+import static xlk.paperless.standard.data.Constant.RESOURCE_2;
+import static xlk.paperless.standard.data.Constant.RESOURCE_3;
+import static xlk.paperless.standard.data.Constant.RESOURCE_4;
 
 /**
  * @author xlk
@@ -76,10 +76,10 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
         View inflate = inflater.inflate(R.layout.fragment_live_video, container, false);
         initView(inflate);
         presenter = new MeetLiveVideoPresenter(getContext(), this);
-        ids.add(resource_1);
-        ids.add(resource_2);
-        ids.add(resource_3);
-        ids.add(resource_4);
+        ids.add(RESOURCE_1);
+        ids.add(RESOURCE_2);
+        ids.add(RESOURCE_3);
+        ids.add(RESOURCE_4);
         initAdapter();
         f_l_v_v.post(() -> {
             pvWidth = f_l_v_v.getWidth();
@@ -238,12 +238,12 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
             boolean checked = holder.wm_pro_full.isChecked();
             List<Integer> res = new ArrayList<>();
             if (checked) {
-                res.add(resource_0);
+                res.add(RESOURCE_0);
             } else {
-                if (holder.wm_pro_flow1.isChecked()) res.add(resource_1);
-                if (holder.wm_pro_flow2.isChecked()) res.add(resource_2);
-                if (holder.wm_pro_flow3.isChecked()) res.add(resource_3);
-                if (holder.wm_pro_flow4.isChecked()) res.add(resource_4);
+                if (holder.wm_pro_flow1.isChecked()) res.add(RESOURCE_1);
+                if (holder.wm_pro_flow2.isChecked()) res.add(RESOURCE_2);
+                if (holder.wm_pro_flow3.isChecked()) res.add(RESOURCE_3);
+                if (holder.wm_pro_flow4.isChecked()) res.add(RESOURCE_4);
             }
             if (res.isEmpty()) {
                 ToastUtil.show(R.string.please_choose_res_first);
@@ -310,7 +310,7 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                 ToastUtil.show(R.string.err_target_NotNull);
             } else {
                 List<Integer> temps = new ArrayList<>();
-                temps.add(resource_0);
+                temps.add(RESOURCE_0);
                 int deviceid = videoDev.getVideoDetailInfo().getDeviceid();
                 int subid = videoDev.getVideoDetailInfo().getSubid();
                 if (isStart) {//发起同屏
@@ -371,7 +371,7 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
     @Override
     public void click(int res) {
         switch (res) {
-            case resource_1:
+            case RESOURCE_1:
                 f_l_v_v.setSelectResId(res);
                 if (System.currentTimeMillis() - oneTime < 500) {
                     f_l_v_v.zoom(res);
@@ -379,7 +379,7 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                     oneTime = System.currentTimeMillis();
                 }
                 break;
-            case resource_2:
+            case RESOURCE_2:
                 f_l_v_v.setSelectResId(res);
                 if (System.currentTimeMillis() - twoTime < 500) {
                     f_l_v_v.zoom(res);
@@ -387,7 +387,7 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                     twoTime = System.currentTimeMillis();
                 }
                 break;
-            case resource_3:
+            case RESOURCE_3:
                 f_l_v_v.setSelectResId(res);
                 if (System.currentTimeMillis() - threeTime < 500) {
                     f_l_v_v.zoom(res);
@@ -395,7 +395,7 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                     threeTime = System.currentTimeMillis();
                 }
                 break;
-            case resource_4:
+            case RESOURCE_4:
                 f_l_v_v.setSelectResId(res);
                 if (System.currentTimeMillis() - fourTime < 500) {
                     f_l_v_v.zoom(res);

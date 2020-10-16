@@ -29,12 +29,12 @@ public class Constant {
 
 
     private static final String DIR_FILES = ROOT_DIR + "File/";
-    public static final String dir_crash_log = ROOT_DIR + "Log/";
-    public static final String dir_picture = DIR_FILES + "图片/";
-    public static final String dir_data_file = DIR_FILES + "会议资料/";
-    public static final String dir_annotation_file = DIR_FILES + "批注文件/";
-    public static final String dir_export = DIR_FILES + "导出文件/";
-    public static final String dir_cache = DIR_FILES + "临时文件/";
+    public static final String DIR_CRASH_LOG = ROOT_DIR + "Log/";
+    public static final String DIR_PICTURE = DIR_FILES + "图片/";
+    public static final String DIR_DATA_FILE = DIR_FILES + "会议资料/";
+    public static final String DIR_ANNOTATION_FILE = DIR_FILES + "批注文件/";
+    public static final String DIR_EXPORT = DIR_FILES + "导出文件/";
+    public static final String DIR_CACHE = DIR_FILES + "临时文件/";
 
     //图片名称和下载标识
 
@@ -44,90 +44,86 @@ public class Constant {
     public static final String ROOM_BG_PNG_TAG = "room_bg";
     public static final String NOTICE_BG_PNG_TAG = "notice_bg";
     public static final String NOTICE_LOGO_PNG_TAG = "notice_logo";
-    /**
-     * 会议发布文件
-     */
-    public static final String ADMIN_RELEASE_FILE = "release_file";
 
     //下载标识
     /**
      * 下载会议文件时的标识
      */
-    public static final String download_meeting_file = "download_meeting_file";
+    public static final String DOWNLOAD_MEETING_FILE = "download_meeting_file";
     /**
      * 下载批注文件时的标识
      */
-    public static final String download_annotation_file = "download_annotation_file";
+    public static final String DOWNLOAD_ANNOTATION_FILE = "download_annotation_file";
     /**
      * 下载完成应该打开的文件标识
      */
-    public static final String download_should_open_file = "download_should_open_file";
+    public static final String DOWNLOAD_SHOULD_OPEN_FILE = "download_should_open_file";
     /**
      * 会议议程的文件
      */
-    public static final String download_agenda_file = "download_agenda_file";
+    public static final String DOWNLOAD_AGENDA_FILE = "download_agenda_file";
 
     //上传文件时的标识
 
-    public static final String upload_choose_file = "upload_choose_file";
-    public static final String upload_draw_pic = "upload_draw_pic";
-    public static final String upload_wps_file = "upload_wps_file";
+    public static final String UPLOAD_CHOOSE_FILE = "upload_choose_file";
+    public static final String UPLOAD_DRAW_PIC = "upload_draw_pic";
+    public static final String UPLOAD_WPS_FILE = "upload_wps_file";
 
     //Intent#putExtra的字符tag
 
     /**
      * 开始屏幕录制
      */
-    public static final String action_screen_recording = "screen_recording";
+    public static final String ACTION_SCREEN_RECORDING = "screen_recording";
     /**
      * 停止屏幕录制
      */
-    public static final String action_stop_screen_recording = "stop_screen_recording";
+    public static final String ACTION_STOP_SCREEN_RECORDING = "stop_screen_recording";
     /**
      * 传入摄像头前置/后置
      */
-    public static final String extra_camrea_type = "extra_camera_type";
+    public static final String EXTRA_CAMERA_TYPE = "extra_camera_type";
     /**
      * 设备对讲
      */
-    public static final String extra_inviteflag = "extra_inviteflag";
-    public static final String extra_operdeviceid = "extra_operdeviceid";
+    public static final String EXTRA_INVITE_FLAG = "extra_invite_flag";
+    public static final String EXTRA_OPERATING_DEVICE_ID = "extra_operating_device_id";
     /**
      * 文件评分ID
      */
-    public static final String extra_vote_id = "extra_vote_id";
+    public static final String EXTRA_VOTE_ID = "extra_vote_id";
     /**
      * 发起播放的类型
      */
-    public static final String extra_video_action = "extra_video_action";
+    public static final String EXTRA_VIDEO_ACTION = "extra_video_action";
     /**
      * 发起播放的设备ID
      */
-    public static final String extra_video_device_id = "extra_video_device_id";
+    public static final String EXTRA_VIDEO_DEVICE_ID = "extra_video_device_id";
     /**
      * 发起播放的文件类型
      */
-    public static final String extra_video_subtype = "extra_video_subtype";
+    public static final String EXTRA_VIDEO_SUBTYPE = "extra_video_subtype";
     /**
      * 采集类型
      */
-    public static final String extra_collection_type = "extra_collection_type";
+    public static final String EXTRA_COLLECTION_TYPE = "extra_collection_type";
     /**
      * 公告ID
      */
-    public static final String extra_bulletin_id = "extra_bulletin_id";
+    public static final String EXTRA_BULLETIN_ID = "extra_bulletin_id";
     /**
      * 登录用户id
      */
-    public static final String extra_admin_id = "extra_admin_id";
+    public static final String EXTRA_ADMIN_ID = "extra_admin_id";
     /**
      * 登录用户名称
      */
-    public static final String extra_admin_name = "extra_admin_name";
+    public static final String EXTRA_ADMIN_NAME = "extra_admin_name";
     /**
      * 登录时的密码
      */
-    public static final String extra_admin_password = "extra_admin_password";
+    public static final String EXTRA_ADMIN_PASSWORD = "extra_admin_password";
 
     //EventBus自定义发送的Type
 
@@ -166,7 +162,7 @@ public class Constant {
      */
     public static final int BUS_SCREEN_SHOT = BUS_BASE + 9;
     /**
-     * 子界面北极图下载完成
+     * 会议界面背景图下载完成
      */
     public static final int BUS_SUB_BG = BUS_BASE + 10;
     /**
@@ -215,57 +211,68 @@ public class Constant {
     /**
      * 会议议程
      */
-    public static final int fun_code_agenda_bulletin = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_AGENDA_BULLETIN_VALUE;
+    public static final int FUN_CODE_AGENDA_BULLETIN = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_AGENDA_BULLETIN_VALUE;
     /**
      * 会议资料
      */
-    public static final int fun_code_meet_file = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_MATERIAL_VALUE;
+    public static final int FUN_CODE_MEET_FILE = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_MATERIAL_VALUE;
     /**
      * 共享文件
      */
-    public static final int fun_code_shared_file = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_SHAREDFILE_VALUE;
+    public static final int FUN_CODE_SHARED_FILE = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_SHAREDFILE_VALUE;
     /**
      * 批注文件
      */
-    public static final int fun_code_postil_file = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_POSTIL_VALUE;
+    public static final int FUN_CODE_POSTIL_FILE = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_POSTIL_VALUE;
     /**
      * 会议交流
      */
-    public static final int fun_code_message = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_MESSAGE_VALUE;
+    public static final int FUN_CODE_MESSAGE = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_MESSAGE_VALUE;
     /**
      * 视频直播
      */
-    public static final int fun_code_video_stream = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_VIDEOSTREAM_VALUE;
+    public static final int FUN_CODE_VIDEO_STREAM = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_VIDEOSTREAM_VALUE;
     /**
      * 电子白板
      */
-    public static final int fun_code_whiteboard = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_WHITEBOARD_VALUE;
+    public static final int FUN_CODE_WHITEBOARD = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_WHITEBOARD_VALUE;
     /**
      * 网页
      */
-    public static final int fun_code_webbrowser = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_WEBBROWSER_VALUE;
+    public static final int FUN_CODE_WEB_BROWSER = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_WEBBROWSER_VALUE;
     /**
      * 投票
      */
-    public static final int fun_code_voteresult = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_VOTERESULT_VALUE;
+    public static final int FUN_CODE_VOTE_RESULT = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_VOTERESULT_VALUE;
     /**
      * 签到
      */
-    public static final int fun_code_signinresult = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_SIGNINRESULT_VALUE;
+    public static final int FUN_CODE_SIGNIN_RESULT = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_SIGNINRESULT_VALUE;
     /**
      * 外部文档
      */
-    public static final int fun_code_document = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_DOCUMENT_VALUE;
+    public static final int FUN_CODE_DOCUMENT = InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_DOCUMENT_VALUE;
+
+    //自定义其它功能的功能码
+
+    public static final int FUN_CODE = 200000;
+    public static final int FUN_CODE_TERMINAL = FUN_CODE + 1;
+    public static final int FUN_CODE_VOTE = FUN_CODE + 2;
+    public static final int FUN_CODE_ELECTION = FUN_CODE + 3;
+    public static final int FUN_CODE_VIDEO = FUN_CODE + 4;
+    public static final int FUN_CODE_SCREEN = FUN_CODE + 5;
+    public static final int FUN_CODE_BULLETIN = FUN_CODE + 6;
+    public static final int FUN_CODE_SCORE = FUN_CODE + 7;
 
     //资源ID
 
-    public static final int resource_0 = 0;
-    public static final int resource_1 = 1;
-    public static final int resource_2 = 2;
-    public static final int resource_3 = 3;
-    public static final int resource_4 = 4;
-    public static final int resource_10 = 10;
-    public static final int resource_11 = 11;
+    public static final int RESOURCE_0 = 0;
+    public static final int RESOURCE_1 = 1;
+    public static final int RESOURCE_2 = 2;
+    public static final int RESOURCE_3 = 3;
+    public static final int RESOURCE_4 = 4;
+    public static final int RESOURCE_10 = 10;
+    public static final int RESOURCE_11 = 11;
 
     //固定的会议目录ID
     /**
@@ -299,16 +306,6 @@ public class Constant {
      */
     public static final int MAXIMUM_BITRATE = 10000;
 
-    //自定义其它功能的功能码
-
-    public static final int fun_code = 200000;
-    public static final int fun_code_terminal = fun_code + 1;
-    public static final int fun_code_vote = fun_code + 2;
-    public static final int fun_code_election = fun_code + 3;
-    public static final int fun_code_video = fun_code + 4;
-    public static final int fun_code_screen = fun_code + 5;
-    public static final int fun_code_bulletin = fun_code + 6;
-    public static final int fun_code_score = fun_code + 7;
 
     /**
      * 投票时提交，用于签到参与投票

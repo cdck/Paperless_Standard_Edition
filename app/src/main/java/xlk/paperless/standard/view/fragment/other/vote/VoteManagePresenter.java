@@ -51,27 +51,33 @@ public class VoteManagePresenter extends BasePresenter {
     @Override
     public void busEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
-            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETVOTEINFO_VALUE://投票变更通知
+            //投票变更通知
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETVOTEINFO_VALUE:
                 LogUtil.d(TAG, "BusEvent -->" + "投票变更通知");
                 queryVote();
                 break;
-            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEMBER_VALUE://参会人员变更通知
+            //参会人员变更通知
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEMBER_VALUE:
                 LogUtil.d(TAG, "BusEvent -->" + "参会人员变更通知");
                 queryMember();
                 break;
-            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETSEAT_VALUE://会议排位变更通知
+            //会议排位变更通知
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETSEAT_VALUE:
                 LogUtil.d(TAG, "BusEvent -->" + "会议排位变更通知");
                 querySecretary();
 //                queryMember();
                 break;
-            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEMBERPERMISSION_VALUE://参会人员权限变更通知
+            //参会人员权限变更通知
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEMBERPERMISSION_VALUE:
                 LogUtil.d(TAG, "BusEvent -->" + "参会人员权限变更通知");
                 queryMember();
                 break;
-            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEMEETSTATUS_VALUE://界面状态变更通知
+            //界面状态变更通知
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEMEETSTATUS_VALUE:
                 LogUtil.d(TAG, "BusEvent -->" + "界面状态变更通知");
                 queryMember();
                 break;
+            default:break;
         }
     }
 

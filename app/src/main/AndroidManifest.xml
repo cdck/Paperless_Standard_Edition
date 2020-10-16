@@ -37,6 +37,7 @@
         tools:ignore="LockedOrientationActivity">
         <activity
             android:name=".view.main.MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -64,7 +65,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".view.notice.NoticeActivity"
+            android:name=".view.notice.BulletinActivity"
             android:screenOrientation="landscape" />
         <activity
             android:name=".view.score.ScoreActivity"

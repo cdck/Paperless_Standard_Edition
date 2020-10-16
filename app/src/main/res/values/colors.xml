@@ -23,7 +23,7 @@
     <color name="pink">#d931e8</color>
 
     <color name="meet_fragment_bg">#cfcfcf</color>
-    <color name="wm_view_bg">#ebebeb</color>
+    <color name="wm_view_bg">#FFFFFF</color>
 
     <color name="enable_t">#a0a0a0</color>
     <color name="enable_f">#b9d6d6d6</color>
@@ -68,5 +68,5 @@
     <color name="admin_table_title_bg">#738494</color>
     
     <color name="text_color_red">#E10000</color>
-    <color name="text_color_green">#00B400</color>
+    <color name="text_color_green">#008400</color>
 </resources>

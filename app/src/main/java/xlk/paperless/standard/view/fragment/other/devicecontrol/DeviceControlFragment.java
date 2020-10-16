@@ -119,41 +119,55 @@ public class DeviceControlFragment extends BaseFragment implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        if (devControlAdapter == null) return;
+        if (devControlAdapter == null) {
+            return;
+        }
         if (devControlAdapter.getChooseIds().isEmpty()) {
             ToastUtil.show(R.string.err_target_NotNull);
             return;
         }
         switch (v.getId()) {
-            case R.id.dev_control_rise://上升
+            //上升
+            case R.id.dev_control_rise:
                 presenter.executeTerminalControl(InterfaceMacro.Pb_DeviceControlFlag.Pb_DEVICECONTORL_LIFTUP_VALUE, devControlAdapter.getChooseIds());
                 break;
-            case R.id.dev_control_stop://停止
+            //停止
+            case R.id.dev_control_stop:
                 presenter.executeTerminalControl(InterfaceMacro.Pb_DeviceControlFlag.Pb_DEVICECONTORL_LIFTSTOP_VALUE, devControlAdapter.getChooseIds());
                 break;
-            case R.id.dev_control_decline://下降
+            //下降
+            case R.id.dev_control_decline:
                 presenter.executeTerminalControl(InterfaceMacro.Pb_DeviceControlFlag.Pb_DEVICECONTORL_LIFTDOWN_VALUE, devControlAdapter.getChooseIds());
                 break;
-            case R.id.dev_control_app_restart://软件重启
+            //软件重启
+            case R.id.dev_control_app_restart:
                 presenter.executeTerminalControl(InterfaceMacro.Pb_DeviceControlFlag.Pb_DEVICECONTORL_PROGRAMRESTART_VALUE, devControlAdapter.getChooseIds());
                 break;
-            case R.id.dev_control_terminal_restart://终端重启
+            //终端重启
+            case R.id.dev_control_terminal_restart:
                 presenter.executeTerminalControl(InterfaceMacro.Pb_DeviceControlFlag.Pb_DEVICECONTORL_REBOOT_VALUE, devControlAdapter.getChooseIds());
                 break;
-            case R.id.dev_control_terminal_shoutdown://终端关机
+            //终端关机
+            case R.id.dev_control_terminal_shoutdown:
                 presenter.executeTerminalControl(InterfaceMacro.Pb_DeviceControlFlag.Pb_DEVICECONTORL_SHUTDOWN_VALUE, devControlAdapter.getChooseIds());
                 break;
+            //网络唤醒
             case R.id.dev_control_wake_on:
 
                 break;
+            //外部打开文档
             case R.id.dev_control_open_document:
 
                 break;
-            case R.id.dev_control_signin://辅助签到
+            //辅助签到
+            case R.id.dev_control_signin:
                 presenter.signAlterationOperate(devControlAdapter.getChooseIds());
                 break;
+            //角色设定
             case R.id.dev_control_set_role:
                 showSetRolePop();
+                break;
+            default:
                 break;
         }
     }

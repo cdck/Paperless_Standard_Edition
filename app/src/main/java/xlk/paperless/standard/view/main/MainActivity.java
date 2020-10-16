@@ -26,6 +26,7 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -68,9 +69,9 @@ import xlk.paperless.standard.view.admin.AdminActivity;
 import xlk.paperless.standard.view.meet.MeetingActivity;
 
 import static android.Manifest.permission.READ_FRAME_BUFFER;
-import static xlk.paperless.standard.data.Constant.extra_admin_id;
-import static xlk.paperless.standard.data.Constant.extra_admin_name;
-import static xlk.paperless.standard.data.Constant.extra_admin_password;
+import static xlk.paperless.standard.data.Constant.EXTRA_ADMIN_ID;
+import static xlk.paperless.standard.data.Constant.EXTRA_ADMIN_NAME;
+import static xlk.paperless.standard.data.Constant.EXTRA_ADMIN_PASSWORD;
 import static xlk.paperless.standard.data.Values.camera_height;
 import static xlk.paperless.standard.data.Values.camera_width;
 import static xlk.paperless.standard.util.ConvertUtil.s2b;
@@ -92,7 +93,6 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
             meet_tv_main, seat_tv_main, post_tv_main, unit_tv_main, member_role, app_version, meet_state, note_info;
     private Button enter_btn_main, set_btn_main;
     private ImageView logo_iv_main, iv_set_main, iv_close_main;
-    //    private SlideView slideview_main;
     private RelativeLayout date_relative_main;
     private ConstraintLayout main_root_layout;
 
@@ -253,19 +253,24 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
     private void initCameraSize() {
         int type = 1;
         LogUtil.d(TAG, "initCameraSize :   --> ");
-        int numberOfCameras = Camera.getNumberOfCameras();//获取摄像机的个数 一般是前/后置两个
+        //获取摄像机的个数 一般是前/后置两个
+        int numberOfCameras = Camera.getNumberOfCameras();
         if (numberOfCameras < 2) {
             LogUtil.d(TAG, "initCameraSize: 该设备只有后置像头");
-            type = 0;//如果没有2个则说明只有后置像头
+            //如果没有2个则说明只有后置像头
+            type = 0;
         }
         ArrayList<Integer> supportW = new ArrayList<>();
         ArrayList<Integer> supportH = new ArrayList<>();
         int largestW = 0, largestH = 0;
         Camera c = Camera.open(type);
         Camera.Parameters param = null;
-        if (c != null)
+        if (c != null) {
             param = c.getParameters();
-        if (param == null) return;
+        }
+        if (param == null) {
+            return;
+        }
         for (int i = 0; i < param.getSupportedPreviewSizes().size(); i++) {
             int w = param.getSupportedPreviewSizes().get(i).width, h = param.getSupportedPreviewSizes().get(i).height;
             LogUtil.d(TAG, "initCameraSize: w=" + w + " h=" + h);
@@ -396,7 +401,8 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
 
     @Override
     public void updateMeetingState(int state) {
-        switch (state) {//会议状态，0为未开始会议，1为已开始会议，2为已结束会议
+        //会议状态，0为未开始会议，1为已开始会议，2为已结束会议，其它表示未加入会议无状态
+        switch (state) {
             case 0:
                 meet_state.setText(getString(R.string.state_meet_not));
                 break;
@@ -406,12 +412,15 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
             case 2:
                 meet_state.setText(getString(R.string.state_meet_end));
                 break;
+            default:
+                meet_state.setText("");
+                break;
         }
     }
 
     @Override
     public void updateNote(String noteinfo) {
-        note_info.setText(getString(R.string.note_info_, noteinfo));
+        note_info.setText(noteinfo);
     }
 
     @Override
@@ -834,10 +843,12 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         switch (v.getId()) {
             case R.id.enter_btn_main:
                 if (AppUtil.isNetworkAvailable(this)) {
-                    if (meet_tv_main.getText().toString().trim().isEmpty()) {
+                    if (Values.localMeetingId == 0) {
+//                    if (meet_tv_main.getText().toString().trim().isEmpty()) {
                         ToastUtil.show(R.string.join_meeting_first);
 //                        jump2scan();
-                    } else if (member_tv_main.getText().toString().trim().isEmpty()) {
+                    } else if (Values.localMemberId == 0) {
+//                    } else if (member_tv_main.getText().toString().trim().isEmpty()) {
                         jump2bind();
                     } else {
                         readySignIn();
@@ -850,11 +861,16 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
 //                setConfiguration();
                 break;
             case R.id.iv_set_main:
-                showLoginPop();
-//                setConfiguration();
+                if (MyApplication.canLoginAdmin) {
+                    showLoginPop();
+                } else {
+                    setConfiguration();
+                }
                 break;
             case R.id.iv_close_main:
                 exit();
+                break;
+            default:
                 break;
         }
     }
@@ -913,9 +929,9 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
             case InterfaceMacro.Pb_AdminLogonStatus.Pb_ADMINLOGON_ERR_NONE_VALUE://登陆成功
                 ToastUtil.show(R.string.login_successful);
                 Intent intent = new Intent(MainActivity.this, AdminActivity.class);
-                intent.putExtra(extra_admin_id, adminid);
-                intent.putExtra(extra_admin_name, adminname);
-                intent.putExtra(extra_admin_password, loginPwd);
+                intent.putExtra(EXTRA_ADMIN_ID, adminid);
+                intent.putExtra(EXTRA_ADMIN_NAME, adminname);
+                intent.putExtra(EXTRA_ADMIN_PASSWORD, loginPwd);
                 presenter.unregister();
                 finish();
                 startActivity(intent);
@@ -1119,12 +1135,21 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         Button pwd_draw_cancel = inflate.findViewById(R.id.pwd_draw_cancel);
         pwd_draw_revoke.setOnClickListener(v -> artBoard.revoke());
         pwd_draw_clear.setOnClickListener(v -> artBoard.clear());
+        popupWindow.setOnDismissListener(() -> {
+            if (artBoard != null) {
+                artBoard.clear();
+            }
+        });
         pwd_draw_determine.setOnClickListener(v -> {
-            Bitmap canvasBmp = artBoard.getCanvasBmp();
-            popupWindow.dismiss();
-            presenter.sendSign(0, Values.localSigninType, pwd, ConvertUtil.bmp2bs(canvasBmp));
-            artBoard.clear();//不清理在画板界面就会存在于 LocalPathList集合中
-            canvasBmp.recycle();
+            if (artBoard.isNotEmpty()) {
+                Bitmap canvasBmp = artBoard.getCanvasBmp();
+                popupWindow.dismiss();
+                presenter.sendSign(0, Values.localSigninType, pwd, ConvertUtil.bmp2bs(canvasBmp));
+                artBoard.clear();//不清理在画板界面就会存在于 LocalPathList集合中
+                canvasBmp.recycle();
+            } else {
+                ToastUtil.show(R.string.please_sign_first);
+            }
         });
         pwd_draw_cancel.setOnClickListener(v -> popupWindow.dismiss());
     }
@@ -1132,11 +1157,11 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
     /**
      * 是否需要签名
      *
-     * @param haspic
+     * @param haspic =true 需要先输入密码，再绘制签名
      */
     private void enterPassword(boolean haspic) {
         View inflate = LayoutInflater.from(this).inflate(R.layout.dialog_enter_password, null);
-        PopupWindow popupWindow = PopUtil.create(inflate, Values.screen_width / 2, Values.screen_height / 2, true, enter_btn_main);
+        PopupWindow popupWindow = PopUtil.create(inflate, Values.screen_width / 2, ViewGroup.LayoutParams.WRAP_CONTENT, true, enter_btn_main);
         EditText enter_pwd_edt = inflate.findViewById(R.id.enter_pwd_edt);
         Button enter_pwd_determine = inflate.findViewById(R.id.enter_pwd_determine);
         Button enter_pwd_cancel = inflate.findViewById(R.id.enter_pwd_cancel);

@@ -75,5 +75,9 @@ public interface IMain {
 
     void checkNetWork();
 
+    /**
+     * 管理员登录返回
+     */
     void loginStatus(InterfaceAdmin.pbui_Type_AdminLogonStatus info);
+
 }

@@ -20,9 +20,9 @@ import xlk.paperless.standard.R;
 public class CustomBaseViewHolder {
     public static class MenuViewHolder {
         public View rootView;
-        public Button wm_menu_note;
-        public Button wm_menu_soft;
-        public Button wm_menu_hand;
+//        public Button wm_menu_note;
+//        public Button wm_menu_soft;
+//        public Button wm_menu_hand;
         public Button wm_menu_service;
         public Button wm_menu_start_projection;
         public Button wm_menu_back;
@@ -34,9 +34,9 @@ public class CustomBaseViewHolder {
 
         public MenuViewHolder(View rootView) {
             this.rootView = rootView;
-            this.wm_menu_note = (Button) rootView.findViewById(R.id.wm_menu_note);
-            this.wm_menu_soft = (Button) rootView.findViewById(R.id.wm_menu_soft);
-            this.wm_menu_hand = (Button) rootView.findViewById(R.id.wm_menu_hand);
+//            this.wm_menu_note = (Button) rootView.findViewById(R.id.wm_menu_note);
+//            this.wm_menu_soft = (Button) rootView.findViewById(R.id.wm_menu_soft);
+//            this.wm_menu_hand = (Button) rootView.findViewById(R.id.wm_menu_hand);
             this.wm_menu_service = (Button) rootView.findViewById(R.id.wm_menu_service);
             this.wm_menu_start_projection = (Button) rootView.findViewById(R.id.wm_menu_start_projection);
             this.wm_menu_back = (Button) rootView.findViewById(R.id.wm_menu_back);

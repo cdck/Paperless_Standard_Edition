@@ -42,7 +42,7 @@ import xlk.paperless.standard.util.FileUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.ToastUtil;
 import xlk.paperless.standard.view.meet.MeetingActivity;
-import xlk.paperless.standard.view.notice.NoticeActivity;
+import xlk.paperless.standard.view.notice.BulletinActivity;
 import xlk.paperless.standard.view.score.ScoreActivity;
 import xlk.paperless.standard.view.video.VideoActivity;
 
@@ -161,7 +161,7 @@ public class BackstageService extends Service {
                     if (!itemList.isEmpty()) {
                         InterfaceBullet.pbui_Item_BulletDetailInfo info = itemList.get(0);
                         int bulletid = info.getBulletid();
-                        NoticeActivity.jump(bulletid, this);
+                        BulletinActivity.jump(bulletid, this);
                     }
                 }
                 break;
@@ -174,7 +174,7 @@ public class BackstageService extends Service {
                     LogUtil.i(TAG, "BusEvent -->" + "收到发起文件自定义选项评分 voteid= " + voteid);
                     startActivity(new Intent(this, ScoreActivity.class)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            .putExtra(Constant.extra_vote_id, voteid));
+                            .putExtra(Constant.EXTRA_VOTE_ID, voteid));
                 }
                 break;
 //            case Constant.BUS_PREVIEW_IMAGE:
@@ -299,8 +299,8 @@ public class BackstageService extends Service {
 //            if (!isVideoPlaying) {
             startActivity(new Intent(this, VideoActivity.class)
                     .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                    .putExtra(Constant.extra_video_action, InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_STREAMPLAY_VALUE)
-                    .putExtra(Constant.extra_video_device_id, deviceid)
+                    .putExtra(Constant.EXTRA_VIDEO_ACTION, InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_STREAMPLAY_VALUE)
+                    .putExtra(Constant.EXTRA_VIDEO_DEVICE_ID, deviceid)
             );
 //            } else {
 //                if (isMandatoryPlaying) {
@@ -345,19 +345,19 @@ public class BackstageService extends Service {
 //            if (!isVideoPlaying) {
             startActivity(new Intent(this, VideoActivity.class)
                     .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                    .putExtra(Constant.extra_video_action, InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEDIAPLAY_VALUE)
-                    .putExtra(Constant.extra_video_subtype, subtype)
+                    .putExtra(Constant.EXTRA_VIDEO_ACTION, InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEDIAPLAY_VALUE)
+                    .putExtra(Constant.EXTRA_VIDEO_SUBTYPE, subtype)
             );
 //            }
         } else {
             LogUtil.i(TAG, "mediaPlayInform -->" + "媒体播放通知：下载文件后打开");
             //创建好下载目录
-            FileUtil.createDir(Constant.dir_data_file);
+            FileUtil.createDir(Constant.DIR_DATA_FILE);
             /** **** **  查询该媒体ID的文件名  ** **** **/
             byte[] bytes = jni.queryFileProperty(InterfaceMacro.Pb_MeetFilePropertyID.Pb_MEETFILE_PROPERTY_NAME.getNumber(), mediaid);
             InterfaceBase.pbui_CommonTextProperty pbui_commonTextProperty = InterfaceBase.pbui_CommonTextProperty.parseFrom(bytes);
             String fielName = pbui_commonTextProperty.getPropertyval().toStringUtf8();
-            String pathname = Constant.dir_data_file + fielName;
+            String pathname = Constant.DIR_DATA_FILE + fielName;
             File file = new File(pathname);
             if (file.exists()) {
                 if (Values.downloadingFiles.contains(mediaid)) {
@@ -367,7 +367,7 @@ public class BackstageService extends Service {
                 }
                 return;
             }
-            jni.creationFileDownload(pathname, mediaid, 0, 0, Constant.download_should_open_file);
+            jni.creationFileDownload(pathname, mediaid, 0, 0, Constant.DOWNLOAD_SHOULD_OPEN_FILE);
         }
     }
 
@@ -415,7 +415,7 @@ public class BackstageService extends Service {
                     //会场底图
                     && !userStr.equals(Constant.ROOM_BG_PNG_TAG)
                     //下载议程文件
-                    && !userStr.equals(Constant.download_agenda_file)
+                    && !userStr.equals(Constant.DOWNLOAD_AGENDA_FILE)
             ) {
                 ToastUtil.show(getString(R.string.file_downloaded_percent, fileName, progress + "%"));
             }
@@ -448,11 +448,11 @@ public class BackstageService extends Service {
                         EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_ROOM_BG).objects(filepath).build());
                         break;
                     //下载完成后需要打开的文件
-                    case Constant.download_should_open_file:
+                    case Constant.DOWNLOAD_SHOULD_OPEN_FILE:
                         FileUtil.openFile(this, file);
                         break;
                     //下载的议程文件
-                    case Constant.download_agenda_file:
+                    case Constant.DOWNLOAD_AGENDA_FILE:
                         EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_AGENDA_FILE).objects(filepath).build());
                         break;
                     default:
@@ -482,7 +482,7 @@ public class BackstageService extends Service {
         LogUtil.i(TAG, "uploadInform -->" + "上传进度：" + per + "\npathName= " + pathName);
         if (status == InterfaceMacro.Pb_Upload_State.Pb_UPLOADMEDIA_FLAG_HADEND_VALUE) {
             //结束上传
-            if (userStr.equals(Constant.upload_draw_pic)) {
+            if (userStr.equals(Constant.UPLOAD_DRAW_PIC)) {
                 //从画板上传的图片
                 FileUtil.delFileByPath(pathName);
             }

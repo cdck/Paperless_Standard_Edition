@@ -304,7 +304,7 @@ public class DrawActivity extends BaseActivity implements IDraw, View.OnClickLis
                 ToastUtil.show( R.string.tip_file_name_unlawfulness);
             } else {
                 presenter.savePicture(name, false, artBoard.getCanvasBmp());
-                ToastUtil.show(getResources().getString(R.string.tip_save_as, Constant.dir_picture));
+                ToastUtil.show(getResources().getString(R.string.tip_save_as, Constant.DIR_PICTURE));
                 dialog.dismiss();
             }
         });

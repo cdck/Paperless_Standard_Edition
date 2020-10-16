@@ -40,7 +40,7 @@ import xlk.paperless.standard.view.MyApplication;
 import static xlk.paperless.standard.data.Constant.BUS_VIDEO_DECODE;
 import static xlk.paperless.standard.data.Constant.BUS_YUV_DISPLAY;
 import static xlk.paperless.standard.data.Constant.getMimeType;
-import static xlk.paperless.standard.data.Constant.resource_0;
+import static xlk.paperless.standard.data.Constant.RESOURCE_0;
 import static xlk.paperless.standard.view.MyApplication.read2file;
 
 /**
@@ -427,7 +427,7 @@ public class VideoPresenter extends BasePresenter {
         isStop = true;
         List<Integer> a = new ArrayList<>();
         List<Integer> b = new ArrayList<>();
-        a.add(resource_0);
+        a.add(RESOURCE_0);
         b.add(Values.localDeviceId);
         /** ************ ******  停止资源操作  ****** ************ **/
         jni.stopResourceOperate(a, b);
@@ -498,7 +498,7 @@ public class VideoPresenter extends BasePresenter {
         if (isPlaying()) {
             List<Integer> devIds = new ArrayList<>();
             devIds.add(Values.localDeviceId);
-            jni.setPlayStop(resource_0, devIds);
+            jni.setPlayStop(RESOURCE_0, devIds);
         }
     }
 
@@ -509,9 +509,9 @@ public class VideoPresenter extends BasePresenter {
             devIds.addAll(currentShareIds);
         }
         if (isPlaying()) {
-            jni.setPlayStop(resource_0, devIds);
+            jni.setPlayStop(RESOURCE_0, devIds);
         } else {
-            jni.setPlayRecover(resource_0, devIds);
+            jni.setPlayRecover(RESOURCE_0, devIds);
         }
     }
 
@@ -521,14 +521,14 @@ public class VideoPresenter extends BasePresenter {
         if (isShareing) {
             devIds.addAll(currentShareIds);
         }
-        jni.setPlayPlace(resource_0, progress, devIds, mValue, 0);
+        jni.setPlayPlace(RESOURCE_0, progress, devIds, mValue, 0);
     }
 
     //停止同屏
     public void stopPlay() {
         if (isShareing) {
             List<Integer> res = new ArrayList<>();
-            res.add(resource_0);
+            res.add(RESOURCE_0);
             jni.stopResourceOperate(res, currentShareIds);
             currentShareIds.clear();
             isShareing = false;
@@ -546,18 +546,14 @@ public class VideoPresenter extends BasePresenter {
         List<Integer> temps = new ArrayList<>(currentShareIds);
         temps.add(Values.localDeviceId);
         mValue = value;
-        jni.mediaPlayOperate(mMediaId, temps, currentPre, resource_0, value, 0);
+        jni.mediaPlayOperate(mMediaId, temps, currentPre, RESOURCE_0, value, 0);
     }
 
     public String queryDevName(int deivceid) {
-        try {
-            InterfaceDevice.pbui_Type_DeviceDetailInfo deviceDetailInfo = jni.queryDevInfoById(deivceid);
-            if (deviceDetailInfo != null) {
-                InterfaceDevice.pbui_Item_DeviceDetailInfo pdev = deviceDetailInfo.getPdev(0);
-                return pdev.getDevname().toStringUtf8();
-            }
-        } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
+        InterfaceDevice.pbui_Type_DeviceDetailInfo deviceDetailInfo = jni.queryDevInfoById(deivceid);
+        if (deviceDetailInfo != null) {
+            InterfaceDevice.pbui_Item_DeviceDetailInfo pdev = deviceDetailInfo.getPdev(0);
+            return pdev.getDevname().toStringUtf8();
         }
         return "";
     }

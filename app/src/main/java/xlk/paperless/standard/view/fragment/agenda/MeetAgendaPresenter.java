@@ -73,8 +73,8 @@ public class MeetAgendaPresenter extends BasePresenter {
                 InterfaceBase.pbui_CommonTextProperty textProperty = InterfaceBase.pbui_CommonTextProperty.parseFrom(bytes);
                 String fileName = textProperty.getPropertyval().toStringUtf8();
                 LogUtil.i(TAG, "fun_queryAgenda 获取到文件议程 -->" + mediaid + ", 文件名：" + fileName);
-                FileUtil.createDir(Constant.dir_cache);
-                File file = new File(Constant.dir_cache + fileName);
+                FileUtil.createDir(Constant.DIR_CACHE);
+                File file = new File(Constant.DIR_CACHE + fileName);
                 if (file.exists()) {
                     if (Values.downloadingFiles.contains(mediaid)) {
                         ToastUtil.show(R.string.currently_downloading);
@@ -82,7 +82,7 @@ public class MeetAgendaPresenter extends BasePresenter {
                         view.displayFile(file.getAbsolutePath());
                     }
                 } else {
-                    jni.creationFileDownload(Constant.dir_cache + fileName, mediaid, 1, 0, Constant.download_agenda_file);
+                    jni.creationFileDownload(Constant.DIR_CACHE + fileName, mediaid, 1, 0, Constant.DOWNLOAD_AGENDA_FILE);
                 }
             } else if (agendatype == InterfaceMacro.Pb_AgendaType.Pb_MEET_AGENDA_TYPE_TIME.getNumber()) {//时间轴式议程
                 List<InterfaceAgenda.pbui_ItemAgendaTimeInfo> itemList = meetAgenda.getItemList();

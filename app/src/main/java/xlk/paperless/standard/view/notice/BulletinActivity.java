@@ -27,9 +27,12 @@ import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.base.BaseActivity;
 
-public class NoticeActivity extends BaseActivity implements INotice, View.OnClickListener {
+/**
+ * @author xlk
+ */
+public class BulletinActivity extends BaseActivity implements INotice, View.OnClickListener {
     public static HashMap<Integer, Activity> hashMap = new HashMap<>();
-    private int bulletid;
+    private int bulletinId;
     private NoticePresenter presenter;
     private TextView notice_ac_title_tv;
     private TextView notice_ac_content_tv;
@@ -43,9 +46,9 @@ public class NoticeActivity extends BaseActivity implements INotice, View.OnClic
             activity.finish();
             hashMap.remove(bulletinId);
         } else {
-            context.startActivity(new Intent(context, NoticeActivity.class)
+            context.startActivity(new Intent(context, BulletinActivity.class)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    .putExtra(Constant.extra_bulletin_id, bulletinId));
+                    .putExtra(Constant.EXTRA_BULLETIN_ID, bulletinId));
         }
     }
 
@@ -54,13 +57,13 @@ public class NoticeActivity extends BaseActivity implements INotice, View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bulletin);
         initView();
-        bulletid = getIntent().getIntExtra(Constant.extra_bulletin_id, 0);
-        if (bulletid != 0) {
-            hashMap.put(bulletid, this);
+        bulletinId = getIntent().getIntExtra(Constant.EXTRA_BULLETIN_ID, 0);
+        if (bulletinId != 0) {
+            hashMap.put(bulletinId, this);
         }
         presenter = new NoticePresenter(this, this);
         presenter.queryInterfaceConfig();
-        presenter.queryAssignNotice(bulletid);
+        presenter.queryAssignNotice(bulletinId);
     }
 
     @Override
@@ -267,7 +270,7 @@ public class NoticeActivity extends BaseActivity implements INotice, View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.notice_ac_close_btn:
-                hashMap.remove(bulletid);
+                hashMap.remove(bulletinId);
                 finish();
                 break;
         }

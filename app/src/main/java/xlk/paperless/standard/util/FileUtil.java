@@ -219,7 +219,7 @@ public class FileUtil {
         File file = new File(pathname);
         if (!file.exists()) {
             LogUtil.d(TAG, "openFile -->" + "下载将要打开的文件 pathname= " + pathname);
-            JniHandler.getInstance().creationFileDownload(pathname, mediaid, 1, 0, Constant.download_should_open_file);
+            JniHandler.getInstance().creationFileDownload(pathname, mediaid, 1, 0, Constant.DOWNLOAD_SHOULD_OPEN_FILE);
         } else {
             if (Values.downloadingFiles.contains(mediaid)) {
                 ToastUtil.show(R.string.currently_downloading);

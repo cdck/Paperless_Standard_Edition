@@ -46,8 +46,8 @@ public class AdminOtherFragment extends BaseFragment implements AdminOtherInterf
         presenter.webQuery();
         presenter.queryCompany();
         presenter.queryReleaseFile();
-        currentAdminId = getActivity().getIntent().getIntExtra(Constant.extra_admin_id, -1);
-        currentAdminPwd = getActivity().getIntent().getStringExtra(Constant.extra_admin_password);
+        currentAdminId = getActivity().getIntent().getIntExtra(Constant.EXTRA_ADMIN_ID, -1);
+        currentAdminPwd = getActivity().getIntent().getStringExtra(Constant.EXTRA_ADMIN_PASSWORD);
         return inflate;
     }
 

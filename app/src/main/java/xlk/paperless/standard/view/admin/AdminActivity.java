@@ -19,6 +19,7 @@ import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.bean.AdminFunctionBean;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.base.BaseActivity;
+import xlk.paperless.standard.view.admin.fragment.pre.meetingManage.MeetingManageFragment;
 import xlk.paperless.standard.view.admin.fragment.system.device.AdminDeviceManageFragment;
 import xlk.paperless.standard.view.admin.fragment.system.member.AdminMemberFragment;
 import xlk.paperless.standard.view.admin.fragment.system.other.AdminOtherFragment;
@@ -26,6 +27,9 @@ import xlk.paperless.standard.view.admin.fragment.system.room.AdminRoomManageFra
 import xlk.paperless.standard.view.admin.fragment.system.secretary.AdminSecretaryManageFragment;
 import xlk.paperless.standard.view.main.MainActivity;
 
+/**
+ * @author Administrator
+ */
 public class AdminActivity extends BaseActivity implements AdminInterface {
 
     private final String TAG = "AdminActivity-->";
@@ -40,7 +44,8 @@ public class AdminActivity extends BaseActivity implements AdminInterface {
     List<AdminFunctionBean> level1FunctionBeans = new ArrayList<>();
     List<AdminFunctionBean> level2FunctionBeans = new ArrayList<>();
     private AdminRvAdapter level1RvAdapter, level2RvAdapter;
-    private int level1Index;
+    private int mLevel1Index;
+    private int mLevel2Index;
     private AdminPresenter presenter;
     private String adminName;
     private int adminId;
@@ -49,6 +54,9 @@ public class AdminActivity extends BaseActivity implements AdminInterface {
     private AdminSecretaryManageFragment adminSecretaryManageFragment;
     private AdminMemberFragment adminMemberFragment;
     private AdminOtherFragment adminOtherFragment;
+
+    private MeetingManageFragment meetingManageFragment;
+
     private int currentMeetId;
 
     @Override
@@ -56,15 +64,15 @@ public class AdminActivity extends BaseActivity implements AdminInterface {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
         initView();
-        adminName = getIntent().getStringExtra(Constant.extra_admin_name);
-        adminId = getIntent().getIntExtra(Constant.extra_admin_id, -1);
+        adminName = getIntent().getStringExtra(Constant.EXTRA_ADMIN_NAME);
+        adminId = getIntent().getIntExtra(Constant.EXTRA_ADMIN_ID, -1);
         admin_tv_user.setText(getString(R.string.user_, adminName));
         presenter = new AdminPresenter(this, this);
 
         presenter.queryCurrentMeeting();
         presenter.queryLocalDeviceInfo();
         presenter.queryOnline();
-
+        //四个大类
         level1FunctionBeans.add(new AdminFunctionBean(R.drawable.menu_system));
         level1FunctionBeans.add(new AdminFunctionBean(R.drawable.menu_pre));
         level1FunctionBeans.add(new AdminFunctionBean(R.drawable.menu_mid));
@@ -76,15 +84,20 @@ public class AdminActivity extends BaseActivity implements AdminInterface {
             level1RvAdapter.setSelect(position);
             showLevel2(position);
         });
-        showLevel2(level1Index);
-//        showFragment(0, 0);
+        showLevel2(mLevel1Index);
     }
 
 
     private void showLevel2(int index) {
-        level1Index = index;
+        if (mLevel1Index != index) {
+            mLevel2Index = 0;
+            if (level2RvAdapter != null) {
+                level2RvAdapter.setSelect(0);
+            }
+        }
+        mLevel1Index = index;
         level2FunctionBeans.clear();
-        switch (level1Index) {
+        switch (mLevel1Index) {
             case 0:
                 level2FunctionBeans.add(new AdminFunctionBean(R.drawable.icon_admin_dev));
                 level2FunctionBeans.add(new AdminFunctionBean(R.drawable.icon_admin_room));
@@ -121,18 +134,22 @@ public class AdminActivity extends BaseActivity implements AdminInterface {
                 level2FunctionBeans.add(new AdminFunctionBean(R.drawable.icon_admin_cameractrl));
                 level2FunctionBeans.add(new AdminFunctionBean(R.drawable.icon_admin_meetintzip));
                 break;
+            default:
+                break;
         }
         if (level2RvAdapter == null) {
             level2RvAdapter = new AdminRvAdapter(level2FunctionBeans);
             admin_rv_level2.setLayoutManager(new LinearLayoutManager(this));
             admin_rv_level2.setAdapter(level2RvAdapter);
             level2RvAdapter.setOnItemClickListener((adapter, view, position) -> {
+                mLevel2Index = position;
                 level2RvAdapter.setSelect(position);
-                showFragment(level1Index, position);
+                showFragment(mLevel1Index, mLevel2Index);
             });
         } else {
             level2RvAdapter.notifyDataSetChanged();
         }
+        showFragment(mLevel1Index, mLevel2Index);
     }
 
     private void showFragment(int level1Index, int level2Index) {
@@ -143,9 +160,29 @@ public class AdminActivity extends BaseActivity implements AdminInterface {
             case 0:
                 sysFragment(level2Index, ft);
                 break;
+            case 1:
+                preFragment(level2Index, ft);
+                break;
+            default:
+                break;
         }
         ft.commitAllowingStateLoss();//允许状态丢失，其他完全一样
 //        ft.commit();//出现异常：Can not perform this action after onSaveInstanceState
+    }
+
+    private void preFragment(int level2Index, FragmentTransaction ft) {
+
+        switch (level2Index) {
+            case 0:
+                if (meetingManageFragment == null) {
+                    meetingManageFragment = new MeetingManageFragment();
+                    ft.add(R.id.admin_fl, meetingManageFragment);
+                }
+                ft.show(meetingManageFragment);
+                break;
+            default:
+                break;
+        }
     }
 
     private void sysFragment(int level2Index, FragmentTransaction ft) {
@@ -185,15 +222,20 @@ public class AdminActivity extends BaseActivity implements AdminInterface {
                 }
                 ft.show(adminOtherFragment);
                 break;
+            default:
+                break;
         }
     }
 
     private void hideFragment(FragmentTransaction ft) {
+        //系统设置
         if (adminDeviceManageFragment != null) ft.hide(adminDeviceManageFragment);
         if (adminRoomManageFragment != null) ft.hide(adminRoomManageFragment);
         if (adminSecretaryManageFragment != null) ft.hide(adminSecretaryManageFragment);
         if (adminMemberFragment != null) ft.hide(adminMemberFragment);
         if (adminOtherFragment != null) ft.hide(adminOtherFragment);
+        // 会前设置
+        if (meetingManageFragment != null) ft.hide(meetingManageFragment);
     }
 
     private void initView() {

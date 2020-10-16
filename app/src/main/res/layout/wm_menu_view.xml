@@ -19,7 +19,6 @@
             android:id="@+id/wm_menu_note"
             style="@style/btn_pressed_style"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_margin="@dimen/dp_5"
             android:layout_weight="1"
             android:text="会议笔记" />
@@ -28,7 +27,6 @@
             android:id="@+id/wm_menu_soft"
             style="@style/btn_pressed_style"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_margin="@dimen/dp_5"
             android:layout_weight="1"
             android:text="软键盘" />
@@ -37,7 +35,6 @@
             android:id="@+id/wm_menu_hand"
             style="@style/btn_pressed_style"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_margin="@dimen/dp_5"
             android:layout_weight="1"
             android:text="手写输入" />
@@ -46,7 +43,6 @@
             android:id="@+id/wm_menu_service"
             style="@style/btn_pressed_style"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_margin="@dimen/dp_5"
             android:layout_weight="1"
             android:text="@string/Call_service" />
@@ -65,7 +61,6 @@
             android:id="@+id/wm_menu_start_projection"
             style="@style/btn_pressed_style"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_margin="@dimen/dp_5"
             android:layout_weight="1"
             android:text="@string/Initiate_projection" />
@@ -82,7 +77,6 @@
                 android:id="@+id/wm_menu_back"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/back" />
         </LinearLayout>
@@ -91,7 +85,6 @@
             android:id="@+id/wm_menu_stop_projection"
             style="@style/btn_pressed_style"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_margin="@dimen/dp_5"
             android:layout_weight="1"
             android:text="@string/End_projection" />
@@ -108,7 +101,6 @@
             android:id="@+id/wm_menu_start_screen"
             style="@style/btn_pressed_style"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_margin="@dimen/dp_5"
             android:layout_weight="1"
             android:text="@string/Initiate_the_same_screen" />
@@ -117,7 +109,6 @@
             android:id="@+id/wm_menu_join_screen"
             style="@style/btn_pressed_style"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_margin="@dimen/dp_5"
             android:layout_weight="1"
             android:text="@string/Join_screen" />
@@ -126,7 +117,6 @@
             android:id="@+id/wm_menu_stop_screen"
             style="@style/btn_pressed_style"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_margin="@dimen/dp_5"
             android:layout_weight="1"
             android:text="@string/End_screen" />
@@ -135,7 +125,6 @@
             android:id="@+id/wm_menu_screenshot"
             style="@style/btn_pressed_style"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_margin="@dimen/dp_5"
             android:layout_weight="1"
             android:text="@string/Screenshot_annotation" />

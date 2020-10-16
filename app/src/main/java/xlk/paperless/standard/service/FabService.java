@@ -63,11 +63,11 @@ import xlk.paperless.standard.view.draw.DrawActivity;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static xlk.paperless.standard.data.Constant.permission_code_projection;
 import static xlk.paperless.standard.data.Constant.permission_code_screen;
-import static xlk.paperless.standard.data.Constant.resource_0;
-import static xlk.paperless.standard.data.Constant.resource_1;
-import static xlk.paperless.standard.data.Constant.resource_2;
-import static xlk.paperless.standard.data.Constant.resource_3;
-import static xlk.paperless.standard.data.Constant.resource_4;
+import static xlk.paperless.standard.data.Constant.RESOURCE_0;
+import static xlk.paperless.standard.data.Constant.RESOURCE_1;
+import static xlk.paperless.standard.data.Constant.RESOURCE_2;
+import static xlk.paperless.standard.data.Constant.RESOURCE_3;
+import static xlk.paperless.standard.data.Constant.RESOURCE_4;
 import static xlk.paperless.standard.view.MyApplication.mMediaProjection;
 import static xlk.paperless.standard.view.chatonline.ChatVideoActivity.isChatingOpened;
 import static xlk.paperless.standard.view.draw.DrawActivity.isDrawing;
@@ -258,7 +258,7 @@ public class FabService extends Service implements IFab {
 
     //菜单视图
     private void showMenuView() {
-        menuView = LayoutInflater.from(cxt).inflate(R.layout.wm_menu_view, null);
+        menuView = LayoutInflater.from(cxt).inflate(R.layout.wm_menu_view_new, null);
         menuView.setTag("menuView");
         CustomBaseViewHolder.MenuViewHolder menuViewHolder = new CustomBaseViewHolder.MenuViewHolder(menuView);
         menuViewHolderEvent(menuViewHolder);
@@ -350,12 +350,12 @@ public class FabService extends Service implements IFab {
             boolean checked = holder.wm_pro_full.isChecked();
             List<Integer> res = new ArrayList<>();
             if (checked) {
-                res.add(resource_0);
+                res.add(RESOURCE_0);
             } else {
-                if (holder.wm_pro_flow1.isChecked()) res.add(resource_1);
-                if (holder.wm_pro_flow2.isChecked()) res.add(resource_2);
-                if (holder.wm_pro_flow3.isChecked()) res.add(resource_3);
-                if (holder.wm_pro_flow4.isChecked()) res.add(resource_4);
+                if (holder.wm_pro_flow1.isChecked()) res.add(RESOURCE_1);
+                if (holder.wm_pro_flow2.isChecked()) res.add(RESOURCE_2);
+                if (holder.wm_pro_flow3.isChecked()) res.add(RESOURCE_3);
+                if (holder.wm_pro_flow4.isChecked()) res.add(RESOURCE_4);
             }
             if (res.isEmpty()) {
                 ToastUtil.show(cxt.getString(R.string.please_choose_res_first));
@@ -425,7 +425,7 @@ public class FabService extends Service implements IFab {
                 ToastUtil.show(R.string.err_target_NotNull);
             } else {
                 List<Integer> res = new ArrayList<>();
-                res.add(resource_0);
+                res.add(RESOURCE_0);
                 List<Integer> devs = new ArrayList<>();
                 devs.add(Values.localDeviceId);
                 jni.streamPlay(ids.get(0), 2, 0, res, devs);
@@ -514,7 +514,7 @@ public class FabService extends Service implements IFab {
                 ToastUtil.show(R.string.err_target_NotNull);
             } else {
                 List<Integer> temps = new ArrayList<>();
-                temps.add(resource_0);
+                temps.add(RESOURCE_0);
                 if (type == 1) {//发起同屏
                     int triggeruserval = 0;
                     if (holder.wm_screen_mandatory.isChecked()) {//是否强制同屏
@@ -582,8 +582,8 @@ public class FabService extends Service implements IFab {
         if (!isAsk) {//没有询问，对方强制要求加入
             if (!isChatingOpened) {
                 startActivity(new Intent(this, ChatVideoActivity.class)
-                        .putExtra(Constant.extra_inviteflag, inviteflag)
-                        .putExtra(Constant.extra_operdeviceid, operdeviceid)
+                        .putExtra(Constant.EXTRA_INVITE_FLAG, inviteflag)
+                        .putExtra(Constant.EXTRA_OPERATING_DEVICE_ID, operdeviceid)
                         .setFlags(FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
             } else {
                 EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_CHAT_STATE).objects(inviteflag, operdeviceid).build());
@@ -602,8 +602,8 @@ public class FabService extends Service implements IFab {
                     public void positive(DialogInterface dialog) {
                         if (!isChatingOpened) {
                             startActivity(new Intent(cxt, ChatVideoActivity.class)
-                                    .putExtra(Constant.extra_inviteflag, inviteflag)
-                                    .putExtra(Constant.extra_operdeviceid, operdeviceid)
+                                    .putExtra(Constant.EXTRA_INVITE_FLAG, inviteflag)
+                                    .putExtra(Constant.EXTRA_OPERATING_DEVICE_ID, operdeviceid)
                                     .setFlags(FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
                         } else {
                             EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_CHAT_STATE).objects(inviteflag, operdeviceid).build());
@@ -636,7 +636,7 @@ public class FabService extends Service implements IFab {
         cameraView.findViewById(R.id.wm_camera_pre).setOnClickListener(v -> {
             if (AppUtil.checkCamera(cxt, 1)) {
                 Intent intent = new Intent(cxt, CameraActivity.class);
-                intent.putExtra(Constant.extra_camrea_type, 1);
+                intent.putExtra(Constant.EXTRA_CAMERA_TYPE, 1);
                 intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                 cxt.startActivity(intent);
                 wm.removeView(cameraView);
@@ -650,7 +650,7 @@ public class FabService extends Service implements IFab {
         cameraView.findViewById(R.id.wm_camera_back).setOnClickListener(v -> {
             if (AppUtil.checkCamera(cxt, 0)) {
                 Intent intent = new Intent(cxt, CameraActivity.class);
-                intent.putExtra(Constant.extra_camrea_type, 0);
+                intent.putExtra(Constant.EXTRA_CAMERA_TYPE, 0);
                 intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                 cxt.startActivity(intent);
                 wm.removeView(cameraView);

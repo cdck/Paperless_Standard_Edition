@@ -8,10 +8,6 @@ import com.mogujie.tt.protobuf.InterfaceFile;
 import com.mogujie.tt.protobuf.InterfaceMacro;
 import com.mogujie.tt.protobuf.InterfaceMember;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -115,11 +111,11 @@ public class MeetDataPresenter extends BasePresenter {
 
     public void downloadFile(InterfaceFile.pbui_Item_MeetDirFileDetailInfo fileDetailInfo) {
         LogUtil.d(TAG, "downloadFile -->" + "下载文件：" + fileDetailInfo.getName().toStringUtf8());
-        if (FileUtil.createDir(Constant.dir_data_file)) {
-            String pathname = Constant.dir_data_file + fileDetailInfo.getName().toStringUtf8();
+        if (FileUtil.createDir(Constant.DIR_DATA_FILE)) {
+            String pathname = Constant.DIR_DATA_FILE + fileDetailInfo.getName().toStringUtf8();
             File file = new File(pathname);
             if (!file.exists()) {
-                jni.creationFileDownload(pathname, fileDetailInfo.getMediaid(), 1, 0, Constant.download_meeting_file);
+                jni.creationFileDownload(pathname, fileDetailInfo.getMediaid(), 1, 0, Constant.DOWNLOAD_MEETING_FILE);
             } else {
                 if (Values.downloadingFiles.contains(fileDetailInfo.getMediaid())) {
                     ToastUtil.show(R.string.currently_downloading);
@@ -171,6 +167,10 @@ public class MeetDataPresenter extends BasePresenter {
 
     public void mediaPlayOperate(int mediaid, List<Integer> devIds, int pos, int res, int triggeruserval, int flag) {
         jni.mediaPlayOperate(mediaid, devIds, pos, res, triggeruserval, flag);
+    }
+
+    public void stopPush(List<Integer> res, List<Integer> devIds){
+        jni.stopResourceOperate(res,devIds);
     }
 
     public void uploadFile(int uploadflag, int dirid, int attrib, String newname, String pathname, int userval, int mediaid, String userStr) {

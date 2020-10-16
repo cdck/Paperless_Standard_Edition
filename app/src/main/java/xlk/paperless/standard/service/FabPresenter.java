@@ -117,13 +117,13 @@ public class FabPresenter extends BasePresenter {
                 if (AppUtil.checkCamera(cxt, 1)) {
                     ToastUtil.show(R.string.opening_camera);
                     Intent intent = new Intent(cxt, CameraActivity.class);
-                    intent.putExtra(Constant.extra_camrea_type, 1);
+                    intent.putExtra(Constant.EXTRA_CAMERA_TYPE, 1);
                     intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                     cxt.startActivity(intent);
                 } else if (AppUtil.checkCamera(cxt, 0)) {
                     ToastUtil.show(R.string.opening_camera);
                     Intent intent = new Intent(cxt, CameraActivity.class);
-                    intent.putExtra(Constant.extra_camrea_type, 0);
+                    intent.putExtra(Constant.EXTRA_CAMERA_TYPE, 0);
                     intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                     cxt.startActivity(intent);
                 } else {

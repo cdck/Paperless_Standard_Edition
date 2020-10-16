@@ -155,14 +155,14 @@
         <Button
             android:id="@+id/pop_create_member_determine"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            style="@style/btn_pressed_style"
             android:layout_weight="1"
             android:text="@string/determine" />
 
         <Button
             android:id="@+id/pop_create_member_cancel"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            style="@style/btn_pressed_style"
             android:layout_weight="1"
             android:text="@string/cancel" />
     </LinearLayout>

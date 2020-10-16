@@ -47,7 +47,7 @@ public class ScoreActivity extends BaseActivity implements IScore, View.OnClickL
         setContentView(R.layout.activity_score);
         initView();
         presenter = new ScorePresenter(this, this);
-        voteid = getIntent().getIntExtra(Constant.extra_vote_id, 0);
+        voteid = getIntent().getIntExtra(Constant.EXTRA_VOTE_ID, 0);
         presenter.queryScoreById(voteid);
     }
 

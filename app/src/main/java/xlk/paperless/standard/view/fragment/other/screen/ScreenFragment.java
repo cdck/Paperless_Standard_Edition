@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.mogujie.tt.protobuf.InterfaceMacro;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ import xlk.paperless.standard.data.bean.DevMember;
 import xlk.paperless.standard.util.ToastUtil;
 import xlk.paperless.standard.base.BaseFragment;
 
-import static xlk.paperless.standard.data.Constant.resource_0;
+import static xlk.paperless.standard.data.Constant.RESOURCE_0;
 
 /**
  * @author xlk
@@ -147,7 +148,7 @@ public class ScreenFragment extends BaseFragment implements IScreen, View.OnClic
                 if (choose != null) {
                     int devcieid = choose.getDeviceDetailInfo().getDevcieid();
                     List<Integer> temps = new ArrayList<>();
-                    temps.add(resource_0);
+                    temps.add(RESOURCE_0);
                     List<Integer> ids = new ArrayList<>();
                     ids.add(Values.localDeviceId);
                     JniHandler.getInstance().streamPlay(devcieid, 2, 0, temps, ids);
@@ -164,6 +165,7 @@ public class ScreenFragment extends BaseFragment implements IScreen, View.OnClic
             case R.id.f_screen_stop:
                 stopScreen();
                 break;
+            default:break;
         }
     }
 
@@ -186,9 +188,9 @@ public class ScreenFragment extends BaseFragment implements IScreen, View.OnClic
             ids.addAll(projectorAdapter.getChooseIds());
             if (!ids.isEmpty()) {
                 List<Integer> temps = new ArrayList<>();
-                temps.add(resource_0);
+                temps.add(RESOURCE_0);
                 int devcieid = choose.getDeviceDetailInfo().getDevcieid();
-                int triggeruserval = f_screen_mandatory_cb.isChecked() ? 1 : 0;
+                int triggeruserval = f_screen_mandatory_cb.isChecked() ? InterfaceMacro.Pb_TriggerUsedef.Pb_EXCEC_USERDEF_FLAG_NOCREATEWINOPER_VALUE : 0;
                 JniHandler.getInstance().streamPlay(devcieid, 2, triggeruserval, temps, ids);
             } else {
                 ToastUtil.show(R.string.please_choose_target);

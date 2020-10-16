@@ -88,9 +88,9 @@ public class VideoActivity extends BaseActivity implements IVideo, WlOnGlSurface
         if (isMandatoryPlaying) {
             setCanNotExit();
         }
-        playAction = intent.getIntExtra(Constant.extra_video_action, -1);
-        int subtype = intent.getIntExtra(Constant.extra_video_subtype, -1);
-        int deivceid = intent.getIntExtra(Constant.extra_video_device_id, -1);
+        playAction = intent.getIntExtra(Constant.EXTRA_VIDEO_ACTION, -1);
+        int subtype = intent.getIntExtra(Constant.EXTRA_VIDEO_SUBTYPE, -1);
+        int deivceid = intent.getIntExtra(Constant.EXTRA_VIDEO_DEVICE_ID, -1);
         if (subtype == Constant.MEDIA_FILE_TYPE_MP3) {
             //如果当前播放的是mp3文件，则只显示MP3控件
             play_mp3_view.setVisibility(View.VISIBLE);

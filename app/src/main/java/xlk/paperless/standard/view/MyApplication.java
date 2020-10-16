@@ -68,6 +68,10 @@ public class MyApplication extends Application {
      * 是否写入到文件中
      */
     public static final boolean read2file = false;
+    /**
+     * 是否可以登录到后台管理
+     */
+    public static final boolean canLoginAdmin = false;
 
     /**
      * 屏幕录制需要的信息
@@ -113,8 +117,8 @@ public class MyApplication extends Application {
         initScreenParam();
         lbm = LocalBroadcastManager.getInstance(getApplicationContext());
         IntentFilter filter = new IntentFilter();
-        filter.addAction(Constant.action_screen_recording);
-        filter.addAction(Constant.action_stop_screen_recording);
+        filter.addAction(Constant.ACTION_SCREEN_RECORDING);
+        filter.addAction(Constant.ACTION_STOP_SCREEN_RECORDING);
         lbm.registerReceiver(receiver, filter);
     }
 
@@ -200,12 +204,12 @@ public class MyApplication extends Application {
             LogUtil.e(TAG, "initScreenParam :  屏幕宽高 --> " + Values.screen_width + "," + Values.screen_height);
             width = metric.widthPixels;
             height = metric.heightPixels;
-            if (width > MAX_WIDTH) {
-                width = MAX_WIDTH;
-            }
-            if (height > MAX_HEIGHT) {
-                height = MAX_HEIGHT;
-            }
+//            if (width > MAX_WIDTH) {
+//                width = MAX_WIDTH;
+//            }
+//            if (height > MAX_HEIGHT) {
+//                height = MAX_HEIGHT;
+//            }
             //屏幕密度（0.75 / 1.0 / 1.5）
             float density = metric.density;
             //屏幕密度DPI（120 / 160 / 240）
@@ -221,12 +225,12 @@ public class MyApplication extends Application {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            int type = intent.getIntExtra(Constant.extra_collection_type, 0);
+            int type = intent.getIntExtra(Constant.EXTRA_COLLECTION_TYPE, 0);
             LogUtil.e(TAG, "onReceive :   --> type= " + type + " , action = " + action);
-            if (action.equals(Constant.action_screen_recording)) {
+            if (action.equals(Constant.ACTION_SCREEN_RECORDING)) {
                 LogUtil.e(TAG, "screen_shot --> ");
                 screenRecording();
-            } else if (action.equals(Constant.action_stop_screen_recording)) {
+            } else if (action.equals(Constant.ACTION_STOP_SCREEN_RECORDING)) {
                 LogUtil.e(TAG, "stop_screen_shot --> ");
                 if (stopRecord()) {
                     LogUtil.i(TAG, "stopStreamInform: 屏幕录制已停止..");
@@ -251,7 +255,9 @@ public class MyApplication extends Application {
         if (stopRecord()) {
             LogUtil.i(TAG, "capture: 屏幕录制已停止");
         } else {
-            if (mMediaProjection == null) return;
+            if (mMediaProjection == null) {
+                return;
+            }
             if (recorder != null) {
                 recorder.quit();
             }

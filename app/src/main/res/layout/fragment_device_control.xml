@@ -170,6 +170,7 @@
         android:id="@+id/dev_control_wake_on"
         style="@style/btn_pressed_style"
         android:layout_marginEnd="@dimen/dp_8"
+        android:visibility="visible"
         android:text="@string/wake_on_lan"
         app:layout_constraintBaseline_toBaselineOf="@+id/dev_control_open_document"
         app:layout_constraintEnd_toStartOf="@+id/dev_control_open_document" />

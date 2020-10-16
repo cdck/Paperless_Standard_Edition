@@ -680,8 +680,8 @@ public class DrawPresenter extends BasePresenter {
     public void savePicture(String fileName, boolean isUpload, Bitmap bitmap) {
         //重新创建一个，画板获取的bitmap对象会自动回收掉
         Bitmap bitmap1 = Bitmap.createBitmap(bitmap);
-        FileUtil.createDir(Constant.dir_picture);
-        File uploadPicFile = new File(Constant.dir_picture, fileName + ".png");
+        FileUtil.createDir(Constant.DIR_PICTURE);
+        File uploadPicFile = new File(Constant.DIR_PICTURE, fileName + ".png");
         FileUtil.saveBitmap(bitmap1, uploadPicFile);
         Timer tupload = new Timer();
         TimerTask timerTask = new TimerTask() {
@@ -693,7 +693,7 @@ public class DrawPresenter extends BasePresenter {
                     int mediaid = Constant.getMediaId(path);
                     String fileEnd = path.substring(path.lastIndexOf(".") + 1, path.length()).toLowerCase();
                     jni.uploadFile(InterfaceMacro.Pb_Upload_Flag.Pb_MEET_UPLOADFLAG_ONLYENDCALLBACK.getNumber(),
-                            ANNOTATION_FILE_DIRECTORY_ID, 0, fileName + "." + fileEnd, path, 0, mediaid, Constant.upload_draw_pic);
+                            ANNOTATION_FILE_DIRECTORY_ID, 0, fileName + "." + fileEnd, path, 0, mediaid, Constant.UPLOAD_DRAW_PIC);
                 }
             }
         };

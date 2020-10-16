@@ -53,14 +53,14 @@ import xlk.paperless.standard.view.fragment.signin.MeetSigninFragment;
 import xlk.paperless.standard.view.fragment.web.MeetWebFragment;
 import xlk.paperless.standard.view.main.MainActivity;
 
-import static xlk.paperless.standard.data.Constant.fun_code_agenda_bulletin;
-import static xlk.paperless.standard.data.Constant.fun_code_meet_file;
-import static xlk.paperless.standard.data.Constant.fun_code_message;
-import static xlk.paperless.standard.data.Constant.fun_code_postil_file;
-import static xlk.paperless.standard.data.Constant.fun_code_signinresult;
-import static xlk.paperless.standard.data.Constant.fun_code_video_stream;
-import static xlk.paperless.standard.data.Constant.fun_code_webbrowser;
-import static xlk.paperless.standard.data.Constant.fun_code_whiteboard;
+import static xlk.paperless.standard.data.Constant.FUN_CODE_AGENDA_BULLETIN;
+import static xlk.paperless.standard.data.Constant.FUN_CODE_MEET_FILE;
+import static xlk.paperless.standard.data.Constant.FUN_CODE_MESSAGE;
+import static xlk.paperless.standard.data.Constant.FUN_CODE_POSTIL_FILE;
+import static xlk.paperless.standard.data.Constant.FUN_CODE_SIGNIN_RESULT;
+import static xlk.paperless.standard.data.Constant.FUN_CODE_VIDEO_STREAM;
+import static xlk.paperless.standard.data.Constant.FUN_CODE_WEB_BROWSER;
+import static xlk.paperless.standard.data.Constant.FUN_CODE_WHITEBOARD;
 import static xlk.paperless.standard.view.fragment.live.MeetLiveVideoFragment.isManage;
 import static xlk.paperless.standard.view.fragment.score.MeetScoreFragment.isScoreManage;
 
@@ -71,7 +71,6 @@ import static xlk.paperless.standard.view.fragment.score.MeetScoreFragment.isSco
  */
 public class MeetingActivity extends BaseActivity implements IMeet, View.OnClickListener {
 
-    private final String TAG = "MeetingActivity-->";
     private MeetingPresenter presenter;
     private ConstraintLayout meet_root_id;
     private LinearLayout meet_fun_all_ll;
@@ -88,7 +87,10 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
     private TextView meet_meeting_name;
     private FrameLayout meet_frame_layout;
     private LinearLayout meet_others;
-    public static int frameLayoutWidth, frameLayoutHeight;//PopupWindow大小时使用
+    /**
+     * PopupWindow大小时使用
+     */
+    public static int frameLayoutWidth, frameLayoutHeight;
     private MeetAgendaFragment meetAgendaFragment;
     private MeetAnnotationFragment meetAnnotationFragment;
     private MeetChatFragment meetChatFragment;
@@ -107,8 +109,14 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
     public static Badge mBadge;
     List<LinearLayout> funViews = new ArrayList<>();
     private PopupWindow funPop;
-    private int funWidth, funHeight;//功能模块的宽高，用于决定PopupWindow的宽高
-    private int firstFunCode;//保存第一个功能的功能码
+    /**
+     * 功能模块的宽高，用于决定PopupWindow的宽高
+     */
+    private int funWidth, funHeight;
+    /**
+     * 保存第一个功能的功能码
+     */
+    private int firstFunCode;
     private VoteManageFragment voteManageFragment;
 
     @Override
@@ -134,6 +142,7 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
     }
 
     private void initial() {
+        LogUtil.i(TAG, "initial ");
         presenter.queryInterFaceConfiguration();
         presenter.queryIsOnline();
         presenter.queryDeviceMeetInfo();
@@ -200,7 +209,8 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
             case R.id.meet_chat:
                 setDefaultFun(4);
                 break;
-            case R.id.meet_min://最小化，回到桌面
+            //最小化，回到桌面
+            case R.id.meet_min:
                 //方法一：
 //                moveTaskToBack(true);
                 /*
@@ -210,7 +220,8 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
                  */
                 Intent intent = new Intent(Intent.ACTION_MAIN);
                 intent.addCategory(Intent.CATEGORY_HOME);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                //2020年10月16日11:38:29猜测：如果添加这一行，回到桌面再进入时就会进入到MainActivity
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 break;
             case R.id.meet_close:
@@ -223,6 +234,7 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
                     ToastUtil.show(getString(R.string.err_NoPermission));
                 }
                 break;
+            default:break;
         }
     }
 
@@ -239,31 +251,31 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
 //        funPop.setAnimationStyle(R.style.pop_rl_animation);
         funPop.showAsDropDown(meet_fun_all_ll, funWidth, 0);
         inflate.findViewById(R.id.pop_fun_terminal_control).setOnClickListener(v -> {
-            setDefaultFun(Constant.fun_code_terminal);
+            setDefaultFun(Constant.FUN_CODE_TERMINAL);
             funPop.dismiss();
         });
         inflate.findViewById(R.id.pop_fun_vote_manage).setOnClickListener(v -> {
-            setDefaultFun(Constant.fun_code_vote);
+            setDefaultFun(Constant.FUN_CODE_VOTE);
             funPop.dismiss();
         });
         inflate.findViewById(R.id.pop_fun_election_manage).setOnClickListener(v -> {
-            setDefaultFun(Constant.fun_code_election);
+            setDefaultFun(Constant.FUN_CODE_ELECTION);
             funPop.dismiss();
         });
         inflate.findViewById(R.id.pop_fun_video_control).setOnClickListener(v -> {
-            setDefaultFun(Constant.fun_code_video);
+            setDefaultFun(Constant.FUN_CODE_VIDEO);
             funPop.dismiss();
         });
         inflate.findViewById(R.id.pop_fun_screen_manage).setOnClickListener(v -> {
-            setDefaultFun(Constant.fun_code_screen);
+            setDefaultFun(Constant.FUN_CODE_SCREEN);
             funPop.dismiss();
         });
         inflate.findViewById(R.id.pop_fun_bulletin_manage).setOnClickListener(v -> {
-            setDefaultFun(Constant.fun_code_bulletin);
+            setDefaultFun(Constant.FUN_CODE_BULLETIN);
             funPop.dismiss();
         });
         inflate.findViewById(R.id.pop_fun_score_manage).setOnClickListener(v -> {
-            setDefaultFun(Constant.fun_code_score);
+            setDefaultFun(Constant.FUN_CODE_SCORE);
             funPop.dismiss();
         });
     }
@@ -359,7 +371,7 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
             if (funPop != null && funPop.isShowing()) {
                 funPop.dismiss();
             }
-            if (saveFunCode > Constant.fun_code) {
+            if (saveFunCode > Constant.FUN_CODE) {
                 //之前有权限时在其它界面，权限消失后切换到默认第一个页面去
                 setDefaultFun(firstFunCode);
             }
@@ -385,26 +397,36 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
         //首次进入时，设置第一个为默认选中的功能
         if (saveFunCode == -1 && !functions.isEmpty()) {
             int funcode = functions.get(0).getFuncode();
-            if (funcode == fun_code_whiteboard) {
-                if (functions.size() > 1) {//如果第一个是电子白板则跳过
+            if (funcode == FUN_CODE_WHITEBOARD) {
+                //如果第一个是电子白板则跳过
+                if (functions.size() > 1) {
                     saveFunCode = functions.get(1).getFuncode();
                 }
             } else {
                 saveFunCode = funcode;
             }
         }
+
         //这里主要判断不是第一次进入时之前的功能模块是否还在
         boolean has = false;
-        for (int i = 0; i < functions.size(); i++) {
-            int funcode = functions.get(i).getFuncode();
-            if (i == 0) {
-                firstFunCode = funcode;
-            }
-            if (i == 1 && firstFunCode == Constant.fun_code_whiteboard) {//不保存电子白板的功能码
-                firstFunCode = funcode;
-            }
-            if (saveFunCode == funcode) {
+        if (isSavedOtherFunCode(saveFunCode)) {
+            //如果保存的功能码是其它功能,并且还有权限则设置功能模块还在
+            if (Values.hasAllPermissions) {
                 has = true;
+            }
+        } else {
+            for (int i = 0; i < functions.size(); i++) {
+                int funcode = functions.get(i).getFuncode();
+                if (i == 0) {
+                    firstFunCode = funcode;
+                }
+                //不保存电子白板的功能码
+                if (i == 1 && firstFunCode == Constant.FUN_CODE_WHITEBOARD) {
+                    firstFunCode = funcode;
+                }
+                if (saveFunCode == funcode) {
+                    has = true;
+                }
             }
         }
         LogUtil.d(TAG, "updateFunction :  当前功能码 --> " + saveFunCode + ", has = " + has);
@@ -441,48 +463,59 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
             funViews.add(ll);
             meet_fun_ll.addView(ll);
         }
-        if (has) {//之前保存的功能还在
+        if (has) {
+            //之前保存的功能还在
             setDefaultFun(saveFunCode);
-        } else {//之前保存的功能不存在了就展示第一个功能模块
+        } else {
+            //之前保存的功能不存在了就展示第一个功能模块
             setDefaultFun(firstFunCode);
         }
+    }
+
+    /**
+     * 判断保存的功能码是不是其它功能
+     *
+     * @param saveFunCode 保存的功能码
+     */
+    private boolean isSavedOtherFunCode(int saveFunCode) {
+        return saveFunCode > Constant.FUN_CODE;
     }
 
     private void setFunUI(int funcode, ImageView iv, TextView tv) {
         String funName = "";
         switch (funcode) {
-            case fun_code_agenda_bulletin:
+            case FUN_CODE_AGENDA_BULLETIN:
                 funName = getString(R.string.meeting_agenda);
                 iv.setImageDrawable(getDrawable(R.drawable.icon_fun_agenda));
                 break;
-            case fun_code_meet_file:
+            case FUN_CODE_MEET_FILE:
                 funName = getString(R.string.meeting_data);
                 iv.setImageDrawable(getDrawable(R.drawable.icon_fun_data));
                 break;
-            case fun_code_postil_file:
+            case FUN_CODE_POSTIL_FILE:
                 funName = getString(R.string.meeting_annotation_view);
                 iv.setImageDrawable(getDrawable(R.drawable.icon_fun_annotation));
                 break;
-            case fun_code_message:
+            case FUN_CODE_MESSAGE:
                 funName = getString(R.string.meeting_chat);
                 iv.setImageDrawable(getDrawable(R.drawable.icon_fun_chat));
                 break;
-            case fun_code_video_stream:
+            case FUN_CODE_VIDEO_STREAM:
                 funName = getString(R.string.meeting_live_video);
                 iv.setImageDrawable(getDrawable(R.drawable.icon_fun_video));
                 break;
-            case fun_code_whiteboard:
+            case FUN_CODE_WHITEBOARD:
                 funName = getString(R.string.meeting_art_board);
                 iv.setImageDrawable(getDrawable(R.drawable.icon_fun_art));
                 break;
-            case fun_code_webbrowser:
+            case FUN_CODE_WEB_BROWSER:
                 funName = getString(R.string.meeting_web_browsing);
                 iv.setImageDrawable(getDrawable(R.drawable.icon_fun_web));
                 break;
             case 8:
                 funName = getString(R.string.meeting_questionnaire);
                 break;
-            case fun_code_signinresult:
+            case FUN_CODE_SIGNIN_RESULT:
                 funName = getString(R.string.meeting_sign_in_information);
                 iv.setImageDrawable(getDrawable(R.drawable.icon_fun_signin));
                 break;
@@ -510,7 +543,8 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
                 has = true;
             }
         }
-        if (has) {//当前拥有才进行操作
+        if (has) {
+            //当前拥有才进行操作
             if (funCode == 6) {
                 jump2artBoard();
                 return;
@@ -529,41 +563,41 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
      *                =5视频直播，=6电子白板，=7网页浏览，=8问卷调查，=9签到信息，=31评分查看
      */
     private void showFragment(int funcode) {
-        if (funcode != fun_code_whiteboard) {
+        if (funcode != FUN_CODE_WHITEBOARD) {
             saveFunCode = funcode;
         }
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         hideFragment(ft);
         switch (funcode) {
-            case fun_code_agenda_bulletin://会议议程
+            case FUN_CODE_AGENDA_BULLETIN://会议议程
                 if (meetAgendaFragment == null) {
                     meetAgendaFragment = new MeetAgendaFragment();
                     ft.add(R.id.meet_frame_layout, meetAgendaFragment);
                 }
                 ft.show(meetAgendaFragment);
                 break;
-            case fun_code_meet_file://会议资料
+            case FUN_CODE_MEET_FILE://会议资料
                 if (meetDataFragment == null) {
                     meetDataFragment = new MeetDataFragment();
                     ft.add(R.id.meet_frame_layout, meetDataFragment);
                 }
                 ft.show(meetDataFragment);
                 break;
-            case fun_code_postil_file://批注查看
+            case FUN_CODE_POSTIL_FILE://批注查看
                 if (meetAnnotationFragment == null) {
                     meetAnnotationFragment = new MeetAnnotationFragment();
                     ft.add(R.id.meet_frame_layout, meetAnnotationFragment);
                 }
                 ft.show(meetAnnotationFragment);
                 break;
-            case fun_code_message://互动交流
+            case FUN_CODE_MESSAGE://互动交流
                 if (meetChatFragment == null) {
                     meetChatFragment = new MeetChatFragment();
                     ft.add(R.id.meet_frame_layout, meetChatFragment);
                 }
                 ft.show(meetChatFragment);
                 break;
-            case fun_code_video_stream://视频直播
+            case FUN_CODE_VIDEO_STREAM://视频直播
                 isManage = false;
                 if (meetLiveVideoFragment == null) {
                     meetLiveVideoFragment = new MeetLiveVideoFragment();
@@ -571,14 +605,14 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
                 }
                 ft.show(meetLiveVideoFragment);
                 break;
-            case fun_code_webbrowser://网页浏览
+            case FUN_CODE_WEB_BROWSER://网页浏览
                 if (meetWebFragment == null) {
                     meetWebFragment = new MeetWebFragment();
                     ft.add(R.id.meet_frame_layout, meetWebFragment);
                 }
                 ft.show(meetWebFragment);
                 break;
-            case fun_code_signinresult://签到信息
+            case FUN_CODE_SIGNIN_RESULT://签到信息
                 if (meetSigninFragment == null) {
                     meetSigninFragment = new MeetSigninFragment();
                     ft.add(R.id.meet_frame_layout, meetSigninFragment);
@@ -593,28 +627,28 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
                 }
                 ft.show(meetScoreFragment);
                 break;
-            case Constant.fun_code_terminal://终端控制
+            case Constant.FUN_CODE_TERMINAL://终端控制
                 if (deviceControlFragment == null) {
                     deviceControlFragment = new DeviceControlFragment();
                     ft.add(R.id.meet_frame_layout, deviceControlFragment);
                 }
                 ft.show(deviceControlFragment);
                 break;
-            case Constant.fun_code_vote://投票管理
+            case Constant.FUN_CODE_VOTE://投票管理
                 if (voteManageFragment == null) {
                     voteManageFragment = new VoteManageFragment();
                     ft.add(R.id.meet_frame_layout, voteManageFragment);
                 }
                 ft.show(voteManageFragment);
                 break;
-            case Constant.fun_code_election://选举管理
+            case Constant.FUN_CODE_ELECTION://选举管理
                 if (electionManageFragment == null) {
                     electionManageFragment = new ElectionManageFragment();
                     ft.add(R.id.meet_frame_layout, electionManageFragment);
                 }
                 ft.show(electionManageFragment);
                 break;
-            case Constant.fun_code_video://视频控制
+            case Constant.FUN_CODE_VIDEO://视频控制
                 isManage = true;
                 if (meetLiveVideoFragment == null) {
                     meetLiveVideoFragment = new MeetLiveVideoFragment();
@@ -622,21 +656,21 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
                 }
                 ft.show(meetLiveVideoFragment);
                 break;
-            case Constant.fun_code_screen://屏幕管理
+            case Constant.FUN_CODE_SCREEN://屏幕管理
                 if (screenFragment == null) {
                     screenFragment = new ScreenFragment();
                     ft.add(R.id.meet_frame_layout, screenFragment);
                 }
                 ft.show(screenFragment);
                 break;
-            case Constant.fun_code_bulletin://公告管理
+            case Constant.FUN_CODE_BULLETIN://公告管理
                 if (bulletinFragment == null) {
                     bulletinFragment = new BulletinFragment();
                     ft.add(R.id.meet_frame_layout, bulletinFragment);
                 }
                 ft.show(bulletinFragment);
                 break;
-            case Constant.fun_code_score://评分管理
+            case Constant.FUN_CODE_SCORE://评分管理
                 isScoreManage = true;
                 if (meetScoreFragment == null) {
                     meetScoreFragment = new MeetScoreFragment();
