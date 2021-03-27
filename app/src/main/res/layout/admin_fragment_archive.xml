@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/dp_5"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_30"
+        android:background="@color/table_line_color"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="1px"
+            android:layout_marginEnd="1px"
+            android:layout_marginBottom="1px"
+            android:layout_weight="1"
+            android:background="@color/admin_table_title_bg"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:lines="1"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="@string/archive_options"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/cb_meeting_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/meeting_info" />
+
+            <CheckBox
+                android:id="@+id/cb_member_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/member_info" />
+
+            <CheckBox
+                android:id="@+id/cb_signin_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/signin_info" />
+
+            <CheckBox
+                android:id="@+id/cb_vote_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/meeting_vote_info" />
+
+            <CheckBox
+                android:id="@+id/cb_share_file"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/meeting_share_file" />
+
+            <CheckBox
+                android:id="@+id/cb_annotation_file"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/annotation_file" />
+
+            <CheckBox
+                android:id="@+id/cb_meeting_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/meeting_data" />
+        </LinearLayout>
+    </ScrollView>
+
+    <CheckBox
+        android:id="@+id/cb_check_all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:text="@string/check_all" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_30"
+        android:background="@color/table_line_color"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="1px"
+            android:layout_marginEnd="1px"
+            android:layout_marginBottom="1px"
+            android:layout_weight="4"
+            android:background="@color/admin_table_title_bg"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:lines="1"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="@string/operate_info"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="1px"
+            android:layout_marginBottom="1px"
+            android:layout_weight="1"
+            android:background="@color/admin_table_title_bg"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:lines="1"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="@string/operate_state"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_operate"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:background="@color/white" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_5">
+
+        <CheckBox
+            android:id="@+id/cb_encryption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:visibility="invisible"
+            android:text="@string/encryption" />
+
+        <Button
+            android:id="@+id/btn_start_archive"
+            style="@style/btn_pressed_style"
+            android:layout_width="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/start_archive" />
+
+        <Button
+            android:id="@+id/btn_cancel_archive"
+            style="@style/btn_pressed_style"
+            android:layout_width="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:visibility="invisible"
+            android:text="@string/cancel_archive" />
+    </RelativeLayout>
+</LinearLayout>

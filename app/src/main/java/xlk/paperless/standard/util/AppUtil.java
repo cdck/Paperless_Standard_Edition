@@ -128,9 +128,9 @@ public class AppUtil {
      * @return
      */
     public static boolean checkCamera(Context context, int type) {
-        // 不兼容Android 5.0以下版本
-        CameraManager manager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
         try {
+            // 不兼容Android 5.0以下版本
+            CameraManager manager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
             String[] cameraIds = manager.getCameraIdList();
             if (cameraIds.length > 0) {
                 if (type == 0) {

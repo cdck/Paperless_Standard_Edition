@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/item_root_view"
+    android:background="@drawable/admin_selected_bg">
+
+<!--    <TextView-->
+<!--        android:id="@+id/item_tv"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:background="@drawable/admin_selected_bg"-->
+<!--        android:drawablePadding="5dp"-->
+<!--        android:gravity="center"-->
+<!--        android:visibility="gone"-->
+<!--        android:paddingStart="@dimen/dp_3"-->
+<!--        android:paddingEnd="@dimen/dp_3"-->
+<!--        android:textColor="@color/white"-->
+<!--        tools:drawableStart="@drawable/icon_admin_set"-->
+<!--        tools:text="系统设置" />-->
+
+    <ImageView
+        android:id="@+id/item_admin_iv"
+        android:src="@drawable/menu_system"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</RelativeLayout>

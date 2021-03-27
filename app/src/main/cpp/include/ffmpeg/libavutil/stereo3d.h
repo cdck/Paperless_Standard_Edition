@@ -79,10 +79,10 @@ enum AVStereo3DType {
      * Views are next to each other, but when upscaling
      * apply a checkerboard pattern.
      *
-     *     LLLLRRRR          LogUtil LogUtil LogUtil LogUtil    R R R R
-     *     LLLLRRRR    =>     LogUtil LogUtil LogUtil LogUtil  R R R R
-     *     LLLLRRRR          LogUtil LogUtil LogUtil LogUtil    R R R R
-     *     LLLLRRRR           LogUtil LogUtil LogUtil LogUtil  R R R R
+     *     LLLLRRRR          L L L L    R R R R
+     *     LLLLRRRR    =>     L L L L  R R R R
+     *     LLLLRRRR          L L L L    R R R R
+     *     LLLLRRRR           L L L L  R R R R
      */
     AV_STEREO3D_SIDEBYSIDE_QUINCUNX,
 

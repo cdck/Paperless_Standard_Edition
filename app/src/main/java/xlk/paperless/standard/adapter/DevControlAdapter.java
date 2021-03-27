@@ -1,10 +1,10 @@
 package xlk.paperless.standard.adapter;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.widget.CheckBox;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.mogujie.tt.protobuf.InterfaceMacro;
 import com.mogujie.tt.protobuf.InterfaceRoom;
 
@@ -39,16 +39,16 @@ public class DevControlAdapter extends BaseQuickAdapter<DevControlBean, BaseView
         boolean b = InterfaceMacro.Pb_MeetDeviceFlag.Pb_MEETDEVICE_FLAG_OPENOUTSIDE_VALUE == (deviceflag & InterfaceMacro.Pb_MeetDeviceFlag.Pb_MEETDEVICE_FLAG_OPENOUTSIDE_VALUE);
         helper.setText(R.id.item_dev_control_cb, String.valueOf(helper.getLayoutPosition() + 1))
                 .setText(R.id.item_dev_control_name, item.getDeviceInfo().getDevname().toStringUtf8())
-                .setText(R.id.item_dev_control_type, Constant.getDeviceTypeName(mContext, item.getDeviceInfo().getDevcieid()))
+                .setText(R.id.item_dev_control_type, Constant.getDeviceTypeName(getContext(), item.getDeviceInfo().getDevcieid()))
                 .setText(R.id.item_dev_control_id, String.valueOf(item.getDeviceInfo().getDevcieid()))
-                .setText(R.id.item_dev_control_state, (isOnline ? mContext.getString(R.string.online) : mContext.getString(R.string.offline)))
+                .setText(R.id.item_dev_control_state, (isOnline ? getContext().getString(R.string.online) : getContext().getString(R.string.offline)))
                 .setText(R.id.item_dev_control_member, memberName)
-                .setText(R.id.item_dev_control_interface, Constant.getInterfaceStateName(mContext, item.getDeviceInfo().getFacestate()));
+                .setText(R.id.item_dev_control_interface, Constant.getInterfaceStateName(getContext(), item.getDeviceInfo().getFacestate()));
 //                .setText(R.id.item_dev_control_outopen, b ? "√" : "");
         boolean contains = chooseIds.contains(item.getDeviceInfo().getDevcieid());
         CheckBox cb = helper.getView(R.id.item_dev_control_cb);
         cb.setChecked(contains);
-        int color = isOnline ? mContext.getResources().getColor(R.color.blue) : mContext.getResources().getColor(R.color.black);
+        int color = isOnline ? getContext().getResources().getColor(R.color.blue) : getContext().getResources().getColor(R.color.light_black);
         helper.setTextColor(R.id.item_dev_control_cb, color)
                 .setTextColor(R.id.item_dev_control_name, color)
                 .setTextColor(R.id.item_dev_control_type, color)
@@ -75,8 +75,8 @@ public class DevControlAdapter extends BaseQuickAdapter<DevControlBean, BaseView
 
     public void notifyChoose() {
         List<Integer> temps = new ArrayList<>();
-        for (int i = 0; i < mData.size(); i++) {
-            DevControlBean devControlBean = mData.get(i);
+        for (int i = 0; i < getData().size(); i++) {
+            DevControlBean devControlBean = getData().get(i);
             int devcieid = devControlBean.getDeviceInfo().getDevcieid();
             if (chooseIds.contains(devcieid)) {
                 temps.add(devcieid);
@@ -87,15 +87,15 @@ public class DevControlAdapter extends BaseQuickAdapter<DevControlBean, BaseView
     }
 
     public boolean isCheckAll() {
-        return chooseIds.size() == mData.size();
+        return chooseIds.size() == getData().size();
     }
 
     public void setChooseAll(boolean checked) {
         chooseIds.clear();
         if (checked) {
             List<Integer> temps = new ArrayList<>();
-            for (int i = 0; i < mData.size(); i++) {
-                int devcieid = mData.get(i).getDeviceInfo().getDevcieid();
+            for (int i = 0; i < getData().size(); i++) {
+                int devcieid = getData().get(i).getDeviceInfo().getDevcieid();
                 temps.add(devcieid);
             }
             chooseIds.addAll(temps);

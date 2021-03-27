@@ -12,17 +12,27 @@ import android.hardware.Camera;
 import android.media.MediaCodec;
 import android.media.MediaFormat;
 import android.media.projection.MediaProjectionManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
-import android.support.design.widget.TextInputEditText;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+
+import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.RegexUtils;
+import com.google.android.material.textfield.TextInputEditText;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,24 +41,29 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.acker.simplezxing.activity.CaptureActivity;
+import com.google.protobuf.ByteString;
 import com.hjq.permissions.OnPermission;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.mogujie.tt.protobuf.InterfaceAdmin;
+import com.mogujie.tt.protobuf.InterfaceBase;
 import com.mogujie.tt.protobuf.InterfaceDevice;
 import com.mogujie.tt.protobuf.InterfaceFaceconfig;
 import com.mogujie.tt.protobuf.InterfaceMacro;
 import com.mogujie.tt.protobuf.InterfaceMember;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import xlk.paperless.standard.BuildConfig;
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.adapter.MainBindMemberAdapter;
 import xlk.paperless.standard.data.Constant;
@@ -68,7 +83,6 @@ import xlk.paperless.standard.view.MyApplication;
 import xlk.paperless.standard.view.admin.AdminActivity;
 import xlk.paperless.standard.view.meet.MeetingActivity;
 
-import static android.Manifest.permission.READ_FRAME_BUFFER;
 import static xlk.paperless.standard.data.Constant.EXTRA_ADMIN_ID;
 import static xlk.paperless.standard.data.Constant.EXTRA_ADMIN_NAME;
 import static xlk.paperless.standard.data.Constant.EXTRA_ADMIN_PASSWORD;
@@ -103,11 +117,13 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
     private int result;
     private Intent intent;
     private boolean toSetting = false;
-    private android.app.AlertDialog netDialog;
+    private AlertDialog netDialog;
     private PopupWindow loginPop;
     private String loginPwd;
     private String loginUser;
     private Button loginBtn;
+    private PopupWindow upgradePop;
+    private PopupWindow configPop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,17 +148,13 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
                 .request(new OnPermission() {
                     @Override
                     public void hasPermission(List<String> granted, boolean all) {
-                        LogUtil.d(TAG, "hasPermission -->：all=" + all + ",获取的权限=" + granted.toString());
-//                        if (granted.contains(Permission.WRITE_EXTERNAL_STORAGE)
-//                                && granted.contains(Permission.READ_EXTERNAL_STORAGE)) {
-//                            start();
-//                        }
+                        LogUtils.d(TAG, "hasPermission -->：all=" + all + ",获取的权限=" + granted.toString());
                         if (all) start();
                     }
 
                     @Override
                     public void noPermission(List<String> denied, boolean quick) {
-                        LogUtil.d(TAG, "noPermission -->未获取的权限：" + denied.toString());
+                        LogUtils.d(TAG, "noPermission -->未获取的权限：" + denied.toString());
                         initPermissions();
                     }
                 });
@@ -157,36 +169,28 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
                 .request(new OnPermission() {
                     @Override
                     public void hasPermission(List<String> granted, boolean all) {
-                        LogUtil.e(TAG, "useXX hasPermission  -->" + granted);
+                        LogUtils.e(TAG, "useXX hasPermission  -->" + granted);
                     }
 
                     @Override
                     public void noPermission(List<String> denied, boolean quick) {
-                        LogUtil.e(TAG, "useXX noPermission  -->" + denied);
+                        LogUtils.e(TAG, "useXX noPermission  -->" + denied);
                     }
                 });
     }
 
     private void start() {
-        LogUtil.d(TAG, "start --> 开始 ");
+        LogUtils.d(TAG, "start --> 开始 ");
         ((MyApplication) getApplication()).openBackstageService(true);
         presenter = new MainPresenter(this, this);
-        presenter.register();
-        if (!XXPermissions.hasPermission(this, READ_FRAME_BUFFER)) {
-            LogUtil.d(TAG, "申请权限帧缓存权限");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                request();
-            }
-        } else {
-            initial();
-        }
+        request();
     }
 
     private void initial() {
         try {
             initCameraSize();
         } catch (Exception e) {
-            LogUtil.d(TAG, "initial --> 相机使用失败：" + e.toString());
+            LogUtils.e(TAG, "initial --> 相机使用失败：" + e.toString());
             e.printStackTrace();
         }
         presenter.initConfFile();
@@ -194,21 +198,57 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
     }
 
     @Override
+    public void showUpgradeDialog(String content, InterfaceBase.pbui_Type_MeetUpdateNotify info) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                File file = new File(info.getUpdatepath().toStringUtf8() + "/update.apk");
+                LogUtils.i(TAG, "showUpgradeDialog 更新内容=" + content);
+                View inflate = LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_upgrade, null);
+                upgradePop = new PopupWindow(inflate, Values.half_width, Values.half_height);
+                upgradePop.setBackgroundDrawable(new BitmapDrawable());
+                // 设置popWindow弹出窗体可点击，这句话必须添加，并且是true
+                upgradePop.setTouchable(true);
+                // true:设置触摸外面时消失
+                upgradePop.setOutsideTouchable(false);
+                upgradePop.setFocusable(false);
+                upgradePop.setAnimationStyle(R.style.pop_Animation);
+                upgradePop.showAtLocation(main_root_layout, Gravity.CENTER, 0, 0);
+                TextView tv_new_version = inflate.findViewById(R.id.tv_new_version);
+                TextView tv_old_version = inflate.findViewById(R.id.tv_old_version);
+                TextView tv_content = inflate.findViewById(R.id.tv_content);
+                tv_new_version.setText(info.getNewhardver() + "." + info.getNewsoftver());
+                tv_old_version.setText(info.getLocalhardver() + "." + info.getLocalsoftver());
+                tv_content.setText(content);
+                //下次更新
+                inflate.findViewById(R.id.btn_next_time).setOnClickListener(v -> {
+                    upgradePop.dismiss();
+                });
+                //立即更新
+                inflate.findViewById(R.id.btn_upgrade).setOnClickListener(v -> {
+                    AppUtils.installApp(file);
+                    upgradePop.dismiss();
+                });
+            }
+        });
+    }
+
+    @Override
     public void checkNetWork() {
         Values.isOneline = AppUtil.isNetworkAvailable(this) ? 1 : 0;
         if (Values.isOneline == 1) {
-            LogUtil.d(TAG, "checkNetWork -->" + "网络可用");
+            LogUtils.d(TAG, "checkNetWork -->" + "网络可用");
             if (netDialog != null && netDialog.isShowing()) {
                 netDialog.dismiss();
             }
             if (!Values.initializationIsOver) {
-                LogUtil.i(TAG, "checkNetWork 进行初始化");
+                LogUtils.i(TAG, "checkNetWork 进行初始化");
                 presenter.initialization();
             } else {//已经初始化完毕了
                 initialized();
             }
         } else {
-            LogUtil.d(TAG, "checkNetWork -->" + "网络不可用");
+            LogUtils.d(TAG, "checkNetWork -->" + "网络不可用");
             showNetDialog();
         }
     }
@@ -220,29 +260,29 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
             }
             return;
         }
-        netDialog = DialogUtil.createDialog(this, R.string.check_network, R.string.open_network, R.string.cancel, new DialogUtil.onDialogClickListener() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.please_check_network));
+        builder.setPositiveButton(R.string.open_network, new DialogInterface.OnClickListener() {
             @Override
-            public void positive(DialogInterface dialog) {
+            public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 toSetting = true;
                 startActivity(new Intent(Settings.ACTION_SETTINGS));
             }
-
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
-            public void negative(DialogInterface dialog) {
+            public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
-
-            @Override
-            public void dismiss(DialogInterface dialog) {
-
-            }
         });
+        netDialog = builder.create();
+        netDialog.show();
     }
 
     @Override
     protected void onRestart() {
-        LogUtil.d(TAG, "onRestart -->是否从设置界面回来：" + toSetting);
+        LogUtils.d(TAG, "onRestart -->是否从设置界面回来：" + toSetting);
         if (toSetting) {
             toSetting = false;
             initial();
@@ -252,11 +292,11 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
 
     private void initCameraSize() {
         int type = 1;
-        LogUtil.d(TAG, "initCameraSize :   --> ");
+        LogUtils.d(TAG, "initCameraSize :   --> ");
         //获取摄像机的个数 一般是前/后置两个
         int numberOfCameras = Camera.getNumberOfCameras();
         if (numberOfCameras < 2) {
-            LogUtil.d(TAG, "initCameraSize: 该设备只有后置像头");
+            LogUtils.d(TAG, "initCameraSize: 该设备只有后置像头");
             //如果没有2个则说明只有后置像头
             type = 0;
         }
@@ -273,7 +313,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         }
         for (int i = 0; i < param.getSupportedPreviewSizes().size(); i++) {
             int w = param.getSupportedPreviewSizes().get(i).width, h = param.getSupportedPreviewSizes().get(i).height;
-            LogUtil.d(TAG, "initCameraSize: w=" + w + " h=" + h);
+            LogUtils.d(TAG, "initCameraSize: w=" + w + " h=" + h);
             supportW.add(w);
             supportH.add(h);
         }
@@ -281,7 +321,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
             try {
                 largestW = supportW.get(i);
                 largestH = supportH.get(i);
-                LogUtil.d(TAG, "initCameraSize :   --> largestW= " + largestW + " , largestH=" + largestH);
+                LogUtils.d(TAG, "initCameraSize :   --> largestW= " + largestW + " , largestH=" + largestH);
                 MediaFormat mediaFormat = MediaFormat.createVideoFormat("video/avc", largestW, largestH);
                 if (MediaCodec.createEncoderByType("video/avc").getCodecInfo().getCapabilitiesForType("video/avc").isFormatSupported(mediaFormat)) {
                     if (largestW * largestH > camera_width * camera_height) {
@@ -300,7 +340,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
                 }
             }
         }
-        LogUtil.d(TAG, "initCameraSize -->" + "前置像素：" + camera_width + " X " + camera_height);
+        LogUtils.d(TAG, "initCameraSize -->" + "前置像素：" + camera_width + " X " + camera_height);
         if (camera_width * camera_height > MAX_WIDTH * MAX_HEIGHT) {
             camera_width = MAX_WIDTH;
             camera_height = MAX_HEIGHT;
@@ -308,15 +348,21 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
     }
 
     private void request() {
-        MediaProjectionManager manager = (MediaProjectionManager) getApplication().getSystemService(Context.MEDIA_PROJECTION_SERVICE);
-        mMediaProjectionManager = manager;
-        if (intent != null && result != 0) {
-            LogUtil.d(TAG, "request :  用户同意捕获屏幕 --->>> ");
-            mResult = result;
-            mIntent = intent;
-        } else {
-            /** **** **  第一次时保存 manager  ** **** **/
-            startActivityForResult(manager.createScreenCaptureIntent(), 10086);
+        try {
+            MediaProjectionManager manager = (MediaProjectionManager) getApplication().getSystemService(Context.MEDIA_PROJECTION_SERVICE);
+            mMediaProjectionManager = manager;
+            if (intent != null && result != 0) {
+                LogUtils.d(TAG, "request :  用户同意捕获屏幕 --->>> ");
+                mResult = result;
+                mIntent = intent;
+                initial();
+            } else {
+                /** **** **  第一次时保存 manager  ** **** **/
+                startActivityForResult(manager.createScreenCaptureIntent(), 10086);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            initial();
         }
     }
 
@@ -324,14 +370,14 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CaptureActivity.REQ_CODE && resultCode == RESULT_OK) {
-            LogUtil.d(TAG, "onActivityResult :  进入扫描结果.... --> ");
+            LogUtils.d(TAG, "onActivityResult :  进入扫描结果.... --> ");
             if (null != data) {
                 String stringExtra = data.getStringExtra(CaptureActivity.EXTRA_SCAN_RESULT);
 //                {"meetid":"128","roomid":"12"}
                 String a = stringExtra.substring(11);// 128","roomid":"12"}
                 String meetingid = a.substring(0, a.indexOf("\""));// 128
                 String roomid = a.substring(a.indexOf(":") + 2, a.lastIndexOf("\""));// :"12
-                LogUtil.d(TAG, "onActivityResult :  二维码结果 --> " + stringExtra + ",meetingid= " + meetingid + ",roomid=  " + roomid);
+                LogUtils.d(TAG, "onActivityResult :  二维码结果 --> " + stringExtra + ",meetingid= " + meetingid + ",roomid=  " + roomid);
                 try {
                     int meetingId = Integer.parseInt(meetingid);
                     int roomId = Integer.parseInt(roomid);
@@ -349,7 +395,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
                     mIntent = intent;
                     //保存 MediaProjection 对象,解决每次录制屏幕时需要权限的问题
                     MyApplication.mMediaProjection = mMediaProjectionManager.getMediaProjection(mResult, mIntent);
-                    LogUtil.d(TAG, "onActivityResult :  用户同意捕获屏幕.. ");
+                    LogUtils.d(TAG, "onActivityResult :  用户同意捕获屏幕.. ");
                     initial();
                 }
             } else {
@@ -357,6 +403,9 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
             }
         }
     }
+
+    private int count = 1;
+    private long lastClickTime = 0;
 
     private void initView() {
         iv_set_main = (ImageView) findViewById(R.id.iv_set_main);
@@ -370,11 +419,37 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         member_tv_main = (TextView) findViewById(R.id.member_tv_main);
         logo_iv_main = (ImageView) findViewById(R.id.logo_iv_main);
         company_tv_main = (TextView) findViewById(R.id.company_tv_main);
+        seat_tv_main.setOnClickListener(v -> {
+            if (System.currentTimeMillis() - lastClickTime < 500) {
+                count++;
+                if (count == 5) {
+                    LogUtils.i(TAG, "initView canLoginAdmin=" + MyApplication.canLoginAdmin);
+                    MyApplication.canLoginAdmin = !MyApplication.canLoginAdmin;
+                    count = 1;
+                }
+            } else {
+                count = 1;
+            }
+            lastClickTime = System.currentTimeMillis();
+        });
 
 //        slideview_main = (SlideView) findViewById(R.id.slideview_main);
 
         enter_btn_main = (Button) findViewById(R.id.enter_btn_main);
         enter_btn_main.setOnClickListener(this);
+        enter_btn_main.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                LogUtils.i(TAG, "onLongClick 激活长按");
+                MyApplication.canLoginAdmin = !MyApplication.canLoginAdmin;
+                if (MyApplication.canLoginAdmin) {
+                    ToastUtil.show(R.string.login_backstage_is_enabled);
+                } else {
+                    ToastUtil.show(R.string.login_backstage_is_closed);
+                }
+                return true;
+            }
+        });
 
         set_btn_main = (Button) findViewById(R.id.set_btn_main);
         set_btn_main.setOnClickListener(this);
@@ -389,11 +464,12 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
 
         date_relative_main = (RelativeLayout) findViewById(R.id.date_relative_main);
         main_root_layout = (ConstraintLayout) findViewById(R.id.main_root_layout);
+
     }
 
     @Override
     public void initialized() {
-        LogUtil.d(TAG, "initialized -->");
+        LogUtils.d(TAG, "initialized -->");
         presenter.setInterfaceState();
         presenter.initStream();
         presenter.queryContextProperty();
@@ -451,33 +527,33 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
 
     @Override
     public void updateCompany(String company) {
-        LogUtil.i(TAG, "updateCompany 公司=" + company);
+        LogUtils.i(TAG, "updateCompany 公司=" + company);
         company_tv_main.setText(company);
     }
 
     @Override
     public void updateSeatName(String seatName) {
         Values.localDeviceName = seatName;
-        LogUtil.d(TAG, "updateSeatName 席位：" + seatName);
+        LogUtils.d(TAG, "updateSeatName 席位：" + seatName);
         seat_tv_main.setText(getString(R.string.set_name_, seatName));
     }
 
     @Override
     public void updateUnit(String text) {
-        LogUtil.d(TAG, "updateJob -->" + "单位：" + text);
+        LogUtils.d(TAG, "updateJob -->" + "单位：" + text);
         unit_tv_main.setText(getString(R.string.unit_name_, text));
     }
 
     @Override
     public void updateUI(InterfaceDevice.pbui_Type_DeviceFaceShowDetail devMeetInfo) {
-        LogUtil.d(TAG, "updateUI 参会人id=" + Values.localMemberId + "，会议id=" + Values.localMeetingId);
+        LogUtils.d(TAG, "updateUI 参会人id=" + Values.localMemberId + "，会议id=" + Values.localMeetingId);
         if (Values.localMemberId > 0) {
             if (bindMemberPop != null && bindMemberPop.isShowing()) {
-                LogUtil.d(TAG, "已经绑定了参会人了隐藏掉绑定参会人弹框");
+                LogUtils.d(TAG, "已经绑定了参会人了隐藏掉绑定参会人弹框");
                 bindMemberPop.dismiss();
             }
             if (createMemberPop != null && createMemberPop.isShowing()) {
-                LogUtil.d(TAG, "已经绑定了参会人了隐藏掉新建参会人弹框");
+                LogUtils.d(TAG, "已经绑定了参会人了隐藏掉新建参会人弹框");
                 createMemberPop.dismiss();
             }
         }
@@ -510,7 +586,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         float height = (by - ly) / 100 * Values.screen_height;
         set.constrainWidth(resId, (int) width);
         set.constrainHeight(resId, (int) height);
-//        LogUtil.d(TAG, "update: 控件大小 当前控件宽= " + width + ", 当前控件高= " + height);
+//        LogUtils.d(TAG, "update: 控件大小 当前控件宽= " + width + ", 当前控件高= " + height);
         float biasX, biasY;
         float halfW = (bx - lx) / 2 + lx;
         float halfH = (by - ly) / 2 + ly;
@@ -522,7 +598,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         if (ly == 0) biasY = 0;
         else if (ly > 50) biasY = by / 100;
         else biasY = halfH / 100;
-//        LogUtil.d(TAG, "update: biasX= " + biasX + ",biasY= " + biasY);
+//        LogUtils.d(TAG, "update: biasX= " + biasX + ",biasY= " + biasY);
         set.setHorizontalBias(resId, biasX);
         set.setVerticalBias(resId, biasY);
         set.applyTo(main_root_layout);
@@ -574,16 +650,22 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         if (!TextUtils.isEmpty(fontName)) {
             switch (fontName) {
                 case "楷体":
-                    kt_typeface = Typeface.createFromAsset(getAssets(), "kt.ttf");
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "kaiti.ttf");
                     break;
                 case "隶书":
-                    kt_typeface = Typeface.createFromAsset(getAssets(), "ls.ttf");
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "lishu.ttf");
                     break;
                 case "微软雅黑":
-                    kt_typeface = Typeface.createFromAsset(getAssets(), "wryh.ttf");
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "weiruanyahei.ttf");
+                    break;
+                case "黑体":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "heiti.ttf");
+                    break;
+                case "小楷":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "xiaokai.ttf");
                     break;
                 default:
-                    kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "fangsong.ttf");
                     break;
             }
             tv.setTypeface(kt_typeface);
@@ -636,19 +718,22 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         if (!TextUtils.isEmpty(fontName)) {
             switch (fontName) {
                 case "楷体":
-                    kt_typeface = Typeface.createFromAsset(getAssets(), "kt.ttf");
-                    break;
-                case "宋体":
-                    kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "kaiti.ttf");
                     break;
                 case "隶书":
-                    kt_typeface = Typeface.createFromAsset(getAssets(), "ls.ttf");
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "lishu.ttf");
                     break;
                 case "微软雅黑":
-                    kt_typeface = Typeface.createFromAsset(getAssets(), "wryh.ttf");
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "weiruanyahei.ttf");
+                    break;
+                case "黑体":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "heiti.ttf");
+                    break;
+                case "小楷":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "xiaokai.ttf");
                     break;
                 default:
-                    kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "fangsong.ttf");
                     break;
             }
             btn.setTypeface(kt_typeface);
@@ -699,15 +784,15 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
 //        Typeface kt_typeface;
 //        if (!TextUtils.isEmpty(fontName)) {
 //            if (fontName.equals("楷体")) {
-//                kt_typeface = Typeface.createFromAsset(getAssets(), "kt.ttf");
+//                kt_typeface = Typeface.createFromAsset(getAssets(), "kaiti.ttf");
 //            } else if (fontName.equals("宋体")) {
-//                kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
+//                kt_typeface = Typeface.createFromAsset(getAssets(), "fangsong.ttf");
 //            } else if (fontName.equals("隶书")) {
-//                kt_typeface = Typeface.createFromAsset(getAssets(), "ls.ttf");
+//                kt_typeface = Typeface.createFromAsset(getAssets(), "lishu.ttf");
 //            } else if (fontName.equals("微软雅黑")) {
-//                kt_typeface = Typeface.createFromAsset(getAssets(), "wryh.ttf");
+//                kt_typeface = Typeface.createFromAsset(getAssets(), "weiruanyahei.ttf");
 //            } else {
-//                kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
+//                kt_typeface = Typeface.createFromAsset(getAssets(), "fangsong.ttf");
 //            }
 //            btn.setTypeface(kt_typeface);
 //        }
@@ -787,19 +872,22 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         if (!TextUtils.isEmpty(fontName)) {
             switch (fontName) {
                 case "楷体":
-                    kt_typeface = Typeface.createFromAsset(getAssets(), "kt.ttf");
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "kaiti.ttf");
                     break;
-                case "宋体":
-                    kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
+                case "黑体":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "heiti.ttf");
                     break;
                 case "隶书":
-                    kt_typeface = Typeface.createFromAsset(getAssets(), "ls.ttf");
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "lishu.ttf");
                     break;
                 case "微软雅黑":
-                    kt_typeface = Typeface.createFromAsset(getAssets(), "wryh.ttf");
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "weiruanyahei.ttf");
+                    break;
+                case "小楷":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "xiaokai.ttf");
                     break;
                 default:
-                    kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "fangsong.ttf");
                     break;
             }
             time_tv_main.setTypeface(kt_typeface);
@@ -815,6 +903,9 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         }
         if (loginPop != null && loginPop.isShowing()) {
             loginPop.dismiss();
+        }
+        if (configPop != null && configPop.isShowing()) {
+            configPop.dismiss();
         }
         super.onDestroy();
         presenter.unregister();
@@ -876,11 +967,12 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
     }
 
     private void showLoginPop() {
+        LogUtils.i(TAG, "showLoginPop ");
         boolean spIsRemember = (boolean) SharedPreferenceHelper.getData(this, SharedPreferenceHelper.key_remember, false);
         String spUser = (String) SharedPreferenceHelper.getData(this, SharedPreferenceHelper.key_user, "");
         String spPwd = (String) SharedPreferenceHelper.getData(this, SharedPreferenceHelper.key_password, "");
         View inflate = LayoutInflater.from(this).inflate(R.layout.pop_login_layout, null);
-        loginPop = PopUtil.create(inflate, Values.screen_width / 2, Values.screen_height / 2, true, set_btn_main);
+        loginPop = PopUtil.create(inflate, Values.screen_width * 3 / 5, Values.screen_height * 3 / 5, set_btn_main);
         CheckBox login_cb_remember = (CheckBox) inflate.findViewById(R.id.login_cb_remember);
         TextInputEditText login_tie_user = (TextInputEditText) inflate.findViewById(R.id.login_tie_user);
         TextInputEditText login_tie_pwd = (TextInputEditText) inflate.findViewById(R.id.login_tie_pwd);
@@ -924,26 +1016,36 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         int adminid = info.getAdminid();
         String adminname = info.getAdminname().toStringUtf8();
         int sessionid = info.getSessionid();
-        LogUtil.i(TAG, "loginStatus adminid:" + adminid + ",adminname:" + adminname + ",sessionid:" + sessionid + ",err:" + err);
+        LogUtils.i(TAG, "loginStatus adminid:" + adminid + ",adminname:" + adminname + ",sessionid:" + sessionid + ",err:" + err);
         switch (err) {
-            case InterfaceMacro.Pb_AdminLogonStatus.Pb_ADMINLOGON_ERR_NONE_VALUE://登陆成功
+            //登陆成功
+            case InterfaceMacro.Pb_AdminLogonStatus.Pb_ADMINLOGON_ERR_NONE_VALUE:
                 ToastUtil.show(R.string.login_successful);
                 Intent intent = new Intent(MainActivity.this, AdminActivity.class);
                 intent.putExtra(EXTRA_ADMIN_ID, adminid);
                 intent.putExtra(EXTRA_ADMIN_NAME, adminname);
                 intent.putExtra(EXTRA_ADMIN_PASSWORD, loginPwd);
+                if (Values.localMeetingId != 0) {
+                    jni.modifyContextProperties(InterfaceMacro.Pb_ContextPropertyID.Pb_MEETCONTEXT_PROPERTY_CURMEETINGID_VALUE
+                            , Values.localMeetingId);
+                }
                 presenter.unregister();
                 finish();
                 startActivity(intent);
                 break;
-            case InterfaceMacro.Pb_AdminLogonStatus.Pb_ADMINLOGON_ERR_PSW_VALUE://密码错误
+            //密码错误
+            case InterfaceMacro.Pb_AdminLogonStatus.Pb_ADMINLOGON_ERR_PSW_VALUE:
                 ToastUtil.show(R.string.wrong_password);
                 break;
-            case InterfaceMacro.Pb_AdminLogonStatus.Pb_ADMINLOGON_ERR_EXCPT_SV_VALUE://服务器异常
+            //服务器异常
+            case InterfaceMacro.Pb_AdminLogonStatus.Pb_ADMINLOGON_ERR_EXCPT_SV_VALUE:
                 ToastUtil.show(R.string.server_exception);
                 break;
-            case InterfaceMacro.Pb_AdminLogonStatus.Pb_ADMINLOGON_ERR_EXCPT_DB_VALUE://数据库异常
+            //数据库异常
+            case InterfaceMacro.Pb_AdminLogonStatus.Pb_ADMINLOGON_ERR_EXCPT_DB_VALUE:
                 ToastUtil.show(R.string.database_exception);
+                break;
+            default:
                 break;
         }
     }
@@ -978,7 +1080,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
     private void showConfigurationView() {
         IniUtil iniUtil = IniUtil.getInstance();
         View inflate = LayoutInflater.from(this).inflate(R.layout.pop_config_view, null);
-        PopupWindow pop = PopUtil.create(inflate, Values.screen_width / 2, Values.screen_height / 2, true, set_btn_main);
+        configPop = PopUtil.create(inflate, Values.screen_width * 3 / 5, Values.screen_height * 3 / 5, set_btn_main);
         EditText pop_config_ip = inflate.findViewById(R.id.pop_config_ip);
         EditText pop_config_port = inflate.findViewById(R.id.pop_config_port);
         EditText pop_config_bitrate = inflate.findViewById(R.id.pop_config_bitrate);
@@ -991,27 +1093,27 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         String nowPort = iniUtil.get("areaaddr", "area0port");
         String videoaudio = iniUtil.get("debug", "videoaudio");
         String streamprotol = iniUtil.get("selfinfo", "streamprotol");
-        String disablemulticast = iniUtil.get("Audio", "disablemulticast");
+        String disablemulticast = iniUtil.get("debug", "disablemulticast");
         //是否开启编码过滤
         String encodingFiltering = iniUtil.get("nosdl", "disablebsf");
 
         if (videoaudio == null || videoaudio.isEmpty()) {
-            LogUtil.d(TAG, "showConfigurationView -->" + "设置麦克风默认值");
+            LogUtils.d(TAG, "showConfigurationView -->" + "设置麦克风默认值");
             iniUtil.put("debug", "videoaudio", 1);
             iniUtil.store();//修改后提交
         }
         if (streamprotol == null || streamprotol.isEmpty()) {
-            LogUtil.d(TAG, "showConfigurationView :  设置TCP模式默认值 --> ");
+            LogUtils.d(TAG, "showConfigurationView :  设置TCP模式默认值 --> ");
             iniUtil.put("selfinfo", "streamprotol", 1);
             iniUtil.store();//修改后提交
         }
         if (disablemulticast == null || disablemulticast.isEmpty()) {
-            LogUtil.d(TAG, "showConfigurationView :  设置组播默认值 --> ");
-            iniUtil.put("Audio", "disablemulticast", 1);
+            LogUtils.d(TAG, "showConfigurationView :  设置组播默认值 --> ");
+            iniUtil.put("debug", "disablemulticast", 1);
             iniUtil.store();//修改后提交
         }
         if (encodingFiltering == null || encodingFiltering.isEmpty()) {
-            LogUtil.d(TAG, "showConfigurationView -->" + "设置编码过滤默认值");
+            LogUtils.d(TAG, "showConfigurationView -->" + "设置编码过滤默认值");
             iniUtil.put("nosdl", "disablebsf", 0);
             iniUtil.store();//修改后提交
         }
@@ -1044,7 +1146,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         pop_config_port.setText(portStr);
 
         streamprotol = iniUtil.get("selfinfo", "streamprotol");
-        disablemulticast = iniUtil.get("Audio", "disablemulticast");
+        disablemulticast = iniUtil.get("debug", "disablemulticast");
         videoaudio = iniUtil.get("debug", "videoaudio");
         encodingFiltering = iniUtil.get("nosdl", "disablebsf");
 
@@ -1055,6 +1157,10 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
 
         inflate.findViewById(R.id.pop_config_determine).setOnClickListener(v -> {
             String newIP = pop_config_ip.getText().toString().trim();
+            if (!RegexUtils.isIP(newIP)) {
+                ToastUtil.show(R.string.ip_format_error);
+                return;
+            }
             String newPort = pop_config_port.getText().toString().trim();
             String newMaxBitRate = pop_config_bitrate.getText().toString().trim();
             if (!newIP.isEmpty() && !newPort.isEmpty() && !newMaxBitRate.isEmpty()) {
@@ -1071,18 +1177,18 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
                 iniUtil.put("areaaddr", "area0ip", newIP);
                 iniUtil.put("areaaddr", "area0port", newPort);
                 iniUtil.put("selfinfo", "streamprotol", pop_config_tcp.isChecked() ? 1 : 0);
-                iniUtil.put("Audio", "disablemulticast", pop_config_multicase.isChecked() ? 1 : 0);
+                iniUtil.put("debug", "disablemulticast", pop_config_multicase.isChecked() ? 1 : 0);
                 iniUtil.put("debug", "videoaudio", pop_config_microphone.isChecked() ? 1 : 0);
                 iniUtil.put("nosdl", "disablebsf", pop_config_disablebsf.isChecked() ? 0 : 1);
                 iniUtil.store();//修改后提交
                 /** **** **  app重启  ** **** **/
-                AppUtil.restartApplication(this);
+                AppUtils.relaunchApp(true);
             } else {
                 ToastUtil.show(R.string.errorContentNull);
             }
         });
         inflate.findViewById(R.id.pop_config_cancel).setOnClickListener(v -> {
-            pop.dismiss();
+            configPop.dismiss();
         });
     }
 
@@ -1092,7 +1198,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
             int a = Integer.parseInt(str);
             return a == 1;
         } catch (NumberFormatException e) {
-            LogUtil.e(TAG, " isEnable 转换异常");
+            LogUtils.e(TAG, " isEnable 转换异常");
             e.printStackTrace();
         }
         return false;
@@ -1100,7 +1206,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
 
     public void signIn() {
         try {
-            LogUtil.d(TAG, "signIn :  signinType --> " + Values.localSigninType);
+            LogUtils.d(TAG, "signIn :  signinType --> " + Values.localSigninType);
             if (Values.localSigninType == InterfaceMacro.Pb_MeetSignType.Pb_signin_direct.getNumber()) {
                 //直接签到
                 presenter.sendSign(0, InterfaceMacro.Pb_MeetSignType.Pb_signin_direct.getNumber(), "", s2b(""));
@@ -1127,7 +1233,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
 
     private void showDrawBoard(String pwd) {
         View inflate = LayoutInflater.from(this).inflate(R.layout.dialog_enter_password_draw, null);
-        PopupWindow popupWindow = PopUtil.create(inflate, Values.screen_width / 3 * 2, Values.screen_height / 2, true, enter_btn_main);
+        PopupWindow popupWindow = PopUtil.create(inflate, Values.screen_width / 3 * 2, Values.half_height, enter_btn_main);
         ArtBoard artBoard = inflate.findViewById(R.id.pwd_draw_board);
         Button pwd_draw_revoke = inflate.findViewById(R.id.pwd_draw_revoke);
         Button pwd_draw_clear = inflate.findViewById(R.id.pwd_draw_clear);
@@ -1161,7 +1267,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
      */
     private void enterPassword(boolean haspic) {
         View inflate = LayoutInflater.from(this).inflate(R.layout.dialog_enter_password, null);
-        PopupWindow popupWindow = PopUtil.create(inflate, Values.screen_width / 2, ViewGroup.LayoutParams.WRAP_CONTENT, true, enter_btn_main);
+        PopupWindow popupWindow = PopUtil.create(inflate, Values.half_width, ViewGroup.LayoutParams.WRAP_CONTENT, enter_btn_main);
         EditText enter_pwd_edt = inflate.findViewById(R.id.enter_pwd_edt);
         Button enter_pwd_determine = inflate.findViewById(R.id.enter_pwd_determine);
         Button enter_pwd_cancel = inflate.findViewById(R.id.enter_pwd_cancel);
@@ -1182,34 +1288,34 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
     }
 
     private void jump2bind() {
-        LogUtil.i(TAG, "jump2bind ");
+        LogUtils.i(TAG, "jump2bind ");
         presenter.queryAttendPeople();
     }
 
     @Override
     public void showBindMemberView(List<InterfaceMember.pbui_Item_MemberDetailInfo> chooseMemberDetailInfos) {
-        LogUtil.d(TAG, "showBindMemberView -->" + "展示选择绑定参会人弹框");
+        LogUtils.d(TAG, "showBindMemberView -->" + "展示选择绑定参会人弹框");
         if (bindMemberPop != null && bindMemberPop.isShowing()) {
             adapter.notifyDataSetChanged();
             adapter.notifyChoose();
             return;
         }
         View inflate = LayoutInflater.from(this).inflate(R.layout.pop_bind_member, null);
-        bindMemberPop = PopUtil.create(inflate, Values.screen_width / 2, Values.screen_height / 2, true, enter_btn_main);
+        bindMemberPop = PopUtil.create(inflate, enter_btn_main);
         adapter = new MainBindMemberAdapter(R.layout.item_bind_member, chooseMemberDetailInfos);
         RecyclerView pop_bind_member_rv = inflate.findViewById(R.id.pop_bind_member_rv);
         pop_bind_member_rv.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
         pop_bind_member_rv.setAdapter(adapter);
         adapter.setOnItemClickListener((ad, view, position) -> {
             int personid = chooseMemberDetailInfos.get(position).getPersonid();
-            LogUtil.d(TAG, "onItemClick -->position= " + position + ", personid= " + personid);
+            LogUtils.d(TAG, "onItemClick -->position= " + position + ", personid= " + personid);
             adapter.setChoose(personid);
         });
         Button pop_bind_member_determine = inflate.findViewById(R.id.pop_bind_member_determine);
         Button pop_bind_member_create = inflate.findViewById(R.id.pop_bind_member_create);
         Button pop_bind_member_cancel = inflate.findViewById(R.id.pop_bind_member_cancel);
         pop_bind_member_determine.setOnClickListener(v -> {
-            LogUtil.d(TAG, "onClick -->" + "确定");
+            LogUtils.d(TAG, "onClick -->" + "确定");
             if (adapter.getChooseId() != -1) {
                 bindMemberPop.dismiss();
                 presenter.joinMeeting(adapter.getChooseId());
@@ -1226,14 +1332,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
 
     private void showCreateMemberView() {
         View inflate = LayoutInflater.from(this).inflate(R.layout.pop_create_member, null);
-        createMemberPop = new PopupWindow(inflate, Values.screen_width / 2, Values.screen_height / 2);
-        createMemberPop.setBackgroundDrawable(new BitmapDrawable());
-        // 设置popWindow弹出窗体可点击，这句话必须添加，并且是true
-        createMemberPop.setTouchable(true);
-        // true:设置触摸外面时消失
-        createMemberPop.setOutsideTouchable(true);
-        createMemberPop.setFocusable(true);
-        createMemberPop.showAtLocation(enter_btn_main, Gravity.CENTER, 0, 0);
+        createMemberPop = PopUtil.create(inflate, enter_btn_main);
         EditText pop_create_member_company = inflate.findViewById(R.id.pop_create_member_company);
         EditText pop_create_member_name = inflate.findViewById(R.id.pop_create_member_name);
         EditText pop_create_member_position = inflate.findViewById(R.id.pop_create_member_position);

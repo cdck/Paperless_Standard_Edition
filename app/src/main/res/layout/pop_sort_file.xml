@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_pop_bg"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <include layout="@layout/item_file_sort_dir" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_sort_file_dir"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:orientation="vertical">
+
+            <include layout="@layout/item_sort_file" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_sort_file"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/dp_5"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_move_up"
+            style="@style/btn_pressed_style"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:text="@string/move_up" />
+
+        <Button
+            android:id="@+id/btn_move_down"
+            style="@style/btn_pressed_style"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:text="@string/move_down" />
+
+        <Button
+            android:id="@+id/btn_save"
+            style="@style/btn_pressed_style"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:text="@string/save" />
+
+        <Button
+            android:id="@+id/btn_exit"
+            style="@style/btn_pressed_style"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:text="@string/exit" />
+    </LinearLayout>
+</LinearLayout>

@@ -13,6 +13,23 @@ public class SharedPreferenceHelper {
     public static final String key_user = "user";
     public static final String key_password = "password";
 
+    /**
+     * 邮箱账号
+     */
+    public static final String key_email_account = "email_account";
+    /**
+     * 邮箱密码
+     */
+    public static final String key_email_password = "email_password";
+    /**
+     * 发送者名
+     */
+    public static final String key_email_name = "email_name";
+    /**
+     * 发送者邮箱
+     */
+    public static final String key_email_mailbox = "email_mailbox";
+
     //文件名
     private static final String FILE_NAME = "paperless_share_data";
 

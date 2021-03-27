@@ -1,9 +1,11 @@
 package xlk.paperless.standard.view.admin.fragment.system.secretary;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.mogujie.tt.protobuf.InterfaceAdmin;
 import com.mogujie.tt.protobuf.InterfaceRoom;
 
@@ -149,9 +152,9 @@ public class AdminSecretaryManageFragment extends BaseFragment implements AdminS
             userAdapter = new SecretaryUserAdapter(R.layout.item_secretary_manage_title, adminInfos);
             rv_admin_user.setLayoutManager(new LinearLayoutManager(getContext()));
             rv_admin_user.setAdapter(userAdapter);
-            userAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            userAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
-                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                     InterfaceAdmin.pbui_Item_AdminDetailInfo info = adminInfos.get(position);
                     int adminid = info.getAdminid();
                     userAdapter.setSelect(adminid);
@@ -174,9 +177,9 @@ public class AdminSecretaryManageFragment extends BaseFragment implements AdminS
             controllableRoomAdapter = new RoomAdapter(R.layout.item_table_3, controllableRooms);
             rv_controllable_venue.setLayoutManager(new LinearLayoutManager(getContext()));
             rv_controllable_venue.setAdapter(controllableRoomAdapter);
-            controllableRoomAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            controllableRoomAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
-                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                     int roomid = controllableRooms.get(position).getRoomid();
                     controllableRoomAdapter.setSelect(roomid);
                     presenter.setControllableRoomId(roomid);
@@ -193,9 +196,9 @@ public class AdminSecretaryManageFragment extends BaseFragment implements AdminS
             allRoomAdapter = new RoomAdapter(R.layout.item_table_3, allRooms);
             rv_all_venues.setLayoutManager(new LinearLayoutManager(getContext()));
             rv_all_venues.setAdapter(allRoomAdapter);
-            allRoomAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            allRoomAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
-                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                     int roomid = allRooms.get(position).getRoomid();
                     allRoomAdapter.setSelect(roomid);
                     presenter.setAllRoomId(roomid);
@@ -207,15 +210,16 @@ public class AdminSecretaryManageFragment extends BaseFragment implements AdminS
     }
 
     @Override
-    public void onHiddenChanged(boolean hidden) {
-        if(!hidden){
-            presenter.queryAdmin();
-        }
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         presenter.onDestroy();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            presenter.queryAdmin();
+        }
     }
 }

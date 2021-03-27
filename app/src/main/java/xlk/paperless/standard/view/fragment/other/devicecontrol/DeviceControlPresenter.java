@@ -7,10 +7,6 @@ import com.mogujie.tt.protobuf.InterfaceDevice;
 import com.mogujie.tt.protobuf.InterfaceMacro;
 import com.mogujie.tt.protobuf.InterfaceRoom;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +50,7 @@ public class DeviceControlPresenter extends BasePresenter {
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEINFO_VALUE://设备寄存器变更通知
                 queryDevice();
                 break;
+            default:break;
         }
     }
 
@@ -105,16 +102,28 @@ public class DeviceControlPresenter extends BasePresenter {
         }
     }
 
+    public void rise(int value,List<Integer> ids){
+        jni.executeTerminalControl(InterfaceMacro.Pb_DeviceControlFlag.Pb_DEVICECONTORL_LIFTUP_VALUE, value, 0, ids);
+    }
+
+    public void stop(int value,List<Integer> ids){
+        jni.executeTerminalControl(InterfaceMacro.Pb_DeviceControlFlag.Pb_DEVICECONTORL_LIFTSTOP_VALUE, value, 0, ids);
+    }
+
+    public void decline(int value,List<Integer> ids){
+        jni.executeTerminalControl(InterfaceMacro.Pb_DeviceControlFlag.Pb_DEVICECONTORL_LIFTDOWN_VALUE, value, 0, ids);
+    }
+
     public void executeTerminalControl(int value, List<Integer> ids) {
         jni.executeTerminalControl(value, 0, 0, ids);
     }
 
     //辅助签到
     public void signAlterationOperate(List<Integer> ids) {
-        jni.signAlterationOperate(ids);
+        jni.assistedSignIn(ids);
     }
 
     public void modifMeetRanking(int memberid, int role, Integer devId) {
-        jni.modifMeetRanking(memberid, role, devId);
+        jni.modifyMeetRanking(memberid, role, devId);
     }
 }

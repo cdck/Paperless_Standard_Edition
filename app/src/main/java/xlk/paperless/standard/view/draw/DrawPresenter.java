@@ -8,9 +8,9 @@ import android.graphics.PointF;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
@@ -82,7 +82,6 @@ public class DrawPresenter extends BasePresenter {
     private DrawMemberAdapter adapter;
     private boolean isAddScreenShot;//是否在发起共享时,添加截图图片
 
-
     public DrawPresenter(Context cxt, IDraw view) {
         this.cxt = cxt;
         this.view = view;
@@ -123,7 +122,8 @@ public class DrawPresenter extends BasePresenter {
                 InterfaceDevice.pbui_Item_DeviceDetailInfo deviceInfo = pdevList.get(i);
                 if (deviceInfo.getNetstate() == 1 && deviceInfo.getFacestate() == 1) {
                     for (InterfaceMember.pbui_Item_MemberDetailInfo memberInfo : memberInfos) {
-                        if (memberInfo.getPersonid() == deviceInfo.getMemberid() && deviceInfo.getDevcieid() != Values.localDeviceId) {
+                        if (memberInfo.getPersonid() == deviceInfo.getMemberid()
+                                && deviceInfo.getDevcieid() != Values.localDeviceId) {
                             onLineMembers.add(new DevMember(deviceInfo, memberInfo));
                         }
                     }
@@ -177,10 +177,6 @@ public class DrawPresenter extends BasePresenter {
                         break;
                 }
                 break;
-            case Constant.BUS_SHARE_PIC:
-                InterfaceWhiteboard.pbui_Item_MeetWBPictureDetail object = (InterfaceWhiteboard.pbui_Item_MeetWBPictureDetail) msg.getObjects()[0];
-                addPicInform(object);
-                break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEMBER_VALUE://参会人员变更通知
                 LogUtil.d(TAG, "BusEvent -->" + "参会人员变更通知");
                 queryMember();
@@ -192,6 +188,16 @@ public class DrawPresenter extends BasePresenter {
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_ROOMDEVICE_VALUE://会场设备变更通知
                 LogUtil.d(TAG, "BusEvent -->" + "会场设备变更通知");
                 queryDevice();
+                break;
+            //界面状态变更通知
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEMEETSTATUS_VALUE: {
+                LogUtil.i(TAG, "busEvent 界面状态变更通知");
+                queryMember();
+                break;
+            }
+            case Constant.BUS_SHARE_PIC:
+                InterfaceWhiteboard.pbui_Item_MeetWBPictureDetail object = (InterfaceWhiteboard.pbui_Item_MeetWBPictureDetail) msg.getObjects()[0];
+                addPicInform(object);
                 break;
             case Constant.BUS_SCREEN_SHOT://屏幕截图
                 LogUtil.d(TAG, "BusEvent -->" + "绘制屏幕截图");
@@ -690,10 +696,9 @@ public class DrawPresenter extends BasePresenter {
                 if (isUpload) {
                     /** **** **  上传到服务器  ** **** **/
                     String path = uploadPicFile.getPath();
-                    int mediaid = Constant.getMediaId(path);
-                    String fileEnd = path.substring(path.lastIndexOf(".") + 1, path.length()).toLowerCase();
+                    String fileEnd = path.substring(path.lastIndexOf(".") + 1).toLowerCase();
                     jni.uploadFile(InterfaceMacro.Pb_Upload_Flag.Pb_MEET_UPLOADFLAG_ONLYENDCALLBACK.getNumber(),
-                            ANNOTATION_FILE_DIRECTORY_ID, 0, fileName + "." + fileEnd, path, 0, mediaid, Constant.UPLOAD_DRAW_PIC);
+                            ANNOTATION_FILE_DIRECTORY_ID, 0, fileName + "." + fileEnd, path, 0,  Constant.UPLOAD_DRAW_PIC);
                 }
             }
         };
@@ -703,7 +708,7 @@ public class DrawPresenter extends BasePresenter {
     public void showMultiplayerAnnotation(View parent) {
         queryMember();
         View inflate = LayoutInflater.from(cxt).inflate(R.layout.pop_artboard_share, null);
-        PopupWindow pop = PopUtil.create(inflate, Values.screen_width / 2, Values.screen_height / 2, true, parent);
+        PopupWindow pop = PopUtil.create(inflate,   parent);
         CheckBox cb = inflate.findViewById(R.id.pop_artboard_cb);
         RecyclerView rv = inflate.findViewById(R.id.pop_artboard_rv);
         rv.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
@@ -729,7 +734,7 @@ public class DrawPresenter extends BasePresenter {
                     launchSrcwbid = mSrcwbid;
                     launchSrcmemid = mSrcmemid;
                 }
-                LogUtil.d(TAG, "向这些B发起同屏：" + ids.toString());
+                LogUtil.d(TAG, "发起同屏：" + ids.toString());
                 jni.coerceStartWhiteBoard(InterfaceMacro.Pb_MeetPostilOperType.Pb_MEETPOTIL_FLAG_REQUESTOPEN.getNumber(),
                         Values.localMemberName, Values.localMemberId,
                         launchSrcmemid, launchSrcwbid, ids);

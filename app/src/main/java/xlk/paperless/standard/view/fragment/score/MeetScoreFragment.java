@@ -1,12 +1,12 @@
 package xlk.paperless.standard.view.fragment.score;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,12 +26,10 @@ import xlk.paperless.standard.R;
 import xlk.paperless.standard.adapter.MeetScoreAdapter;
 import xlk.paperless.standard.adapter.ScoreMemberAdapter;
 import xlk.paperless.standard.adapter.WmScreenMemberAdapter;
-import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.util.PopUtil;
 import xlk.paperless.standard.util.ToastUtil;
-import xlk.paperless.standard.view.MyApplication;
 
 /**
  * @author xlk
@@ -146,11 +144,6 @@ public class MeetScoreFragment extends Fragment implements IMeetScore, View.OnCl
         }
     }
 
-    private View createHeaderView() {
-
-        return null;
-    }
-
     private void setDefault(InterfaceFilescorevote.pbui_Type_Item_UserDefineFileScore score) {
         if (score != null) {
             scoreAdapter.setChoose(score.getVoteid());
@@ -180,7 +173,7 @@ public class MeetScoreFragment extends Fragment implements IMeetScore, View.OnCl
     private void updateRight(InterfaceFilescorevote.pbui_Type_Item_UserDefineFileScore score) {
         f_score_state.setText(getVoteState(score.getVotestate()));
         f_score_describe_edt.setText(score.getContent().toStringUtf8());
-        f_score_file_edt.setText(JniHandler.getInstance().getFileName(score.getFileid()));
+        f_score_file_edt.setText(JniHandler.getInstance().queryFileNameByMediaId(score.getFileid()));
         f_score_register_tv.setText(score.getMode() == InterfaceMacro.Pb_MeetVoteMode.Pb_VOTEMODE_agonymous_VALUE ? getString(R.string.no) : getString(R.string.yes));
         f_score_yd_tv.setText(String.valueOf(score.getShouldmembernum()));
         f_score_yp_tv.setText(String.valueOf(score.getRealmembernum()));
@@ -290,7 +283,7 @@ public class MeetScoreFragment extends Fragment implements IMeetScore, View.OnCl
 
     private void scoreOper(int voteid) {
         View inflate = LayoutInflater.from(getContext()).inflate(R.layout.pop_online_member, null);
-        PopupWindow popupWindow = PopUtil.create(inflate, Values.screen_width / 2, Values.screen_height / 2, true, f_score_start);
+        PopupWindow popupWindow = PopUtil.create(inflate, f_score_start);
         RecyclerView pop_score_rv = inflate.findViewById(R.id.pop_score_rv);
         CheckBox pop_score_check_all = inflate.findViewById(R.id.pop_score_check_all);
         pop_score_rv.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));

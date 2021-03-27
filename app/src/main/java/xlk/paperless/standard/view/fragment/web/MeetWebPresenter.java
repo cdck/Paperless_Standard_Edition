@@ -6,12 +6,10 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.mogujie.tt.protobuf.InterfaceBase;
 import com.mogujie.tt.protobuf.InterfaceMacro;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
+import java.util.ArrayList;
+import java.util.List;
 
 import xlk.paperless.standard.data.EventMessage;
-import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.base.BasePresenter;
 
 /**
@@ -22,6 +20,7 @@ import xlk.paperless.standard.base.BasePresenter;
 public class MeetWebPresenter extends BasePresenter {
     private final IMeetWeb view;
     private final Context cxt;
+    public List<InterfaceBase.pbui_Item_UrlDetailInfo> urlLists =new ArrayList<>();
 
     public MeetWebPresenter(Context cxt, IMeetWeb view) {
         super();
@@ -30,26 +29,24 @@ public class MeetWebPresenter extends BasePresenter {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
     public void busEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEFAULTURL_VALUE:
                 webQuery();
+                break;
+            default:
                 break;
         }
     }
 
     public void webQuery() {
         try {
-            InterfaceBase.pbui_meetUrl meetUrl = jni.webQuery();
-            if (meetUrl == null) return;
-            InterfaceBase.pbui_Item_UrlDetailInfo info = meetUrl.getItemList().get(0);
-            String urlAddr = info.getAddr().toStringUtf8();
-            view.loadUrl(urlAddr);
+            InterfaceBase.pbui_meetUrl meetUrl = jni.queryUrl();
+            urlLists.clear();
+            if (meetUrl != null){
+                urlLists.addAll(meetUrl.getItemList());
+            }
+            view.updateUrlRv();
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }

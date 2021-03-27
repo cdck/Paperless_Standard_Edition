@@ -1,9 +1,9 @@
 package xlk.paperless.standard.adapter;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.mogujie.tt.protobuf.InterfaceFilescorevote;
 import com.mogujie.tt.protobuf.InterfaceMacro;
 
@@ -20,6 +20,7 @@ import xlk.paperless.standard.util.LogUtil;
  * @desc 评分查看 左边评分列表
  */
 public class MeetScoreAdapter extends BaseQuickAdapter<InterfaceFilescorevote.pbui_Type_Item_UserDefineFileScore, BaseViewHolder> {
+    private final String TAG = "MeetScoreAdapter-->";
     private int chooseId = -1;
 
     public MeetScoreAdapter(int layoutResId, @Nullable List<InterfaceFilescorevote.pbui_Type_Item_UserDefineFileScore> data) {
@@ -36,7 +37,7 @@ public class MeetScoreAdapter extends BaseQuickAdapter<InterfaceFilescorevote.pb
         average = b1.divide(b2, 2, BigDecimal.ROUND_HALF_UP).doubleValue();
 
         helper.setText(R.id.item_score_desc, item.getContent().toStringUtf8())
-                .setText(R.id.item_score_file, JniHandler.getInstance().getFileName(item.getFileid()))
+                .setText(R.id.item_score_file, JniHandler.getInstance().queryFileNameByMediaId(item.getFileid()))
                 .setText(R.id.item_score_state, getVoteState(item.getVotestate()))
                 .setText(R.id.item_score_people, item.getShouldmembernum() + " | " + item.getRealmembernum())
                 .setText(R.id.item_score_register, getMode(item.getMode()))
@@ -63,7 +64,7 @@ public class MeetScoreAdapter extends BaseQuickAdapter<InterfaceFilescorevote.pb
 
     public void notifyChoose() {
         int id = -1;
-        for (InterfaceFilescorevote.pbui_Type_Item_UserDefineFileScore item : mData) {
+        for (InterfaceFilescorevote.pbui_Type_Item_UserDefineFileScore item : getData()) {
             if (item.getVoteid() == chooseId) {
                 id = chooseId;
                 break;
@@ -74,9 +75,9 @@ public class MeetScoreAdapter extends BaseQuickAdapter<InterfaceFilescorevote.pb
     }
 
     public InterfaceFilescorevote.pbui_Type_Item_UserDefineFileScore getChooseScore() {
-        for (int i = 0; i < mData.size(); i++) {
-            if (mData.get(i).getVoteid() == chooseId) {
-                return mData.get(i);
+        for (int i = 0; i < getData().size(); i++) {
+            if (getData().get(i).getVoteid() == chooseId) {
+                return getData().get(i);
             }
         }
         return null;
@@ -110,19 +111,19 @@ public class MeetScoreAdapter extends BaseQuickAdapter<InterfaceFilescorevote.pb
 
     private String getMode(int mode) {
         if (mode == InterfaceMacro.Pb_MeetVoteMode.Pb_VOTEMODE_agonymous_VALUE) {
-            return mContext.getString(R.string.no);
+            return getContext().getString(R.string.no);
         } else {
-            return mContext.getString(R.string.yes);
+            return getContext().getString(R.string.yes);
         }
     }
 
     private String getVoteState(int state) {
         if (state == InterfaceMacro.Pb_MeetVoteStatus.Pb_vote_notvote_VALUE) {
-            return mContext.getString(R.string.state_not_initiated);
+            return getContext().getString(R.string.state_not_initiated);
         } else if (state == InterfaceMacro.Pb_MeetVoteStatus.Pb_vote_voteing_VALUE) {
-            return mContext.getString(R.string.state_ongoing);
+            return getContext().getString(R.string.state_ongoing);
         } else {
-            return mContext.getString(R.string.state_has_ended);
+            return getContext().getString(R.string.state_has_ended);
         }
     }
 }

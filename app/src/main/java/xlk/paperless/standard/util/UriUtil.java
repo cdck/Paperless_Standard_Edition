@@ -107,38 +107,30 @@ public class UriUtil {
                     // MediaStore (and general)
                     else if ("content".equalsIgnoreCase(uri.getScheme())) {
                         LogUtil.e(TAG, "getFilePath MediaStore (and general) -->");
-                        if (ishuaWeiAuthority(uri)) {
-
-                        } else if (isTencentAuthority(uri)) {
-                            String tencent = "content://com.tencent.mtt.fileprovider/QQBrowser/";
-
-                        } else {
-
-                        }
-
-                        String temp = "content://com.huawei.hidisk.fileprovider/root/storage/emulated/0";
-                        if (uri.toString().contains(temp)) {
-                            String s = uri.toString();
-                            String tempPath = s.replace(temp, "");
-                            //tempPath= /PaperlessStandardEdition/Log/crash-2020-06-16_11%3A20%3A49-1592277649091.log
-                            Log.e(TAG, "getFilePath :  substring --> " + tempPath);
-                            String tempPre = tempPath.substring(0, tempPath.lastIndexOf("/"));
-                            //tempPre=  /PaperlessStandardEdition/Log
-                            LogUtil.d(TAG, "getFilePath -->" + tempPre);
-                            String lastPathSegment = uri.getLastPathSegment();
-                            //lastPathSegment= crash-2020-06-16_11:20:49-1592277649091.log
-                            String fileName = tempPre + "/" + lastPathSegment;
-                            LogUtil.e(TAG, "getFilePath fileName -->" + fileName);
-                            File externalStorageDirectory = Environment.getExternalStorageDirectory();
-                            LogUtil.e(TAG, "getFilePath :  组合成的文件路径 --> " + externalStorageDirectory.getAbsolutePath() + ", tempPath= " + fileName);
-                            //组合成的文件路径= /storage/emulated/0, tempPath= /PaperlessStandardEdition/Log/crash-2020-06-16_11:20:49-1592277649091.log
-                            File file = new File(externalStorageDirectory.getAbsolutePath() + fileName);
-                            if (file.exists()) {
-                                return file.getAbsolutePath();
-                            } else {
-                                LogUtil.e(TAG, "getFilePath :  文件不存在  " + file.getAbsolutePath());
-                            }
-                        }
+//                        String temp = "content://com.huawei.hidisk.fileprovider/root/storage/emulated/0";
+//                        if (uri.toString().contains(temp)) {
+//                            String s = uri.toString();
+//                            String tempPath = s.replace(temp, "");
+//                            //tempPath= /PaperlessStandardEdition/Log/crash-2020-06-16_11%3A20%3A49-1592277649091.log
+//                            Log.e(TAG, "getFilePath --> tempPath=" + tempPath);
+//                            String tempPre = tempPath.substring(0, tempPath.lastIndexOf("/"));
+//                            //tempPre=  /PaperlessStandardEdition/Log
+//                            LogUtil.d(TAG, "getFilePath -->tempPre=" + tempPre);
+//                            //lastPathSegment= crash-2020-06-16_11:20:49-1592277649091.log
+//                            String lastPathSegment = uri.getLastPathSegment();
+//                            LogUtil.d(TAG, "getFilePath -->lastPathSegment=" + lastPathSegment);
+//                            String fileName = tempPre + "/" + lastPathSegment;
+//                            LogUtil.e(TAG, "getFilePath -->fileName=" + fileName);
+//                            File externalStorageDirectory = Environment.getExternalStorageDirectory();
+//                            LogUtil.e(TAG, "getFilePath :  组合成的文件路径 --> " + externalStorageDirectory.getAbsolutePath() + ", tempPath= " + fileName);
+//                            //组合成的文件路径= /storage/emulated/0, tempPath= /PaperlessStandardEdition/Log/crash-2020-06-16_11:20:49-1592277649091.log
+//                            File file = new File(externalStorageDirectory.getAbsolutePath() + fileName);
+//                            if (file.exists()) {
+//                                return file.getAbsolutePath();
+//                            } else {
+//                                LogUtil.e(TAG, "getFilePath :  文件不存在  " + file.getAbsolutePath());
+//                            }
+//                        }
                         path = getDataColumn(context, uri, null, null);
                     }
                     // File
@@ -161,12 +153,15 @@ public class UriUtil {
                 final int column_index = cursor.getColumnIndexOrThrow(column);
                 return cursor.getString(column_index);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+        } catch (IllegalArgumentException e) {
+            //java.lang.IllegalArgumentException: column '_data' does not exist
+            //华为的特殊处理：content://com.huawei.hidisk.fileprovider/root/storage/emulated/0/tencent/TIMfile_recv/xxx.doc
+            String rootPre = File.separator + "root";// /root
+            return uri.getPath().startsWith(rootPre) ? uri.getPath().replace(rootPre, "") : uri.getPath();
         } finally {
-            if (cursor != null)
+            if (cursor != null) {
                 cursor.close();
+            }
         }
         return null;
     }

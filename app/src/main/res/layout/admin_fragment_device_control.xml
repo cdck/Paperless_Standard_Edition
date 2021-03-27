@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/dp_5"
+    android:orientation="vertical">
+
+    <include layout="@layout/item_admin_device_coltrol" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_device"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_5"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/cb_check_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:text="@string/check_all" />
+
+            <CheckBox
+                android:id="@+id/cb_check_lift"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:text="@string/lift" />
+
+            <CheckBox
+                android:id="@+id/cb_check_mike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mike" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_restart_app"
+                style="@style/btn_pressed_style"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:text="@string/app_restart" />
+
+            <Button
+                android:id="@+id/btn_restart"
+                style="@style/btn_pressed_style"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:text="@string/terminal_restart" />
+
+            <Button
+                android:id="@+id/btn_shutdown"
+                style="@style/btn_pressed_style"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:text="@string/terminal_shutdown" />
+
+            <Button
+                android:id="@+id/btn_singin"
+                style="@style/btn_pressed_style"
+                android:layout_width="wrap_content"
+                android:text="@string/secondary_signin" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_5"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_rise"
+                style="@style/btn_pressed_style"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:text="@string/rise" />
+
+            <Button
+                android:id="@+id/btn_stop"
+                style="@style/btn_pressed_style"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:text="@string/stop" />
+
+            <Button
+                android:id="@+id/btn_decline"
+                style="@style/btn_pressed_style"
+                android:layout_width="wrap_content"
+                android:text="@string/decline" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_member_role"
+                style="@style/btn_pressed_style"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:text="@string/role" />
+
+            <Button
+                android:id="@+id/btn_wake_online"
+                style="@style/btn_pressed_style"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:text="@string/wake_on_lan" />
+
+            <Button
+                android:id="@+id/btn_document"
+                style="@style/btn_pressed_style"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:text="@string/open_document_externally" />
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

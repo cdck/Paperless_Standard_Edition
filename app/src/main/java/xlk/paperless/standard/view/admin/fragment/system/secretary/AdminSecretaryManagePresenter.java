@@ -107,6 +107,7 @@ public class AdminSecretaryManagePresenter extends BasePresenter {
 
     public void queryAllRooms(int adminId) {
         selectAdminId = adminId;
+        LogUtil.i(TAG, "queryAllRooms selectAdminId=" + selectAdminId);
         InterfaceRoom.pbui_Type_MeetRoomDetailInfo info = jni.queryRoom();
         controllableRooms.clear();
         allRooms.clear();
@@ -118,6 +119,7 @@ public class AdminSecretaryManagePresenter extends BasePresenter {
                 controllableRooms.addAll(itemList);
             } else {
                 for (InterfaceRoom.pbui_Item_MeetRoomDetailInfo item : itemList) {
+                    LogUtil.i(TAG, "queryAllRooms 会场id=" + item.getRoomid() + ",会场名称=" + item.getName().toStringUtf8());
                     if (currentControllableRooms != null && currentControllableRooms.contains(item.getRoomid())) {
                         //当前会场在当前的管理员控制下
                         controllableRooms.add(item);

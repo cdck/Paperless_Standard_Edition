@@ -8,6 +8,9 @@ import com.mogujie.tt.protobuf.InterfaceIM;
  * @desc 会议交流的自定义信息
  */
 public class ChatMessage {
+    /**
+     * =0收到的信息，=1自己发送的信息
+     */
     private int type;
     private InterfaceIM.pbui_Type_MeetIM message;
 

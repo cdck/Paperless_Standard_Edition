@@ -1,8 +1,8 @@
 package xlk.paperless.standard.view.chatonline;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -71,7 +71,6 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
         mOperdeviceid = getIntent().getIntExtra(Constant.EXTRA_OPERATING_DEVICE_ID, -1);
         LogUtil.d(TAG, "onCreate --> 收到该设备ID的设备交互= " + mOperdeviceid);
         initial();
-        EventBus.getDefault().register(this);
         queryAttendPeople();
     }
 
@@ -187,7 +186,7 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Override
     public void BusEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
             case Constant.BUS_VIDEO_DECODE://后台播放数据 DECODE
@@ -437,7 +436,7 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
         setRvLayoutManager(enabled);
         pop_video_chat_launch.setEnabled(enabled);
         if (enabled) {
-            pop_video_chat_stop.setBackground(getResources().getDrawable(R.drawable.shape_btn_pressed));
+            pop_video_chat_launch.setBackground(getResources().getDrawable(R.drawable.shape_btn_pressed));
         } else {
             pop_video_chat_launch.setBackground(getResources().getDrawable(R.drawable.shape_btn_enable_flase));
         }
@@ -454,7 +453,6 @@ public class ChatVideoActivity extends BaseActivity implements View.OnClickListe
         video_chat_view.clearAll();
         stopAll();
         isChatingOpened = false;
-        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 

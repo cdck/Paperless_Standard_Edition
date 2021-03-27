@@ -50,7 +50,6 @@ public class MeetDataPresenter extends BasePresenter {
         super.onDestroy();
     }
 
-
     @Override
     public void busEvent(EventMessage msg) {
         switch (msg.getType()) {
@@ -126,7 +125,6 @@ public class MeetDataPresenter extends BasePresenter {
         }
     }
 
-
     public void pushFile(int mediaId) {
         try {
             InterfaceDevice.pbui_Type_DeviceDetailInfo deviceDetailInfo = jni.queryDeviceInfo();
@@ -173,8 +171,8 @@ public class MeetDataPresenter extends BasePresenter {
         jni.stopResourceOperate(res,devIds);
     }
 
-    public void uploadFile(int uploadflag, int dirid, int attrib, String newname, String pathname, int userval, int mediaid, String userStr) {
-        jni.uploadFile(uploadflag, dirid, attrib, newname, pathname, userval, mediaid, userStr);
+    public void uploadFile(int uploadflag, int dirid, int attrib, String newname, String pathname, int userval,  String userStr) {
+        jni.uploadFile(uploadflag, dirid, attrib, newname, pathname, userval,  userStr);
     }
 
 }

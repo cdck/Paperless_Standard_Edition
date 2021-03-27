@@ -12,10 +12,7 @@ import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import xlk.paperless.standard.R;
 
@@ -321,7 +318,7 @@ public class SlideView extends ViewGroup {
     /**
      * 可拖动的View
      */
-    private class SlideIcon extends android.support.v7.widget.AppCompatImageView {
+    private class SlideIcon extends androidx.appcompat.widget.AppCompatImageView {
         // 用来控制触摸事件是否可用
         private boolean mEnable;
 
@@ -471,7 +468,7 @@ public class SlideView extends ViewGroup {
         void onActionUp(int x);
     }
 
-    private class CustTextView extends android.support.v7.widget.AppCompatTextView {
+    private class CustTextView extends androidx.appcompat.widget.AppCompatTextView {
         private int mViewWith;
         private int mTranleate;
         private Paint mPaint;

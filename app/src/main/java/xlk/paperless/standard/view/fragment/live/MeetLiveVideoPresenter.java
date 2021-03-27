@@ -35,7 +35,6 @@ public class MeetLiveVideoPresenter extends BasePresenter {
     private final String TAG = "MeetLiveVideoPresenter-->";
     private final Context cxt;
     private final IMeetLiveVideo view;
-    private JniHandler jni = JniHandler.getInstance();
     private List<InterfaceVideo.pbui_Item_MeetVideoDetailInfo> videoDetailInfos = new ArrayList<>();
     private List<InterfaceDevice.pbui_Item_DeviceDetailInfo> deviceDetailInfos = new ArrayList<>();
     private List<VideoDev> videoDevs = new ArrayList<>();
@@ -107,30 +106,26 @@ public class MeetLiveVideoPresenter extends BasePresenter {
     }
 
     public void queryMeetVedio() {
-        try {
-            InterfaceVideo.pbui_Type_MeetVideoDetailInfo object = jni.queryMeetVedio();
-            if (object == null) {
-                videoDevs.clear();
-                view.updateRv(videoDevs);
-                return;
-            }
-            videoDetailInfos.clear();
-            videoDetailInfos.addAll(object.getItemList());
+        InterfaceVideo.pbui_Type_MeetVideoDetailInfo object = jni.queryMeetVideo();
+        if (object == null) {
             videoDevs.clear();
-            for (int i = 0; i < videoDetailInfos.size(); i++) {
-                InterfaceVideo.pbui_Item_MeetVideoDetailInfo videoDetailInfo = videoDetailInfos.get(i);
-                int deviceid = videoDetailInfo.getDeviceid();
-                for (int j = 0; j < deviceDetailInfos.size(); j++) {
-                    InterfaceDevice.pbui_Item_DeviceDetailInfo detailInfo = deviceDetailInfos.get(j);
-                    if (detailInfo.getDevcieid() == deviceid) {
-                        videoDevs.add(new VideoDev(videoDetailInfo, detailInfo));
-                    }
+            view.updateRv(videoDevs);
+            return;
+        }
+        videoDetailInfos.clear();
+        videoDetailInfos.addAll(object.getItemList());
+        videoDevs.clear();
+        for (int i = 0; i < videoDetailInfos.size(); i++) {
+            InterfaceVideo.pbui_Item_MeetVideoDetailInfo videoDetailInfo = videoDetailInfos.get(i);
+            int deviceid = videoDetailInfo.getDeviceid();
+            for (int j = 0; j < deviceDetailInfos.size(); j++) {
+                InterfaceDevice.pbui_Item_DeviceDetailInfo detailInfo = deviceDetailInfos.get(j);
+                if (detailInfo.getDevcieid() == deviceid) {
+                    videoDevs.add(new VideoDev(videoDetailInfo, detailInfo));
                 }
             }
-            view.updateRv(videoDevs);
-        } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
         }
+        view.updateRv(videoDevs);
     }
 
     public void queryDeviceInfo() {
@@ -201,7 +196,7 @@ public class MeetLiveVideoPresenter extends BasePresenter {
                     continue;
                 }
                 if (netstate == 1) {//在线
-                    if (Constant.isThisDevType(InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetProjective_VALUE,devcieid)) {//在线的投影机
+                    if (Constant.isThisDevType(InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetProjective_VALUE, devcieid)) {//在线的投影机
                         onLineProjectors.add(dev);
                     } else {
                         if (facestate == 1) {

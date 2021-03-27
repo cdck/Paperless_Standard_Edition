@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/dp_5"
+    android:orientation="horizontal">
+
+    <xlk.paperless.standard.ui.video.CustomVideoView
+        android:id="@+id/custom_video_view"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="4" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/dp_5"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_member"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/white" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_watch_video"
+                style="@style/btn_pressed_style"
+                android:layout_width="0dp"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_weight="1"
+                android:text="@string/watch_video" />
+
+            <Button
+                android:id="@+id/btn_stop_watch"
+                style="@style/btn_pressed_style"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/stop_watch" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_start_screen"
+                style="@style/btn_pressed_style"
+                android:layout_width="0dp"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_weight="1"
+                android:text="@string/screen_video" />
+
+            <Button
+                android:id="@+id/btn_end_screen"
+                style="@style/btn_pressed_style"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/End_screen" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_start_pro"
+                style="@style/btn_pressed_style"
+                android:layout_width="0dp"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_weight="1"
+                android:text="@string/pro_video" />
+
+            <Button
+                android:id="@+id/btn_end_pro"
+                style="@style/btn_pressed_style"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/End_projection" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -49,8 +49,13 @@ public class ToastUtil {
         show(applicationContext.getResources().getString(resid));
     }
 
+    public static void show(int resid, Object... values) {
+        show(applicationContext.getResources().getString(resid, values));
+    }
+
     /**
      * 平台登录验证返回 type=58
+     *
      * @param code 参见 InterfaceMacro.Pb_ValidateErrorCode
      */
     public static void errorToast(int code) {

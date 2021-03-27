@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -61,7 +61,7 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/f_bulletin_rv"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -90,7 +90,7 @@
         android:layout_marginStart="@dimen/dp_8"
         android:layout_marginEnd="32dp"
         android:padding="5dp"
-        android:background="@drawable/shape_edt"
+        android:background="@drawable/shape_edt_blue"
         android:lines="1"
         android:maxLength="30"
         tools:text="速度加快恢复可接受的浩丰科技收到回复"
@@ -119,7 +119,7 @@
         android:layout_marginBottom="@dimen/dp_8"
         android:padding="5dp"
         tools:text="速度加快恢复可接受的浩丰科技收到回复"
-        android:background="@drawable/shape_edt"
+        android:background="@drawable/shape_edt_blue"
         android:gravity="start|top"
         android:maxLength="106"
         app:layout_constraintVertical_weight="1"
@@ -179,4 +179,4 @@
         app:layout_constraintEnd_toEndOf="@+id/f_bulletin_content"
         app:layout_constraintStart_toEndOf="@+id/f_bulletin_launch" />
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

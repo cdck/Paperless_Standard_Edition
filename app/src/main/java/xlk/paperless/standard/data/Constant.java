@@ -10,6 +10,7 @@ import java.util.List;
 
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.util.FileUtil;
+import xlk.paperless.standard.view.MyApplication;
 
 import static xlk.paperless.standard.data.Values.hasAllPermissions;
 import static xlk.paperless.standard.data.Values.localPermission;
@@ -36,14 +37,43 @@ public class Constant {
     public static final String DIR_EXPORT = DIR_FILES + "导出文件/";
     public static final String DIR_CACHE = DIR_FILES + "临时文件/";
 
+    public static final String DIR_ARCHIVE_TEMP = DIR_FILES + "会议归档缓存目录/";
+    public static final String DIR_ARCHIVE_ZIP = DIR_FILES + "会议归档/";
+
     //图片名称和下载标识
 
-    public static final String MAIN_BG_PNG_TAG = "mian_bg";
-    public static final String MAIN_LOGO_PNG_TAG = "mian_logo";
+    /**
+     * 主界面背景图
+     */
+    public static final String MAIN_BG_PNG_TAG = "main_bg";
+    /**
+     * 主界面logo图标
+     */
+    public static final String MAIN_LOGO_PNG_TAG = "main_logo";
+    /**
+     * 会议界面背景图
+     */
     public static final String SUB_BG_PNG_TAG = "sub_bg";
+    /**
+     * 会议室背景图
+     */
     public static final String ROOM_BG_PNG_TAG = "room_bg";
+    /**
+     * 公告背景图
+     */
     public static final String NOTICE_BG_PNG_TAG = "notice_bg";
+    /**
+     * 公告logo图标
+     */
     public static final String NOTICE_LOGO_PNG_TAG = "notice_logo";
+    /**
+     * 投影界面背景图
+     */
+    public static final String PROJECTIVE_BG_PNG_TAG = "projective_bg";
+    /**
+     * 投影界面logo图标
+     */
+    public static final String PROJECTIVE_LOGO_PNG_TAG = "projective_logo";
 
     //下载标识
     /**
@@ -63,11 +93,65 @@ public class Constant {
      */
     public static final String DOWNLOAD_AGENDA_FILE = "download_agenda_file";
 
+    /**
+     * 后台下载批注文件
+     */
+    public static final String DOWNLOAD_ADMIN_ANNOTATION_FILE = "download_admin_annotation_file";
+    /**
+     * 下载桌牌背景图片
+     */
+    public static final String DOWNLOAD_TABLE_CARD_BG = "download_table_card_bg";
+    /**
+     * 下载标识：下载无进度通知
+     */
+    public static final String DOWNLOAD_NO_INFORM = "download_no_inform";
+
+
+    /**
+     * 归档文件时的下载标识
+     */
+    public static final String ARCHIVE_DOWNLOAD_FILE = "archive_download_file";
+    /**
+     * 归档议程文件下载标识
+     */
+    public static final String ARCHIVE_AGENDA_FILE = "archive_agenda_file";
+    /**
+     * 归档共享文件下载标识
+     */
+    public static final String ARCHIVE_SHARE_FILE = "archive_share_file";
+    /**
+     * 归档批注文件下载标识
+     */
+    public static final String ARCHIVE_ANNOTATION_FILE = "archive_annotation_file";
+    /**
+     * 归档会议资料下载标识
+     */
+    public static final String ARCHIVE_MEET_DATA_FILE = "archive_meet_data_file";
+
+
     //上传文件时的标识
 
     public static final String UPLOAD_CHOOSE_FILE = "upload_choose_file";
     public static final String UPLOAD_DRAW_PIC = "upload_draw_pic";
     public static final String UPLOAD_WPS_FILE = "upload_wps_file";
+    /**
+     * 上传背景图片时的标识
+     */
+    public static final String UPLOAD_BACKGROUND_IMAGE = "upload_background_image";
+    /**
+     * 上传桌牌背景图片时的标识
+     */
+    public static final String UPLOAD_TABLE_CARD_BACKGROUND_IMAGE = "upload_table_card_background_image";
+    /**
+     * 上传会议发布文件
+     */
+    public static final String UPLOAD_PUBLISH_FILE = "upload_publish_file";
+    /**
+     * 上传升级文件
+     */
+    public static final String UPLOAD_UPGRADE_FILE = "upload_upgrade_file";
+
+
 
     //Intent#putExtra的字符tag
 
@@ -124,6 +208,18 @@ public class Constant {
      * 登录时的密码
      */
     public static final String EXTRA_ADMIN_PASSWORD = "extra_admin_password";
+
+    //request_code
+
+    /**
+     * 管理界面中导入投票
+     */
+    public static final int REQUEST_CODE_IMPORT_VOTE = 1;
+    /**
+     * 管理界面导入选举
+     */
+    public static final int REQUEST_CODE_IMPORT_ELECTION = 2;
+
 
     //EventBus自定义发送的Type
 
@@ -205,6 +301,40 @@ public class Constant {
      * X5内核下加载完成
      */
     public static final int BUS_X5_INSTALL = BUS_BASE + 20;
+    /**
+     * 读取TXT文件，获取到议程内容
+     */
+    public static final int BUS_READ_AGENDA_TXT = BUS_BASE + 21;
+    /**
+     * 归档的议程文件下载完成
+     */
+    public static final int ARCHIVE_BUS_AGENDA_FILE = BUS_BASE + 22;
+    /**
+     * 归档操作下载的文件
+     */
+    public static final int ARCHIVE_BUS_DOWNLOAD_FILE = BUS_BASE + 23;
+    /**
+     * 桌牌背景图片下载完成
+     */
+    public static final int BUS_TABLE_CARD_BG = BUS_BASE + 24;
+    /**
+     * 投影界面背景图片下载完成
+     */
+    public static final int BUS_PROJECTIVE_BG = BUS_BASE + 25;
+    /**
+     * 投影界面logo图标下载完成
+     */
+    public static final int BUS_PROJECTIVE_LOGO = BUS_BASE + 26;
+    /**
+     * 会议发布文件上传完毕
+     */
+    public static final int BUS_UPLOAD_RELEASE_FILE_FINISH = BUS_BASE + 27;
+    /**
+     * 打开会议笔记
+     */
+    public static final int BUS_CHOOSE_NOTE_FILE = BUS_BASE + 28;
+    public static final int BUS_EXPORT_NOTE_CONTENT = BUS_BASE + 29;
+
 
     //会议功能码
 
@@ -549,7 +679,7 @@ public class Constant {
 //            return MAIN_TYPE_BITMASK | SUB_TYPE_BITMASK;
 //        }
         //音频
-        if (FileUtil.isVideoFile(path)) {
+        if (FileUtil.isAudioAndVideoFile(path)) {
             return MEDIA_FILE_TYPE_AUDIO | MEDIA_FILE_TYPE_PCM;
         }
 //        if (FileUtil.isVideoFile(path)) {
@@ -565,7 +695,7 @@ public class Constant {
 //            return MEDIA_FILE_TYPE_AUDIO | MEDIA_FILE_TYPE_MP4;
 //        }
         //视屏
-        if (FileUtil.isVideoFile(path)) {
+        if (FileUtil.isAudioAndVideoFile(path)) {
             return MEDIA_FILE_TYPE_VIDEO | MEDIA_FILE_TYPE_MKV;
         }
 //        if (FileUtil.isVideoFile(path)) {
@@ -688,4 +818,116 @@ public class Constant {
         return "";
     }
 
+    /**
+     * 获取参会人身份名称
+     *
+     * @param context 上下文
+     * @param role    身份代码  InterfaceMacro.Pb_MeetMemberRole
+     * @return 秘书、管理员...
+     */
+    public static String getMemberRoleName(Context context, int role) {
+        switch (role) {
+            case InterfaceMacro.Pb_MeetMemberRole.Pb_role_member_normal_VALUE:
+                return context.getString(R.string.member_role_ordinary);
+            case InterfaceMacro.Pb_MeetMemberRole.Pb_role_member_compere_VALUE:
+                return context.getString(R.string.member_role_host);
+            case InterfaceMacro.Pb_MeetMemberRole.Pb_role_member_secretary_VALUE:
+                return context.getString(R.string.member_role_secretary);
+            case InterfaceMacro.Pb_MeetMemberRole.Pb_role_admin_VALUE:
+                return context.getString(R.string.member_role_admin);
+            default:
+                return context.getString(R.string.none);
+        }
+    }
+
+    /**
+     * 获取会议状态
+     *
+     * @param state InterfaceMacro.Pb_MeetVoteStatus
+     * @return 未发起、已经结束、正在进行
+     */
+    public static String getVoteStateName(Context context, int state) {
+        switch (state) {
+            case InterfaceMacro.Pb_MeetVoteStatus.Pb_vote_voteing_VALUE:
+                return context.getString(R.string.state_ongoing);
+            case InterfaceMacro.Pb_MeetVoteStatus.Pb_vote_endvote_VALUE:
+                return context.getString(R.string.state_has_ended);
+            default:
+                return context.getString(R.string.state_not_initiated);
+        }
+    }
+
+    /**
+     * 获取投票类型
+     *
+     * @param type
+     * @return 多选、单选...
+     */
+    public static String getVoteType(Context context, int type) {
+        switch (type) {
+            case InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_SINGLE_VALUE:
+                return context.getString(R.string.type_single);
+            case InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_4_5_VALUE:
+                return context.getString(R.string.type_4_5);
+            case InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_3_5_VALUE:
+                return context.getString(R.string.type_3_5);
+            case InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_2_5_VALUE:
+                return context.getString(R.string.type_2_5);
+            case InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_2_3_VALUE:
+                return context.getString(R.string.type_2_3);
+            default:
+                return context.getString(R.string.type_multi);
+        }
+    }
+
+    /**
+     * 获取会议签到类型名称
+     *
+     * @param type InterfaceMacro.Pb_MeetSignType
+     */
+    public static String getMeetSignInTypeName(int type) {
+        switch (type) {
+            case InterfaceMacro.Pb_MeetSignType.Pb_signin_psw_VALUE:
+                return MyApplication.applicationContext.getString(R.string.personal_pwd_signin);
+            case InterfaceMacro.Pb_MeetSignType.Pb_signin_photo_VALUE:
+                return MyApplication.applicationContext.getString(R.string.handwriting_signin);
+            case InterfaceMacro.Pb_MeetSignType.Pb_signin_onepsw_VALUE:
+                return MyApplication.applicationContext.getString(R.string.meeting_pwd_signin);
+            default:
+                return MyApplication.applicationContext.getString(R.string.direct_signin);
+        }
+    }
+
+    /**
+     * 获取会议功能名称
+     *
+     * @param context 上下文
+     * @param funCode 会议功能码
+     */
+    public static String getFunctionString(Context context, int funCode) {
+        switch (funCode) {
+            case InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_AGENDA_BULLETIN_VALUE:
+                return context.getString(R.string.meeting_agenda);
+            case InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_MATERIAL_VALUE:
+                return context.getString(R.string.meeting_data);
+//            case InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_SHAREDFILE_VALUE:
+//                return context.getString(R.string.meeting_shared_file);
+            case InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_POSTIL_VALUE:
+                return context.getString(R.string.meeting_annotation_file);
+            case InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_MESSAGE_VALUE:
+                return context.getString(R.string.meeting_chat);
+            case InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_VIDEOSTREAM_VALUE:
+                return context.getString(R.string.meeting_live_video);
+            case InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_WHITEBOARD_VALUE:
+                return context.getString(R.string.meeting_art_board);
+            case InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_WEBBROWSER_VALUE:
+                return context.getString(R.string.meeting_web_browsing);
+//            case InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_VOTERESULT_VALUE:
+//                return context.getString(R.string.meeting_questionnaire);
+            case InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_SIGNINRESULT_VALUE:
+                return context.getString(R.string.meeting_sign_in_information);
+            default:
+                return context.getString(R.string.unrecognized);
+        }
+    }
 }

@@ -1,11 +1,11 @@
 package xlk.paperless.standard.adapter;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.mogujie.tt.protobuf.InterfaceVideo;
 
 import java.util.List;
@@ -45,7 +45,7 @@ public class MeetLiveVideoAdapter extends BaseQuickAdapter<VideoDev, BaseViewHol
             iv.setBackgroundResource(R.drawable.icon_video_n);
         }
         iv.setSelected(selected);
-        tv.setTextColor(selected ? mContext.getResources().getColor(R.color.white) : mContext.getResources().getColor(R.color.btn_choosed));
+        tv.setTextColor(selected ? getContext().getResources().getColor(R.color.white) : getContext().getResources().getColor(R.color.btn_choosed));
         helper.getView(R.id.i_m_v_ll).setSelected(selected);
     }
 
@@ -62,8 +62,8 @@ public class MeetLiveVideoAdapter extends BaseQuickAdapter<VideoDev, BaseViewHol
 
     public void notifySelect() {
         boolean has = false;
-        for (int i = 0; i < mData.size(); i++) {
-            InterfaceVideo.pbui_Item_MeetVideoDetailInfo videoDetailInfo = mData.get(i).getVideoDetailInfo();
+        for (int i = 0; i < getData().size(); i++) {
+            InterfaceVideo.pbui_Item_MeetVideoDetailInfo videoDetailInfo = getData().get(i).getVideoDetailInfo();
             if (videoDetailInfo.getDeviceid() == selectDevId && videoDetailInfo.getId() == selectId) {
                 has = true;
             }

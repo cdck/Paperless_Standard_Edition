@@ -6,19 +6,70 @@
     android:layout_margin="@dimen/dp_5"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_filter_current"
+            style="@style/btn_selected_style"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="@dimen/dp_5"
+            android:text="@string/current_meeting" />
+
+        <Button
+            android:id="@+id/btn_filter_history"
+            style="@style/btn_selected_style"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="@dimen/dp_5"
+            android:text="@string/history_meeting" />
+
+        <Button
+            android:id="@+id/btn_filter_template"
+            style="@style/btn_selected_style"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="@dimen/dp_5"
+            android:text="@string/template_meeting" />
+
+        <Button
+            android:id="@+id/btn_filter_all"
+            style="@style/btn_selected_style"
+            android:layout_width="wrap_content"
+            android:text="@string/all_meeting" />
+    </LinearLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dp_5"
+        android:layout_marginTop="@dimen/dp_5"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/edt_search_meeting"
-            android:layout_width="@dimen/dp_200"
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:src="@drawable/ic_search" />
+
+        <EditText
+            android:id="@+id/edt_search_meeting"
+            android:layout_width="@dimen/dp_250"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/iv_search"
             android:hint="@string/hint_Search_meetings" />
+
+        <ImageView
+            android:id="@+id/iv_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/edt_search_meeting"
+            android:src="@drawable/ic_clear" />
 
         <Button
             android:id="@+id/btn_switch_meeting"
@@ -38,11 +89,18 @@
             android:text="@string/copy_meeting" />
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv"
+    <include layout="@layout/item_admin_meeting" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_meeting"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:background="@color/white" />
+
+    <!--        </LinearLayout>-->
+
+    <!--    </HorizontalScrollView>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -65,11 +123,13 @@
 
             <EditText
                 android:id="@+id/edt_meet_name"
-                android:layout_width="@dimen/dp_150"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:background="@drawable/shape_edt_statue"
                 android:lines="1"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textSize="@dimen/sp_14" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -79,7 +139,7 @@
 
             <Spinner
                 android:id="@+id/sp_room"
-                android:layout_width="@dimen/dp_100"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <TextView
@@ -90,7 +150,7 @@
 
             <Spinner
                 android:id="@+id/sp_confidential"
-                android:layout_width="@dimen/dp_100"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:entries="@array/confidential_spinner" />
         </LinearLayout>
@@ -107,26 +167,15 @@
                 android:layout_width="@dimen/dp_100"
                 android:layout_height="wrap_content"
                 android:gravity="end"
-                android:text="@string/meeting_filter_" />
-
-            <Spinner
-                android:id="@+id/sp_meet_filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:entries="@array/meet_filter_spinner" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_10"
                 android:text="@string/start_time_" />
 
-
-            <EditText
+            <TextView
                 android:id="@+id/edt_start_time"
-                android:layout_width="@dimen/dp_100"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shape_edt_statue" />
+                android:layout_weight="1"
+                android:background="@drawable/shape_edt_black"
+                android:textSize="@dimen/sp_14" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -134,11 +183,13 @@
                 android:layout_marginStart="@dimen/dp_10"
                 android:text="@string/end_time_" />
 
-            <EditText
+            <TextView
                 android:id="@+id/edt_end_time"
-                android:layout_width="@dimen/dp_100"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shape_edt_statue" />
+                android:layout_weight="1"
+                android:background="@drawable/shape_edt_black"
+                android:textSize="@dimen/sp_14" />
         </LinearLayout>
 
         <LinearLayout
@@ -157,37 +208,52 @@
 
             <Spinner
                 android:id="@+id/sp_sign_in"
-                android:layout_width="@dimen/dp_200"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:entries="@array/singin_type_spinner" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="@dimen/dp_5"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
 
             <TextView
-                android:layout_width="@dimen/dp_100"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="end"
                 android:text="@string/meet_booker_" />
 
             <EditText
                 android:id="@+id/edt_meet_booker"
-                android:layout_width="@dimen/dp_150"
+                android:layout_width="@dimen/dp_200"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shape_edt_statue" />
+                android:background="@drawable/shape_edt_statue"
+                android:lines="1"
+                android:singleLine="true"
+                android:textSize="@dimen/sp_14" />
         </LinearLayout>
+
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_gravity="center_vertical"-->
+        <!--            android:layout_marginTop="@dimen/dp_5"-->
+        <!--            android:gravity="center_vertical"-->
+        <!--            android:orientation="horizontal">-->
+
+        <!--            <TextView-->
+        <!--                android:layout_width="@dimen/dp_100"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:gravity="end"-->
+        <!--                android:text="@string/meet_booker_" />-->
+
+        <!--            <EditText-->
+        <!--                android:id="@+id/edt_meet_booker"-->
+        <!--                android:layout_width="@dimen/dp_200"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:background="@drawable/shape_edt_statue"-->
+        <!--                android:textSize="@dimen/sp_14" />-->
+        <!--        </LinearLayout>-->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_5"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_5"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -221,6 +287,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_status"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -246,7 +313,14 @@
                     android:id="@+id/btn_pause_meet"
                     style="@style/btn_pressed_style"
                     android:layout_width="wrap_content"
+                    android:layout_marginEnd="@dimen/dp_2"
                     android:text="@string/pause_meet" />
+
+                <Button
+                    android:id="@+id/btn_keep_template"
+                    style="@style/btn_pressed_style"
+                    android:layout_width="wrap_content"
+                    android:text="@string/collection_template" />
             </LinearLayout>
         </LinearLayout>
 

@@ -87,7 +87,7 @@ typedef struct AVDownmixInfo {
 
     /**
      * Absolute scale factor representing the level at which the LFE data is
-     * mixed into LogUtil/R channels during downmixing.
+     * mixed into L/R channels during downmixing.
      */
     double lfe_mix_level;
 } AVDownmixInfo;

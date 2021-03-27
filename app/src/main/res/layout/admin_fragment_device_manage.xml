@@ -5,28 +5,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <HorizontalScrollView
+    <include layout="@layout/head_admin_device" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_device"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:fillViewport="true">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <include layout="@layout/head_admin_device" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_device"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-        </LinearLayout>
-
-    </HorizontalScrollView>
+        android:layout_weight="1" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -39,7 +24,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_10"
@@ -50,18 +35,18 @@
                 app:hintTextAppearance="?android:attr/textAppearanceSmall"
                 app:layout_constraintStart_toStartOf="parent">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tie_dev_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
                     android:hint="@string/device_name_"
                     android:imeOptions="actionNext"
                     android:inputType="text"
-                    android:ellipsize="end"
                     android:maxLines="1" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/dp_10"
@@ -71,19 +56,19 @@
                 app:hintTextAppearance="?android:attr/textAppearanceSmall"
                 app:layout_constraintStart_toStartOf="parent">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tie_dev_ip"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:digits="0123456789."
+                    android:ellipsize="end"
                     android:hint="@string/device_IP_"
                     android:imeOptions="actionNext"
-                    android:digits="0123456789."
                     android:inputType="text"
-                    android:ellipsize="end"
                     android:maxLines="1" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/dp_10"
@@ -93,18 +78,18 @@
                 app:hintTextAppearance="?android:attr/textAppearanceSmall"
                 app:layout_constraintStart_toStartOf="parent">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tie_lift_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/lift_id_"
-                    android:imeOptions="actionNext"
                     android:digits="0123456789"
                     android:ellipsize="end"
+                    android:hint="@string/lift_id_"
+                    android:imeOptions="actionNext"
                     android:maxLines="1" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/dp_10"
@@ -114,16 +99,16 @@
                 app:hintTextAppearance="?android:attr/textAppearanceSmall"
                 app:layout_constraintStart_toStartOf="parent">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tie_mike_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/mike_id_"
-                    android:imeOptions="actionNext"
                     android:digits="0123456789"
                     android:ellipsize="end"
+                    android:hint="@string/mike_id_"
+                    android:imeOptions="actionNext"
                     android:maxLines="1" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout

@@ -1,10 +1,12 @@
 package xlk.paperless.standard.view.fragment.other.screen;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.mogujie.tt.protobuf.InterfaceMacro;
 
 import java.util.ArrayList;
@@ -49,6 +52,7 @@ public class ScreenFragment extends BaseFragment implements IScreen, View.OnClic
     private WmScreenMemberAdapter sourceMemberAdapter;
     private WmScreenMemberAdapter targetMemberAdapter;
     private WmProjectorAdapter projectorAdapter;
+    public static boolean isAdminPage = false;
 
     @Nullable
     @Override
@@ -59,6 +63,11 @@ public class ScreenFragment extends BaseFragment implements IScreen, View.OnClic
         initAdapter();
         presenter.queryDeviceInfo();
         return inflate;
+    }
+
+    @Override
+    protected void reShow() {
+        presenter.queryDeviceInfo();
     }
 
     private void initView(View inflate) {
@@ -83,9 +92,9 @@ public class ScreenFragment extends BaseFragment implements IScreen, View.OnClic
         sourceMemberAdapter = new WmScreenMemberAdapter(R.layout.item_single_button, presenter.sourceMembers);
         f_screen_rv_source.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
         f_screen_rv_source.setAdapter(sourceMemberAdapter);
-        sourceMemberAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        sourceMemberAdapter.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 sourceMemberAdapter.clearChoose();
                 sourceMemberAdapter.choose(presenter.sourceMembers.get(position).getDeviceDetailInfo().getDevcieid());
             }
@@ -94,9 +103,9 @@ public class ScreenFragment extends BaseFragment implements IScreen, View.OnClic
         targetMemberAdapter = new WmScreenMemberAdapter(R.layout.item_single_button, presenter.targetMembers);
         f_screen_rv_target.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
         f_screen_rv_target.setAdapter(targetMemberAdapter);
-        targetMemberAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        targetMemberAdapter.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 targetMemberAdapter.choose(presenter.targetMembers.get(position).getDeviceDetailInfo().getDevcieid());
                 f_screen_target_cb.setChecked(targetMemberAdapter.isChooseAll());
             }
@@ -110,9 +119,9 @@ public class ScreenFragment extends BaseFragment implements IScreen, View.OnClic
         projectorAdapter = new WmProjectorAdapter(R.layout.item_single_button, presenter.onLineProjectors);
         f_screen_rv_pro.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         f_screen_rv_pro.setAdapter(projectorAdapter);
-        projectorAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        projectorAdapter.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 projectorAdapter.choose(presenter.onLineProjectors.get(position).getDevcieid());
                 f_screen_pro_cb.setChecked(projectorAdapter.isChooseAll());
             }
@@ -165,7 +174,8 @@ public class ScreenFragment extends BaseFragment implements IScreen, View.OnClic
             case R.id.f_screen_stop:
                 stopScreen();
                 break;
-            default:break;
+            default:
+                break;
         }
     }
 

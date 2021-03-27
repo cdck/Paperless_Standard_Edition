@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="role">
+        <item>无</item>
+        <item>一般参会人</item>
+        <item>主持人</item>
+        <item>秘书</item>
+        <item>管理员</item>
+    </string-array>
+
+    <string-array name="countdown_spinner">
+        <item>10秒</item>
+        <item>30秒</item>
+        <item>60秒</item>
+        <item>2分钟</item>
+        <item>5分钟</item>
+        <item>15分钟</item>
+        <item>30分钟</item>
+        <item>无</item>
+    </string-array>
+    <string-array name="type_spinner">
+        <item>多选</item>
+        <item>单选</item>
+        <item>5选4</item>
+        <item>5选3</item>
+        <item>5选2</item>
+        <item>3选2</item>
+    </string-array>
+    <string-array name="confidential_spinner">
+        <item>否</item>
+        <item>是</item>
+    </string-array>
+    <string-array name="show_hide">
+        <item>隐藏</item>
+        <item>显示</item>
+    </string-array>
+    <string-array name="meet_filter_spinner">
+        <item>全部会议</item>
+        <item>当前会议</item>
+        <item>未来会议</item>
+        <item>历史会议</item>
+    </string-array>
+    <string-array name="singin_type_spinner">
+        <item>直接签到</item>
+        <item>个人密码签到</item>
+        <item>拍照（手写）签到</item>
+        <item>会议密码签到</item>
+    </string-array>
+
+    <string-array name="table_card_title">
+        <item>会议名称</item>
+        <item>姓名</item>
+        <item>职务</item>
+        <item>单位</item>
+        <item>座位名</item>
+    </string-array>
+    <string-array name="table_card_font">
+        <item>仿宋</item>
+        <item>黑体</item>
+        <item>楷体</item>
+        <item>隶书</item>
+        <item>微软雅黑</item>
+        <item>小楷</item>
+    </string-array>
+    <string-array name="table_card_align">
+        <item>居中对齐</item>
+        <item>左对齐</item>
+        <item>右对齐</item>
+    </string-array>
+    <string-array name="coding_mode">
+        <item>高网速编码模式</item>
+        <item>高性能编码模式</item>
+        <item>低网速编码模式</item>
+    </string-array>
+    <string-array name="coding_size">
+        <item>1080P</item>
+        <item>720P</item>
+        <item>480P</item>
+        <item>320P</item>
+    </string-array>
+    <string-array name="stream_channel">
+        <item>0</item>
+        <item>1</item>
+        <item>不启用</item>
+    </string-array>
+</resources>

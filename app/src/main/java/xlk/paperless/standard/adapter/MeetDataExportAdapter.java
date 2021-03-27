@@ -1,11 +1,11 @@
 package xlk.paperless.standard.adapter;
 
 import android.content.res.Resources;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.mogujie.tt.protobuf.InterfaceFile;
 
 import java.util.ArrayList;
@@ -27,8 +27,8 @@ public class MeetDataExportAdapter extends BaseQuickAdapter<InterfaceFile.pbui_I
 
     public List<InterfaceFile.pbui_Item_MeetDirFileDetailInfo> getChoosedFile() {
         List<InterfaceFile.pbui_Item_MeetDirFileDetailInfo> files = new ArrayList<>();
-        for (int i = 0; i < mData.size(); i++) {
-            InterfaceFile.pbui_Item_MeetDirFileDetailInfo info = mData.get(i);
+        for (int i = 0; i < getData().size(); i++) {
+            InterfaceFile.pbui_Item_MeetDirFileDetailInfo info = getData().get(i);
             if (ids.contains(info.getMediaid())) {
                 files.add(info);
             }
@@ -44,7 +44,7 @@ public class MeetDataExportAdapter extends BaseQuickAdapter<InterfaceFile.pbui_I
                 .setText(R.id.i_m_d_export_name, item.getName().toStringUtf8())
                 .setText(R.id.i_m_d_export_id, String.valueOf(id));
         boolean contains = ids.contains(mediaid);
-        Resources resources = mContext.getResources();
+        Resources resources = getContext().getResources();
         TextView i_m_d_export_number = helper.getView(R.id.i_m_d_export_number);
         TextView i_m_d_export_name = helper.getView(R.id.i_m_d_export_name);
         TextView i_m_d_export_id = helper.getView(R.id.i_m_d_export_id);

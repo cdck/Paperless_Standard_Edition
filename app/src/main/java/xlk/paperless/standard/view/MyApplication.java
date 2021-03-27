@@ -7,10 +7,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
-import android.support.v4.content.LocalBroadcastManager;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.tencent.smtt.sdk.QbSdk;
 import com.tencent.smtt.sdk.TbsDownloader;
 import com.tencent.smtt.sdk.TbsListener;
@@ -28,7 +31,7 @@ import xlk.paperless.standard.helper.ActivityStackManager;
 import xlk.paperless.standard.helper.MyRejectedExecutionHandler;
 import xlk.paperless.standard.service.BackstageService;
 import xlk.paperless.standard.service.FabService;
-import xlk.paperless.standard.util.CrashHandler;
+import xlk.paperless.standard.helper.CrashHandler;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.view.fragment.agenda.MeetAgendaFragment;
 
@@ -71,7 +74,7 @@ public class MyApplication extends Application {
     /**
      * 是否可以登录到后台管理
      */
-    public static final boolean canLoginAdmin = false;
+    public static boolean canLoginAdmin = false;
 
     /**
      * 屏幕录制需要的信息
@@ -110,6 +113,12 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         applicationContext = getApplicationContext();
+
+        LogUtils.Config config = LogUtils.getConfig();
+        config.setLog2FileSwitch(true);
+        config.setDir(Constant.DIR_CRASH_LOG);
+        config.setSaveDays(7);
+
         CrashHandler crashHandler = CrashHandler.getInstance();
         crashHandler.init(this);
         ActivityStackManager.getInstance().init(this);
@@ -201,6 +210,8 @@ public class MyApplication extends Application {
             window.getDefaultDisplay().getMetrics(metric);
             Values.screen_width = metric.widthPixels;
             Values.screen_height = metric.heightPixels;
+            Values.half_width = metric.widthPixels / 2;
+            Values.half_height = metric.heightPixels / 2;
             LogUtil.e(TAG, "initScreenParam :  屏幕宽高 --> " + Values.screen_width + "," + Values.screen_height);
             width = metric.widthPixels;
             height = metric.heightPixels;

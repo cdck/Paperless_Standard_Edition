@@ -94,7 +94,7 @@ typedef struct AVBufferSrcParameters {
     /**
      * Video only, the frame rate of the input video. This field must only be
      * set to a non-zero value if input stream has a known constant framerate
-     * and should be left at its initialization value if the framerate is variable or
+     * and should be left at its initial value if the framerate is variable or
      * unknown.
      */
     AVRational frame_rate;

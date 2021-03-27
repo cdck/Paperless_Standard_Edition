@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:background="@color/black"
+        android:background="@color/light_black"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -108,7 +108,7 @@
             android:text="@string/out_open" />
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/f_dev_control_rv"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -179,7 +179,6 @@
         android:id="@+id/dev_control_open_document"
         style="@style/btn_pressed_style"
         android:layout_marginEnd="@dimen/dp_8"
-        android:visibility="invisible"
         android:text="@string/open_document_externally"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -206,7 +205,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_8"
-        android:visibility="invisible"
         android:text="@string/elevator"
         app:layout_constraintBaseline_toBaselineOf="@+id/dev_control_signin"
         app:layout_constraintStart_toStartOf="parent" />
@@ -217,9 +215,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_8"
         android:layout_marginTop="@dimen/dp_8"
-        android:visibility="invisible"
         android:text="@string/microphone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dev_control_elevator_cb" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/dev_control_signin"
+        app:layout_constraintStart_toEndOf="@+id/dev_control_elevator_cb" />
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

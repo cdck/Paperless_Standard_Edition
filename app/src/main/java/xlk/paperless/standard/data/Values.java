@@ -1,6 +1,6 @@
 package xlk.paperless.standard.data;
 
-import android.support.v4.content.LocalBroadcastManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.mogujie.tt.protobuf.InterfaceMember;
 
@@ -33,6 +33,14 @@ public class Values {
      * 屏幕宽高
      */
     public static int screen_width, screen_height;
+    /**
+     * 屏幕一半的宽高
+     */
+    public static int half_width, half_height;
+    /**
+     * 屏幕的三分之二
+     */
+    public static int width_2_3, height_2_3;
     /**
      * 像素
      */
@@ -98,4 +106,8 @@ public class Values {
      * 是否有新的播放
      */
     public static boolean haveNewPlayInform;
+    /**
+     * 通过WPS打开文档是否从管理员后台打开
+     */
+    public static boolean isFromAdminOpenWps;
 }

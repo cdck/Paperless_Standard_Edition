@@ -25,16 +25,14 @@
             android:layout_width="@dimen/dp_200"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/dp_5"
-            android:background="@drawable/shape_edt_vote"
-            android:ellipsize="end"
-            android:padding="@dimen/dp_2"
-            android:singleLine="true" />
+            android:background="@drawable/shape_edt_black"
+            style="@style/EditTextStyle" />
 
         <Button
             android:id="@+id/btn_url_submit"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:text="@string/submit" />
+            android:text="@string/set" />
 
         <Button
             android:id="@+id/btn_update"
@@ -64,10 +62,8 @@
             android:layout_width="@dimen/dp_200"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/dp_5"
-            android:background="@drawable/shape_edt_vote"
-            android:ellipsize="end"
-            android:padding="@dimen/dp_2"
-            android:singleLine="true"
+            android:background="@drawable/shape_edt_black"
+            style="@style/EditTextStyle"
             tools:text="九五软件科技有限公司" />
 
         <Button
@@ -98,10 +94,8 @@
             android:layout_width="@dimen/dp_200"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/dp_5"
-            android:background="@drawable/shape_edt_vote"
-            android:ellipsize="end"
-            android:padding="@dimen/dp_2"
-            android:singleLine="true"
+            android:background="@drawable/shape_edt_black"
+            style="@style/EditTextStyle"
             tools:text="九五软件科技有限公司" />
 
         <Button
@@ -163,8 +157,9 @@
                         android:id="@+id/edt_old_pwd"
                         android:layout_width="@dimen/dp_150"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/shape_edt_vote"
+                        android:background="@drawable/shape_edt_black"
                         android:ellipsize="end"
+                        android:inputType="textPassword"
                         android:singleLine="true" />
                 </LinearLayout>
 
@@ -187,8 +182,9 @@
                         android:id="@+id/edt_new_pwd"
                         android:layout_width="@dimen/dp_150"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/shape_edt_vote"
+                        android:background="@drawable/shape_edt_black"
                         android:ellipsize="end"
+                        android:inputType="textPassword"
                         android:singleLine="true" />
                 </LinearLayout>
 
@@ -211,8 +207,9 @@
                         android:id="@+id/edt_confirm_pwd"
                         android:layout_width="@dimen/dp_150"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/shape_edt_vote"
+                        android:background="@drawable/shape_edt_black"
                         android:ellipsize="end"
+                        android:inputType="textPassword"
                         android:singleLine="true" />
                 </LinearLayout>
 

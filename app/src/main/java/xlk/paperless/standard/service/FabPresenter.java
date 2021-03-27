@@ -51,8 +51,8 @@ public class FabPresenter extends BasePresenter {
     private final String TAG = "FabPresenter-->";
     private final IFab view;
     private final Context cxt;
-    public List<InterfaceDevice.pbui_Item_DeviceDetailInfo> deviceDetailInfos = new ArrayList<>();
     public List<InterfaceMember.pbui_Item_MemberDetailInfo> memberDetailInfos = new ArrayList<>();
+    public List<InterfaceDevice.pbui_Item_DeviceDetailInfo> deviceDetailInfos = new ArrayList<>();
     public List<InterfaceDevice.pbui_Item_DeviceDetailInfo> onLineProjectors = new ArrayList<>();
     public List<DevMember> onLineMember = new ArrayList<>();
     public List<InterfaceDevice.pbui_Item_DeviceResPlay> canJoinMembers = new ArrayList<>();
@@ -72,6 +72,11 @@ public class FabPresenter extends BasePresenter {
     @Override
     public void busEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
+            case Constant.BUS_EXPORT_NOTE_CONTENT:{
+                String content = (String) msg.getObjects()[0];
+                view.updateNoteContent(content);
+                break;
+            }
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_WHITEBOARD_VALUE:
                 if (msg.getMethod() == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_ASK_VALUE) {//收到打开白板通知
                     if (!isDrawing) {

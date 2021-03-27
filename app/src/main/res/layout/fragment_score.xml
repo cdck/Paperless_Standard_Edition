@@ -215,7 +215,7 @@
                     android:layout_weight="1"
                     android:descendantFocusability="blocksDescendants">
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/f_score_rv"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -296,7 +296,7 @@
                     android:layout_height="@dimen/dp_30"
                     android:layout_alignBaseline="@+id/f_score_describe"
                     android:layout_toEndOf="@+id/f_score_describe"
-                    android:background="@drawable/shape_edt"
+                    android:background="@drawable/shape_edt_blue"
                     android:ellipsize="end"
                     android:focusable="false"
                     android:gravity="start|top"
@@ -319,7 +319,7 @@
                     android:layout_height="@dimen/dp_30"
                     android:layout_alignBaseline="@+id/f_score_file"
                     android:layout_toEndOf="@+id/f_score_file"
-                    android:background="@drawable/shape_edt"
+                    android:background="@drawable/shape_edt_blue"
                     android:ellipsize="end"
                     android:focusable="false"
                     android:gravity="start|top"
@@ -643,7 +643,7 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/f_score_member_rv"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -654,7 +654,7 @@
                 android:id="@+id/f_score_opinion"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:background="@drawable/shape_edt"
+                android:background="@drawable/shape_edt_blue"
                 android:focusable="false"
                 android:gravity="start|top"
                 android:textSize="@dimen/sp_10"

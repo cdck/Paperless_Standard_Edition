@@ -6,9 +6,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Surface;
@@ -63,6 +63,7 @@ public class VideoActivity extends BaseActivity implements IVideo, WlOnGlSurface
     private RelativeLayout play_mp3_view;
     private ImageView opticalDisk, plectrum;
     private TextView video_top_title;
+
     private ObjectAnimator opticalDiskAnimator;
     private ObjectAnimator plectrumAnimator;
     private int playAction;
@@ -245,7 +246,7 @@ public class VideoActivity extends BaseActivity implements IVideo, WlOnGlSurface
 
     private void showScreenPop(int type) {
         View inflate = LayoutInflater.from(this).inflate(R.layout.wm_screen_view, null);
-        popScreen = PopUtil.create(inflate, Values.screen_width / 2, Values.screen_height / 2, true, video_view);
+        popScreen = PopUtil.create(inflate, video_view);
         CheckBox cb_mandatory = inflate.findViewById(R.id.wm_screen_mandatory);
         TextView title = inflate.findViewById(R.id.wm_screen_title);
         CheckBox cb_attendee = inflate.findViewById(R.id.wm_screen_cb_attendee);
@@ -286,7 +287,8 @@ public class VideoActivity extends BaseActivity implements IVideo, WlOnGlSurface
                 ToastUtil.show(R.string.err_target_NotNull);
             } else {
                 if (type == 1) {//发起
-                    int value = cb_mandatory.isChecked() ? InterfaceMacro.Pb_TriggerUsedef.Pb_EXCEC_USERDEF_FLAG_NOCREATEWINOPER_VALUE : 0;
+                    int value = cb_mandatory.isChecked() ?
+                            InterfaceMacro.Pb_TriggerUsedef.Pb_EXCEC_USERDEF_FLAG_NOCREATEWINOPER_VALUE : 0;
                     presenter.mediaPlayOperate(ids,value);
                 } else {//结束
                     presenter.stopPlay();

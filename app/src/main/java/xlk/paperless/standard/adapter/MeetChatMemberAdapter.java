@@ -1,9 +1,9 @@
 package xlk.paperless.standard.adapter;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.mogujie.tt.protobuf.InterfaceDevice;
 
 import java.util.ArrayList;
@@ -34,9 +34,9 @@ public class MeetChatMemberAdapter extends BaseQuickAdapter<DevMember, BaseViewH
 
     public void notifyCheck() {
         List<Integer> temps = new ArrayList<>();
-        for (int i = 0; i < mData.size(); i++) {
-            if (ids.contains(mData.get(i).getMemberDetailInfo().getPersonid())) {
-                temps.add(mData.get(i).getMemberDetailInfo().getPersonid());
+        for (int i = 0; i < getData().size(); i++) {
+            if (ids.contains(getData().get(i).getMemberDetailInfo().getPersonid())) {
+                temps.add(getData().get(i).getMemberDetailInfo().getPersonid());
             }
         }
         ids.clear();
@@ -46,8 +46,8 @@ public class MeetChatMemberAdapter extends BaseQuickAdapter<DevMember, BaseViewH
 
     public List<Integer> getChooseDevid() {
         List<Integer> temps = new ArrayList<>();
-        for (int i = 0; i < mData.size(); i++) {
-            InterfaceDevice.pbui_Item_DeviceDetailInfo deviceDetailInfo = mData.get(i).getDeviceDetailInfo();
+        for (int i = 0; i < getData().size(); i++) {
+            InterfaceDevice.pbui_Item_DeviceDetailInfo deviceDetailInfo = getData().get(i).getDeviceDetailInfo();
             if (ids.contains(deviceDetailInfo.getMemberid())) {
                 temps.add(deviceDetailInfo.getDevcieid());
             }
@@ -69,14 +69,14 @@ public class MeetChatMemberAdapter extends BaseQuickAdapter<DevMember, BaseViewH
     }
 
     public boolean isCheckAll() {
-        return mData.size() == ids.size();
+        return getData().size() == ids.size();
     }
 
     public void setCheckAll(boolean isAll) {
         ids.clear();
         if (isAll) {
-            for (int i = 0; i < mData.size(); i++) {
-                ids.add(mData.get(i).getMemberDetailInfo().getPersonid());
+            for (int i = 0; i < getData().size(); i++) {
+                ids.add(getData().get(i).getMemberDetailInfo().getPersonid());
             }
         }
         notifyDataSetChanged();

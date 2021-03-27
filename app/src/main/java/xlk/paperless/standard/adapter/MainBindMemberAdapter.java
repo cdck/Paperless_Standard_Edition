@@ -1,12 +1,11 @@
 package xlk.paperless.standard.adapter;
 
-import android.support.annotation.Nullable;
-import android.view.View;
+import androidx.annotation.Nullable;
+
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.mogujie.tt.protobuf.InterfaceMember;
 
 import java.util.List;
@@ -32,13 +31,13 @@ public class MainBindMemberAdapter extends BaseQuickAdapter<InterfaceMember.pbui
         boolean b = item.getPersonid() == chooseId;
 
         btn.setSelected(b);
-        btn.setTextColor(b ? mContext.getResources().getColor(R.color.btn_choosed_tv) : mContext.getResources().getColor(R.color.btn_normal_tv));
+        btn.setTextColor(b ? getContext().getResources().getColor(R.color.btn_choosed_tv) : getContext().getResources().getColor(R.color.btn_normal_tv));
     }
 
     public void notifyChoose() {
         boolean has = false;
-        for (int i = 0; i < mData.size(); i++) {
-            if (mData.get(i).getPersonid() == chooseId) {
+        for (int i = 0; i < getData().size(); i++) {
+            if (getData().get(i).getPersonid() == chooseId) {
                 has = true;
                 break;
             }

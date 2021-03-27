@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
 
+import com.alibaba.fastjson.JSON;
+import com.blankj.utilcode.util.JsonUtils;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mogujie.tt.protobuf.InterfaceBase;
@@ -23,6 +25,7 @@ import com.mogujie.tt.protobuf.InterfaceWhiteboard;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -36,6 +39,7 @@ import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.data.WpsModel;
 import xlk.paperless.standard.data.bean.ChatMessage;
+import xlk.paperless.standard.data.bean.JsonBean;
 import xlk.paperless.standard.receiver.WpsReceiver;
 import xlk.paperless.standard.util.AppUtil;
 import xlk.paperless.standard.util.FileUtil;
@@ -121,14 +125,16 @@ public class BackstageService extends Service {
                 break;
             //会议交流
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETIM_VALUE:
-                if (!chatIsShowing) {
-                    byte[] o1 = (byte[]) msg.getObjects()[0];
-                    InterfaceIM.pbui_Type_MeetIM meetIM = InterfaceIM.pbui_Type_MeetIM.parseFrom(o1);
-                    if (meetIM.getMsgtype() == 0) {
-                        //文本类消息
-                        int badgeNumber = mBadge.getBadgeNumber();
-                        MeetingActivity.chatMessages.add(new ChatMessage(0, meetIM));
-                        mBadge.setBadgeNumber(++badgeNumber);
+                if (mBadge != null) {
+                    if (!chatIsShowing) {
+                        byte[] o1 = (byte[]) msg.getObjects()[0];
+                        InterfaceIM.pbui_Type_MeetIM meetIM = InterfaceIM.pbui_Type_MeetIM.parseFrom(o1);
+                        if (meetIM.getMsgtype() == 0) {
+                            //文本类消息
+                            int badgeNumber = mBadge.getBadgeNumber();
+                            MeetingActivity.chatMessages.add(new ChatMessage(0, meetIM));
+                            mBadge.setBadgeNumber(++badgeNumber);
+                        }
                     }
                 }
                 break;
@@ -188,7 +194,103 @@ public class BackstageService extends Service {
 //                }
 //                previewImage(index);
 //                break;
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DBSERVERERROR_VALUE: {
+                byte[] bytes = (byte[]) msg.getObjects()[0];
+                InterfaceBase.pbui_Type_MeetDBServerOperError info = InterfaceBase.pbui_Type_MeetDBServerOperError.parseFrom(bytes);
+                int type = info.getType();
+                int method = info.getMethod();
+                // InterfaceMacro#Pb_DB_StatusCode
+                int status = info.getStatus();
+                LogUtil.i(TAG, "onEventMessage 数据后台回复的错误信息 type=" + type + ",method=" + method + ",status=" + status);
+                operateResult(type, method, status);
+                break;
+            }
+            //收到远程配置的通知
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEOPER_VALUE: {
+                byte[] bytes = (byte[]) msg.getObjects()[0];
+                InterfaceDevice.pbui_Type_MeetRemoteSetNotify info = InterfaceDevice.pbui_Type_MeetRemoteSetNotify.parseFrom(bytes);
+                int deviceid = info.getDeviceid();
+                String jsonText = info.getJsontext().toStringUtf8();
+                JsonBean jsonBean = JSON.parseObject(jsonText, JsonBean.class);
+                int restart = jsonBean.getRestart();
+                LogUtil.i(TAG, "onEventMessage restart=" + restart + ",deviceid=" + deviceid);
+                List<JsonBean.ItemBean> item = jsonBean.getItem();
+                for (int i = 0; i < item.size(); i++) {
+                    JsonBean.ItemBean itemBean = item.get(i);
+                    LogUtil.i(TAG, "收到远程配置的通知 section=" + itemBean.getSection() + ",key=" + itemBean.getKey() + ",value=" + itemBean.getValue());
+                }
+            }
             default:
+                break;
+        }
+    }
+
+    private void operateResult(int type, int method, int status) {
+        switch (status) {
+            //单条查询记录
+            case InterfaceMacro.Pb_DB_StatusCode.Pb_STATUS_SINGLERECORDD_VALUE: {
+                break;
+            }
+            //无返回记录
+            case InterfaceMacro.Pb_DB_StatusCode.Pb_STATUS_NORECORED_VALUE: {
+                break;
+            }
+            //成功
+            case InterfaceMacro.Pb_DB_StatusCode.Pb_STATUS_DONE_VALUE: {
+                if (type == InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_ADMIN_VALUE && method == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_LOGON_VALUE) {
+                    ToastUtil.show(R.string.modify_password_successful);
+                }
+                break;
+            }
+            //请求失败
+            case InterfaceMacro.Pb_DB_StatusCode.Pb_STATUS_FAIL_VALUE: {
+                if (type == InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_ADMIN_VALUE && method == InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_LOGON_VALUE) {
+                    ToastUtil.show(R.string.login_request_failed);
+                }
+                break;
+            }
+            //数据库异常
+            case InterfaceMacro.Pb_DB_StatusCode.Pb_STATUS_EXCPT_DB_VALUE: {
+                ToastUtil.show(R.string.database_exception);
+                break;
+            }
+            //服务器异常
+            case InterfaceMacro.Pb_DB_StatusCode.Pb_STATUS_EXCPT_SV_VALUE: {
+                ToastUtil.show(R.string.server_exception);
+                break;
+            }
+            //权限限制
+            case InterfaceMacro.Pb_DB_StatusCode.Pb_STATUS_ACCESSDENIED_VALUE: {
+                ToastUtil.show(R.string.no_permission);
+                break;
+            }
+            //密码错误
+            case InterfaceMacro.Pb_DB_StatusCode.Pb_STATUS_PSWFAILED_VALUE: {
+                ToastUtil.show(R.string.login_error_5);
+                break;
+            }
+            //创建会议有冲突
+            case InterfaceMacro.Pb_DB_StatusCode.Pb_STATUS_COLL_MEETING_VALUE: {
+                ToastUtil.show(R.string.conflict_creating_meeting);
+                break;
+            }
+            //参数错误，不应该为0
+            case InterfaceMacro.Pb_DB_StatusCode.Pb_STATUS_PARAMETERZERO_VALUE: {
+
+                break;
+            }
+            //不存在的数据
+            case InterfaceMacro.Pb_DB_StatusCode.Pb_STATUS_NOTEXIST_VALUE: {
+
+                break;
+            }
+            //协议版本不区配
+            case InterfaceMacro.Pb_DB_StatusCode.Pb_STATUS_PROTOLDISMATCH_VALUE: {
+
+                break;
+            }
+            default:
+                //多条查询记录
                 break;
         }
     }
@@ -294,6 +396,7 @@ public class BackstageService extends Service {
             if (createdeviceid != Values.localDeviceId) {
                 //是否是强制性播放
                 isMandatoryPlaying = isMandatory;
+                EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_MANDATORY).build());
             }
             Values.haveNewPlayInform = true;
 //            if (!isVideoPlaying) {
@@ -401,6 +504,10 @@ public class BackstageService extends Service {
         String filepath = pbui_type_downloadCb.getPathname().toStringUtf8();
         String userStr = pbui_type_downloadCb.getUserstr().toStringUtf8();
         String fileName = filepath.substring(filepath.lastIndexOf("/") + 1).toLowerCase();
+        if (userStr.equals(Constant.DOWNLOAD_NO_INFORM)) {
+            LogUtil.i(TAG, "downloadInform 无进度通知的下载 filepath=" + filepath);
+            return;
+        }
         if (nstate == InterfaceMacro.Pb_Download_State.Pb_STATE_MEDIA_DOWNLOAD_WORKING_VALUE) {
             //主页背景
             if (!userStr.equals(Constant.MAIN_BG_PNG_TAG)
@@ -412,12 +519,23 @@ public class BackstageService extends Service {
                     && !userStr.equals(Constant.NOTICE_BG_PNG_TAG)
                     //公告logo
                     && !userStr.equals(Constant.NOTICE_LOGO_PNG_TAG)
+                    //投影背景
+                    && !userStr.equals(Constant.PROJECTIVE_BG_PNG_TAG)
+                    //投影logo
+                    && !userStr.equals(Constant.PROJECTIVE_LOGO_PNG_TAG)
                     //会场底图
                     && !userStr.equals(Constant.ROOM_BG_PNG_TAG)
                     //下载议程文件
                     && !userStr.equals(Constant.DOWNLOAD_AGENDA_FILE)
+                    //归档文件
+                    && !userStr.equals(Constant.ARCHIVE_DOWNLOAD_FILE)
+                    //归档议程文件
+                    && !userStr.equals(Constant.ARCHIVE_AGENDA_FILE)
             ) {
                 ToastUtil.show(getString(R.string.file_downloaded_percent, fileName, progress + "%"));
+            }
+            if (userStr.equals(Constant.ARCHIVE_DOWNLOAD_FILE) || userStr.equals(Constant.ARCHIVE_AGENDA_FILE)) {
+                EventBus.getDefault().post(new EventMessage.Builder().type(Constant.ARCHIVE_BUS_DOWNLOAD_FILE).objects(mediaid, fileName, progress).build());
             }
         } else if (nstate == InterfaceMacro.Pb_Download_State.Pb_STATE_MEDIA_DOWNLOAD_EXIT_VALUE) {
             //下载退出---不管成功与否,下载结束最后一次的状态都是这个
@@ -430,22 +548,28 @@ public class BackstageService extends Service {
                 LogUtil.i(TAG, "BusEvent -->" + "下载完成：" + filepath);
                 switch (userStr) {
                     case Constant.MAIN_BG_PNG_TAG:
-                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_MAIN_BG).objects(filepath).build());
-                        break;
-                    case Constant.SUB_BG_PNG_TAG:
-                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_SUB_BG).objects(filepath).build());
-                        break;
-                    case Constant.NOTICE_BG_PNG_TAG:
-                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_NOTICE_BG).objects(filepath).build());
-                        break;
-                    case Constant.NOTICE_LOGO_PNG_TAG:
-                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_NOTICE_LOGO).objects(filepath).build());
+                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_MAIN_BG).objects(filepath, mediaid).build());
                         break;
                     case Constant.MAIN_LOGO_PNG_TAG:
-                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_MAIN_LOGO).objects(filepath).build());
+                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_MAIN_LOGO).objects(filepath, mediaid).build());
+                        break;
+                    case Constant.NOTICE_BG_PNG_TAG:
+                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_NOTICE_BG).objects(filepath, mediaid).build());
+                        break;
+                    case Constant.NOTICE_LOGO_PNG_TAG:
+                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_NOTICE_LOGO).objects(filepath, mediaid).build());
+                        break;
+                    case Constant.PROJECTIVE_BG_PNG_TAG:
+                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_PROJECTIVE_BG).objects(filepath, mediaid).build());
+                        break;
+                    case Constant.PROJECTIVE_LOGO_PNG_TAG:
+                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_PROJECTIVE_LOGO).objects(filepath, mediaid).build());
+                        break;
+                    case Constant.SUB_BG_PNG_TAG:
+                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_SUB_BG).objects(filepath, mediaid).build());
                         break;
                     case Constant.ROOM_BG_PNG_TAG:
-                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_ROOM_BG).objects(filepath).build());
+                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_ROOM_BG).objects(filepath, mediaid).build());
                         break;
                     //下载完成后需要打开的文件
                     case Constant.DOWNLOAD_SHOULD_OPEN_FILE:
@@ -453,13 +577,22 @@ public class BackstageService extends Service {
                         break;
                     //下载的议程文件
                     case Constant.DOWNLOAD_AGENDA_FILE:
-                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_AGENDA_FILE).objects(filepath).build());
+                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_AGENDA_FILE).objects(filepath, mediaid).build());
+                        break;
+                    //归档议程文件，下载成功
+                    case Constant.ARCHIVE_AGENDA_FILE:
+                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.ARCHIVE_BUS_AGENDA_FILE).objects(filepath, mediaid).build());
+                        break;
+                    //桌牌背景图片，下载完成
+                    case Constant.DOWNLOAD_TABLE_CARD_BG:
+                        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_TABLE_CARD_BG).objects(filepath, mediaid).build());
                         break;
                     default:
                         break;
                 }
             } else {
-                ToastUtil.show(R.string.err_download);
+                LogUtil.i(TAG, "downloadInform 没有找到文件 filepath=" + filepath);
+//                ToastUtil.show(R.string.err_download);
             }
         } else {
             LogUtil.i(TAG, "downloadInform 下载状态：" + nstate + ", 下载错误码：" + err + ", 文件名：" + fileName);
@@ -485,6 +618,9 @@ public class BackstageService extends Service {
             if (userStr.equals(Constant.UPLOAD_DRAW_PIC)) {
                 //从画板上传的图片
                 FileUtil.delFileByPath(pathName);
+            } else if (userStr.equals(Constant.UPLOAD_PUBLISH_FILE)) {
+                //上传会议发布文件完毕
+                EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_UPLOAD_RELEASE_FILE_FINISH).build());
             }
             ToastUtil.show(getString(R.string.upload_completed, fileName));
             LogUtil.i(TAG, "uploadInform -->" + fileName + " 上传完毕");

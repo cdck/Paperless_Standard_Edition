@@ -1,11 +1,11 @@
 package xlk.paperless.standard.view.fragment.live;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.PopupWindow;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.mogujie.tt.protobuf.InterfaceMacro;
 import com.mogujie.tt.protobuf.InterfaceVideo;
 
@@ -72,7 +73,8 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View inflate = inflater.inflate(R.layout.fragment_live_video, container, false);
         initView(inflate);
         presenter = new MeetLiveVideoPresenter(getContext(), this);
@@ -203,12 +205,13 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                     }
                 }
                 break;
+            default:break;
         }
     }
 
     private void showProPop(boolean isStart, VideoDev videoDev) {
         View inflate = LayoutInflater.from(getContext()).inflate(R.layout.wm_pro_view, null);
-        proPop = PopUtil.create(inflate, Values.screen_width / 2, Values.screen_height / 2, true, f_l_v_stop_pro);
+        proPop = PopUtil.create(inflate, f_l_v_stop_pro);
         CustomBaseViewHolder.ProViewHolder holder = new CustomBaseViewHolder.ProViewHolder(inflate);
         proHolderEvent(holder, isStart, videoDev);
     }
@@ -265,7 +268,7 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
 
     private void showScreenPop(boolean isStart, VideoDev videoDev) {
         View inflate = LayoutInflater.from(getContext()).inflate(R.layout.wm_screen_view, null);
-        screenPop = PopUtil.create(inflate, Values.screen_width / 2, Values.screen_height / 2, true, f_l_v_stop_pro);
+        screenPop = PopUtil.create(inflate, f_l_v_stop_pro);
         CustomBaseViewHolder.ScreenViewHolder holder = new CustomBaseViewHolder.ScreenViewHolder(inflate);
         holderEvent(holder, isStart, videoDev);
     }
@@ -350,9 +353,9 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
             adapter = new MeetLiveVideoAdapter(R.layout.item_meet_video, videoDevs);
             f_l_v_rv.setLayoutManager(new LinearLayoutManager(getContext()));
             f_l_v_rv.setAdapter(adapter);
-            adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            adapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
-                public void onItemClick(BaseQuickAdapter ad, View view, int position) {
+                public void onItemClick(@NonNull BaseQuickAdapter<?, ?> ad, @NonNull View view, int position) {
                     if (videoDevs.get(position).getDeviceDetailInfo().getNetstate() == 1) {
                         InterfaceVideo.pbui_Item_MeetVideoDetailInfo videoDetailInfo = videoDevs.get(position).getVideoDetailInfo();
                         LogUtil.d(TAG, "onItemClick --> Subid= " + videoDetailInfo.getSubid());
@@ -430,5 +433,4 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
         }
         super.onHiddenChanged(hidden);
     }
-
 }

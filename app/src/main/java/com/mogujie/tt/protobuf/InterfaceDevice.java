@@ -71,6 +71,10 @@ public final class InterfaceDevice {
 
 
     public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
       return value;
     }
 
@@ -221,6 +225,10 @@ public final class InterfaceDevice {
 
 
     public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
       return value;
     }
 
@@ -274,7 +282,7 @@ public final class InterfaceDevice {
      *设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     int getDeviceid();
 
@@ -283,7 +291,7 @@ public final class InterfaceDevice {
      *会议ID
      * </pre>
      *
-     * <code>optional fixed32 meetingid = 2;</code>
+     * <code>fixed32 meetingid = 2;</code>
      */
     int getMeetingid();
 
@@ -292,7 +300,7 @@ public final class InterfaceDevice {
      *人员ID
      * </pre>
      *
-     * <code>optional fixed32 memberid = 3;</code>
+     * <code>fixed32 memberid = 3;</code>
      */
     int getMemberid();
 
@@ -301,7 +309,7 @@ public final class InterfaceDevice {
      *会场ID
      * </pre>
      *
-     * <code>optional fixed32 roomid = 4;</code>
+     * <code>fixed32 roomid = 4;</code>
      */
     int getRoomid();
 
@@ -310,7 +318,7 @@ public final class InterfaceDevice {
      *签到类型
      * </pre>
      *
-     * <code>optional fixed32 signin_type = 5;</code>
+     * <code>fixed32 signin_type = 5;</code>
      */
     int getSigninType();
 
@@ -319,7 +327,7 @@ public final class InterfaceDevice {
      *会议名称
      * </pre>
      *
-     * <code>optional bytes meetingname = 6;</code>
+     * <code>bytes meetingname = 6;</code>
      */
     com.google.protobuf.ByteString getMeetingname();
 
@@ -328,7 +336,7 @@ public final class InterfaceDevice {
      *人员名称
      * </pre>
      *
-     * <code>optional bytes membername = 7;</code>
+     * <code>bytes membername = 7;</code>
      */
     com.google.protobuf.ByteString getMembername();
 
@@ -337,7 +345,7 @@ public final class InterfaceDevice {
      *公司名称
      * </pre>
      *
-     * <code>optional bytes company = 8;</code>
+     * <code>bytes company = 8;</code>
      */
     com.google.protobuf.ByteString getCompany();
 
@@ -346,7 +354,7 @@ public final class InterfaceDevice {
      *职位名称
      * </pre>
      *
-     * <code>optional bytes job = 9;</code>
+     * <code>bytes job = 9;</code>
      */
     com.google.protobuf.ByteString getJob();
   }
@@ -378,7 +386,7 @@ public final class InterfaceDevice {
      *设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     public int getDeviceid() {
       return deviceid_;
@@ -388,7 +396,7 @@ public final class InterfaceDevice {
      *设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     private void setDeviceid(int value) {
       
@@ -399,7 +407,7 @@ public final class InterfaceDevice {
      *设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     private void clearDeviceid() {
       
@@ -413,7 +421,7 @@ public final class InterfaceDevice {
      *会议ID
      * </pre>
      *
-     * <code>optional fixed32 meetingid = 2;</code>
+     * <code>fixed32 meetingid = 2;</code>
      */
     public int getMeetingid() {
       return meetingid_;
@@ -423,7 +431,7 @@ public final class InterfaceDevice {
      *会议ID
      * </pre>
      *
-     * <code>optional fixed32 meetingid = 2;</code>
+     * <code>fixed32 meetingid = 2;</code>
      */
     private void setMeetingid(int value) {
       
@@ -434,7 +442,7 @@ public final class InterfaceDevice {
      *会议ID
      * </pre>
      *
-     * <code>optional fixed32 meetingid = 2;</code>
+     * <code>fixed32 meetingid = 2;</code>
      */
     private void clearMeetingid() {
       
@@ -448,7 +456,7 @@ public final class InterfaceDevice {
      *人员ID
      * </pre>
      *
-     * <code>optional fixed32 memberid = 3;</code>
+     * <code>fixed32 memberid = 3;</code>
      */
     public int getMemberid() {
       return memberid_;
@@ -458,7 +466,7 @@ public final class InterfaceDevice {
      *人员ID
      * </pre>
      *
-     * <code>optional fixed32 memberid = 3;</code>
+     * <code>fixed32 memberid = 3;</code>
      */
     private void setMemberid(int value) {
       
@@ -469,7 +477,7 @@ public final class InterfaceDevice {
      *人员ID
      * </pre>
      *
-     * <code>optional fixed32 memberid = 3;</code>
+     * <code>fixed32 memberid = 3;</code>
      */
     private void clearMemberid() {
       
@@ -483,7 +491,7 @@ public final class InterfaceDevice {
      *会场ID
      * </pre>
      *
-     * <code>optional fixed32 roomid = 4;</code>
+     * <code>fixed32 roomid = 4;</code>
      */
     public int getRoomid() {
       return roomid_;
@@ -493,7 +501,7 @@ public final class InterfaceDevice {
      *会场ID
      * </pre>
      *
-     * <code>optional fixed32 roomid = 4;</code>
+     * <code>fixed32 roomid = 4;</code>
      */
     private void setRoomid(int value) {
       
@@ -504,7 +512,7 @@ public final class InterfaceDevice {
      *会场ID
      * </pre>
      *
-     * <code>optional fixed32 roomid = 4;</code>
+     * <code>fixed32 roomid = 4;</code>
      */
     private void clearRoomid() {
       
@@ -518,7 +526,7 @@ public final class InterfaceDevice {
      *签到类型
      * </pre>
      *
-     * <code>optional fixed32 signin_type = 5;</code>
+     * <code>fixed32 signin_type = 5;</code>
      */
     public int getSigninType() {
       return signinType_;
@@ -528,7 +536,7 @@ public final class InterfaceDevice {
      *签到类型
      * </pre>
      *
-     * <code>optional fixed32 signin_type = 5;</code>
+     * <code>fixed32 signin_type = 5;</code>
      */
     private void setSigninType(int value) {
       
@@ -539,7 +547,7 @@ public final class InterfaceDevice {
      *签到类型
      * </pre>
      *
-     * <code>optional fixed32 signin_type = 5;</code>
+     * <code>fixed32 signin_type = 5;</code>
      */
     private void clearSigninType() {
       
@@ -553,7 +561,7 @@ public final class InterfaceDevice {
      *会议名称
      * </pre>
      *
-     * <code>optional bytes meetingname = 6;</code>
+     * <code>bytes meetingname = 6;</code>
      */
     public com.google.protobuf.ByteString getMeetingname() {
       return meetingname_;
@@ -563,7 +571,7 @@ public final class InterfaceDevice {
      *会议名称
      * </pre>
      *
-     * <code>optional bytes meetingname = 6;</code>
+     * <code>bytes meetingname = 6;</code>
      */
     private void setMeetingname(com.google.protobuf.ByteString value) {
       if (value == null) {
@@ -577,7 +585,7 @@ public final class InterfaceDevice {
      *会议名称
      * </pre>
      *
-     * <code>optional bytes meetingname = 6;</code>
+     * <code>bytes meetingname = 6;</code>
      */
     private void clearMeetingname() {
       
@@ -591,7 +599,7 @@ public final class InterfaceDevice {
      *人员名称
      * </pre>
      *
-     * <code>optional bytes membername = 7;</code>
+     * <code>bytes membername = 7;</code>
      */
     public com.google.protobuf.ByteString getMembername() {
       return membername_;
@@ -601,7 +609,7 @@ public final class InterfaceDevice {
      *人员名称
      * </pre>
      *
-     * <code>optional bytes membername = 7;</code>
+     * <code>bytes membername = 7;</code>
      */
     private void setMembername(com.google.protobuf.ByteString value) {
       if (value == null) {
@@ -615,7 +623,7 @@ public final class InterfaceDevice {
      *人员名称
      * </pre>
      *
-     * <code>optional bytes membername = 7;</code>
+     * <code>bytes membername = 7;</code>
      */
     private void clearMembername() {
       
@@ -629,7 +637,7 @@ public final class InterfaceDevice {
      *公司名称
      * </pre>
      *
-     * <code>optional bytes company = 8;</code>
+     * <code>bytes company = 8;</code>
      */
     public com.google.protobuf.ByteString getCompany() {
       return company_;
@@ -639,7 +647,7 @@ public final class InterfaceDevice {
      *公司名称
      * </pre>
      *
-     * <code>optional bytes company = 8;</code>
+     * <code>bytes company = 8;</code>
      */
     private void setCompany(com.google.protobuf.ByteString value) {
       if (value == null) {
@@ -653,7 +661,7 @@ public final class InterfaceDevice {
      *公司名称
      * </pre>
      *
-     * <code>optional bytes company = 8;</code>
+     * <code>bytes company = 8;</code>
      */
     private void clearCompany() {
       
@@ -667,7 +675,7 @@ public final class InterfaceDevice {
      *职位名称
      * </pre>
      *
-     * <code>optional bytes job = 9;</code>
+     * <code>bytes job = 9;</code>
      */
     public com.google.protobuf.ByteString getJob() {
       return job_;
@@ -677,7 +685,7 @@ public final class InterfaceDevice {
      *职位名称
      * </pre>
      *
-     * <code>optional bytes job = 9;</code>
+     * <code>bytes job = 9;</code>
      */
     private void setJob(com.google.protobuf.ByteString value) {
       if (value == null) {
@@ -691,7 +699,7 @@ public final class InterfaceDevice {
      *职位名称
      * </pre>
      *
-     * <code>optional bytes job = 9;</code>
+     * <code>bytes job = 9;</code>
      */
     private void clearJob() {
       
@@ -774,6 +782,19 @@ public final class InterfaceDevice {
       return size;
     }
 
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceFaceShowDetail parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceFaceShowDetail parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceFaceShowDetail parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -868,7 +889,7 @@ public final class InterfaceDevice {
        *设备ID
        * </pre>
        *
-       * <code>optional fixed32 deviceid = 1;</code>
+       * <code>fixed32 deviceid = 1;</code>
        */
       public int getDeviceid() {
         return instance.getDeviceid();
@@ -878,7 +899,7 @@ public final class InterfaceDevice {
        *设备ID
        * </pre>
        *
-       * <code>optional fixed32 deviceid = 1;</code>
+       * <code>fixed32 deviceid = 1;</code>
        */
       public Builder setDeviceid(int value) {
         copyOnWrite();
@@ -890,7 +911,7 @@ public final class InterfaceDevice {
        *设备ID
        * </pre>
        *
-       * <code>optional fixed32 deviceid = 1;</code>
+       * <code>fixed32 deviceid = 1;</code>
        */
       public Builder clearDeviceid() {
         copyOnWrite();
@@ -903,7 +924,7 @@ public final class InterfaceDevice {
        *会议ID
        * </pre>
        *
-       * <code>optional fixed32 meetingid = 2;</code>
+       * <code>fixed32 meetingid = 2;</code>
        */
       public int getMeetingid() {
         return instance.getMeetingid();
@@ -913,7 +934,7 @@ public final class InterfaceDevice {
        *会议ID
        * </pre>
        *
-       * <code>optional fixed32 meetingid = 2;</code>
+       * <code>fixed32 meetingid = 2;</code>
        */
       public Builder setMeetingid(int value) {
         copyOnWrite();
@@ -925,7 +946,7 @@ public final class InterfaceDevice {
        *会议ID
        * </pre>
        *
-       * <code>optional fixed32 meetingid = 2;</code>
+       * <code>fixed32 meetingid = 2;</code>
        */
       public Builder clearMeetingid() {
         copyOnWrite();
@@ -938,7 +959,7 @@ public final class InterfaceDevice {
        *人员ID
        * </pre>
        *
-       * <code>optional fixed32 memberid = 3;</code>
+       * <code>fixed32 memberid = 3;</code>
        */
       public int getMemberid() {
         return instance.getMemberid();
@@ -948,7 +969,7 @@ public final class InterfaceDevice {
        *人员ID
        * </pre>
        *
-       * <code>optional fixed32 memberid = 3;</code>
+       * <code>fixed32 memberid = 3;</code>
        */
       public Builder setMemberid(int value) {
         copyOnWrite();
@@ -960,7 +981,7 @@ public final class InterfaceDevice {
        *人员ID
        * </pre>
        *
-       * <code>optional fixed32 memberid = 3;</code>
+       * <code>fixed32 memberid = 3;</code>
        */
       public Builder clearMemberid() {
         copyOnWrite();
@@ -973,7 +994,7 @@ public final class InterfaceDevice {
        *会场ID
        * </pre>
        *
-       * <code>optional fixed32 roomid = 4;</code>
+       * <code>fixed32 roomid = 4;</code>
        */
       public int getRoomid() {
         return instance.getRoomid();
@@ -983,7 +1004,7 @@ public final class InterfaceDevice {
        *会场ID
        * </pre>
        *
-       * <code>optional fixed32 roomid = 4;</code>
+       * <code>fixed32 roomid = 4;</code>
        */
       public Builder setRoomid(int value) {
         copyOnWrite();
@@ -995,7 +1016,7 @@ public final class InterfaceDevice {
        *会场ID
        * </pre>
        *
-       * <code>optional fixed32 roomid = 4;</code>
+       * <code>fixed32 roomid = 4;</code>
        */
       public Builder clearRoomid() {
         copyOnWrite();
@@ -1008,7 +1029,7 @@ public final class InterfaceDevice {
        *签到类型
        * </pre>
        *
-       * <code>optional fixed32 signin_type = 5;</code>
+       * <code>fixed32 signin_type = 5;</code>
        */
       public int getSigninType() {
         return instance.getSigninType();
@@ -1018,7 +1039,7 @@ public final class InterfaceDevice {
        *签到类型
        * </pre>
        *
-       * <code>optional fixed32 signin_type = 5;</code>
+       * <code>fixed32 signin_type = 5;</code>
        */
       public Builder setSigninType(int value) {
         copyOnWrite();
@@ -1030,7 +1051,7 @@ public final class InterfaceDevice {
        *签到类型
        * </pre>
        *
-       * <code>optional fixed32 signin_type = 5;</code>
+       * <code>fixed32 signin_type = 5;</code>
        */
       public Builder clearSigninType() {
         copyOnWrite();
@@ -1043,7 +1064,7 @@ public final class InterfaceDevice {
        *会议名称
        * </pre>
        *
-       * <code>optional bytes meetingname = 6;</code>
+       * <code>bytes meetingname = 6;</code>
        */
       public com.google.protobuf.ByteString getMeetingname() {
         return instance.getMeetingname();
@@ -1053,7 +1074,7 @@ public final class InterfaceDevice {
        *会议名称
        * </pre>
        *
-       * <code>optional bytes meetingname = 6;</code>
+       * <code>bytes meetingname = 6;</code>
        */
       public Builder setMeetingname(com.google.protobuf.ByteString value) {
         copyOnWrite();
@@ -1065,7 +1086,7 @@ public final class InterfaceDevice {
        *会议名称
        * </pre>
        *
-       * <code>optional bytes meetingname = 6;</code>
+       * <code>bytes meetingname = 6;</code>
        */
       public Builder clearMeetingname() {
         copyOnWrite();
@@ -1078,7 +1099,7 @@ public final class InterfaceDevice {
        *人员名称
        * </pre>
        *
-       * <code>optional bytes membername = 7;</code>
+       * <code>bytes membername = 7;</code>
        */
       public com.google.protobuf.ByteString getMembername() {
         return instance.getMembername();
@@ -1088,7 +1109,7 @@ public final class InterfaceDevice {
        *人员名称
        * </pre>
        *
-       * <code>optional bytes membername = 7;</code>
+       * <code>bytes membername = 7;</code>
        */
       public Builder setMembername(com.google.protobuf.ByteString value) {
         copyOnWrite();
@@ -1100,7 +1121,7 @@ public final class InterfaceDevice {
        *人员名称
        * </pre>
        *
-       * <code>optional bytes membername = 7;</code>
+       * <code>bytes membername = 7;</code>
        */
       public Builder clearMembername() {
         copyOnWrite();
@@ -1113,7 +1134,7 @@ public final class InterfaceDevice {
        *公司名称
        * </pre>
        *
-       * <code>optional bytes company = 8;</code>
+       * <code>bytes company = 8;</code>
        */
       public com.google.protobuf.ByteString getCompany() {
         return instance.getCompany();
@@ -1123,7 +1144,7 @@ public final class InterfaceDevice {
        *公司名称
        * </pre>
        *
-       * <code>optional bytes company = 8;</code>
+       * <code>bytes company = 8;</code>
        */
       public Builder setCompany(com.google.protobuf.ByteString value) {
         copyOnWrite();
@@ -1135,7 +1156,7 @@ public final class InterfaceDevice {
        *公司名称
        * </pre>
        *
-       * <code>optional bytes company = 8;</code>
+       * <code>bytes company = 8;</code>
        */
       public Builder clearCompany() {
         copyOnWrite();
@@ -1148,7 +1169,7 @@ public final class InterfaceDevice {
        *职位名称
        * </pre>
        *
-       * <code>optional bytes job = 9;</code>
+       * <code>bytes job = 9;</code>
        */
       public com.google.protobuf.ByteString getJob() {
         return instance.getJob();
@@ -1158,7 +1179,7 @@ public final class InterfaceDevice {
        *职位名称
        * </pre>
        *
-       * <code>optional bytes job = 9;</code>
+       * <code>bytes job = 9;</code>
        */
       public Builder setJob(com.google.protobuf.ByteString value) {
         copyOnWrite();
@@ -1170,7 +1191,7 @@ public final class InterfaceDevice {
        *职位名称
        * </pre>
        *
-       * <code>optional bytes job = 9;</code>
+       * <code>bytes job = 9;</code>
        */
       public Builder clearJob() {
         copyOnWrite();
@@ -1180,6 +1201,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_Type_DeviceFaceShowDetail)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -1297,6 +1319,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -1341,7 +1364,7 @@ public final class InterfaceDevice {
      *设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     int getDeviceid();
 
@@ -1350,7 +1373,7 @@ public final class InterfaceDevice {
      *寄存器id 0:net status  50:res status  63:base info
      * </pre>
      *
-     * <code>optional fixed32 attribid = 2;</code>
+     * <code>fixed32 attribid = 2;</code>
      */
     int getAttribid();
   }
@@ -1378,7 +1401,7 @@ public final class InterfaceDevice {
      *设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     public int getDeviceid() {
       return deviceid_;
@@ -1388,7 +1411,7 @@ public final class InterfaceDevice {
      *设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     private void setDeviceid(int value) {
       
@@ -1399,7 +1422,7 @@ public final class InterfaceDevice {
      *设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     private void clearDeviceid() {
       
@@ -1413,7 +1436,7 @@ public final class InterfaceDevice {
      *寄存器id 0:net status  50:res status  63:base info
      * </pre>
      *
-     * <code>optional fixed32 attribid = 2;</code>
+     * <code>fixed32 attribid = 2;</code>
      */
     public int getAttribid() {
       return attribid_;
@@ -1423,7 +1446,7 @@ public final class InterfaceDevice {
      *寄存器id 0:net status  50:res status  63:base info
      * </pre>
      *
-     * <code>optional fixed32 attribid = 2;</code>
+     * <code>fixed32 attribid = 2;</code>
      */
     private void setAttribid(int value) {
       
@@ -1434,7 +1457,7 @@ public final class InterfaceDevice {
      *寄存器id 0:net status  50:res status  63:base info
      * </pre>
      *
-     * <code>optional fixed32 attribid = 2;</code>
+     * <code>fixed32 attribid = 2;</code>
      */
     private void clearAttribid() {
       
@@ -1468,6 +1491,19 @@ public final class InterfaceDevice {
       return size;
     }
 
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDeviceBaseInfo parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDeviceBaseInfo parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDeviceBaseInfo parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -1562,7 +1598,7 @@ public final class InterfaceDevice {
        *设备ID
        * </pre>
        *
-       * <code>optional fixed32 deviceid = 1;</code>
+       * <code>fixed32 deviceid = 1;</code>
        */
       public int getDeviceid() {
         return instance.getDeviceid();
@@ -1572,7 +1608,7 @@ public final class InterfaceDevice {
        *设备ID
        * </pre>
        *
-       * <code>optional fixed32 deviceid = 1;</code>
+       * <code>fixed32 deviceid = 1;</code>
        */
       public Builder setDeviceid(int value) {
         copyOnWrite();
@@ -1584,7 +1620,7 @@ public final class InterfaceDevice {
        *设备ID
        * </pre>
        *
-       * <code>optional fixed32 deviceid = 1;</code>
+       * <code>fixed32 deviceid = 1;</code>
        */
       public Builder clearDeviceid() {
         copyOnWrite();
@@ -1597,7 +1633,7 @@ public final class InterfaceDevice {
        *寄存器id 0:net status  50:res status  63:base info
        * </pre>
        *
-       * <code>optional fixed32 attribid = 2;</code>
+       * <code>fixed32 attribid = 2;</code>
        */
       public int getAttribid() {
         return instance.getAttribid();
@@ -1607,7 +1643,7 @@ public final class InterfaceDevice {
        *寄存器id 0:net status  50:res status  63:base info
        * </pre>
        *
-       * <code>optional fixed32 attribid = 2;</code>
+       * <code>fixed32 attribid = 2;</code>
        */
       public Builder setAttribid(int value) {
         copyOnWrite();
@@ -1619,7 +1655,7 @@ public final class InterfaceDevice {
        *寄存器id 0:net status  50:res status  63:base info
        * </pre>
        *
-       * <code>optional fixed32 attribid = 2;</code>
+       * <code>fixed32 attribid = 2;</code>
        */
       public Builder clearAttribid() {
         copyOnWrite();
@@ -1629,6 +1665,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_Type_MeetDeviceBaseInfo)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -1697,6 +1734,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -1741,7 +1779,7 @@ public final class InterfaceDevice {
      *ip地址
      * </pre>
      *
-     * <code>optional bytes ip = 1;</code>
+     * <code>bytes ip = 1;</code>
      */
     com.google.protobuf.ByteString getIp();
 
@@ -1750,7 +1788,7 @@ public final class InterfaceDevice {
      *端口
      * </pre>
      *
-     * <code>optional fixed32 port = 2;</code>
+     * <code>fixed32 port = 2;</code>
      */
     int getPort();
   }
@@ -1776,7 +1814,7 @@ public final class InterfaceDevice {
      *ip地址
      * </pre>
      *
-     * <code>optional bytes ip = 1;</code>
+     * <code>bytes ip = 1;</code>
      */
     public com.google.protobuf.ByteString getIp() {
       return ip_;
@@ -1786,7 +1824,7 @@ public final class InterfaceDevice {
      *ip地址
      * </pre>
      *
-     * <code>optional bytes ip = 1;</code>
+     * <code>bytes ip = 1;</code>
      */
     private void setIp(com.google.protobuf.ByteString value) {
       if (value == null) {
@@ -1800,7 +1838,7 @@ public final class InterfaceDevice {
      *ip地址
      * </pre>
      *
-     * <code>optional bytes ip = 1;</code>
+     * <code>bytes ip = 1;</code>
      */
     private void clearIp() {
       
@@ -1814,7 +1852,7 @@ public final class InterfaceDevice {
      *端口
      * </pre>
      *
-     * <code>optional fixed32 port = 2;</code>
+     * <code>fixed32 port = 2;</code>
      */
     public int getPort() {
       return port_;
@@ -1824,7 +1862,7 @@ public final class InterfaceDevice {
      *端口
      * </pre>
      *
-     * <code>optional fixed32 port = 2;</code>
+     * <code>fixed32 port = 2;</code>
      */
     private void setPort(int value) {
       
@@ -1835,7 +1873,7 @@ public final class InterfaceDevice {
      *端口
      * </pre>
      *
-     * <code>optional fixed32 port = 2;</code>
+     * <code>fixed32 port = 2;</code>
      */
     private void clearPort() {
       
@@ -1869,6 +1907,19 @@ public final class InterfaceDevice {
       return size;
     }
 
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_SubItem_DeviceIpAddrInfo parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_SubItem_DeviceIpAddrInfo parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_SubItem_DeviceIpAddrInfo parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -1960,7 +2011,7 @@ public final class InterfaceDevice {
        *ip地址
        * </pre>
        *
-       * <code>optional bytes ip = 1;</code>
+       * <code>bytes ip = 1;</code>
        */
       public com.google.protobuf.ByteString getIp() {
         return instance.getIp();
@@ -1970,7 +2021,7 @@ public final class InterfaceDevice {
        *ip地址
        * </pre>
        *
-       * <code>optional bytes ip = 1;</code>
+       * <code>bytes ip = 1;</code>
        */
       public Builder setIp(com.google.protobuf.ByteString value) {
         copyOnWrite();
@@ -1982,7 +2033,7 @@ public final class InterfaceDevice {
        *ip地址
        * </pre>
        *
-       * <code>optional bytes ip = 1;</code>
+       * <code>bytes ip = 1;</code>
        */
       public Builder clearIp() {
         copyOnWrite();
@@ -1995,7 +2046,7 @@ public final class InterfaceDevice {
        *端口
        * </pre>
        *
-       * <code>optional fixed32 port = 2;</code>
+       * <code>fixed32 port = 2;</code>
        */
       public int getPort() {
         return instance.getPort();
@@ -2005,7 +2056,7 @@ public final class InterfaceDevice {
        *端口
        * </pre>
        *
-       * <code>optional fixed32 port = 2;</code>
+       * <code>fixed32 port = 2;</code>
        */
       public Builder setPort(int value) {
         copyOnWrite();
@@ -2017,7 +2068,7 @@ public final class InterfaceDevice {
        *端口
        * </pre>
        *
-       * <code>optional fixed32 port = 2;</code>
+       * <code>fixed32 port = 2;</code>
        */
       public Builder clearPort() {
         copyOnWrite();
@@ -2027,6 +2078,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_SubItem_DeviceIpAddrInfo)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -2095,6 +2147,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -2139,12 +2192,12 @@ public final class InterfaceDevice {
      *参见 Interface_Macro.proto Pb_DevicePlayStatus 定义
      * </pre>
      *
-     * <code>optional fixed32 playstatus = 1;</code>
+     * <code>fixed32 playstatus = 1;</code>
      */
     int getPlaystatus();
 
     /**
-     * <code>optional fixed32 triggerId = 2;</code>
+     * <code>fixed32 triggerId = 2;</code>
      */
     int getTriggerId();
 
@@ -2153,7 +2206,7 @@ public final class InterfaceDevice {
      *playstatus =Pb_DEVICE_PLAYSTATUS_MEDIA mediaid，Pb_DEVICE_PLAYSTATUS_STREAM设备ID，Pb_DEVICE_PLAYSTATUS_TALK对讲设备ID
      * </pre>
      *
-     * <code>optional fixed32 val = 3;</code>
+     * <code>fixed32 val = 3;</code>
      */
     int getVal();
 
@@ -2162,7 +2215,7 @@ public final class InterfaceDevice {
      *playstatus =Pb_DEVICE_PLAYSTATUS_MEDIA 0播放中,1暂停|Pb_DEVICE_PLAYSTATUS_STREAM,Pb_DEVICE_PLAYSTATUS_TALK子流通道
      * </pre>
      *
-     * <code>optional fixed32 val2 = 4;</code>
+     * <code>fixed32 val2 = 4;</code>
      */
     int getVal2();
 
@@ -2171,7 +2224,7 @@ public final class InterfaceDevice {
      *触发器创建设备ID
      * </pre>
      *
-     * <code>optional fixed32 createdeviceid = 5;</code>
+     * <code>fixed32 createdeviceid = 5;</code>
      */
     int getCreatedeviceid();
   }
@@ -2196,7 +2249,7 @@ public final class InterfaceDevice {
      *参见 Interface_Macro.proto Pb_DevicePlayStatus 定义
      * </pre>
      *
-     * <code>optional fixed32 playstatus = 1;</code>
+     * <code>fixed32 playstatus = 1;</code>
      */
     public int getPlaystatus() {
       return playstatus_;
@@ -2206,7 +2259,7 @@ public final class InterfaceDevice {
      *参见 Interface_Macro.proto Pb_DevicePlayStatus 定义
      * </pre>
      *
-     * <code>optional fixed32 playstatus = 1;</code>
+     * <code>fixed32 playstatus = 1;</code>
      */
     private void setPlaystatus(int value) {
       
@@ -2217,7 +2270,7 @@ public final class InterfaceDevice {
      *参见 Interface_Macro.proto Pb_DevicePlayStatus 定义
      * </pre>
      *
-     * <code>optional fixed32 playstatus = 1;</code>
+     * <code>fixed32 playstatus = 1;</code>
      */
     private void clearPlaystatus() {
       
@@ -2227,20 +2280,20 @@ public final class InterfaceDevice {
     public static final int TRIGGERID_FIELD_NUMBER = 2;
     private int triggerId_;
     /**
-     * <code>optional fixed32 triggerId = 2;</code>
+     * <code>fixed32 triggerId = 2;</code>
      */
     public int getTriggerId() {
       return triggerId_;
     }
     /**
-     * <code>optional fixed32 triggerId = 2;</code>
+     * <code>fixed32 triggerId = 2;</code>
      */
     private void setTriggerId(int value) {
       
       triggerId_ = value;
     }
     /**
-     * <code>optional fixed32 triggerId = 2;</code>
+     * <code>fixed32 triggerId = 2;</code>
      */
     private void clearTriggerId() {
       
@@ -2254,7 +2307,7 @@ public final class InterfaceDevice {
      *playstatus =Pb_DEVICE_PLAYSTATUS_MEDIA mediaid，Pb_DEVICE_PLAYSTATUS_STREAM设备ID，Pb_DEVICE_PLAYSTATUS_TALK对讲设备ID
      * </pre>
      *
-     * <code>optional fixed32 val = 3;</code>
+     * <code>fixed32 val = 3;</code>
      */
     public int getVal() {
       return val_;
@@ -2264,7 +2317,7 @@ public final class InterfaceDevice {
      *playstatus =Pb_DEVICE_PLAYSTATUS_MEDIA mediaid，Pb_DEVICE_PLAYSTATUS_STREAM设备ID，Pb_DEVICE_PLAYSTATUS_TALK对讲设备ID
      * </pre>
      *
-     * <code>optional fixed32 val = 3;</code>
+     * <code>fixed32 val = 3;</code>
      */
     private void setVal(int value) {
       
@@ -2275,7 +2328,7 @@ public final class InterfaceDevice {
      *playstatus =Pb_DEVICE_PLAYSTATUS_MEDIA mediaid，Pb_DEVICE_PLAYSTATUS_STREAM设备ID，Pb_DEVICE_PLAYSTATUS_TALK对讲设备ID
      * </pre>
      *
-     * <code>optional fixed32 val = 3;</code>
+     * <code>fixed32 val = 3;</code>
      */
     private void clearVal() {
       
@@ -2289,7 +2342,7 @@ public final class InterfaceDevice {
      *playstatus =Pb_DEVICE_PLAYSTATUS_MEDIA 0播放中,1暂停|Pb_DEVICE_PLAYSTATUS_STREAM,Pb_DEVICE_PLAYSTATUS_TALK子流通道
      * </pre>
      *
-     * <code>optional fixed32 val2 = 4;</code>
+     * <code>fixed32 val2 = 4;</code>
      */
     public int getVal2() {
       return val2_;
@@ -2299,7 +2352,7 @@ public final class InterfaceDevice {
      *playstatus =Pb_DEVICE_PLAYSTATUS_MEDIA 0播放中,1暂停|Pb_DEVICE_PLAYSTATUS_STREAM,Pb_DEVICE_PLAYSTATUS_TALK子流通道
      * </pre>
      *
-     * <code>optional fixed32 val2 = 4;</code>
+     * <code>fixed32 val2 = 4;</code>
      */
     private void setVal2(int value) {
       
@@ -2310,7 +2363,7 @@ public final class InterfaceDevice {
      *playstatus =Pb_DEVICE_PLAYSTATUS_MEDIA 0播放中,1暂停|Pb_DEVICE_PLAYSTATUS_STREAM,Pb_DEVICE_PLAYSTATUS_TALK子流通道
      * </pre>
      *
-     * <code>optional fixed32 val2 = 4;</code>
+     * <code>fixed32 val2 = 4;</code>
      */
     private void clearVal2() {
       
@@ -2324,7 +2377,7 @@ public final class InterfaceDevice {
      *触发器创建设备ID
      * </pre>
      *
-     * <code>optional fixed32 createdeviceid = 5;</code>
+     * <code>fixed32 createdeviceid = 5;</code>
      */
     public int getCreatedeviceid() {
       return createdeviceid_;
@@ -2334,7 +2387,7 @@ public final class InterfaceDevice {
      *触发器创建设备ID
      * </pre>
      *
-     * <code>optional fixed32 createdeviceid = 5;</code>
+     * <code>fixed32 createdeviceid = 5;</code>
      */
     private void setCreatedeviceid(int value) {
       
@@ -2345,7 +2398,7 @@ public final class InterfaceDevice {
      *触发器创建设备ID
      * </pre>
      *
-     * <code>optional fixed32 createdeviceid = 5;</code>
+     * <code>fixed32 createdeviceid = 5;</code>
      */
     private void clearCreatedeviceid() {
       
@@ -2400,6 +2453,19 @@ public final class InterfaceDevice {
       return size;
     }
 
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_SubItem_DeviceResInfo parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_SubItem_DeviceResInfo parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_SubItem_DeviceResInfo parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -2491,7 +2557,7 @@ public final class InterfaceDevice {
        *参见 Interface_Macro.proto Pb_DevicePlayStatus 定义
        * </pre>
        *
-       * <code>optional fixed32 playstatus = 1;</code>
+       * <code>fixed32 playstatus = 1;</code>
        */
       public int getPlaystatus() {
         return instance.getPlaystatus();
@@ -2501,7 +2567,7 @@ public final class InterfaceDevice {
        *参见 Interface_Macro.proto Pb_DevicePlayStatus 定义
        * </pre>
        *
-       * <code>optional fixed32 playstatus = 1;</code>
+       * <code>fixed32 playstatus = 1;</code>
        */
       public Builder setPlaystatus(int value) {
         copyOnWrite();
@@ -2513,7 +2579,7 @@ public final class InterfaceDevice {
        *参见 Interface_Macro.proto Pb_DevicePlayStatus 定义
        * </pre>
        *
-       * <code>optional fixed32 playstatus = 1;</code>
+       * <code>fixed32 playstatus = 1;</code>
        */
       public Builder clearPlaystatus() {
         copyOnWrite();
@@ -2522,13 +2588,13 @@ public final class InterfaceDevice {
       }
 
       /**
-       * <code>optional fixed32 triggerId = 2;</code>
+       * <code>fixed32 triggerId = 2;</code>
        */
       public int getTriggerId() {
         return instance.getTriggerId();
       }
       /**
-       * <code>optional fixed32 triggerId = 2;</code>
+       * <code>fixed32 triggerId = 2;</code>
        */
       public Builder setTriggerId(int value) {
         copyOnWrite();
@@ -2536,7 +2602,7 @@ public final class InterfaceDevice {
         return this;
       }
       /**
-       * <code>optional fixed32 triggerId = 2;</code>
+       * <code>fixed32 triggerId = 2;</code>
        */
       public Builder clearTriggerId() {
         copyOnWrite();
@@ -2549,7 +2615,7 @@ public final class InterfaceDevice {
        *playstatus =Pb_DEVICE_PLAYSTATUS_MEDIA mediaid，Pb_DEVICE_PLAYSTATUS_STREAM设备ID，Pb_DEVICE_PLAYSTATUS_TALK对讲设备ID
        * </pre>
        *
-       * <code>optional fixed32 val = 3;</code>
+       * <code>fixed32 val = 3;</code>
        */
       public int getVal() {
         return instance.getVal();
@@ -2559,7 +2625,7 @@ public final class InterfaceDevice {
        *playstatus =Pb_DEVICE_PLAYSTATUS_MEDIA mediaid，Pb_DEVICE_PLAYSTATUS_STREAM设备ID，Pb_DEVICE_PLAYSTATUS_TALK对讲设备ID
        * </pre>
        *
-       * <code>optional fixed32 val = 3;</code>
+       * <code>fixed32 val = 3;</code>
        */
       public Builder setVal(int value) {
         copyOnWrite();
@@ -2571,7 +2637,7 @@ public final class InterfaceDevice {
        *playstatus =Pb_DEVICE_PLAYSTATUS_MEDIA mediaid，Pb_DEVICE_PLAYSTATUS_STREAM设备ID，Pb_DEVICE_PLAYSTATUS_TALK对讲设备ID
        * </pre>
        *
-       * <code>optional fixed32 val = 3;</code>
+       * <code>fixed32 val = 3;</code>
        */
       public Builder clearVal() {
         copyOnWrite();
@@ -2584,7 +2650,7 @@ public final class InterfaceDevice {
        *playstatus =Pb_DEVICE_PLAYSTATUS_MEDIA 0播放中,1暂停|Pb_DEVICE_PLAYSTATUS_STREAM,Pb_DEVICE_PLAYSTATUS_TALK子流通道
        * </pre>
        *
-       * <code>optional fixed32 val2 = 4;</code>
+       * <code>fixed32 val2 = 4;</code>
        */
       public int getVal2() {
         return instance.getVal2();
@@ -2594,7 +2660,7 @@ public final class InterfaceDevice {
        *playstatus =Pb_DEVICE_PLAYSTATUS_MEDIA 0播放中,1暂停|Pb_DEVICE_PLAYSTATUS_STREAM,Pb_DEVICE_PLAYSTATUS_TALK子流通道
        * </pre>
        *
-       * <code>optional fixed32 val2 = 4;</code>
+       * <code>fixed32 val2 = 4;</code>
        */
       public Builder setVal2(int value) {
         copyOnWrite();
@@ -2606,7 +2672,7 @@ public final class InterfaceDevice {
        *playstatus =Pb_DEVICE_PLAYSTATUS_MEDIA 0播放中,1暂停|Pb_DEVICE_PLAYSTATUS_STREAM,Pb_DEVICE_PLAYSTATUS_TALK子流通道
        * </pre>
        *
-       * <code>optional fixed32 val2 = 4;</code>
+       * <code>fixed32 val2 = 4;</code>
        */
       public Builder clearVal2() {
         copyOnWrite();
@@ -2619,7 +2685,7 @@ public final class InterfaceDevice {
        *触发器创建设备ID
        * </pre>
        *
-       * <code>optional fixed32 createdeviceid = 5;</code>
+       * <code>fixed32 createdeviceid = 5;</code>
        */
       public int getCreatedeviceid() {
         return instance.getCreatedeviceid();
@@ -2629,7 +2695,7 @@ public final class InterfaceDevice {
        *触发器创建设备ID
        * </pre>
        *
-       * <code>optional fixed32 createdeviceid = 5;</code>
+       * <code>fixed32 createdeviceid = 5;</code>
        */
       public Builder setCreatedeviceid(int value) {
         copyOnWrite();
@@ -2641,7 +2707,7 @@ public final class InterfaceDevice {
        *触发器创建设备ID
        * </pre>
        *
-       * <code>optional fixed32 createdeviceid = 5;</code>
+       * <code>fixed32 createdeviceid = 5;</code>
        */
       public Builder clearCreatedeviceid() {
         copyOnWrite();
@@ -2651,6 +2717,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_SubItem_DeviceResInfo)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -2740,6 +2807,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -2780,12 +2848,12 @@ public final class InterfaceDevice {
       com.google.protobuf.MessageLiteOrBuilder {
 
     /**
-     * <code>optional fixed32 devcieid = 1;</code>
+     * <code>fixed32 devcieid = 1;</code>
      */
     int getDevcieid();
 
     /**
-     * <code>optional bytes devname = 2;</code>
+     * <code>bytes devname = 2;</code>
      */
     com.google.protobuf.ByteString getDevname();
 
@@ -2816,7 +2884,7 @@ public final class InterfaceDevice {
     int getIpinfoCount();
 
     /**
-     * <code>optional fixed32 netstate = 4;</code>
+     * <code>fixed32 netstate = 4;</code>
      */
     int getNetstate();
 
@@ -2824,7 +2892,7 @@ public final class InterfaceDevice {
      * <pre>
      * </pre>
      *
-     * <code>optional fixed32 hardversion = 5;</code>
+     * <code>fixed32 hardversion = 5;</code>
      */
     int getHardversion();
 
@@ -2832,7 +2900,7 @@ public final class InterfaceDevice {
      * <pre>
      * </pre>
      *
-     * <code>optional fixed32 softversion = 6;</code>
+     * <code>fixed32 softversion = 6;</code>
      */
     int getSoftversion();
 
@@ -2867,7 +2935,7 @@ public final class InterfaceDevice {
      *界面状态 参见MemState_MainFace 定义
      * </pre>
      *
-     * <code>optional fixed32 facestate = 8;</code>
+     * <code>fixed32 facestate = 8;</code>
      */
     int getFacestate();
 
@@ -2876,7 +2944,7 @@ public final class InterfaceDevice {
      *当前人员
      * </pre>
      *
-     * <code>optional fixed32 memberid = 9;</code>
+     * <code>fixed32 memberid = 9;</code>
      */
     int getMemberid();
 
@@ -2885,7 +2953,7 @@ public final class InterfaceDevice {
      *当前会议
      * </pre>
      *
-     * <code>optional fixed32 meetingid = 10;</code>
+     * <code>fixed32 meetingid = 10;</code>
      */
     int getMeetingid();
 
@@ -2894,7 +2962,7 @@ public final class InterfaceDevice {
      *升降话筒组ID
      * </pre>
      *
-     * <code>optional fixed32 liftgroupres0 = 11;</code>
+     * <code>fixed32 liftgroupres0 = 11;</code>
      */
     int getLiftgroupres0();
 
@@ -2903,7 +2971,7 @@ public final class InterfaceDevice {
      *升降话筒组ID
      * </pre>
      *
-     * <code>optional fixed32 liftgroupres1 = 12;</code>
+     * <code>fixed32 liftgroupres1 = 12;</code>
      */
     int getLiftgroupres1();
 
@@ -2912,7 +2980,7 @@ public final class InterfaceDevice {
      *参见 Interface_Macro.proto Pb_MeetDeviceFlag 定义
      * </pre>
      *
-     * <code>optional fixed32 deviceflag = 13;</code>
+     * <code>fixed32 deviceflag = 13;</code>
      */
     int getDeviceflag();
   }
@@ -2937,20 +3005,20 @@ public final class InterfaceDevice {
     public static final int DEVCIEID_FIELD_NUMBER = 1;
     private int devcieid_;
     /**
-     * <code>optional fixed32 devcieid = 1;</code>
+     * <code>fixed32 devcieid = 1;</code>
      */
     public int getDevcieid() {
       return devcieid_;
     }
     /**
-     * <code>optional fixed32 devcieid = 1;</code>
+     * <code>fixed32 devcieid = 1;</code>
      */
     private void setDevcieid(int value) {
       
       devcieid_ = value;
     }
     /**
-     * <code>optional fixed32 devcieid = 1;</code>
+     * <code>fixed32 devcieid = 1;</code>
      */
     private void clearDevcieid() {
       
@@ -2960,13 +3028,13 @@ public final class InterfaceDevice {
     public static final int DEVNAME_FIELD_NUMBER = 2;
     private com.google.protobuf.ByteString devname_;
     /**
-     * <code>optional bytes devname = 2;</code>
+     * <code>bytes devname = 2;</code>
      */
     public com.google.protobuf.ByteString getDevname() {
       return devname_;
     }
     /**
-     * <code>optional bytes devname = 2;</code>
+     * <code>bytes devname = 2;</code>
      */
     private void setDevname(com.google.protobuf.ByteString value) {
       if (value == null) {
@@ -2976,7 +3044,7 @@ public final class InterfaceDevice {
       devname_ = value;
     }
     /**
-     * <code>optional bytes devname = 2;</code>
+     * <code>bytes devname = 2;</code>
      */
     private void clearDevname() {
       
@@ -3162,20 +3230,20 @@ public final class InterfaceDevice {
     public static final int NETSTATE_FIELD_NUMBER = 4;
     private int netstate_;
     /**
-     * <code>optional fixed32 netstate = 4;</code>
+     * <code>fixed32 netstate = 4;</code>
      */
     public int getNetstate() {
       return netstate_;
     }
     /**
-     * <code>optional fixed32 netstate = 4;</code>
+     * <code>fixed32 netstate = 4;</code>
      */
     private void setNetstate(int value) {
       
       netstate_ = value;
     }
     /**
-     * <code>optional fixed32 netstate = 4;</code>
+     * <code>fixed32 netstate = 4;</code>
      */
     private void clearNetstate() {
       
@@ -3188,7 +3256,7 @@ public final class InterfaceDevice {
      * <pre>
      * </pre>
      *
-     * <code>optional fixed32 hardversion = 5;</code>
+     * <code>fixed32 hardversion = 5;</code>
      */
     public int getHardversion() {
       return hardversion_;
@@ -3197,7 +3265,7 @@ public final class InterfaceDevice {
      * <pre>
      * </pre>
      *
-     * <code>optional fixed32 hardversion = 5;</code>
+     * <code>fixed32 hardversion = 5;</code>
      */
     private void setHardversion(int value) {
       
@@ -3207,7 +3275,7 @@ public final class InterfaceDevice {
      * <pre>
      * </pre>
      *
-     * <code>optional fixed32 hardversion = 5;</code>
+     * <code>fixed32 hardversion = 5;</code>
      */
     private void clearHardversion() {
       
@@ -3220,7 +3288,7 @@ public final class InterfaceDevice {
      * <pre>
      * </pre>
      *
-     * <code>optional fixed32 softversion = 6;</code>
+     * <code>fixed32 softversion = 6;</code>
      */
     public int getSoftversion() {
       return softversion_;
@@ -3229,7 +3297,7 @@ public final class InterfaceDevice {
      * <pre>
      * </pre>
      *
-     * <code>optional fixed32 softversion = 6;</code>
+     * <code>fixed32 softversion = 6;</code>
      */
     private void setSoftversion(int value) {
       
@@ -3239,7 +3307,7 @@ public final class InterfaceDevice {
      * <pre>
      * </pre>
      *
-     * <code>optional fixed32 softversion = 6;</code>
+     * <code>fixed32 softversion = 6;</code>
      */
     private void clearSoftversion() {
       
@@ -3429,7 +3497,7 @@ public final class InterfaceDevice {
      *界面状态 参见MemState_MainFace 定义
      * </pre>
      *
-     * <code>optional fixed32 facestate = 8;</code>
+     * <code>fixed32 facestate = 8;</code>
      */
     public int getFacestate() {
       return facestate_;
@@ -3439,7 +3507,7 @@ public final class InterfaceDevice {
      *界面状态 参见MemState_MainFace 定义
      * </pre>
      *
-     * <code>optional fixed32 facestate = 8;</code>
+     * <code>fixed32 facestate = 8;</code>
      */
     private void setFacestate(int value) {
       
@@ -3450,7 +3518,7 @@ public final class InterfaceDevice {
      *界面状态 参见MemState_MainFace 定义
      * </pre>
      *
-     * <code>optional fixed32 facestate = 8;</code>
+     * <code>fixed32 facestate = 8;</code>
      */
     private void clearFacestate() {
       
@@ -3464,7 +3532,7 @@ public final class InterfaceDevice {
      *当前人员
      * </pre>
      *
-     * <code>optional fixed32 memberid = 9;</code>
+     * <code>fixed32 memberid = 9;</code>
      */
     public int getMemberid() {
       return memberid_;
@@ -3474,7 +3542,7 @@ public final class InterfaceDevice {
      *当前人员
      * </pre>
      *
-     * <code>optional fixed32 memberid = 9;</code>
+     * <code>fixed32 memberid = 9;</code>
      */
     private void setMemberid(int value) {
       
@@ -3485,7 +3553,7 @@ public final class InterfaceDevice {
      *当前人员
      * </pre>
      *
-     * <code>optional fixed32 memberid = 9;</code>
+     * <code>fixed32 memberid = 9;</code>
      */
     private void clearMemberid() {
       
@@ -3499,7 +3567,7 @@ public final class InterfaceDevice {
      *当前会议
      * </pre>
      *
-     * <code>optional fixed32 meetingid = 10;</code>
+     * <code>fixed32 meetingid = 10;</code>
      */
     public int getMeetingid() {
       return meetingid_;
@@ -3509,7 +3577,7 @@ public final class InterfaceDevice {
      *当前会议
      * </pre>
      *
-     * <code>optional fixed32 meetingid = 10;</code>
+     * <code>fixed32 meetingid = 10;</code>
      */
     private void setMeetingid(int value) {
       
@@ -3520,7 +3588,7 @@ public final class InterfaceDevice {
      *当前会议
      * </pre>
      *
-     * <code>optional fixed32 meetingid = 10;</code>
+     * <code>fixed32 meetingid = 10;</code>
      */
     private void clearMeetingid() {
       
@@ -3534,7 +3602,7 @@ public final class InterfaceDevice {
      *升降话筒组ID
      * </pre>
      *
-     * <code>optional fixed32 liftgroupres0 = 11;</code>
+     * <code>fixed32 liftgroupres0 = 11;</code>
      */
     public int getLiftgroupres0() {
       return liftgroupres0_;
@@ -3544,7 +3612,7 @@ public final class InterfaceDevice {
      *升降话筒组ID
      * </pre>
      *
-     * <code>optional fixed32 liftgroupres0 = 11;</code>
+     * <code>fixed32 liftgroupres0 = 11;</code>
      */
     private void setLiftgroupres0(int value) {
       
@@ -3555,7 +3623,7 @@ public final class InterfaceDevice {
      *升降话筒组ID
      * </pre>
      *
-     * <code>optional fixed32 liftgroupres0 = 11;</code>
+     * <code>fixed32 liftgroupres0 = 11;</code>
      */
     private void clearLiftgroupres0() {
       
@@ -3569,7 +3637,7 @@ public final class InterfaceDevice {
      *升降话筒组ID
      * </pre>
      *
-     * <code>optional fixed32 liftgroupres1 = 12;</code>
+     * <code>fixed32 liftgroupres1 = 12;</code>
      */
     public int getLiftgroupres1() {
       return liftgroupres1_;
@@ -3579,7 +3647,7 @@ public final class InterfaceDevice {
      *升降话筒组ID
      * </pre>
      *
-     * <code>optional fixed32 liftgroupres1 = 12;</code>
+     * <code>fixed32 liftgroupres1 = 12;</code>
      */
     private void setLiftgroupres1(int value) {
       
@@ -3590,7 +3658,7 @@ public final class InterfaceDevice {
      *升降话筒组ID
      * </pre>
      *
-     * <code>optional fixed32 liftgroupres1 = 12;</code>
+     * <code>fixed32 liftgroupres1 = 12;</code>
      */
     private void clearLiftgroupres1() {
       
@@ -3604,7 +3672,7 @@ public final class InterfaceDevice {
      *参见 Interface_Macro.proto Pb_MeetDeviceFlag 定义
      * </pre>
      *
-     * <code>optional fixed32 deviceflag = 13;</code>
+     * <code>fixed32 deviceflag = 13;</code>
      */
     public int getDeviceflag() {
       return deviceflag_;
@@ -3614,7 +3682,7 @@ public final class InterfaceDevice {
      *参见 Interface_Macro.proto Pb_MeetDeviceFlag 定义
      * </pre>
      *
-     * <code>optional fixed32 deviceflag = 13;</code>
+     * <code>fixed32 deviceflag = 13;</code>
      */
     private void setDeviceflag(int value) {
       
@@ -3625,7 +3693,7 @@ public final class InterfaceDevice {
      *参见 Interface_Macro.proto Pb_MeetDeviceFlag 定义
      * </pre>
      *
-     * <code>optional fixed32 deviceflag = 13;</code>
+     * <code>fixed32 deviceflag = 13;</code>
      */
     private void clearDeviceflag() {
       
@@ -3737,6 +3805,19 @@ public final class InterfaceDevice {
     }
 
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Item_DeviceDetailInfo parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Item_DeviceDetailInfo parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Item_DeviceDetailInfo parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return com.google.protobuf.GeneratedMessageLite.parseFrom(
@@ -3823,13 +3904,13 @@ public final class InterfaceDevice {
 
 
       /**
-       * <code>optional fixed32 devcieid = 1;</code>
+       * <code>fixed32 devcieid = 1;</code>
        */
       public int getDevcieid() {
         return instance.getDevcieid();
       }
       /**
-       * <code>optional fixed32 devcieid = 1;</code>
+       * <code>fixed32 devcieid = 1;</code>
        */
       public Builder setDevcieid(int value) {
         copyOnWrite();
@@ -3837,7 +3918,7 @@ public final class InterfaceDevice {
         return this;
       }
       /**
-       * <code>optional fixed32 devcieid = 1;</code>
+       * <code>fixed32 devcieid = 1;</code>
        */
       public Builder clearDevcieid() {
         copyOnWrite();
@@ -3846,13 +3927,13 @@ public final class InterfaceDevice {
       }
 
       /**
-       * <code>optional bytes devname = 2;</code>
+       * <code>bytes devname = 2;</code>
        */
       public com.google.protobuf.ByteString getDevname() {
         return instance.getDevname();
       }
       /**
-       * <code>optional bytes devname = 2;</code>
+       * <code>bytes devname = 2;</code>
        */
       public Builder setDevname(com.google.protobuf.ByteString value) {
         copyOnWrite();
@@ -3860,7 +3941,7 @@ public final class InterfaceDevice {
         return this;
       }
       /**
-       * <code>optional bytes devname = 2;</code>
+       * <code>bytes devname = 2;</code>
        */
       public Builder clearDevname() {
         copyOnWrite();
@@ -4014,13 +4095,13 @@ public final class InterfaceDevice {
       }
 
       /**
-       * <code>optional fixed32 netstate = 4;</code>
+       * <code>fixed32 netstate = 4;</code>
        */
       public int getNetstate() {
         return instance.getNetstate();
       }
       /**
-       * <code>optional fixed32 netstate = 4;</code>
+       * <code>fixed32 netstate = 4;</code>
        */
       public Builder setNetstate(int value) {
         copyOnWrite();
@@ -4028,7 +4109,7 @@ public final class InterfaceDevice {
         return this;
       }
       /**
-       * <code>optional fixed32 netstate = 4;</code>
+       * <code>fixed32 netstate = 4;</code>
        */
       public Builder clearNetstate() {
         copyOnWrite();
@@ -4040,7 +4121,7 @@ public final class InterfaceDevice {
        * <pre>
        * </pre>
        *
-       * <code>optional fixed32 hardversion = 5;</code>
+       * <code>fixed32 hardversion = 5;</code>
        */
       public int getHardversion() {
         return instance.getHardversion();
@@ -4049,7 +4130,7 @@ public final class InterfaceDevice {
        * <pre>
        * </pre>
        *
-       * <code>optional fixed32 hardversion = 5;</code>
+       * <code>fixed32 hardversion = 5;</code>
        */
       public Builder setHardversion(int value) {
         copyOnWrite();
@@ -4060,7 +4141,7 @@ public final class InterfaceDevice {
        * <pre>
        * </pre>
        *
-       * <code>optional fixed32 hardversion = 5;</code>
+       * <code>fixed32 hardversion = 5;</code>
        */
       public Builder clearHardversion() {
         copyOnWrite();
@@ -4072,7 +4153,7 @@ public final class InterfaceDevice {
        * <pre>
        * </pre>
        *
-       * <code>optional fixed32 softversion = 6;</code>
+       * <code>fixed32 softversion = 6;</code>
        */
       public int getSoftversion() {
         return instance.getSoftversion();
@@ -4081,7 +4162,7 @@ public final class InterfaceDevice {
        * <pre>
        * </pre>
        *
-       * <code>optional fixed32 softversion = 6;</code>
+       * <code>fixed32 softversion = 6;</code>
        */
       public Builder setSoftversion(int value) {
         copyOnWrite();
@@ -4092,7 +4173,7 @@ public final class InterfaceDevice {
        * <pre>
        * </pre>
        *
-       * <code>optional fixed32 softversion = 6;</code>
+       * <code>fixed32 softversion = 6;</code>
        */
       public Builder clearSoftversion() {
         copyOnWrite();
@@ -4250,7 +4331,7 @@ public final class InterfaceDevice {
        *界面状态 参见MemState_MainFace 定义
        * </pre>
        *
-       * <code>optional fixed32 facestate = 8;</code>
+       * <code>fixed32 facestate = 8;</code>
        */
       public int getFacestate() {
         return instance.getFacestate();
@@ -4260,7 +4341,7 @@ public final class InterfaceDevice {
        *界面状态 参见MemState_MainFace 定义
        * </pre>
        *
-       * <code>optional fixed32 facestate = 8;</code>
+       * <code>fixed32 facestate = 8;</code>
        */
       public Builder setFacestate(int value) {
         copyOnWrite();
@@ -4272,7 +4353,7 @@ public final class InterfaceDevice {
        *界面状态 参见MemState_MainFace 定义
        * </pre>
        *
-       * <code>optional fixed32 facestate = 8;</code>
+       * <code>fixed32 facestate = 8;</code>
        */
       public Builder clearFacestate() {
         copyOnWrite();
@@ -4285,7 +4366,7 @@ public final class InterfaceDevice {
        *当前人员
        * </pre>
        *
-       * <code>optional fixed32 memberid = 9;</code>
+       * <code>fixed32 memberid = 9;</code>
        */
       public int getMemberid() {
         return instance.getMemberid();
@@ -4295,7 +4376,7 @@ public final class InterfaceDevice {
        *当前人员
        * </pre>
        *
-       * <code>optional fixed32 memberid = 9;</code>
+       * <code>fixed32 memberid = 9;</code>
        */
       public Builder setMemberid(int value) {
         copyOnWrite();
@@ -4307,7 +4388,7 @@ public final class InterfaceDevice {
        *当前人员
        * </pre>
        *
-       * <code>optional fixed32 memberid = 9;</code>
+       * <code>fixed32 memberid = 9;</code>
        */
       public Builder clearMemberid() {
         copyOnWrite();
@@ -4320,7 +4401,7 @@ public final class InterfaceDevice {
        *当前会议
        * </pre>
        *
-       * <code>optional fixed32 meetingid = 10;</code>
+       * <code>fixed32 meetingid = 10;</code>
        */
       public int getMeetingid() {
         return instance.getMeetingid();
@@ -4330,7 +4411,7 @@ public final class InterfaceDevice {
        *当前会议
        * </pre>
        *
-       * <code>optional fixed32 meetingid = 10;</code>
+       * <code>fixed32 meetingid = 10;</code>
        */
       public Builder setMeetingid(int value) {
         copyOnWrite();
@@ -4342,7 +4423,7 @@ public final class InterfaceDevice {
        *当前会议
        * </pre>
        *
-       * <code>optional fixed32 meetingid = 10;</code>
+       * <code>fixed32 meetingid = 10;</code>
        */
       public Builder clearMeetingid() {
         copyOnWrite();
@@ -4355,7 +4436,7 @@ public final class InterfaceDevice {
        *升降话筒组ID
        * </pre>
        *
-       * <code>optional fixed32 liftgroupres0 = 11;</code>
+       * <code>fixed32 liftgroupres0 = 11;</code>
        */
       public int getLiftgroupres0() {
         return instance.getLiftgroupres0();
@@ -4365,7 +4446,7 @@ public final class InterfaceDevice {
        *升降话筒组ID
        * </pre>
        *
-       * <code>optional fixed32 liftgroupres0 = 11;</code>
+       * <code>fixed32 liftgroupres0 = 11;</code>
        */
       public Builder setLiftgroupres0(int value) {
         copyOnWrite();
@@ -4377,7 +4458,7 @@ public final class InterfaceDevice {
        *升降话筒组ID
        * </pre>
        *
-       * <code>optional fixed32 liftgroupres0 = 11;</code>
+       * <code>fixed32 liftgroupres0 = 11;</code>
        */
       public Builder clearLiftgroupres0() {
         copyOnWrite();
@@ -4390,7 +4471,7 @@ public final class InterfaceDevice {
        *升降话筒组ID
        * </pre>
        *
-       * <code>optional fixed32 liftgroupres1 = 12;</code>
+       * <code>fixed32 liftgroupres1 = 12;</code>
        */
       public int getLiftgroupres1() {
         return instance.getLiftgroupres1();
@@ -4400,7 +4481,7 @@ public final class InterfaceDevice {
        *升降话筒组ID
        * </pre>
        *
-       * <code>optional fixed32 liftgroupres1 = 12;</code>
+       * <code>fixed32 liftgroupres1 = 12;</code>
        */
       public Builder setLiftgroupres1(int value) {
         copyOnWrite();
@@ -4412,7 +4493,7 @@ public final class InterfaceDevice {
        *升降话筒组ID
        * </pre>
        *
-       * <code>optional fixed32 liftgroupres1 = 12;</code>
+       * <code>fixed32 liftgroupres1 = 12;</code>
        */
       public Builder clearLiftgroupres1() {
         copyOnWrite();
@@ -4425,7 +4506,7 @@ public final class InterfaceDevice {
        *参见 Interface_Macro.proto Pb_MeetDeviceFlag 定义
        * </pre>
        *
-       * <code>optional fixed32 deviceflag = 13;</code>
+       * <code>fixed32 deviceflag = 13;</code>
        */
       public int getDeviceflag() {
         return instance.getDeviceflag();
@@ -4435,7 +4516,7 @@ public final class InterfaceDevice {
        *参见 Interface_Macro.proto Pb_MeetDeviceFlag 定义
        * </pre>
        *
-       * <code>optional fixed32 deviceflag = 13;</code>
+       * <code>fixed32 deviceflag = 13;</code>
        */
       public Builder setDeviceflag(int value) {
         copyOnWrite();
@@ -4447,7 +4528,7 @@ public final class InterfaceDevice {
        *参见 Interface_Macro.proto Pb_MeetDeviceFlag 定义
        * </pre>
        *
-       * <code>optional fixed32 deviceflag = 13;</code>
+       * <code>fixed32 deviceflag = 13;</code>
        */
       public Builder clearDeviceflag() {
         copyOnWrite();
@@ -4457,6 +4538,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_Item_DeviceDetailInfo)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -4611,6 +4693,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -4823,6 +4906,19 @@ public final class InterfaceDevice {
     }
 
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceDetailInfo parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceDetailInfo parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceDetailInfo parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return com.google.protobuf.GeneratedMessageLite.parseFrom(
@@ -5010,6 +5106,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_Type_DeviceDetailInfo)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -5075,6 +5172,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -5110,6 +5208,1499 @@ public final class InterfaceDevice {
     }
   }
 
+  public interface pbui_Type_DeviceComplexQueryOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:pbui_Type_DeviceComplexQuery)
+      com.google.protobuf.MessageLiteOrBuilder {
+
+    /**
+     * <pre>
+     *查询标志,用于指定查询规则
+     * </pre>
+     *
+     * <code>fixed32 queryflag = 1;</code>
+     */
+    int getQueryflag();
+
+    /**
+     * <pre>
+     *与mask结合可以查询符合的设备 devcietype &amp; mask == devcietype参见deviceid_suffix.h
+     * </pre>
+     *
+     * <code>fixed32 devcietype = 2;</code>
+     */
+    int getDevcietype();
+
+    /**
+     * <pre>
+     *0xff00000
+     * </pre>
+     *
+     * <code>fixed32 mask = 3;</code>
+     */
+    int getMask();
+
+    /**
+     * <pre>
+     *模糊查询,返回含有字符串的设备
+     * </pre>
+     *
+     * <code>bytes devname = 4;</code>
+     */
+    com.google.protobuf.ByteString getDevname();
+
+    /**
+     * <pre>
+     *0=离线 1=在线
+     * </pre>
+     *
+     * <code>fixed32 netstate = 5;</code>
+     */
+    int getNetstate();
+
+    /**
+     * <pre>
+     *等于该会议ID的设备
+     * </pre>
+     *
+     * <code>fixed32 meetingid = 6;</code>
+     */
+    int getMeetingid();
+  }
+  /**
+   * <pre>
+   *#define DEVICE_COMPLEXQUERY_DEVICETYPE 0x00000001 //devcietype mask有效
+   *#define DEVICE_COMPLEXQUERY_DEVICENAME 0x00000002 //devname 有效
+   *#define DEVICE_COMPLEXQUERY_DEVICESTAT 0x00000004 //netstate 有效
+   *#define DEVICE_COMPLEXQUERY_DEVICEMEET 0x00000008 //meetingid 有效
+   *组合查询设备
+   *call
+   *type:TYPE_MEET_INTERFACE_DEVICEINFO
+   *method: complexquery--pbui_Type_DeviceDetailInfo返回
+   * </pre>
+   *
+   * Protobuf type {@code pbui_Type_DeviceComplexQuery}
+   */
+  public  static final class pbui_Type_DeviceComplexQuery extends
+      com.google.protobuf.GeneratedMessageLite<
+          pbui_Type_DeviceComplexQuery, pbui_Type_DeviceComplexQuery.Builder> implements
+      // @@protoc_insertion_point(message_implements:pbui_Type_DeviceComplexQuery)
+      pbui_Type_DeviceComplexQueryOrBuilder {
+    private pbui_Type_DeviceComplexQuery() {
+      devname_ = com.google.protobuf.ByteString.EMPTY;
+    }
+    public static final int QUERYFLAG_FIELD_NUMBER = 1;
+    private int queryflag_;
+    /**
+     * <pre>
+     *查询标志,用于指定查询规则
+     * </pre>
+     *
+     * <code>fixed32 queryflag = 1;</code>
+     */
+    public int getQueryflag() {
+      return queryflag_;
+    }
+    /**
+     * <pre>
+     *查询标志,用于指定查询规则
+     * </pre>
+     *
+     * <code>fixed32 queryflag = 1;</code>
+     */
+    private void setQueryflag(int value) {
+      
+      queryflag_ = value;
+    }
+    /**
+     * <pre>
+     *查询标志,用于指定查询规则
+     * </pre>
+     *
+     * <code>fixed32 queryflag = 1;</code>
+     */
+    private void clearQueryflag() {
+      
+      queryflag_ = 0;
+    }
+
+    public static final int DEVCIETYPE_FIELD_NUMBER = 2;
+    private int devcietype_;
+    /**
+     * <pre>
+     *与mask结合可以查询符合的设备 devcietype &amp; mask == devcietype参见deviceid_suffix.h
+     * </pre>
+     *
+     * <code>fixed32 devcietype = 2;</code>
+     */
+    public int getDevcietype() {
+      return devcietype_;
+    }
+    /**
+     * <pre>
+     *与mask结合可以查询符合的设备 devcietype &amp; mask == devcietype参见deviceid_suffix.h
+     * </pre>
+     *
+     * <code>fixed32 devcietype = 2;</code>
+     */
+    private void setDevcietype(int value) {
+      
+      devcietype_ = value;
+    }
+    /**
+     * <pre>
+     *与mask结合可以查询符合的设备 devcietype &amp; mask == devcietype参见deviceid_suffix.h
+     * </pre>
+     *
+     * <code>fixed32 devcietype = 2;</code>
+     */
+    private void clearDevcietype() {
+      
+      devcietype_ = 0;
+    }
+
+    public static final int MASK_FIELD_NUMBER = 3;
+    private int mask_;
+    /**
+     * <pre>
+     *0xff00000
+     * </pre>
+     *
+     * <code>fixed32 mask = 3;</code>
+     */
+    public int getMask() {
+      return mask_;
+    }
+    /**
+     * <pre>
+     *0xff00000
+     * </pre>
+     *
+     * <code>fixed32 mask = 3;</code>
+     */
+    private void setMask(int value) {
+      
+      mask_ = value;
+    }
+    /**
+     * <pre>
+     *0xff00000
+     * </pre>
+     *
+     * <code>fixed32 mask = 3;</code>
+     */
+    private void clearMask() {
+      
+      mask_ = 0;
+    }
+
+    public static final int DEVNAME_FIELD_NUMBER = 4;
+    private com.google.protobuf.ByteString devname_;
+    /**
+     * <pre>
+     *模糊查询,返回含有字符串的设备
+     * </pre>
+     *
+     * <code>bytes devname = 4;</code>
+     */
+    public com.google.protobuf.ByteString getDevname() {
+      return devname_;
+    }
+    /**
+     * <pre>
+     *模糊查询,返回含有字符串的设备
+     * </pre>
+     *
+     * <code>bytes devname = 4;</code>
+     */
+    private void setDevname(com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      devname_ = value;
+    }
+    /**
+     * <pre>
+     *模糊查询,返回含有字符串的设备
+     * </pre>
+     *
+     * <code>bytes devname = 4;</code>
+     */
+    private void clearDevname() {
+      
+      devname_ = getDefaultInstance().getDevname();
+    }
+
+    public static final int NETSTATE_FIELD_NUMBER = 5;
+    private int netstate_;
+    /**
+     * <pre>
+     *0=离线 1=在线
+     * </pre>
+     *
+     * <code>fixed32 netstate = 5;</code>
+     */
+    public int getNetstate() {
+      return netstate_;
+    }
+    /**
+     * <pre>
+     *0=离线 1=在线
+     * </pre>
+     *
+     * <code>fixed32 netstate = 5;</code>
+     */
+    private void setNetstate(int value) {
+      
+      netstate_ = value;
+    }
+    /**
+     * <pre>
+     *0=离线 1=在线
+     * </pre>
+     *
+     * <code>fixed32 netstate = 5;</code>
+     */
+    private void clearNetstate() {
+      
+      netstate_ = 0;
+    }
+
+    public static final int MEETINGID_FIELD_NUMBER = 6;
+    private int meetingid_;
+    /**
+     * <pre>
+     *等于该会议ID的设备
+     * </pre>
+     *
+     * <code>fixed32 meetingid = 6;</code>
+     */
+    public int getMeetingid() {
+      return meetingid_;
+    }
+    /**
+     * <pre>
+     *等于该会议ID的设备
+     * </pre>
+     *
+     * <code>fixed32 meetingid = 6;</code>
+     */
+    private void setMeetingid(int value) {
+      
+      meetingid_ = value;
+    }
+    /**
+     * <pre>
+     *等于该会议ID的设备
+     * </pre>
+     *
+     * <code>fixed32 meetingid = 6;</code>
+     */
+    private void clearMeetingid() {
+      
+      meetingid_ = 0;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (queryflag_ != 0) {
+        output.writeFixed32(1, queryflag_);
+      }
+      if (devcietype_ != 0) {
+        output.writeFixed32(2, devcietype_);
+      }
+      if (mask_ != 0) {
+        output.writeFixed32(3, mask_);
+      }
+      if (!devname_.isEmpty()) {
+        output.writeBytes(4, devname_);
+      }
+      if (netstate_ != 0) {
+        output.writeFixed32(5, netstate_);
+      }
+      if (meetingid_ != 0) {
+        output.writeFixed32(6, meetingid_);
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (queryflag_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed32Size(1, queryflag_);
+      }
+      if (devcietype_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed32Size(2, devcietype_);
+      }
+      if (mask_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed32Size(3, mask_);
+      }
+      if (!devname_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, devname_);
+      }
+      if (netstate_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed32Size(5, netstate_);
+      }
+      if (meetingid_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed32Size(6, meetingid_);
+      }
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceComplexQuery parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceComplexQuery parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceComplexQuery parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceComplexQuery parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceComplexQuery parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceComplexQuery parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceComplexQuery parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceComplexQuery parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceComplexQuery parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceComplexQuery parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceComplexQuery parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceComplexQuery parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceComplexQuery prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    /**
+     * <pre>
+     *#define DEVICE_COMPLEXQUERY_DEVICETYPE 0x00000001 //devcietype mask有效
+     *#define DEVICE_COMPLEXQUERY_DEVICENAME 0x00000002 //devname 有效
+     *#define DEVICE_COMPLEXQUERY_DEVICESTAT 0x00000004 //netstate 有效
+     *#define DEVICE_COMPLEXQUERY_DEVICEMEET 0x00000008 //meetingid 有效
+     *组合查询设备
+     *call
+     *type:TYPE_MEET_INTERFACE_DEVICEINFO
+     *method: complexquery--pbui_Type_DeviceDetailInfo返回
+     * </pre>
+     *
+     * Protobuf type {@code pbui_Type_DeviceComplexQuery}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceComplexQuery, Builder> implements
+        // @@protoc_insertion_point(builder_implements:pbui_Type_DeviceComplexQuery)
+        com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceComplexQueryOrBuilder {
+      // Construct using com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceComplexQuery.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      /**
+       * <pre>
+       *查询标志,用于指定查询规则
+       * </pre>
+       *
+       * <code>fixed32 queryflag = 1;</code>
+       */
+      public int getQueryflag() {
+        return instance.getQueryflag();
+      }
+      /**
+       * <pre>
+       *查询标志,用于指定查询规则
+       * </pre>
+       *
+       * <code>fixed32 queryflag = 1;</code>
+       */
+      public Builder setQueryflag(int value) {
+        copyOnWrite();
+        instance.setQueryflag(value);
+        return this;
+      }
+      /**
+       * <pre>
+       *查询标志,用于指定查询规则
+       * </pre>
+       *
+       * <code>fixed32 queryflag = 1;</code>
+       */
+      public Builder clearQueryflag() {
+        copyOnWrite();
+        instance.clearQueryflag();
+        return this;
+      }
+
+      /**
+       * <pre>
+       *与mask结合可以查询符合的设备 devcietype &amp; mask == devcietype参见deviceid_suffix.h
+       * </pre>
+       *
+       * <code>fixed32 devcietype = 2;</code>
+       */
+      public int getDevcietype() {
+        return instance.getDevcietype();
+      }
+      /**
+       * <pre>
+       *与mask结合可以查询符合的设备 devcietype &amp; mask == devcietype参见deviceid_suffix.h
+       * </pre>
+       *
+       * <code>fixed32 devcietype = 2;</code>
+       */
+      public Builder setDevcietype(int value) {
+        copyOnWrite();
+        instance.setDevcietype(value);
+        return this;
+      }
+      /**
+       * <pre>
+       *与mask结合可以查询符合的设备 devcietype &amp; mask == devcietype参见deviceid_suffix.h
+       * </pre>
+       *
+       * <code>fixed32 devcietype = 2;</code>
+       */
+      public Builder clearDevcietype() {
+        copyOnWrite();
+        instance.clearDevcietype();
+        return this;
+      }
+
+      /**
+       * <pre>
+       *0xff00000
+       * </pre>
+       *
+       * <code>fixed32 mask = 3;</code>
+       */
+      public int getMask() {
+        return instance.getMask();
+      }
+      /**
+       * <pre>
+       *0xff00000
+       * </pre>
+       *
+       * <code>fixed32 mask = 3;</code>
+       */
+      public Builder setMask(int value) {
+        copyOnWrite();
+        instance.setMask(value);
+        return this;
+      }
+      /**
+       * <pre>
+       *0xff00000
+       * </pre>
+       *
+       * <code>fixed32 mask = 3;</code>
+       */
+      public Builder clearMask() {
+        copyOnWrite();
+        instance.clearMask();
+        return this;
+      }
+
+      /**
+       * <pre>
+       *模糊查询,返回含有字符串的设备
+       * </pre>
+       *
+       * <code>bytes devname = 4;</code>
+       */
+      public com.google.protobuf.ByteString getDevname() {
+        return instance.getDevname();
+      }
+      /**
+       * <pre>
+       *模糊查询,返回含有字符串的设备
+       * </pre>
+       *
+       * <code>bytes devname = 4;</code>
+       */
+      public Builder setDevname(com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setDevname(value);
+        return this;
+      }
+      /**
+       * <pre>
+       *模糊查询,返回含有字符串的设备
+       * </pre>
+       *
+       * <code>bytes devname = 4;</code>
+       */
+      public Builder clearDevname() {
+        copyOnWrite();
+        instance.clearDevname();
+        return this;
+      }
+
+      /**
+       * <pre>
+       *0=离线 1=在线
+       * </pre>
+       *
+       * <code>fixed32 netstate = 5;</code>
+       */
+      public int getNetstate() {
+        return instance.getNetstate();
+      }
+      /**
+       * <pre>
+       *0=离线 1=在线
+       * </pre>
+       *
+       * <code>fixed32 netstate = 5;</code>
+       */
+      public Builder setNetstate(int value) {
+        copyOnWrite();
+        instance.setNetstate(value);
+        return this;
+      }
+      /**
+       * <pre>
+       *0=离线 1=在线
+       * </pre>
+       *
+       * <code>fixed32 netstate = 5;</code>
+       */
+      public Builder clearNetstate() {
+        copyOnWrite();
+        instance.clearNetstate();
+        return this;
+      }
+
+      /**
+       * <pre>
+       *等于该会议ID的设备
+       * </pre>
+       *
+       * <code>fixed32 meetingid = 6;</code>
+       */
+      public int getMeetingid() {
+        return instance.getMeetingid();
+      }
+      /**
+       * <pre>
+       *等于该会议ID的设备
+       * </pre>
+       *
+       * <code>fixed32 meetingid = 6;</code>
+       */
+      public Builder setMeetingid(int value) {
+        copyOnWrite();
+        instance.setMeetingid(value);
+        return this;
+      }
+      /**
+       * <pre>
+       *等于该会议ID的设备
+       * </pre>
+       *
+       * <code>fixed32 meetingid = 6;</code>
+       */
+      public Builder clearMeetingid() {
+        copyOnWrite();
+        instance.clearMeetingid();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:pbui_Type_DeviceComplexQuery)
+    }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
+    protected final Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        Object arg0, Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceComplexQuery();
+        }
+        case IS_INITIALIZED: {
+          return DEFAULT_INSTANCE;
+        }
+        case MAKE_IMMUTABLE: {
+          return null;
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case VISIT: {
+          Visitor visitor = (Visitor) arg0;
+          com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceComplexQuery other = (com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceComplexQuery) arg1;
+          queryflag_ = visitor.visitInt(queryflag_ != 0, queryflag_,
+              other.queryflag_ != 0, other.queryflag_);
+          devcietype_ = visitor.visitInt(devcietype_ != 0, devcietype_,
+              other.devcietype_ != 0, other.devcietype_);
+          mask_ = visitor.visitInt(mask_ != 0, mask_,
+              other.mask_ != 0, other.mask_);
+          devname_ = visitor.visitByteString(devname_ != com.google.protobuf.ByteString.EMPTY, devname_,
+              other.devname_ != com.google.protobuf.ByteString.EMPTY, other.devname_);
+          netstate_ = visitor.visitInt(netstate_ != 0, netstate_,
+              other.netstate_ != 0, other.netstate_);
+          meetingid_ = visitor.visitInt(meetingid_ != 0, meetingid_,
+              other.meetingid_ != 0, other.meetingid_);
+          if (visitor == com.google.protobuf.GeneratedMessageLite.MergeFromVisitor
+              .INSTANCE) {
+          }
+          return this;
+        }
+        case MERGE_FROM_STREAM: {
+          com.google.protobuf.CodedInputStream input =
+              (com.google.protobuf.CodedInputStream) arg0;
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry =
+              (com.google.protobuf.ExtensionRegistryLite) arg1;
+          try {
+            boolean done = false;
+            while (!done) {
+              int tag = input.readTag();
+              switch (tag) {
+                case 0:
+                  done = true;
+                  break;
+                default: {
+                  if (!input.skipField(tag)) {
+                    done = true;
+                  }
+                  break;
+                }
+                case 13: {
+
+                  queryflag_ = input.readFixed32();
+                  break;
+                }
+                case 21: {
+
+                  devcietype_ = input.readFixed32();
+                  break;
+                }
+                case 29: {
+
+                  mask_ = input.readFixed32();
+                  break;
+                }
+                case 34: {
+
+                  devname_ = input.readBytes();
+                  break;
+                }
+                case 45: {
+
+                  netstate_ = input.readFixed32();
+                  break;
+                }
+                case 53: {
+
+                  meetingid_ = input.readFixed32();
+                  break;
+                }
+              }
+            }
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw new RuntimeException(e.setUnfinishedMessage(this));
+          } catch (java.io.IOException e) {
+            throw new RuntimeException(
+                new com.google.protobuf.InvalidProtocolBufferException(
+                    e.getMessage()).setUnfinishedMessage(this));
+          } finally {
+          }
+        }
+        // fall through
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          if (PARSER == null) {    synchronized (com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceComplexQuery.class) {
+              if (PARSER == null) {
+                PARSER = new DefaultInstanceBasedParser(DEFAULT_INSTANCE);
+              }
+            }
+          }
+          return PARSER;
+        }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:pbui_Type_DeviceComplexQuery)
+    private static final com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceComplexQuery DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new pbui_Type_DeviceComplexQuery();
+      DEFAULT_INSTANCE.makeImmutable();
+    }
+
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceComplexQuery getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<pbui_Type_DeviceComplexQuery> PARSER;
+
+    public static com.google.protobuf.Parser<pbui_Type_DeviceComplexQuery> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
+  public interface pbui_Type_DeviceQueryStreamOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:pbui_Type_DeviceQueryStream)
+      com.google.protobuf.MessageLiteOrBuilder {
+
+    /**
+     * <pre>
+     *查询标志,用于指定查询规则
+     * </pre>
+     *
+     * <code>fixed32 queryflag = 1;</code>
+     */
+    int getQueryflag();
+
+    /**
+     * <pre>
+     *与mask结合可以查询符合的设备 devcieid &amp; mask == devcietype 参见deviceid_suffix.h
+     * </pre>
+     *
+     * <code>fixed32 devcietype = 2;</code>
+     */
+    int getDevcietype();
+
+    /**
+     * <pre>
+     *0xff00000
+     * </pre>
+     *
+     * <code>fixed32 mask = 3;</code>
+     */
+    int getMask();
+
+    /**
+     * <pre>
+     *0=离线 1=在线
+     * </pre>
+     *
+     * <code>fixed32 netstate = 4;</code>
+     */
+    int getNetstate();
+
+    /**
+     * <pre>
+     *查询指定设备,为0表示本机
+     * </pre>
+     *
+     * <code>fixed32 devcieid = 5;</code>
+     */
+    int getDevcieid();
+  }
+  /**
+   * <pre>
+   *组合查询设备流通道
+   *call
+   *type:TYPE_MEET_INTERFACE_DEVICEINFO
+   *method: METHOD_MEET_INTERFACE_MAKEVIDEO--pbui_Type_MeetVideoDetailInfo返回
+   * </pre>
+   *
+   * Protobuf type {@code pbui_Type_DeviceQueryStream}
+   */
+  public  static final class pbui_Type_DeviceQueryStream extends
+      com.google.protobuf.GeneratedMessageLite<
+          pbui_Type_DeviceQueryStream, pbui_Type_DeviceQueryStream.Builder> implements
+      // @@protoc_insertion_point(message_implements:pbui_Type_DeviceQueryStream)
+      pbui_Type_DeviceQueryStreamOrBuilder {
+    private pbui_Type_DeviceQueryStream() {
+    }
+    public static final int QUERYFLAG_FIELD_NUMBER = 1;
+    private int queryflag_;
+    /**
+     * <pre>
+     *查询标志,用于指定查询规则
+     * </pre>
+     *
+     * <code>fixed32 queryflag = 1;</code>
+     */
+    public int getQueryflag() {
+      return queryflag_;
+    }
+    /**
+     * <pre>
+     *查询标志,用于指定查询规则
+     * </pre>
+     *
+     * <code>fixed32 queryflag = 1;</code>
+     */
+    private void setQueryflag(int value) {
+      
+      queryflag_ = value;
+    }
+    /**
+     * <pre>
+     *查询标志,用于指定查询规则
+     * </pre>
+     *
+     * <code>fixed32 queryflag = 1;</code>
+     */
+    private void clearQueryflag() {
+      
+      queryflag_ = 0;
+    }
+
+    public static final int DEVCIETYPE_FIELD_NUMBER = 2;
+    private int devcietype_;
+    /**
+     * <pre>
+     *与mask结合可以查询符合的设备 devcieid &amp; mask == devcietype 参见deviceid_suffix.h
+     * </pre>
+     *
+     * <code>fixed32 devcietype = 2;</code>
+     */
+    public int getDevcietype() {
+      return devcietype_;
+    }
+    /**
+     * <pre>
+     *与mask结合可以查询符合的设备 devcieid &amp; mask == devcietype 参见deviceid_suffix.h
+     * </pre>
+     *
+     * <code>fixed32 devcietype = 2;</code>
+     */
+    private void setDevcietype(int value) {
+      
+      devcietype_ = value;
+    }
+    /**
+     * <pre>
+     *与mask结合可以查询符合的设备 devcieid &amp; mask == devcietype 参见deviceid_suffix.h
+     * </pre>
+     *
+     * <code>fixed32 devcietype = 2;</code>
+     */
+    private void clearDevcietype() {
+      
+      devcietype_ = 0;
+    }
+
+    public static final int MASK_FIELD_NUMBER = 3;
+    private int mask_;
+    /**
+     * <pre>
+     *0xff00000
+     * </pre>
+     *
+     * <code>fixed32 mask = 3;</code>
+     */
+    public int getMask() {
+      return mask_;
+    }
+    /**
+     * <pre>
+     *0xff00000
+     * </pre>
+     *
+     * <code>fixed32 mask = 3;</code>
+     */
+    private void setMask(int value) {
+      
+      mask_ = value;
+    }
+    /**
+     * <pre>
+     *0xff00000
+     * </pre>
+     *
+     * <code>fixed32 mask = 3;</code>
+     */
+    private void clearMask() {
+      
+      mask_ = 0;
+    }
+
+    public static final int NETSTATE_FIELD_NUMBER = 4;
+    private int netstate_;
+    /**
+     * <pre>
+     *0=离线 1=在线
+     * </pre>
+     *
+     * <code>fixed32 netstate = 4;</code>
+     */
+    public int getNetstate() {
+      return netstate_;
+    }
+    /**
+     * <pre>
+     *0=离线 1=在线
+     * </pre>
+     *
+     * <code>fixed32 netstate = 4;</code>
+     */
+    private void setNetstate(int value) {
+      
+      netstate_ = value;
+    }
+    /**
+     * <pre>
+     *0=离线 1=在线
+     * </pre>
+     *
+     * <code>fixed32 netstate = 4;</code>
+     */
+    private void clearNetstate() {
+      
+      netstate_ = 0;
+    }
+
+    public static final int DEVCIEID_FIELD_NUMBER = 5;
+    private int devcieid_;
+    /**
+     * <pre>
+     *查询指定设备,为0表示本机
+     * </pre>
+     *
+     * <code>fixed32 devcieid = 5;</code>
+     */
+    public int getDevcieid() {
+      return devcieid_;
+    }
+    /**
+     * <pre>
+     *查询指定设备,为0表示本机
+     * </pre>
+     *
+     * <code>fixed32 devcieid = 5;</code>
+     */
+    private void setDevcieid(int value) {
+      
+      devcieid_ = value;
+    }
+    /**
+     * <pre>
+     *查询指定设备,为0表示本机
+     * </pre>
+     *
+     * <code>fixed32 devcieid = 5;</code>
+     */
+    private void clearDevcieid() {
+      
+      devcieid_ = 0;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (queryflag_ != 0) {
+        output.writeFixed32(1, queryflag_);
+      }
+      if (devcietype_ != 0) {
+        output.writeFixed32(2, devcietype_);
+      }
+      if (mask_ != 0) {
+        output.writeFixed32(3, mask_);
+      }
+      if (netstate_ != 0) {
+        output.writeFixed32(4, netstate_);
+      }
+      if (devcieid_ != 0) {
+        output.writeFixed32(5, devcieid_);
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (queryflag_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed32Size(1, queryflag_);
+      }
+      if (devcietype_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed32Size(2, devcietype_);
+      }
+      if (mask_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed32Size(3, mask_);
+      }
+      if (netstate_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed32Size(4, netstate_);
+      }
+      if (devcieid_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed32Size(5, devcieid_);
+      }
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceQueryStream parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceQueryStream parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceQueryStream parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceQueryStream parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceQueryStream parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceQueryStream parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceQueryStream parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceQueryStream parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceQueryStream parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceQueryStream parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceQueryStream parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceQueryStream parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceQueryStream prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    /**
+     * <pre>
+     *组合查询设备流通道
+     *call
+     *type:TYPE_MEET_INTERFACE_DEVICEINFO
+     *method: METHOD_MEET_INTERFACE_MAKEVIDEO--pbui_Type_MeetVideoDetailInfo返回
+     * </pre>
+     *
+     * Protobuf type {@code pbui_Type_DeviceQueryStream}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceQueryStream, Builder> implements
+        // @@protoc_insertion_point(builder_implements:pbui_Type_DeviceQueryStream)
+        com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceQueryStreamOrBuilder {
+      // Construct using com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceQueryStream.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      /**
+       * <pre>
+       *查询标志,用于指定查询规则
+       * </pre>
+       *
+       * <code>fixed32 queryflag = 1;</code>
+       */
+      public int getQueryflag() {
+        return instance.getQueryflag();
+      }
+      /**
+       * <pre>
+       *查询标志,用于指定查询规则
+       * </pre>
+       *
+       * <code>fixed32 queryflag = 1;</code>
+       */
+      public Builder setQueryflag(int value) {
+        copyOnWrite();
+        instance.setQueryflag(value);
+        return this;
+      }
+      /**
+       * <pre>
+       *查询标志,用于指定查询规则
+       * </pre>
+       *
+       * <code>fixed32 queryflag = 1;</code>
+       */
+      public Builder clearQueryflag() {
+        copyOnWrite();
+        instance.clearQueryflag();
+        return this;
+      }
+
+      /**
+       * <pre>
+       *与mask结合可以查询符合的设备 devcieid &amp; mask == devcietype 参见deviceid_suffix.h
+       * </pre>
+       *
+       * <code>fixed32 devcietype = 2;</code>
+       */
+      public int getDevcietype() {
+        return instance.getDevcietype();
+      }
+      /**
+       * <pre>
+       *与mask结合可以查询符合的设备 devcieid &amp; mask == devcietype 参见deviceid_suffix.h
+       * </pre>
+       *
+       * <code>fixed32 devcietype = 2;</code>
+       */
+      public Builder setDevcietype(int value) {
+        copyOnWrite();
+        instance.setDevcietype(value);
+        return this;
+      }
+      /**
+       * <pre>
+       *与mask结合可以查询符合的设备 devcieid &amp; mask == devcietype 参见deviceid_suffix.h
+       * </pre>
+       *
+       * <code>fixed32 devcietype = 2;</code>
+       */
+      public Builder clearDevcietype() {
+        copyOnWrite();
+        instance.clearDevcietype();
+        return this;
+      }
+
+      /**
+       * <pre>
+       *0xff00000
+       * </pre>
+       *
+       * <code>fixed32 mask = 3;</code>
+       */
+      public int getMask() {
+        return instance.getMask();
+      }
+      /**
+       * <pre>
+       *0xff00000
+       * </pre>
+       *
+       * <code>fixed32 mask = 3;</code>
+       */
+      public Builder setMask(int value) {
+        copyOnWrite();
+        instance.setMask(value);
+        return this;
+      }
+      /**
+       * <pre>
+       *0xff00000
+       * </pre>
+       *
+       * <code>fixed32 mask = 3;</code>
+       */
+      public Builder clearMask() {
+        copyOnWrite();
+        instance.clearMask();
+        return this;
+      }
+
+      /**
+       * <pre>
+       *0=离线 1=在线
+       * </pre>
+       *
+       * <code>fixed32 netstate = 4;</code>
+       */
+      public int getNetstate() {
+        return instance.getNetstate();
+      }
+      /**
+       * <pre>
+       *0=离线 1=在线
+       * </pre>
+       *
+       * <code>fixed32 netstate = 4;</code>
+       */
+      public Builder setNetstate(int value) {
+        copyOnWrite();
+        instance.setNetstate(value);
+        return this;
+      }
+      /**
+       * <pre>
+       *0=离线 1=在线
+       * </pre>
+       *
+       * <code>fixed32 netstate = 4;</code>
+       */
+      public Builder clearNetstate() {
+        copyOnWrite();
+        instance.clearNetstate();
+        return this;
+      }
+
+      /**
+       * <pre>
+       *查询指定设备,为0表示本机
+       * </pre>
+       *
+       * <code>fixed32 devcieid = 5;</code>
+       */
+      public int getDevcieid() {
+        return instance.getDevcieid();
+      }
+      /**
+       * <pre>
+       *查询指定设备,为0表示本机
+       * </pre>
+       *
+       * <code>fixed32 devcieid = 5;</code>
+       */
+      public Builder setDevcieid(int value) {
+        copyOnWrite();
+        instance.setDevcieid(value);
+        return this;
+      }
+      /**
+       * <pre>
+       *查询指定设备,为0表示本机
+       * </pre>
+       *
+       * <code>fixed32 devcieid = 5;</code>
+       */
+      public Builder clearDevcieid() {
+        copyOnWrite();
+        instance.clearDevcieid();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:pbui_Type_DeviceQueryStream)
+    }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
+    protected final Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        Object arg0, Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceQueryStream();
+        }
+        case IS_INITIALIZED: {
+          return DEFAULT_INSTANCE;
+        }
+        case MAKE_IMMUTABLE: {
+          return null;
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case VISIT: {
+          Visitor visitor = (Visitor) arg0;
+          com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceQueryStream other = (com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceQueryStream) arg1;
+          queryflag_ = visitor.visitInt(queryflag_ != 0, queryflag_,
+              other.queryflag_ != 0, other.queryflag_);
+          devcietype_ = visitor.visitInt(devcietype_ != 0, devcietype_,
+              other.devcietype_ != 0, other.devcietype_);
+          mask_ = visitor.visitInt(mask_ != 0, mask_,
+              other.mask_ != 0, other.mask_);
+          netstate_ = visitor.visitInt(netstate_ != 0, netstate_,
+              other.netstate_ != 0, other.netstate_);
+          devcieid_ = visitor.visitInt(devcieid_ != 0, devcieid_,
+              other.devcieid_ != 0, other.devcieid_);
+          if (visitor == com.google.protobuf.GeneratedMessageLite.MergeFromVisitor
+              .INSTANCE) {
+          }
+          return this;
+        }
+        case MERGE_FROM_STREAM: {
+          com.google.protobuf.CodedInputStream input =
+              (com.google.protobuf.CodedInputStream) arg0;
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry =
+              (com.google.protobuf.ExtensionRegistryLite) arg1;
+          try {
+            boolean done = false;
+            while (!done) {
+              int tag = input.readTag();
+              switch (tag) {
+                case 0:
+                  done = true;
+                  break;
+                default: {
+                  if (!input.skipField(tag)) {
+                    done = true;
+                  }
+                  break;
+                }
+                case 13: {
+
+                  queryflag_ = input.readFixed32();
+                  break;
+                }
+                case 21: {
+
+                  devcietype_ = input.readFixed32();
+                  break;
+                }
+                case 29: {
+
+                  mask_ = input.readFixed32();
+                  break;
+                }
+                case 37: {
+
+                  netstate_ = input.readFixed32();
+                  break;
+                }
+                case 45: {
+
+                  devcieid_ = input.readFixed32();
+                  break;
+                }
+              }
+            }
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw new RuntimeException(e.setUnfinishedMessage(this));
+          } catch (java.io.IOException e) {
+            throw new RuntimeException(
+                new com.google.protobuf.InvalidProtocolBufferException(
+                    e.getMessage()).setUnfinishedMessage(this));
+          } finally {
+          }
+        }
+        // fall through
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          if (PARSER == null) {    synchronized (com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceQueryStream.class) {
+              if (PARSER == null) {
+                PARSER = new DefaultInstanceBasedParser(DEFAULT_INSTANCE);
+              }
+            }
+          }
+          return PARSER;
+        }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:pbui_Type_DeviceQueryStream)
+    private static final com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceQueryStream DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new pbui_Type_DeviceQueryStream();
+      DEFAULT_INSTANCE.makeImmutable();
+    }
+
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceQueryStream getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<pbui_Type_DeviceQueryStream> PARSER;
+
+    public static com.google.protobuf.Parser<pbui_Type_DeviceQueryStream> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
   public interface pbui_PageQueryDeviceInfoOrBuilder extends
       // @@protoc_insertion_point(interface_extends:pbui_PageQueryDeviceInfo)
       com.google.protobuf.MessageLiteOrBuilder {
@@ -5119,7 +6710,7 @@ public final class InterfaceDevice {
      *起始索引 从0 开始
      * </pre>
      *
-     * <code>optional fixed32 pageindex = 1;</code>
+     * <code>fixed32 pageindex = 1;</code>
      */
     int getPageindex();
 
@@ -5128,7 +6719,7 @@ public final class InterfaceDevice {
      *每页项数
      * </pre>
      *
-     * <code>optional fixed32 pagenum = 2;</code>
+     * <code>fixed32 pagenum = 2;</code>
      */
     int getPagenum();
 
@@ -5137,7 +6728,7 @@ public final class InterfaceDevice {
      *当前页项数 ,根据数据不同用不同的解析
      * </pre>
      *
-     * <code>optional fixed32 itemnum = 3;</code>
+     * <code>fixed32 itemnum = 3;</code>
      */
     int getItemnum();
 
@@ -5146,7 +6737,7 @@ public final class InterfaceDevice {
      *总项数
      * </pre>
      *
-     * <code>optional fixed32 totalnum = 4;</code>
+     * <code>fixed32 totalnum = 4;</code>
      */
     int getTotalnum();
 
@@ -5155,7 +6746,7 @@ public final class InterfaceDevice {
      *用于分组使用,如：查询指分组中的人员,这里填写分组id
      * </pre>
      *
-     * <code>optional fixed32 idval = 5;</code>
+     * <code>fixed32 idval = 5;</code>
      */
     int getIdval();
 
@@ -5199,7 +6790,7 @@ public final class InterfaceDevice {
      *起始索引 从0 开始
      * </pre>
      *
-     * <code>optional fixed32 pageindex = 1;</code>
+     * <code>fixed32 pageindex = 1;</code>
      */
     public int getPageindex() {
       return pageindex_;
@@ -5209,7 +6800,7 @@ public final class InterfaceDevice {
      *起始索引 从0 开始
      * </pre>
      *
-     * <code>optional fixed32 pageindex = 1;</code>
+     * <code>fixed32 pageindex = 1;</code>
      */
     private void setPageindex(int value) {
       
@@ -5220,7 +6811,7 @@ public final class InterfaceDevice {
      *起始索引 从0 开始
      * </pre>
      *
-     * <code>optional fixed32 pageindex = 1;</code>
+     * <code>fixed32 pageindex = 1;</code>
      */
     private void clearPageindex() {
       
@@ -5234,7 +6825,7 @@ public final class InterfaceDevice {
      *每页项数
      * </pre>
      *
-     * <code>optional fixed32 pagenum = 2;</code>
+     * <code>fixed32 pagenum = 2;</code>
      */
     public int getPagenum() {
       return pagenum_;
@@ -5244,7 +6835,7 @@ public final class InterfaceDevice {
      *每页项数
      * </pre>
      *
-     * <code>optional fixed32 pagenum = 2;</code>
+     * <code>fixed32 pagenum = 2;</code>
      */
     private void setPagenum(int value) {
       
@@ -5255,7 +6846,7 @@ public final class InterfaceDevice {
      *每页项数
      * </pre>
      *
-     * <code>optional fixed32 pagenum = 2;</code>
+     * <code>fixed32 pagenum = 2;</code>
      */
     private void clearPagenum() {
       
@@ -5269,7 +6860,7 @@ public final class InterfaceDevice {
      *当前页项数 ,根据数据不同用不同的解析
      * </pre>
      *
-     * <code>optional fixed32 itemnum = 3;</code>
+     * <code>fixed32 itemnum = 3;</code>
      */
     public int getItemnum() {
       return itemnum_;
@@ -5279,7 +6870,7 @@ public final class InterfaceDevice {
      *当前页项数 ,根据数据不同用不同的解析
      * </pre>
      *
-     * <code>optional fixed32 itemnum = 3;</code>
+     * <code>fixed32 itemnum = 3;</code>
      */
     private void setItemnum(int value) {
       
@@ -5290,7 +6881,7 @@ public final class InterfaceDevice {
      *当前页项数 ,根据数据不同用不同的解析
      * </pre>
      *
-     * <code>optional fixed32 itemnum = 3;</code>
+     * <code>fixed32 itemnum = 3;</code>
      */
     private void clearItemnum() {
       
@@ -5304,7 +6895,7 @@ public final class InterfaceDevice {
      *总项数
      * </pre>
      *
-     * <code>optional fixed32 totalnum = 4;</code>
+     * <code>fixed32 totalnum = 4;</code>
      */
     public int getTotalnum() {
       return totalnum_;
@@ -5314,7 +6905,7 @@ public final class InterfaceDevice {
      *总项数
      * </pre>
      *
-     * <code>optional fixed32 totalnum = 4;</code>
+     * <code>fixed32 totalnum = 4;</code>
      */
     private void setTotalnum(int value) {
       
@@ -5325,7 +6916,7 @@ public final class InterfaceDevice {
      *总项数
      * </pre>
      *
-     * <code>optional fixed32 totalnum = 4;</code>
+     * <code>fixed32 totalnum = 4;</code>
      */
     private void clearTotalnum() {
       
@@ -5339,7 +6930,7 @@ public final class InterfaceDevice {
      *用于分组使用,如：查询指分组中的人员,这里填写分组id
      * </pre>
      *
-     * <code>optional fixed32 idval = 5;</code>
+     * <code>fixed32 idval = 5;</code>
      */
     public int getIdval() {
       return idval_;
@@ -5349,7 +6940,7 @@ public final class InterfaceDevice {
      *用于分组使用,如：查询指分组中的人员,这里填写分组id
      * </pre>
      *
-     * <code>optional fixed32 idval = 5;</code>
+     * <code>fixed32 idval = 5;</code>
      */
     private void setIdval(int value) {
       
@@ -5360,7 +6951,7 @@ public final class InterfaceDevice {
      *用于分组使用,如：查询指分组中的人员,这里填写分组id
      * </pre>
      *
-     * <code>optional fixed32 idval = 5;</code>
+     * <code>fixed32 idval = 5;</code>
      */
     private void clearIdval() {
       
@@ -5543,6 +7134,19 @@ public final class InterfaceDevice {
     }
 
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_PageQueryDeviceInfo parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_PageQueryDeviceInfo parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_PageQueryDeviceInfo parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return com.google.protobuf.GeneratedMessageLite.parseFrom(
@@ -5636,7 +7240,7 @@ public final class InterfaceDevice {
        *起始索引 从0 开始
        * </pre>
        *
-       * <code>optional fixed32 pageindex = 1;</code>
+       * <code>fixed32 pageindex = 1;</code>
        */
       public int getPageindex() {
         return instance.getPageindex();
@@ -5646,7 +7250,7 @@ public final class InterfaceDevice {
        *起始索引 从0 开始
        * </pre>
        *
-       * <code>optional fixed32 pageindex = 1;</code>
+       * <code>fixed32 pageindex = 1;</code>
        */
       public Builder setPageindex(int value) {
         copyOnWrite();
@@ -5658,7 +7262,7 @@ public final class InterfaceDevice {
        *起始索引 从0 开始
        * </pre>
        *
-       * <code>optional fixed32 pageindex = 1;</code>
+       * <code>fixed32 pageindex = 1;</code>
        */
       public Builder clearPageindex() {
         copyOnWrite();
@@ -5671,7 +7275,7 @@ public final class InterfaceDevice {
        *每页项数
        * </pre>
        *
-       * <code>optional fixed32 pagenum = 2;</code>
+       * <code>fixed32 pagenum = 2;</code>
        */
       public int getPagenum() {
         return instance.getPagenum();
@@ -5681,7 +7285,7 @@ public final class InterfaceDevice {
        *每页项数
        * </pre>
        *
-       * <code>optional fixed32 pagenum = 2;</code>
+       * <code>fixed32 pagenum = 2;</code>
        */
       public Builder setPagenum(int value) {
         copyOnWrite();
@@ -5693,7 +7297,7 @@ public final class InterfaceDevice {
        *每页项数
        * </pre>
        *
-       * <code>optional fixed32 pagenum = 2;</code>
+       * <code>fixed32 pagenum = 2;</code>
        */
       public Builder clearPagenum() {
         copyOnWrite();
@@ -5706,7 +7310,7 @@ public final class InterfaceDevice {
        *当前页项数 ,根据数据不同用不同的解析
        * </pre>
        *
-       * <code>optional fixed32 itemnum = 3;</code>
+       * <code>fixed32 itemnum = 3;</code>
        */
       public int getItemnum() {
         return instance.getItemnum();
@@ -5716,7 +7320,7 @@ public final class InterfaceDevice {
        *当前页项数 ,根据数据不同用不同的解析
        * </pre>
        *
-       * <code>optional fixed32 itemnum = 3;</code>
+       * <code>fixed32 itemnum = 3;</code>
        */
       public Builder setItemnum(int value) {
         copyOnWrite();
@@ -5728,7 +7332,7 @@ public final class InterfaceDevice {
        *当前页项数 ,根据数据不同用不同的解析
        * </pre>
        *
-       * <code>optional fixed32 itemnum = 3;</code>
+       * <code>fixed32 itemnum = 3;</code>
        */
       public Builder clearItemnum() {
         copyOnWrite();
@@ -5741,7 +7345,7 @@ public final class InterfaceDevice {
        *总项数
        * </pre>
        *
-       * <code>optional fixed32 totalnum = 4;</code>
+       * <code>fixed32 totalnum = 4;</code>
        */
       public int getTotalnum() {
         return instance.getTotalnum();
@@ -5751,7 +7355,7 @@ public final class InterfaceDevice {
        *总项数
        * </pre>
        *
-       * <code>optional fixed32 totalnum = 4;</code>
+       * <code>fixed32 totalnum = 4;</code>
        */
       public Builder setTotalnum(int value) {
         copyOnWrite();
@@ -5763,7 +7367,7 @@ public final class InterfaceDevice {
        *总项数
        * </pre>
        *
-       * <code>optional fixed32 totalnum = 4;</code>
+       * <code>fixed32 totalnum = 4;</code>
        */
       public Builder clearTotalnum() {
         copyOnWrite();
@@ -5776,7 +7380,7 @@ public final class InterfaceDevice {
        *用于分组使用,如：查询指分组中的人员,这里填写分组id
        * </pre>
        *
-       * <code>optional fixed32 idval = 5;</code>
+       * <code>fixed32 idval = 5;</code>
        */
       public int getIdval() {
         return instance.getIdval();
@@ -5786,7 +7390,7 @@ public final class InterfaceDevice {
        *用于分组使用,如：查询指分组中的人员,这里填写分组id
        * </pre>
        *
-       * <code>optional fixed32 idval = 5;</code>
+       * <code>fixed32 idval = 5;</code>
        */
       public Builder setIdval(int value) {
         copyOnWrite();
@@ -5798,7 +7402,7 @@ public final class InterfaceDevice {
        *用于分组使用,如：查询指分组中的人员,这里填写分组id
        * </pre>
        *
-       * <code>optional fixed32 idval = 5;</code>
+       * <code>fixed32 idval = 5;</code>
        */
       public Builder clearIdval() {
         copyOnWrite();
@@ -5905,6 +7509,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_PageQueryDeviceInfo)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -6006,6 +7611,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -6046,7 +7652,7 @@ public final class InterfaceDevice {
       com.google.protobuf.MessageLiteOrBuilder {
 
     /**
-     * <code>optional fixed32 devceid = 1;</code>
+     * <code>fixed32 devceid = 1;</code>
      */
     int getDevceid();
 
@@ -6055,7 +7661,7 @@ public final class InterfaceDevice {
      *如果设备ID是参会人员席位,以下数据有效
      * </pre>
      *
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     int getMemberid();
 
@@ -6064,7 +7670,7 @@ public final class InterfaceDevice {
      *参会人员名称
      * </pre>
      *
-     * <code>optional bytes name = 3;</code>
+     * <code>bytes name = 3;</code>
      */
     com.google.protobuf.ByteString getName();
   }
@@ -6082,20 +7688,20 @@ public final class InterfaceDevice {
     public static final int DEVCEID_FIELD_NUMBER = 1;
     private int devceid_;
     /**
-     * <code>optional fixed32 devceid = 1;</code>
+     * <code>fixed32 devceid = 1;</code>
      */
     public int getDevceid() {
       return devceid_;
     }
     /**
-     * <code>optional fixed32 devceid = 1;</code>
+     * <code>fixed32 devceid = 1;</code>
      */
     private void setDevceid(int value) {
       
       devceid_ = value;
     }
     /**
-     * <code>optional fixed32 devceid = 1;</code>
+     * <code>fixed32 devceid = 1;</code>
      */
     private void clearDevceid() {
       
@@ -6109,7 +7715,7 @@ public final class InterfaceDevice {
      *如果设备ID是参会人员席位,以下数据有效
      * </pre>
      *
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     public int getMemberid() {
       return memberid_;
@@ -6119,7 +7725,7 @@ public final class InterfaceDevice {
      *如果设备ID是参会人员席位,以下数据有效
      * </pre>
      *
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     private void setMemberid(int value) {
       
@@ -6130,7 +7736,7 @@ public final class InterfaceDevice {
      *如果设备ID是参会人员席位,以下数据有效
      * </pre>
      *
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     private void clearMemberid() {
       
@@ -6144,7 +7750,7 @@ public final class InterfaceDevice {
      *参会人员名称
      * </pre>
      *
-     * <code>optional bytes name = 3;</code>
+     * <code>bytes name = 3;</code>
      */
     public com.google.protobuf.ByteString getName() {
       return name_;
@@ -6154,7 +7760,7 @@ public final class InterfaceDevice {
      *参会人员名称
      * </pre>
      *
-     * <code>optional bytes name = 3;</code>
+     * <code>bytes name = 3;</code>
      */
     private void setName(com.google.protobuf.ByteString value) {
       if (value == null) {
@@ -6168,7 +7774,7 @@ public final class InterfaceDevice {
      *参会人员名称
      * </pre>
      *
-     * <code>optional bytes name = 3;</code>
+     * <code>bytes name = 3;</code>
      */
     private void clearName() {
       
@@ -6209,6 +7815,19 @@ public final class InterfaceDevice {
       return size;
     }
 
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Item_DeviceResPlay parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Item_DeviceResPlay parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Item_DeviceResPlay parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -6292,13 +7911,13 @@ public final class InterfaceDevice {
 
 
       /**
-       * <code>optional fixed32 devceid = 1;</code>
+       * <code>fixed32 devceid = 1;</code>
        */
       public int getDevceid() {
         return instance.getDevceid();
       }
       /**
-       * <code>optional fixed32 devceid = 1;</code>
+       * <code>fixed32 devceid = 1;</code>
        */
       public Builder setDevceid(int value) {
         copyOnWrite();
@@ -6306,7 +7925,7 @@ public final class InterfaceDevice {
         return this;
       }
       /**
-       * <code>optional fixed32 devceid = 1;</code>
+       * <code>fixed32 devceid = 1;</code>
        */
       public Builder clearDevceid() {
         copyOnWrite();
@@ -6319,7 +7938,7 @@ public final class InterfaceDevice {
        *如果设备ID是参会人员席位,以下数据有效
        * </pre>
        *
-       * <code>optional fixed32 memberid = 2;</code>
+       * <code>fixed32 memberid = 2;</code>
        */
       public int getMemberid() {
         return instance.getMemberid();
@@ -6329,7 +7948,7 @@ public final class InterfaceDevice {
        *如果设备ID是参会人员席位,以下数据有效
        * </pre>
        *
-       * <code>optional fixed32 memberid = 2;</code>
+       * <code>fixed32 memberid = 2;</code>
        */
       public Builder setMemberid(int value) {
         copyOnWrite();
@@ -6341,7 +7960,7 @@ public final class InterfaceDevice {
        *如果设备ID是参会人员席位,以下数据有效
        * </pre>
        *
-       * <code>optional fixed32 memberid = 2;</code>
+       * <code>fixed32 memberid = 2;</code>
        */
       public Builder clearMemberid() {
         copyOnWrite();
@@ -6354,7 +7973,7 @@ public final class InterfaceDevice {
        *参会人员名称
        * </pre>
        *
-       * <code>optional bytes name = 3;</code>
+       * <code>bytes name = 3;</code>
        */
       public com.google.protobuf.ByteString getName() {
         return instance.getName();
@@ -6364,7 +7983,7 @@ public final class InterfaceDevice {
        *参会人员名称
        * </pre>
        *
-       * <code>optional bytes name = 3;</code>
+       * <code>bytes name = 3;</code>
        */
       public Builder setName(com.google.protobuf.ByteString value) {
         copyOnWrite();
@@ -6376,7 +7995,7 @@ public final class InterfaceDevice {
        *参会人员名称
        * </pre>
        *
-       * <code>optional bytes name = 3;</code>
+       * <code>bytes name = 3;</code>
        */
       public Builder clearName() {
         copyOnWrite();
@@ -6386,6 +8005,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_Item_DeviceResPlay)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -6461,6 +8081,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -6673,6 +8294,19 @@ public final class InterfaceDevice {
     }
 
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceResPlay parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceResPlay parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceResPlay parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return com.google.protobuf.GeneratedMessageLite.parseFrom(
@@ -6860,6 +8494,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_Type_DeviceResPlay)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -6925,6 +8560,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -6969,7 +8605,7 @@ public final class InterfaceDevice {
      *数据ID
      * </pre>
      *
-     * <code>optional fixed32 propertyid = 1;</code>
+     * <code>fixed32 propertyid = 1;</code>
      */
     int getPropertyid();
 
@@ -6978,7 +8614,7 @@ public final class InterfaceDevice {
      *传入参数 为0表示本机设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 2;</code>
+     * <code>fixed32 deviceid = 2;</code>
      */
     int getDeviceid();
 
@@ -6987,7 +8623,7 @@ public final class InterfaceDevice {
      *传入参数
      * </pre>
      *
-     * <code>optional fixed32 paramterval = 3;</code>
+     * <code>fixed32 paramterval = 3;</code>
      */
     int getParamterval();
   }
@@ -7015,7 +8651,7 @@ public final class InterfaceDevice {
      *数据ID
      * </pre>
      *
-     * <code>optional fixed32 propertyid = 1;</code>
+     * <code>fixed32 propertyid = 1;</code>
      */
     public int getPropertyid() {
       return propertyid_;
@@ -7025,7 +8661,7 @@ public final class InterfaceDevice {
      *数据ID
      * </pre>
      *
-     * <code>optional fixed32 propertyid = 1;</code>
+     * <code>fixed32 propertyid = 1;</code>
      */
     private void setPropertyid(int value) {
       
@@ -7036,7 +8672,7 @@ public final class InterfaceDevice {
      *数据ID
      * </pre>
      *
-     * <code>optional fixed32 propertyid = 1;</code>
+     * <code>fixed32 propertyid = 1;</code>
      */
     private void clearPropertyid() {
       
@@ -7050,7 +8686,7 @@ public final class InterfaceDevice {
      *传入参数 为0表示本机设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 2;</code>
+     * <code>fixed32 deviceid = 2;</code>
      */
     public int getDeviceid() {
       return deviceid_;
@@ -7060,7 +8696,7 @@ public final class InterfaceDevice {
      *传入参数 为0表示本机设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 2;</code>
+     * <code>fixed32 deviceid = 2;</code>
      */
     private void setDeviceid(int value) {
       
@@ -7071,7 +8707,7 @@ public final class InterfaceDevice {
      *传入参数 为0表示本机设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 2;</code>
+     * <code>fixed32 deviceid = 2;</code>
      */
     private void clearDeviceid() {
       
@@ -7085,7 +8721,7 @@ public final class InterfaceDevice {
      *传入参数
      * </pre>
      *
-     * <code>optional fixed32 paramterval = 3;</code>
+     * <code>fixed32 paramterval = 3;</code>
      */
     public int getParamterval() {
       return paramterval_;
@@ -7095,7 +8731,7 @@ public final class InterfaceDevice {
      *传入参数
      * </pre>
      *
-     * <code>optional fixed32 paramterval = 3;</code>
+     * <code>fixed32 paramterval = 3;</code>
      */
     private void setParamterval(int value) {
       
@@ -7106,7 +8742,7 @@ public final class InterfaceDevice {
      *传入参数
      * </pre>
      *
-     * <code>optional fixed32 paramterval = 3;</code>
+     * <code>fixed32 paramterval = 3;</code>
      */
     private void clearParamterval() {
       
@@ -7147,6 +8783,19 @@ public final class InterfaceDevice {
       return size;
     }
 
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_MeetDeviceQueryProperty parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_MeetDeviceQueryProperty parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_MeetDeviceQueryProperty parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -7241,7 +8890,7 @@ public final class InterfaceDevice {
        *数据ID
        * </pre>
        *
-       * <code>optional fixed32 propertyid = 1;</code>
+       * <code>fixed32 propertyid = 1;</code>
        */
       public int getPropertyid() {
         return instance.getPropertyid();
@@ -7251,7 +8900,7 @@ public final class InterfaceDevice {
        *数据ID
        * </pre>
        *
-       * <code>optional fixed32 propertyid = 1;</code>
+       * <code>fixed32 propertyid = 1;</code>
        */
       public Builder setPropertyid(int value) {
         copyOnWrite();
@@ -7263,7 +8912,7 @@ public final class InterfaceDevice {
        *数据ID
        * </pre>
        *
-       * <code>optional fixed32 propertyid = 1;</code>
+       * <code>fixed32 propertyid = 1;</code>
        */
       public Builder clearPropertyid() {
         copyOnWrite();
@@ -7276,7 +8925,7 @@ public final class InterfaceDevice {
        *传入参数 为0表示本机设备ID
        * </pre>
        *
-       * <code>optional fixed32 deviceid = 2;</code>
+       * <code>fixed32 deviceid = 2;</code>
        */
       public int getDeviceid() {
         return instance.getDeviceid();
@@ -7286,7 +8935,7 @@ public final class InterfaceDevice {
        *传入参数 为0表示本机设备ID
        * </pre>
        *
-       * <code>optional fixed32 deviceid = 2;</code>
+       * <code>fixed32 deviceid = 2;</code>
        */
       public Builder setDeviceid(int value) {
         copyOnWrite();
@@ -7298,7 +8947,7 @@ public final class InterfaceDevice {
        *传入参数 为0表示本机设备ID
        * </pre>
        *
-       * <code>optional fixed32 deviceid = 2;</code>
+       * <code>fixed32 deviceid = 2;</code>
        */
       public Builder clearDeviceid() {
         copyOnWrite();
@@ -7311,7 +8960,7 @@ public final class InterfaceDevice {
        *传入参数
        * </pre>
        *
-       * <code>optional fixed32 paramterval = 3;</code>
+       * <code>fixed32 paramterval = 3;</code>
        */
       public int getParamterval() {
         return instance.getParamterval();
@@ -7321,7 +8970,7 @@ public final class InterfaceDevice {
        *传入参数
        * </pre>
        *
-       * <code>optional fixed32 paramterval = 3;</code>
+       * <code>fixed32 paramterval = 3;</code>
        */
       public Builder setParamterval(int value) {
         copyOnWrite();
@@ -7333,7 +8982,7 @@ public final class InterfaceDevice {
        *传入参数
        * </pre>
        *
-       * <code>optional fixed32 paramterval = 3;</code>
+       * <code>fixed32 paramterval = 3;</code>
        */
       public Builder clearParamterval() {
         copyOnWrite();
@@ -7343,6 +8992,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_MeetDeviceQueryProperty)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -7418,6 +9068,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -7462,7 +9113,7 @@ public final class InterfaceDevice {
      *数据
      * </pre>
      *
-     * <code>optional fixed32 propertyval = 1;</code>
+     * <code>fixed32 propertyval = 1;</code>
      */
     int getPropertyval();
 
@@ -7471,7 +9122,7 @@ public final class InterfaceDevice {
      *数据
      * </pre>
      *
-     * <code>optional fixed32 propertyval2 = 2;</code>
+     * <code>fixed32 propertyval2 = 2;</code>
      */
     int getPropertyval2();
 
@@ -7480,7 +9131,7 @@ public final class InterfaceDevice {
      *数据
      * </pre>
      *
-     * <code>optional fixed32 propertyval3 = 3;</code>
+     * <code>fixed32 propertyval3 = 3;</code>
      */
     int getPropertyval3();
 
@@ -7489,7 +9140,7 @@ public final class InterfaceDevice {
      *数据
      * </pre>
      *
-     * <code>optional fixed32 propertyval4 = 4;</code>
+     * <code>fixed32 propertyval4 = 4;</code>
      */
     int getPropertyval4();
   }
@@ -7517,7 +9168,7 @@ public final class InterfaceDevice {
      *数据
      * </pre>
      *
-     * <code>optional fixed32 propertyval = 1;</code>
+     * <code>fixed32 propertyval = 1;</code>
      */
     public int getPropertyval() {
       return propertyval_;
@@ -7527,7 +9178,7 @@ public final class InterfaceDevice {
      *数据
      * </pre>
      *
-     * <code>optional fixed32 propertyval = 1;</code>
+     * <code>fixed32 propertyval = 1;</code>
      */
     private void setPropertyval(int value) {
       
@@ -7538,7 +9189,7 @@ public final class InterfaceDevice {
      *数据
      * </pre>
      *
-     * <code>optional fixed32 propertyval = 1;</code>
+     * <code>fixed32 propertyval = 1;</code>
      */
     private void clearPropertyval() {
       
@@ -7552,7 +9203,7 @@ public final class InterfaceDevice {
      *数据
      * </pre>
      *
-     * <code>optional fixed32 propertyval2 = 2;</code>
+     * <code>fixed32 propertyval2 = 2;</code>
      */
     public int getPropertyval2() {
       return propertyval2_;
@@ -7562,7 +9213,7 @@ public final class InterfaceDevice {
      *数据
      * </pre>
      *
-     * <code>optional fixed32 propertyval2 = 2;</code>
+     * <code>fixed32 propertyval2 = 2;</code>
      */
     private void setPropertyval2(int value) {
       
@@ -7573,7 +9224,7 @@ public final class InterfaceDevice {
      *数据
      * </pre>
      *
-     * <code>optional fixed32 propertyval2 = 2;</code>
+     * <code>fixed32 propertyval2 = 2;</code>
      */
     private void clearPropertyval2() {
       
@@ -7587,7 +9238,7 @@ public final class InterfaceDevice {
      *数据
      * </pre>
      *
-     * <code>optional fixed32 propertyval3 = 3;</code>
+     * <code>fixed32 propertyval3 = 3;</code>
      */
     public int getPropertyval3() {
       return propertyval3_;
@@ -7597,7 +9248,7 @@ public final class InterfaceDevice {
      *数据
      * </pre>
      *
-     * <code>optional fixed32 propertyval3 = 3;</code>
+     * <code>fixed32 propertyval3 = 3;</code>
      */
     private void setPropertyval3(int value) {
       
@@ -7608,7 +9259,7 @@ public final class InterfaceDevice {
      *数据
      * </pre>
      *
-     * <code>optional fixed32 propertyval3 = 3;</code>
+     * <code>fixed32 propertyval3 = 3;</code>
      */
     private void clearPropertyval3() {
       
@@ -7622,7 +9273,7 @@ public final class InterfaceDevice {
      *数据
      * </pre>
      *
-     * <code>optional fixed32 propertyval4 = 4;</code>
+     * <code>fixed32 propertyval4 = 4;</code>
      */
     public int getPropertyval4() {
       return propertyval4_;
@@ -7632,7 +9283,7 @@ public final class InterfaceDevice {
      *数据
      * </pre>
      *
-     * <code>optional fixed32 propertyval4 = 4;</code>
+     * <code>fixed32 propertyval4 = 4;</code>
      */
     private void setPropertyval4(int value) {
       
@@ -7643,7 +9294,7 @@ public final class InterfaceDevice {
      *数据
      * </pre>
      *
-     * <code>optional fixed32 propertyval4 = 4;</code>
+     * <code>fixed32 propertyval4 = 4;</code>
      */
     private void clearPropertyval4() {
       
@@ -7691,6 +9342,19 @@ public final class InterfaceDevice {
       return size;
     }
 
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_DeviceInt32uProperty parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_DeviceInt32uProperty parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_DeviceInt32uProperty parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -7785,7 +9449,7 @@ public final class InterfaceDevice {
        *数据
        * </pre>
        *
-       * <code>optional fixed32 propertyval = 1;</code>
+       * <code>fixed32 propertyval = 1;</code>
        */
       public int getPropertyval() {
         return instance.getPropertyval();
@@ -7795,7 +9459,7 @@ public final class InterfaceDevice {
        *数据
        * </pre>
        *
-       * <code>optional fixed32 propertyval = 1;</code>
+       * <code>fixed32 propertyval = 1;</code>
        */
       public Builder setPropertyval(int value) {
         copyOnWrite();
@@ -7807,7 +9471,7 @@ public final class InterfaceDevice {
        *数据
        * </pre>
        *
-       * <code>optional fixed32 propertyval = 1;</code>
+       * <code>fixed32 propertyval = 1;</code>
        */
       public Builder clearPropertyval() {
         copyOnWrite();
@@ -7820,7 +9484,7 @@ public final class InterfaceDevice {
        *数据
        * </pre>
        *
-       * <code>optional fixed32 propertyval2 = 2;</code>
+       * <code>fixed32 propertyval2 = 2;</code>
        */
       public int getPropertyval2() {
         return instance.getPropertyval2();
@@ -7830,7 +9494,7 @@ public final class InterfaceDevice {
        *数据
        * </pre>
        *
-       * <code>optional fixed32 propertyval2 = 2;</code>
+       * <code>fixed32 propertyval2 = 2;</code>
        */
       public Builder setPropertyval2(int value) {
         copyOnWrite();
@@ -7842,7 +9506,7 @@ public final class InterfaceDevice {
        *数据
        * </pre>
        *
-       * <code>optional fixed32 propertyval2 = 2;</code>
+       * <code>fixed32 propertyval2 = 2;</code>
        */
       public Builder clearPropertyval2() {
         copyOnWrite();
@@ -7855,7 +9519,7 @@ public final class InterfaceDevice {
        *数据
        * </pre>
        *
-       * <code>optional fixed32 propertyval3 = 3;</code>
+       * <code>fixed32 propertyval3 = 3;</code>
        */
       public int getPropertyval3() {
         return instance.getPropertyval3();
@@ -7865,7 +9529,7 @@ public final class InterfaceDevice {
        *数据
        * </pre>
        *
-       * <code>optional fixed32 propertyval3 = 3;</code>
+       * <code>fixed32 propertyval3 = 3;</code>
        */
       public Builder setPropertyval3(int value) {
         copyOnWrite();
@@ -7877,7 +9541,7 @@ public final class InterfaceDevice {
        *数据
        * </pre>
        *
-       * <code>optional fixed32 propertyval3 = 3;</code>
+       * <code>fixed32 propertyval3 = 3;</code>
        */
       public Builder clearPropertyval3() {
         copyOnWrite();
@@ -7890,7 +9554,7 @@ public final class InterfaceDevice {
        *数据
        * </pre>
        *
-       * <code>optional fixed32 propertyval4 = 4;</code>
+       * <code>fixed32 propertyval4 = 4;</code>
        */
       public int getPropertyval4() {
         return instance.getPropertyval4();
@@ -7900,7 +9564,7 @@ public final class InterfaceDevice {
        *数据
        * </pre>
        *
-       * <code>optional fixed32 propertyval4 = 4;</code>
+       * <code>fixed32 propertyval4 = 4;</code>
        */
       public Builder setPropertyval4(int value) {
         copyOnWrite();
@@ -7912,7 +9576,7 @@ public final class InterfaceDevice {
        *数据
        * </pre>
        *
-       * <code>optional fixed32 propertyval4 = 4;</code>
+       * <code>fixed32 propertyval4 = 4;</code>
        */
       public Builder clearPropertyval4() {
         copyOnWrite();
@@ -7922,6 +9586,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_DeviceInt32uProperty)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -8004,6 +9669,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -8048,7 +9714,7 @@ public final class InterfaceDevice {
      *字符串
      * </pre>
      *
-     * <code>optional bytes propertytext = 1;</code>
+     * <code>bytes propertytext = 1;</code>
      */
     com.google.protobuf.ByteString getPropertytext();
   }
@@ -8077,7 +9743,7 @@ public final class InterfaceDevice {
      *字符串
      * </pre>
      *
-     * <code>optional bytes propertytext = 1;</code>
+     * <code>bytes propertytext = 1;</code>
      */
     public com.google.protobuf.ByteString getPropertytext() {
       return propertytext_;
@@ -8087,7 +9753,7 @@ public final class InterfaceDevice {
      *字符串
      * </pre>
      *
-     * <code>optional bytes propertytext = 1;</code>
+     * <code>bytes propertytext = 1;</code>
      */
     private void setPropertytext(com.google.protobuf.ByteString value) {
       if (value == null) {
@@ -8101,7 +9767,7 @@ public final class InterfaceDevice {
      *字符串
      * </pre>
      *
-     * <code>optional bytes propertytext = 1;</code>
+     * <code>bytes propertytext = 1;</code>
      */
     private void clearPropertytext() {
       
@@ -8128,6 +9794,19 @@ public final class InterfaceDevice {
       return size;
     }
 
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_DeviceStringProperty parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_DeviceStringProperty parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_DeviceStringProperty parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -8222,7 +9901,7 @@ public final class InterfaceDevice {
        *字符串
        * </pre>
        *
-       * <code>optional bytes propertytext = 1;</code>
+       * <code>bytes propertytext = 1;</code>
        */
       public com.google.protobuf.ByteString getPropertytext() {
         return instance.getPropertytext();
@@ -8232,7 +9911,7 @@ public final class InterfaceDevice {
        *字符串
        * </pre>
        *
-       * <code>optional bytes propertytext = 1;</code>
+       * <code>bytes propertytext = 1;</code>
        */
       public Builder setPropertytext(com.google.protobuf.ByteString value) {
         copyOnWrite();
@@ -8244,7 +9923,7 @@ public final class InterfaceDevice {
        *字符串
        * </pre>
        *
-       * <code>optional bytes propertytext = 1;</code>
+       * <code>bytes propertytext = 1;</code>
        */
       public Builder clearPropertytext() {
         copyOnWrite();
@@ -8254,6 +9933,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_DeviceStringProperty)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -8315,6 +9995,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -8359,17 +10040,17 @@ public final class InterfaceDevice {
      *指定需要修改的标志位 参见 Pb_DeviceModifyFlag
      * </pre>
      *
-     * <code>optional fixed32 modflag = 1;</code>
+     * <code>fixed32 modflag = 1;</code>
      */
     int getModflag();
 
     /**
-     * <code>optional fixed32 devcieid = 2;</code>
+     * <code>fixed32 devcieid = 2;</code>
      */
     int getDevcieid();
 
     /**
-     * <code>optional bytes devname = 3;</code>
+     * <code>bytes devname = 3;</code>
      */
     com.google.protobuf.ByteString getDevname();
 
@@ -8404,7 +10085,7 @@ public final class InterfaceDevice {
      *升降话筒组ID
      * </pre>
      *
-     * <code>optional fixed32 liftgroupres0 = 5;</code>
+     * <code>fixed32 liftgroupres0 = 5;</code>
      */
     int getLiftgroupres0();
 
@@ -8413,7 +10094,7 @@ public final class InterfaceDevice {
      *升降话筒组ID
      * </pre>
      *
-     * <code>optional fixed32 liftgroupres1 = 6;</code>
+     * <code>fixed32 liftgroupres1 = 6;</code>
      */
     int getLiftgroupres1();
 
@@ -8422,7 +10103,7 @@ public final class InterfaceDevice {
      *参见 Interface_Macro.proto Pb_MeetDeviceFlag 定义
      * </pre>
      *
-     * <code>optional fixed32 deviceflag = 7;</code>
+     * <code>fixed32 deviceflag = 7;</code>
      */
     int getDeviceflag();
   }
@@ -8452,7 +10133,7 @@ public final class InterfaceDevice {
      *指定需要修改的标志位 参见 Pb_DeviceModifyFlag
      * </pre>
      *
-     * <code>optional fixed32 modflag = 1;</code>
+     * <code>fixed32 modflag = 1;</code>
      */
     public int getModflag() {
       return modflag_;
@@ -8462,7 +10143,7 @@ public final class InterfaceDevice {
      *指定需要修改的标志位 参见 Pb_DeviceModifyFlag
      * </pre>
      *
-     * <code>optional fixed32 modflag = 1;</code>
+     * <code>fixed32 modflag = 1;</code>
      */
     private void setModflag(int value) {
       
@@ -8473,7 +10154,7 @@ public final class InterfaceDevice {
      *指定需要修改的标志位 参见 Pb_DeviceModifyFlag
      * </pre>
      *
-     * <code>optional fixed32 modflag = 1;</code>
+     * <code>fixed32 modflag = 1;</code>
      */
     private void clearModflag() {
       
@@ -8483,20 +10164,20 @@ public final class InterfaceDevice {
     public static final int DEVCIEID_FIELD_NUMBER = 2;
     private int devcieid_;
     /**
-     * <code>optional fixed32 devcieid = 2;</code>
+     * <code>fixed32 devcieid = 2;</code>
      */
     public int getDevcieid() {
       return devcieid_;
     }
     /**
-     * <code>optional fixed32 devcieid = 2;</code>
+     * <code>fixed32 devcieid = 2;</code>
      */
     private void setDevcieid(int value) {
       
       devcieid_ = value;
     }
     /**
-     * <code>optional fixed32 devcieid = 2;</code>
+     * <code>fixed32 devcieid = 2;</code>
      */
     private void clearDevcieid() {
       
@@ -8506,13 +10187,13 @@ public final class InterfaceDevice {
     public static final int DEVNAME_FIELD_NUMBER = 3;
     private com.google.protobuf.ByteString devname_;
     /**
-     * <code>optional bytes devname = 3;</code>
+     * <code>bytes devname = 3;</code>
      */
     public com.google.protobuf.ByteString getDevname() {
       return devname_;
     }
     /**
-     * <code>optional bytes devname = 3;</code>
+     * <code>bytes devname = 3;</code>
      */
     private void setDevname(com.google.protobuf.ByteString value) {
       if (value == null) {
@@ -8522,7 +10203,7 @@ public final class InterfaceDevice {
       devname_ = value;
     }
     /**
-     * <code>optional bytes devname = 3;</code>
+     * <code>bytes devname = 3;</code>
      */
     private void clearDevname() {
       
@@ -8712,7 +10393,7 @@ public final class InterfaceDevice {
      *升降话筒组ID
      * </pre>
      *
-     * <code>optional fixed32 liftgroupres0 = 5;</code>
+     * <code>fixed32 liftgroupres0 = 5;</code>
      */
     public int getLiftgroupres0() {
       return liftgroupres0_;
@@ -8722,7 +10403,7 @@ public final class InterfaceDevice {
      *升降话筒组ID
      * </pre>
      *
-     * <code>optional fixed32 liftgroupres0 = 5;</code>
+     * <code>fixed32 liftgroupres0 = 5;</code>
      */
     private void setLiftgroupres0(int value) {
       
@@ -8733,7 +10414,7 @@ public final class InterfaceDevice {
      *升降话筒组ID
      * </pre>
      *
-     * <code>optional fixed32 liftgroupres0 = 5;</code>
+     * <code>fixed32 liftgroupres0 = 5;</code>
      */
     private void clearLiftgroupres0() {
       
@@ -8747,7 +10428,7 @@ public final class InterfaceDevice {
      *升降话筒组ID
      * </pre>
      *
-     * <code>optional fixed32 liftgroupres1 = 6;</code>
+     * <code>fixed32 liftgroupres1 = 6;</code>
      */
     public int getLiftgroupres1() {
       return liftgroupres1_;
@@ -8757,7 +10438,7 @@ public final class InterfaceDevice {
      *升降话筒组ID
      * </pre>
      *
-     * <code>optional fixed32 liftgroupres1 = 6;</code>
+     * <code>fixed32 liftgroupres1 = 6;</code>
      */
     private void setLiftgroupres1(int value) {
       
@@ -8768,7 +10449,7 @@ public final class InterfaceDevice {
      *升降话筒组ID
      * </pre>
      *
-     * <code>optional fixed32 liftgroupres1 = 6;</code>
+     * <code>fixed32 liftgroupres1 = 6;</code>
      */
     private void clearLiftgroupres1() {
       
@@ -8782,7 +10463,7 @@ public final class InterfaceDevice {
      *参见 Interface_Macro.proto Pb_MeetDeviceFlag 定义
      * </pre>
      *
-     * <code>optional fixed32 deviceflag = 7;</code>
+     * <code>fixed32 deviceflag = 7;</code>
      */
     public int getDeviceflag() {
       return deviceflag_;
@@ -8792,7 +10473,7 @@ public final class InterfaceDevice {
      *参见 Interface_Macro.proto Pb_MeetDeviceFlag 定义
      * </pre>
      *
-     * <code>optional fixed32 deviceflag = 7;</code>
+     * <code>fixed32 deviceflag = 7;</code>
      */
     private void setDeviceflag(int value) {
       
@@ -8803,7 +10484,7 @@ public final class InterfaceDevice {
      *参见 Interface_Macro.proto Pb_MeetDeviceFlag 定义
      * </pre>
      *
-     * <code>optional fixed32 deviceflag = 7;</code>
+     * <code>fixed32 deviceflag = 7;</code>
      */
     private void clearDeviceflag() {
       
@@ -8872,6 +10553,19 @@ public final class InterfaceDevice {
       return size;
     }
 
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_DeviceModInfo parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_DeviceModInfo parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_DeviceModInfo parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -8965,7 +10659,7 @@ public final class InterfaceDevice {
        *指定需要修改的标志位 参见 Pb_DeviceModifyFlag
        * </pre>
        *
-       * <code>optional fixed32 modflag = 1;</code>
+       * <code>fixed32 modflag = 1;</code>
        */
       public int getModflag() {
         return instance.getModflag();
@@ -8975,7 +10669,7 @@ public final class InterfaceDevice {
        *指定需要修改的标志位 参见 Pb_DeviceModifyFlag
        * </pre>
        *
-       * <code>optional fixed32 modflag = 1;</code>
+       * <code>fixed32 modflag = 1;</code>
        */
       public Builder setModflag(int value) {
         copyOnWrite();
@@ -8987,7 +10681,7 @@ public final class InterfaceDevice {
        *指定需要修改的标志位 参见 Pb_DeviceModifyFlag
        * </pre>
        *
-       * <code>optional fixed32 modflag = 1;</code>
+       * <code>fixed32 modflag = 1;</code>
        */
       public Builder clearModflag() {
         copyOnWrite();
@@ -8996,13 +10690,13 @@ public final class InterfaceDevice {
       }
 
       /**
-       * <code>optional fixed32 devcieid = 2;</code>
+       * <code>fixed32 devcieid = 2;</code>
        */
       public int getDevcieid() {
         return instance.getDevcieid();
       }
       /**
-       * <code>optional fixed32 devcieid = 2;</code>
+       * <code>fixed32 devcieid = 2;</code>
        */
       public Builder setDevcieid(int value) {
         copyOnWrite();
@@ -9010,7 +10704,7 @@ public final class InterfaceDevice {
         return this;
       }
       /**
-       * <code>optional fixed32 devcieid = 2;</code>
+       * <code>fixed32 devcieid = 2;</code>
        */
       public Builder clearDevcieid() {
         copyOnWrite();
@@ -9019,13 +10713,13 @@ public final class InterfaceDevice {
       }
 
       /**
-       * <code>optional bytes devname = 3;</code>
+       * <code>bytes devname = 3;</code>
        */
       public com.google.protobuf.ByteString getDevname() {
         return instance.getDevname();
       }
       /**
-       * <code>optional bytes devname = 3;</code>
+       * <code>bytes devname = 3;</code>
        */
       public Builder setDevname(com.google.protobuf.ByteString value) {
         copyOnWrite();
@@ -9033,7 +10727,7 @@ public final class InterfaceDevice {
         return this;
       }
       /**
-       * <code>optional bytes devname = 3;</code>
+       * <code>bytes devname = 3;</code>
        */
       public Builder clearDevname() {
         copyOnWrite();
@@ -9191,7 +10885,7 @@ public final class InterfaceDevice {
        *升降话筒组ID
        * </pre>
        *
-       * <code>optional fixed32 liftgroupres0 = 5;</code>
+       * <code>fixed32 liftgroupres0 = 5;</code>
        */
       public int getLiftgroupres0() {
         return instance.getLiftgroupres0();
@@ -9201,7 +10895,7 @@ public final class InterfaceDevice {
        *升降话筒组ID
        * </pre>
        *
-       * <code>optional fixed32 liftgroupres0 = 5;</code>
+       * <code>fixed32 liftgroupres0 = 5;</code>
        */
       public Builder setLiftgroupres0(int value) {
         copyOnWrite();
@@ -9213,7 +10907,7 @@ public final class InterfaceDevice {
        *升降话筒组ID
        * </pre>
        *
-       * <code>optional fixed32 liftgroupres0 = 5;</code>
+       * <code>fixed32 liftgroupres0 = 5;</code>
        */
       public Builder clearLiftgroupres0() {
         copyOnWrite();
@@ -9226,7 +10920,7 @@ public final class InterfaceDevice {
        *升降话筒组ID
        * </pre>
        *
-       * <code>optional fixed32 liftgroupres1 = 6;</code>
+       * <code>fixed32 liftgroupres1 = 6;</code>
        */
       public int getLiftgroupres1() {
         return instance.getLiftgroupres1();
@@ -9236,7 +10930,7 @@ public final class InterfaceDevice {
        *升降话筒组ID
        * </pre>
        *
-       * <code>optional fixed32 liftgroupres1 = 6;</code>
+       * <code>fixed32 liftgroupres1 = 6;</code>
        */
       public Builder setLiftgroupres1(int value) {
         copyOnWrite();
@@ -9248,7 +10942,7 @@ public final class InterfaceDevice {
        *升降话筒组ID
        * </pre>
        *
-       * <code>optional fixed32 liftgroupres1 = 6;</code>
+       * <code>fixed32 liftgroupres1 = 6;</code>
        */
       public Builder clearLiftgroupres1() {
         copyOnWrite();
@@ -9261,7 +10955,7 @@ public final class InterfaceDevice {
        *参见 Interface_Macro.proto Pb_MeetDeviceFlag 定义
        * </pre>
        *
-       * <code>optional fixed32 deviceflag = 7;</code>
+       * <code>fixed32 deviceflag = 7;</code>
        */
       public int getDeviceflag() {
         return instance.getDeviceflag();
@@ -9271,7 +10965,7 @@ public final class InterfaceDevice {
        *参见 Interface_Macro.proto Pb_MeetDeviceFlag 定义
        * </pre>
        *
-       * <code>optional fixed32 deviceflag = 7;</code>
+       * <code>fixed32 deviceflag = 7;</code>
        */
       public Builder setDeviceflag(int value) {
         copyOnWrite();
@@ -9283,7 +10977,7 @@ public final class InterfaceDevice {
        *参见 Interface_Macro.proto Pb_MeetDeviceFlag 定义
        * </pre>
        *
-       * <code>optional fixed32 deviceflag = 7;</code>
+       * <code>fixed32 deviceflag = 7;</code>
        */
       public Builder clearDeviceflag() {
         copyOnWrite();
@@ -9293,6 +10987,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_DeviceModInfo)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -9401,6 +11096,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -9553,6 +11249,19 @@ public final class InterfaceDevice {
     }
 
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_DeviceDel parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_DeviceDel parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_DeviceDel parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return com.google.protobuf.GeneratedMessageLite.parseFrom(
@@ -9698,6 +11407,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_DeviceDel)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -9776,6 +11486,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -9820,7 +11531,7 @@ public final class InterfaceDevice {
      *已经上传完成的升级文件ID
      * </pre>
      *
-     * <code>optional fixed32 mediaid = 1;</code>
+     * <code>fixed32 mediaid = 1;</code>
      */
     int getMediaid();
   }
@@ -9848,7 +11559,7 @@ public final class InterfaceDevice {
      *已经上传完成的升级文件ID
      * </pre>
      *
-     * <code>optional fixed32 mediaid = 1;</code>
+     * <code>fixed32 mediaid = 1;</code>
      */
     public int getMediaid() {
       return mediaid_;
@@ -9858,7 +11569,7 @@ public final class InterfaceDevice {
      *已经上传完成的升级文件ID
      * </pre>
      *
-     * <code>optional fixed32 mediaid = 1;</code>
+     * <code>fixed32 mediaid = 1;</code>
      */
     private void setMediaid(int value) {
       
@@ -9869,7 +11580,7 @@ public final class InterfaceDevice {
      *已经上传完成的升级文件ID
      * </pre>
      *
-     * <code>optional fixed32 mediaid = 1;</code>
+     * <code>fixed32 mediaid = 1;</code>
      */
     private void clearMediaid() {
       
@@ -9896,6 +11607,19 @@ public final class InterfaceDevice {
       return size;
     }
 
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DoDeviceUpdate parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DoDeviceUpdate parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DoDeviceUpdate parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -9990,7 +11714,7 @@ public final class InterfaceDevice {
        *已经上传完成的升级文件ID
        * </pre>
        *
-       * <code>optional fixed32 mediaid = 1;</code>
+       * <code>fixed32 mediaid = 1;</code>
        */
       public int getMediaid() {
         return instance.getMediaid();
@@ -10000,7 +11724,7 @@ public final class InterfaceDevice {
        *已经上传完成的升级文件ID
        * </pre>
        *
-       * <code>optional fixed32 mediaid = 1;</code>
+       * <code>fixed32 mediaid = 1;</code>
        */
       public Builder setMediaid(int value) {
         copyOnWrite();
@@ -10012,7 +11736,7 @@ public final class InterfaceDevice {
        *已经上传完成的升级文件ID
        * </pre>
        *
-       * <code>optional fixed32 mediaid = 1;</code>
+       * <code>fixed32 mediaid = 1;</code>
        */
       public Builder clearMediaid() {
         copyOnWrite();
@@ -10022,6 +11746,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_Type_DoDeviceUpdate)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -10083,6 +11808,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -10123,12 +11849,12 @@ public final class InterfaceDevice {
       com.google.protobuf.MessageLiteOrBuilder {
 
     /**
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     int getDeviceid();
 
     /**
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     int getMemberid();
 
@@ -10137,7 +11863,7 @@ public final class InterfaceDevice {
      * 当前界面状态 参见Pb_MeetFaceStatus 定义
      * </pre>
      *
-     * <code>optional fixed32 facestatus = 3;</code>
+     * <code>fixed32 facestatus = 3;</code>
      */
     int getFacestatus();
 
@@ -10146,12 +11872,12 @@ public final class InterfaceDevice {
      *修改前的界面状态 参见Pb_MeetFaceStatus 定义
      * </pre>
      *
-     * <code>optional fixed32 oldfacestatus = 4;</code>
+     * <code>fixed32 oldfacestatus = 4;</code>
      */
     int getOldfacestatus();
 
     /**
-     * <code>optional fixed32 meetingid = 5;</code>
+     * <code>fixed32 meetingid = 5;</code>
      */
     int getMeetingid();
   }
@@ -10175,20 +11901,20 @@ public final class InterfaceDevice {
     public static final int DEVICEID_FIELD_NUMBER = 1;
     private int deviceid_;
     /**
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     public int getDeviceid() {
       return deviceid_;
     }
     /**
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     private void setDeviceid(int value) {
       
       deviceid_ = value;
     }
     /**
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     private void clearDeviceid() {
       
@@ -10198,20 +11924,20 @@ public final class InterfaceDevice {
     public static final int MEMBERID_FIELD_NUMBER = 2;
     private int memberid_;
     /**
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     public int getMemberid() {
       return memberid_;
     }
     /**
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     private void setMemberid(int value) {
       
       memberid_ = value;
     }
     /**
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     private void clearMemberid() {
       
@@ -10225,7 +11951,7 @@ public final class InterfaceDevice {
      * 当前界面状态 参见Pb_MeetFaceStatus 定义
      * </pre>
      *
-     * <code>optional fixed32 facestatus = 3;</code>
+     * <code>fixed32 facestatus = 3;</code>
      */
     public int getFacestatus() {
       return facestatus_;
@@ -10235,7 +11961,7 @@ public final class InterfaceDevice {
      * 当前界面状态 参见Pb_MeetFaceStatus 定义
      * </pre>
      *
-     * <code>optional fixed32 facestatus = 3;</code>
+     * <code>fixed32 facestatus = 3;</code>
      */
     private void setFacestatus(int value) {
       
@@ -10246,7 +11972,7 @@ public final class InterfaceDevice {
      * 当前界面状态 参见Pb_MeetFaceStatus 定义
      * </pre>
      *
-     * <code>optional fixed32 facestatus = 3;</code>
+     * <code>fixed32 facestatus = 3;</code>
      */
     private void clearFacestatus() {
       
@@ -10260,7 +11986,7 @@ public final class InterfaceDevice {
      *修改前的界面状态 参见Pb_MeetFaceStatus 定义
      * </pre>
      *
-     * <code>optional fixed32 oldfacestatus = 4;</code>
+     * <code>fixed32 oldfacestatus = 4;</code>
      */
     public int getOldfacestatus() {
       return oldfacestatus_;
@@ -10270,7 +11996,7 @@ public final class InterfaceDevice {
      *修改前的界面状态 参见Pb_MeetFaceStatus 定义
      * </pre>
      *
-     * <code>optional fixed32 oldfacestatus = 4;</code>
+     * <code>fixed32 oldfacestatus = 4;</code>
      */
     private void setOldfacestatus(int value) {
       
@@ -10281,7 +12007,7 @@ public final class InterfaceDevice {
      *修改前的界面状态 参见Pb_MeetFaceStatus 定义
      * </pre>
      *
-     * <code>optional fixed32 oldfacestatus = 4;</code>
+     * <code>fixed32 oldfacestatus = 4;</code>
      */
     private void clearOldfacestatus() {
       
@@ -10291,20 +12017,20 @@ public final class InterfaceDevice {
     public static final int MEETINGID_FIELD_NUMBER = 5;
     private int meetingid_;
     /**
-     * <code>optional fixed32 meetingid = 5;</code>
+     * <code>fixed32 meetingid = 5;</code>
      */
     public int getMeetingid() {
       return meetingid_;
     }
     /**
-     * <code>optional fixed32 meetingid = 5;</code>
+     * <code>fixed32 meetingid = 5;</code>
      */
     private void setMeetingid(int value) {
       
       meetingid_ = value;
     }
     /**
-     * <code>optional fixed32 meetingid = 5;</code>
+     * <code>fixed32 meetingid = 5;</code>
      */
     private void clearMeetingid() {
       
@@ -10359,6 +12085,19 @@ public final class InterfaceDevice {
       return size;
     }
 
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_MeetDeviceMeetStatus parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_MeetDeviceMeetStatus parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_MeetDeviceMeetStatus parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -10449,13 +12188,13 @@ public final class InterfaceDevice {
 
 
       /**
-       * <code>optional fixed32 deviceid = 1;</code>
+       * <code>fixed32 deviceid = 1;</code>
        */
       public int getDeviceid() {
         return instance.getDeviceid();
       }
       /**
-       * <code>optional fixed32 deviceid = 1;</code>
+       * <code>fixed32 deviceid = 1;</code>
        */
       public Builder setDeviceid(int value) {
         copyOnWrite();
@@ -10463,7 +12202,7 @@ public final class InterfaceDevice {
         return this;
       }
       /**
-       * <code>optional fixed32 deviceid = 1;</code>
+       * <code>fixed32 deviceid = 1;</code>
        */
       public Builder clearDeviceid() {
         copyOnWrite();
@@ -10472,13 +12211,13 @@ public final class InterfaceDevice {
       }
 
       /**
-       * <code>optional fixed32 memberid = 2;</code>
+       * <code>fixed32 memberid = 2;</code>
        */
       public int getMemberid() {
         return instance.getMemberid();
       }
       /**
-       * <code>optional fixed32 memberid = 2;</code>
+       * <code>fixed32 memberid = 2;</code>
        */
       public Builder setMemberid(int value) {
         copyOnWrite();
@@ -10486,7 +12225,7 @@ public final class InterfaceDevice {
         return this;
       }
       /**
-       * <code>optional fixed32 memberid = 2;</code>
+       * <code>fixed32 memberid = 2;</code>
        */
       public Builder clearMemberid() {
         copyOnWrite();
@@ -10499,7 +12238,7 @@ public final class InterfaceDevice {
        * 当前界面状态 参见Pb_MeetFaceStatus 定义
        * </pre>
        *
-       * <code>optional fixed32 facestatus = 3;</code>
+       * <code>fixed32 facestatus = 3;</code>
        */
       public int getFacestatus() {
         return instance.getFacestatus();
@@ -10509,7 +12248,7 @@ public final class InterfaceDevice {
        * 当前界面状态 参见Pb_MeetFaceStatus 定义
        * </pre>
        *
-       * <code>optional fixed32 facestatus = 3;</code>
+       * <code>fixed32 facestatus = 3;</code>
        */
       public Builder setFacestatus(int value) {
         copyOnWrite();
@@ -10521,7 +12260,7 @@ public final class InterfaceDevice {
        * 当前界面状态 参见Pb_MeetFaceStatus 定义
        * </pre>
        *
-       * <code>optional fixed32 facestatus = 3;</code>
+       * <code>fixed32 facestatus = 3;</code>
        */
       public Builder clearFacestatus() {
         copyOnWrite();
@@ -10534,7 +12273,7 @@ public final class InterfaceDevice {
        *修改前的界面状态 参见Pb_MeetFaceStatus 定义
        * </pre>
        *
-       * <code>optional fixed32 oldfacestatus = 4;</code>
+       * <code>fixed32 oldfacestatus = 4;</code>
        */
       public int getOldfacestatus() {
         return instance.getOldfacestatus();
@@ -10544,7 +12283,7 @@ public final class InterfaceDevice {
        *修改前的界面状态 参见Pb_MeetFaceStatus 定义
        * </pre>
        *
-       * <code>optional fixed32 oldfacestatus = 4;</code>
+       * <code>fixed32 oldfacestatus = 4;</code>
        */
       public Builder setOldfacestatus(int value) {
         copyOnWrite();
@@ -10556,7 +12295,7 @@ public final class InterfaceDevice {
        *修改前的界面状态 参见Pb_MeetFaceStatus 定义
        * </pre>
        *
-       * <code>optional fixed32 oldfacestatus = 4;</code>
+       * <code>fixed32 oldfacestatus = 4;</code>
        */
       public Builder clearOldfacestatus() {
         copyOnWrite();
@@ -10565,13 +12304,13 @@ public final class InterfaceDevice {
       }
 
       /**
-       * <code>optional fixed32 meetingid = 5;</code>
+       * <code>fixed32 meetingid = 5;</code>
        */
       public int getMeetingid() {
         return instance.getMeetingid();
       }
       /**
-       * <code>optional fixed32 meetingid = 5;</code>
+       * <code>fixed32 meetingid = 5;</code>
        */
       public Builder setMeetingid(int value) {
         copyOnWrite();
@@ -10579,7 +12318,7 @@ public final class InterfaceDevice {
         return this;
       }
       /**
-       * <code>optional fixed32 meetingid = 5;</code>
+       * <code>fixed32 meetingid = 5;</code>
        */
       public Builder clearMeetingid() {
         copyOnWrite();
@@ -10589,6 +12328,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_MeetDeviceMeetStatus)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -10678,6 +12418,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -10722,7 +12463,7 @@ public final class InterfaceDevice {
      *修改界面状态
      * </pre>
      *
-     * <code>optional fixed32 facestatus = 1;</code>
+     * <code>fixed32 facestatus = 1;</code>
      */
     int getFacestatus();
   }
@@ -10750,7 +12491,7 @@ public final class InterfaceDevice {
      *修改界面状态
      * </pre>
      *
-     * <code>optional fixed32 facestatus = 1;</code>
+     * <code>fixed32 facestatus = 1;</code>
      */
     public int getFacestatus() {
       return facestatus_;
@@ -10760,7 +12501,7 @@ public final class InterfaceDevice {
      *修改界面状态
      * </pre>
      *
-     * <code>optional fixed32 facestatus = 1;</code>
+     * <code>fixed32 facestatus = 1;</code>
      */
     private void setFacestatus(int value) {
       
@@ -10771,7 +12512,7 @@ public final class InterfaceDevice {
      *修改界面状态
      * </pre>
      *
-     * <code>optional fixed32 facestatus = 1;</code>
+     * <code>fixed32 facestatus = 1;</code>
      */
     private void clearFacestatus() {
       
@@ -10798,6 +12539,19 @@ public final class InterfaceDevice {
       return size;
     }
 
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_ModDeviceMeetStatus parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_ModDeviceMeetStatus parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_ModDeviceMeetStatus parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -10892,7 +12646,7 @@ public final class InterfaceDevice {
        *修改界面状态
        * </pre>
        *
-       * <code>optional fixed32 facestatus = 1;</code>
+       * <code>fixed32 facestatus = 1;</code>
        */
       public int getFacestatus() {
         return instance.getFacestatus();
@@ -10902,7 +12656,7 @@ public final class InterfaceDevice {
        *修改界面状态
        * </pre>
        *
-       * <code>optional fixed32 facestatus = 1;</code>
+       * <code>fixed32 facestatus = 1;</code>
        */
       public Builder setFacestatus(int value) {
         copyOnWrite();
@@ -10914,7 +12668,7 @@ public final class InterfaceDevice {
        *修改界面状态
        * </pre>
        *
-       * <code>optional fixed32 facestatus = 1;</code>
+       * <code>fixed32 facestatus = 1;</code>
        */
       public Builder clearFacestatus() {
         copyOnWrite();
@@ -10924,6 +12678,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_ModDeviceMeetStatus)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -10985,6 +12740,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -11029,7 +12785,7 @@ public final class InterfaceDevice {
      *参见定义 enum Pb_DeviceControlFlag
      * </pre>
      *
-     * <code>optional fixed32 oper = 1;</code>
+     * <code>fixed32 oper = 1;</code>
      */
     int getOper();
 
@@ -11038,7 +12794,7 @@ public final class InterfaceDevice {
      *操作对应的参数 如更换主界面的媒体ID
      * </pre>
      *
-     * <code>optional fixed32 operval1 = 2;</code>
+     * <code>fixed32 operval1 = 2;</code>
      */
     int getOperval1();
 
@@ -11047,7 +12803,7 @@ public final class InterfaceDevice {
      *操作对应的参数
      * </pre>
      *
-     * <code>optional fixed32 operval2 = 3;</code>
+     * <code>fixed32 operval2 = 3;</code>
      */
     int getOperval2();
   }
@@ -11075,7 +12831,7 @@ public final class InterfaceDevice {
      *参见定义 enum Pb_DeviceControlFlag
      * </pre>
      *
-     * <code>optional fixed32 oper = 1;</code>
+     * <code>fixed32 oper = 1;</code>
      */
     public int getOper() {
       return oper_;
@@ -11085,7 +12841,7 @@ public final class InterfaceDevice {
      *参见定义 enum Pb_DeviceControlFlag
      * </pre>
      *
-     * <code>optional fixed32 oper = 1;</code>
+     * <code>fixed32 oper = 1;</code>
      */
     private void setOper(int value) {
       
@@ -11096,7 +12852,7 @@ public final class InterfaceDevice {
      *参见定义 enum Pb_DeviceControlFlag
      * </pre>
      *
-     * <code>optional fixed32 oper = 1;</code>
+     * <code>fixed32 oper = 1;</code>
      */
     private void clearOper() {
       
@@ -11110,7 +12866,7 @@ public final class InterfaceDevice {
      *操作对应的参数 如更换主界面的媒体ID
      * </pre>
      *
-     * <code>optional fixed32 operval1 = 2;</code>
+     * <code>fixed32 operval1 = 2;</code>
      */
     public int getOperval1() {
       return operval1_;
@@ -11120,7 +12876,7 @@ public final class InterfaceDevice {
      *操作对应的参数 如更换主界面的媒体ID
      * </pre>
      *
-     * <code>optional fixed32 operval1 = 2;</code>
+     * <code>fixed32 operval1 = 2;</code>
      */
     private void setOperval1(int value) {
       
@@ -11131,7 +12887,7 @@ public final class InterfaceDevice {
      *操作对应的参数 如更换主界面的媒体ID
      * </pre>
      *
-     * <code>optional fixed32 operval1 = 2;</code>
+     * <code>fixed32 operval1 = 2;</code>
      */
     private void clearOperval1() {
       
@@ -11145,7 +12901,7 @@ public final class InterfaceDevice {
      *操作对应的参数
      * </pre>
      *
-     * <code>optional fixed32 operval2 = 3;</code>
+     * <code>fixed32 operval2 = 3;</code>
      */
     public int getOperval2() {
       return operval2_;
@@ -11155,7 +12911,7 @@ public final class InterfaceDevice {
      *操作对应的参数
      * </pre>
      *
-     * <code>optional fixed32 operval2 = 3;</code>
+     * <code>fixed32 operval2 = 3;</code>
      */
     private void setOperval2(int value) {
       
@@ -11166,7 +12922,7 @@ public final class InterfaceDevice {
      *操作对应的参数
      * </pre>
      *
-     * <code>optional fixed32 operval2 = 3;</code>
+     * <code>fixed32 operval2 = 3;</code>
      */
     private void clearOperval2() {
       
@@ -11207,6 +12963,19 @@ public final class InterfaceDevice {
       return size;
     }
 
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceControl parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceControl parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceControl parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -11301,7 +13070,7 @@ public final class InterfaceDevice {
        *参见定义 enum Pb_DeviceControlFlag
        * </pre>
        *
-       * <code>optional fixed32 oper = 1;</code>
+       * <code>fixed32 oper = 1;</code>
        */
       public int getOper() {
         return instance.getOper();
@@ -11311,7 +13080,7 @@ public final class InterfaceDevice {
        *参见定义 enum Pb_DeviceControlFlag
        * </pre>
        *
-       * <code>optional fixed32 oper = 1;</code>
+       * <code>fixed32 oper = 1;</code>
        */
       public Builder setOper(int value) {
         copyOnWrite();
@@ -11323,7 +13092,7 @@ public final class InterfaceDevice {
        *参见定义 enum Pb_DeviceControlFlag
        * </pre>
        *
-       * <code>optional fixed32 oper = 1;</code>
+       * <code>fixed32 oper = 1;</code>
        */
       public Builder clearOper() {
         copyOnWrite();
@@ -11336,7 +13105,7 @@ public final class InterfaceDevice {
        *操作对应的参数 如更换主界面的媒体ID
        * </pre>
        *
-       * <code>optional fixed32 operval1 = 2;</code>
+       * <code>fixed32 operval1 = 2;</code>
        */
       public int getOperval1() {
         return instance.getOperval1();
@@ -11346,7 +13115,7 @@ public final class InterfaceDevice {
        *操作对应的参数 如更换主界面的媒体ID
        * </pre>
        *
-       * <code>optional fixed32 operval1 = 2;</code>
+       * <code>fixed32 operval1 = 2;</code>
        */
       public Builder setOperval1(int value) {
         copyOnWrite();
@@ -11358,7 +13127,7 @@ public final class InterfaceDevice {
        *操作对应的参数 如更换主界面的媒体ID
        * </pre>
        *
-       * <code>optional fixed32 operval1 = 2;</code>
+       * <code>fixed32 operval1 = 2;</code>
        */
       public Builder clearOperval1() {
         copyOnWrite();
@@ -11371,7 +13140,7 @@ public final class InterfaceDevice {
        *操作对应的参数
        * </pre>
        *
-       * <code>optional fixed32 operval2 = 3;</code>
+       * <code>fixed32 operval2 = 3;</code>
        */
       public int getOperval2() {
         return instance.getOperval2();
@@ -11381,7 +13150,7 @@ public final class InterfaceDevice {
        *操作对应的参数
        * </pre>
        *
-       * <code>optional fixed32 operval2 = 3;</code>
+       * <code>fixed32 operval2 = 3;</code>
        */
       public Builder setOperval2(int value) {
         copyOnWrite();
@@ -11393,7 +13162,7 @@ public final class InterfaceDevice {
        *操作对应的参数
        * </pre>
        *
-       * <code>optional fixed32 operval2 = 3;</code>
+       * <code>fixed32 operval2 = 3;</code>
        */
       public Builder clearOperval2() {
         copyOnWrite();
@@ -11403,6 +13172,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_Type_DeviceControl)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -11478,6 +13248,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -11522,7 +13293,7 @@ public final class InterfaceDevice {
      *&#47;/参见定义 enum Pb_DeviceControlFlag
      * </pre>
      *
-     * <code>optional fixed32 oper = 1;</code>
+     * <code>fixed32 oper = 1;</code>
      */
     int getOper();
 
@@ -11531,7 +13302,7 @@ public final class InterfaceDevice {
      *操作对应的参数 如更换主界面的媒体ID
      * </pre>
      *
-     * <code>optional fixed32 operval1 = 2;</code>
+     * <code>fixed32 operval1 = 2;</code>
      */
     int getOperval1();
 
@@ -11540,7 +13311,7 @@ public final class InterfaceDevice {
      *操作对应的参数
      * </pre>
      *
-     * <code>optional fixed32 operval2 = 3;</code>
+     * <code>fixed32 operval2 = 3;</code>
      */
     int getOperval2();
 
@@ -11595,7 +13366,7 @@ public final class InterfaceDevice {
      *&#47;/参见定义 enum Pb_DeviceControlFlag
      * </pre>
      *
-     * <code>optional fixed32 oper = 1;</code>
+     * <code>fixed32 oper = 1;</code>
      */
     public int getOper() {
       return oper_;
@@ -11605,7 +13376,7 @@ public final class InterfaceDevice {
      *&#47;/参见定义 enum Pb_DeviceControlFlag
      * </pre>
      *
-     * <code>optional fixed32 oper = 1;</code>
+     * <code>fixed32 oper = 1;</code>
      */
     private void setOper(int value) {
       
@@ -11616,7 +13387,7 @@ public final class InterfaceDevice {
      *&#47;/参见定义 enum Pb_DeviceControlFlag
      * </pre>
      *
-     * <code>optional fixed32 oper = 1;</code>
+     * <code>fixed32 oper = 1;</code>
      */
     private void clearOper() {
       
@@ -11630,7 +13401,7 @@ public final class InterfaceDevice {
      *操作对应的参数 如更换主界面的媒体ID
      * </pre>
      *
-     * <code>optional fixed32 operval1 = 2;</code>
+     * <code>fixed32 operval1 = 2;</code>
      */
     public int getOperval1() {
       return operval1_;
@@ -11640,7 +13411,7 @@ public final class InterfaceDevice {
      *操作对应的参数 如更换主界面的媒体ID
      * </pre>
      *
-     * <code>optional fixed32 operval1 = 2;</code>
+     * <code>fixed32 operval1 = 2;</code>
      */
     private void setOperval1(int value) {
       
@@ -11651,7 +13422,7 @@ public final class InterfaceDevice {
      *操作对应的参数 如更换主界面的媒体ID
      * </pre>
      *
-     * <code>optional fixed32 operval1 = 2;</code>
+     * <code>fixed32 operval1 = 2;</code>
      */
     private void clearOperval1() {
       
@@ -11665,7 +13436,7 @@ public final class InterfaceDevice {
      *操作对应的参数
      * </pre>
      *
-     * <code>optional fixed32 operval2 = 3;</code>
+     * <code>fixed32 operval2 = 3;</code>
      */
     public int getOperval2() {
       return operval2_;
@@ -11675,7 +13446,7 @@ public final class InterfaceDevice {
      *操作对应的参数
      * </pre>
      *
-     * <code>optional fixed32 operval2 = 3;</code>
+     * <code>fixed32 operval2 = 3;</code>
      */
     private void setOperval2(int value) {
       
@@ -11686,7 +13457,7 @@ public final class InterfaceDevice {
      *操作对应的参数
      * </pre>
      *
-     * <code>optional fixed32 operval2 = 3;</code>
+     * <code>fixed32 operval2 = 3;</code>
      */
     private void clearOperval2() {
       
@@ -11824,6 +13595,19 @@ public final class InterfaceDevice {
     }
 
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceOperControl parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceOperControl parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceOperControl parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return com.google.protobuf.GeneratedMessageLite.parseFrom(
@@ -11917,7 +13701,7 @@ public final class InterfaceDevice {
        *&#47;/参见定义 enum Pb_DeviceControlFlag
        * </pre>
        *
-       * <code>optional fixed32 oper = 1;</code>
+       * <code>fixed32 oper = 1;</code>
        */
       public int getOper() {
         return instance.getOper();
@@ -11927,7 +13711,7 @@ public final class InterfaceDevice {
        *&#47;/参见定义 enum Pb_DeviceControlFlag
        * </pre>
        *
-       * <code>optional fixed32 oper = 1;</code>
+       * <code>fixed32 oper = 1;</code>
        */
       public Builder setOper(int value) {
         copyOnWrite();
@@ -11939,7 +13723,7 @@ public final class InterfaceDevice {
        *&#47;/参见定义 enum Pb_DeviceControlFlag
        * </pre>
        *
-       * <code>optional fixed32 oper = 1;</code>
+       * <code>fixed32 oper = 1;</code>
        */
       public Builder clearOper() {
         copyOnWrite();
@@ -11952,7 +13736,7 @@ public final class InterfaceDevice {
        *操作对应的参数 如更换主界面的媒体ID
        * </pre>
        *
-       * <code>optional fixed32 operval1 = 2;</code>
+       * <code>fixed32 operval1 = 2;</code>
        */
       public int getOperval1() {
         return instance.getOperval1();
@@ -11962,7 +13746,7 @@ public final class InterfaceDevice {
        *操作对应的参数 如更换主界面的媒体ID
        * </pre>
        *
-       * <code>optional fixed32 operval1 = 2;</code>
+       * <code>fixed32 operval1 = 2;</code>
        */
       public Builder setOperval1(int value) {
         copyOnWrite();
@@ -11974,7 +13758,7 @@ public final class InterfaceDevice {
        *操作对应的参数 如更换主界面的媒体ID
        * </pre>
        *
-       * <code>optional fixed32 operval1 = 2;</code>
+       * <code>fixed32 operval1 = 2;</code>
        */
       public Builder clearOperval1() {
         copyOnWrite();
@@ -11987,7 +13771,7 @@ public final class InterfaceDevice {
        *操作对应的参数
        * </pre>
        *
-       * <code>optional fixed32 operval2 = 3;</code>
+       * <code>fixed32 operval2 = 3;</code>
        */
       public int getOperval2() {
         return instance.getOperval2();
@@ -11997,7 +13781,7 @@ public final class InterfaceDevice {
        *操作对应的参数
        * </pre>
        *
-       * <code>optional fixed32 operval2 = 3;</code>
+       * <code>fixed32 operval2 = 3;</code>
        */
       public Builder setOperval2(int value) {
         copyOnWrite();
@@ -12009,7 +13793,7 @@ public final class InterfaceDevice {
        *操作对应的参数
        * </pre>
        *
-       * <code>optional fixed32 operval2 = 3;</code>
+       * <code>fixed32 operval2 = 3;</code>
        */
       public Builder clearOperval2() {
         copyOnWrite();
@@ -12102,6 +13886,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_Type_DeviceOperControl)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -12202,6 +13987,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -12242,7 +14028,7 @@ public final class InterfaceDevice {
       com.google.protobuf.MessageLiteOrBuilder {
 
     /**
-     * <code>optional fixed32 zoomper = 1;</code>
+     * <code>fixed32 zoomper = 1;</code>
      */
     int getZoomper();
 
@@ -12281,20 +14067,20 @@ public final class InterfaceDevice {
     public static final int ZOOMPER_FIELD_NUMBER = 1;
     private int zoomper_;
     /**
-     * <code>optional fixed32 zoomper = 1;</code>
+     * <code>fixed32 zoomper = 1;</code>
      */
     public int getZoomper() {
       return zoomper_;
     }
     /**
-     * <code>optional fixed32 zoomper = 1;</code>
+     * <code>fixed32 zoomper = 1;</code>
      */
     private void setZoomper(int value) {
       
       zoomper_ = value;
     }
     /**
-     * <code>optional fixed32 zoomper = 1;</code>
+     * <code>fixed32 zoomper = 1;</code>
      */
     private void clearZoomper() {
       
@@ -12390,6 +14176,19 @@ public final class InterfaceDevice {
     }
 
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_MeetZoomResWin parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_MeetZoomResWin parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_MeetZoomResWin parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return com.google.protobuf.GeneratedMessageLite.parseFrom(
@@ -12479,13 +14278,13 @@ public final class InterfaceDevice {
 
 
       /**
-       * <code>optional fixed32 zoomper = 1;</code>
+       * <code>fixed32 zoomper = 1;</code>
        */
       public int getZoomper() {
         return instance.getZoomper();
       }
       /**
-       * <code>optional fixed32 zoomper = 1;</code>
+       * <code>fixed32 zoomper = 1;</code>
        */
       public Builder setZoomper(int value) {
         copyOnWrite();
@@ -12493,7 +14292,7 @@ public final class InterfaceDevice {
         return this;
       }
       /**
-       * <code>optional fixed32 zoomper = 1;</code>
+       * <code>fixed32 zoomper = 1;</code>
        */
       public Builder clearZoomper() {
         copyOnWrite();
@@ -12558,6 +14357,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_MeetZoomResWin)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -12644,6 +14444,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -12684,7 +14485,7 @@ public final class InterfaceDevice {
       com.google.protobuf.MessageLiteOrBuilder {
 
     /**
-     * <code>optional fixed32 zoomper = 1;</code>
+     * <code>fixed32 zoomper = 1;</code>
      */
     int getZoomper();
 
@@ -12737,20 +14538,20 @@ public final class InterfaceDevice {
     public static final int ZOOMPER_FIELD_NUMBER = 1;
     private int zoomper_;
     /**
-     * <code>optional fixed32 zoomper = 1;</code>
+     * <code>fixed32 zoomper = 1;</code>
      */
     public int getZoomper() {
       return zoomper_;
     }
     /**
-     * <code>optional fixed32 zoomper = 1;</code>
+     * <code>fixed32 zoomper = 1;</code>
      */
     private void setZoomper(int value) {
       
       zoomper_ = value;
     }
     /**
-     * <code>optional fixed32 zoomper = 1;</code>
+     * <code>fixed32 zoomper = 1;</code>
      */
     private void clearZoomper() {
       
@@ -12913,6 +14714,19 @@ public final class InterfaceDevice {
     }
 
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_MeetDoZoomResWin parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_MeetDoZoomResWin parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_MeetDoZoomResWin parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return com.google.protobuf.GeneratedMessageLite.parseFrom(
@@ -13002,13 +14816,13 @@ public final class InterfaceDevice {
 
 
       /**
-       * <code>optional fixed32 zoomper = 1;</code>
+       * <code>fixed32 zoomper = 1;</code>
        */
       public int getZoomper() {
         return instance.getZoomper();
       }
       /**
-       * <code>optional fixed32 zoomper = 1;</code>
+       * <code>fixed32 zoomper = 1;</code>
        */
       public Builder setZoomper(int value) {
         copyOnWrite();
@@ -13016,7 +14830,7 @@ public final class InterfaceDevice {
         return this;
       }
       /**
-       * <code>optional fixed32 zoomper = 1;</code>
+       * <code>fixed32 zoomper = 1;</code>
        */
       public Builder clearZoomper() {
         copyOnWrite();
@@ -13136,6 +14950,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_MeetDoZoomResWin)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -13246,6 +15061,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -13290,7 +15106,7 @@ public final class InterfaceDevice {
      *广播者设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     int getDeviceid();
 
@@ -13299,7 +15115,7 @@ public final class InterfaceDevice {
      *广播者参会人员ID
      * </pre>
      *
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     int getMemberid();
 
@@ -13308,7 +15124,7 @@ public final class InterfaceDevice {
      *会议中广播时的参会人员数量
      * </pre>
      *
-     * <code>optional fixed32 membersize = 3;</code>
+     * <code>fixed32 membersize = 3;</code>
      */
     int getMembersize();
 
@@ -13317,7 +15133,7 @@ public final class InterfaceDevice {
      *&#47;/会议中广播时的参会人员已经签到的数量
      * </pre>
      *
-     * <code>optional fixed32 membersignsize = 4;</code>
+     * <code>fixed32 membersignsize = 4;</code>
      */
     int getMembersignsize();
   }
@@ -13345,7 +15161,7 @@ public final class InterfaceDevice {
      *广播者设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     public int getDeviceid() {
       return deviceid_;
@@ -13355,7 +15171,7 @@ public final class InterfaceDevice {
      *广播者设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     private void setDeviceid(int value) {
       
@@ -13366,7 +15182,7 @@ public final class InterfaceDevice {
      *广播者设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     private void clearDeviceid() {
       
@@ -13380,7 +15196,7 @@ public final class InterfaceDevice {
      *广播者参会人员ID
      * </pre>
      *
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     public int getMemberid() {
       return memberid_;
@@ -13390,7 +15206,7 @@ public final class InterfaceDevice {
      *广播者参会人员ID
      * </pre>
      *
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     private void setMemberid(int value) {
       
@@ -13401,7 +15217,7 @@ public final class InterfaceDevice {
      *广播者参会人员ID
      * </pre>
      *
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     private void clearMemberid() {
       
@@ -13415,7 +15231,7 @@ public final class InterfaceDevice {
      *会议中广播时的参会人员数量
      * </pre>
      *
-     * <code>optional fixed32 membersize = 3;</code>
+     * <code>fixed32 membersize = 3;</code>
      */
     public int getMembersize() {
       return membersize_;
@@ -13425,7 +15241,7 @@ public final class InterfaceDevice {
      *会议中广播时的参会人员数量
      * </pre>
      *
-     * <code>optional fixed32 membersize = 3;</code>
+     * <code>fixed32 membersize = 3;</code>
      */
     private void setMembersize(int value) {
       
@@ -13436,7 +15252,7 @@ public final class InterfaceDevice {
      *会议中广播时的参会人员数量
      * </pre>
      *
-     * <code>optional fixed32 membersize = 3;</code>
+     * <code>fixed32 membersize = 3;</code>
      */
     private void clearMembersize() {
       
@@ -13450,7 +15266,7 @@ public final class InterfaceDevice {
      *&#47;/会议中广播时的参会人员已经签到的数量
      * </pre>
      *
-     * <code>optional fixed32 membersignsize = 4;</code>
+     * <code>fixed32 membersignsize = 4;</code>
      */
     public int getMembersignsize() {
       return membersignsize_;
@@ -13460,7 +15276,7 @@ public final class InterfaceDevice {
      *&#47;/会议中广播时的参会人员已经签到的数量
      * </pre>
      *
-     * <code>optional fixed32 membersignsize = 4;</code>
+     * <code>fixed32 membersignsize = 4;</code>
      */
     private void setMembersignsize(int value) {
       
@@ -13471,7 +15287,7 @@ public final class InterfaceDevice {
      *&#47;/会议中广播时的参会人员已经签到的数量
      * </pre>
      *
-     * <code>optional fixed32 membersignsize = 4;</code>
+     * <code>fixed32 membersignsize = 4;</code>
      */
     private void clearMembersignsize() {
       
@@ -13519,6 +15335,19 @@ public final class InterfaceDevice {
       return size;
     }
 
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetMemberCastInfo parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetMemberCastInfo parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetMemberCastInfo parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -13613,7 +15442,7 @@ public final class InterfaceDevice {
        *广播者设备ID
        * </pre>
        *
-       * <code>optional fixed32 deviceid = 1;</code>
+       * <code>fixed32 deviceid = 1;</code>
        */
       public int getDeviceid() {
         return instance.getDeviceid();
@@ -13623,7 +15452,7 @@ public final class InterfaceDevice {
        *广播者设备ID
        * </pre>
        *
-       * <code>optional fixed32 deviceid = 1;</code>
+       * <code>fixed32 deviceid = 1;</code>
        */
       public Builder setDeviceid(int value) {
         copyOnWrite();
@@ -13635,7 +15464,7 @@ public final class InterfaceDevice {
        *广播者设备ID
        * </pre>
        *
-       * <code>optional fixed32 deviceid = 1;</code>
+       * <code>fixed32 deviceid = 1;</code>
        */
       public Builder clearDeviceid() {
         copyOnWrite();
@@ -13648,7 +15477,7 @@ public final class InterfaceDevice {
        *广播者参会人员ID
        * </pre>
        *
-       * <code>optional fixed32 memberid = 2;</code>
+       * <code>fixed32 memberid = 2;</code>
        */
       public int getMemberid() {
         return instance.getMemberid();
@@ -13658,7 +15487,7 @@ public final class InterfaceDevice {
        *广播者参会人员ID
        * </pre>
        *
-       * <code>optional fixed32 memberid = 2;</code>
+       * <code>fixed32 memberid = 2;</code>
        */
       public Builder setMemberid(int value) {
         copyOnWrite();
@@ -13670,7 +15499,7 @@ public final class InterfaceDevice {
        *广播者参会人员ID
        * </pre>
        *
-       * <code>optional fixed32 memberid = 2;</code>
+       * <code>fixed32 memberid = 2;</code>
        */
       public Builder clearMemberid() {
         copyOnWrite();
@@ -13683,7 +15512,7 @@ public final class InterfaceDevice {
        *会议中广播时的参会人员数量
        * </pre>
        *
-       * <code>optional fixed32 membersize = 3;</code>
+       * <code>fixed32 membersize = 3;</code>
        */
       public int getMembersize() {
         return instance.getMembersize();
@@ -13693,7 +15522,7 @@ public final class InterfaceDevice {
        *会议中广播时的参会人员数量
        * </pre>
        *
-       * <code>optional fixed32 membersize = 3;</code>
+       * <code>fixed32 membersize = 3;</code>
        */
       public Builder setMembersize(int value) {
         copyOnWrite();
@@ -13705,7 +15534,7 @@ public final class InterfaceDevice {
        *会议中广播时的参会人员数量
        * </pre>
        *
-       * <code>optional fixed32 membersize = 3;</code>
+       * <code>fixed32 membersize = 3;</code>
        */
       public Builder clearMembersize() {
         copyOnWrite();
@@ -13718,7 +15547,7 @@ public final class InterfaceDevice {
        *&#47;/会议中广播时的参会人员已经签到的数量
        * </pre>
        *
-       * <code>optional fixed32 membersignsize = 4;</code>
+       * <code>fixed32 membersignsize = 4;</code>
        */
       public int getMembersignsize() {
         return instance.getMembersignsize();
@@ -13728,7 +15557,7 @@ public final class InterfaceDevice {
        *&#47;/会议中广播时的参会人员已经签到的数量
        * </pre>
        *
-       * <code>optional fixed32 membersignsize = 4;</code>
+       * <code>fixed32 membersignsize = 4;</code>
        */
       public Builder setMembersignsize(int value) {
         copyOnWrite();
@@ -13740,7 +15569,7 @@ public final class InterfaceDevice {
        *&#47;/会议中广播时的参会人员已经签到的数量
        * </pre>
        *
-       * <code>optional fixed32 membersignsize = 4;</code>
+       * <code>fixed32 membersignsize = 4;</code>
        */
       public Builder clearMembersignsize() {
         copyOnWrite();
@@ -13750,6 +15579,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_Type_MeetMemberCastInfo)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -13832,6 +15662,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -13984,6 +15815,19 @@ public final class InterfaceDevice {
     }
 
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_MeetDoEnterMeet parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_MeetDoEnterMeet parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_MeetDoEnterMeet parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return com.google.protobuf.GeneratedMessageLite.parseFrom(
@@ -14129,6 +15973,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_MeetDoEnterMeet)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -14207,6 +16052,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -14359,6 +16205,19 @@ public final class InterfaceDevice {
     }
 
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_MeetDoToHomePage parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_MeetDoToHomePage parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_MeetDoToHomePage parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return com.google.protobuf.GeneratedMessageLite.parseFrom(
@@ -14504,6 +16363,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_MeetDoToHomePage)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -14582,6 +16442,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -14774,6 +16635,19 @@ public final class InterfaceDevice {
     }
 
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoNetReboot parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoNetReboot parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoNetReboot parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return com.google.protobuf.GeneratedMessageLite.parseFrom(
@@ -14947,6 +16821,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_Type_MeetDoNetReboot)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -15025,6 +16900,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -15217,6 +17093,19 @@ public final class InterfaceDevice {
     }
 
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRequestManage parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRequestManage parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRequestManage parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return com.google.protobuf.GeneratedMessageLite.parseFrom(
@@ -15390,6 +17279,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_Type_MeetRequestManage)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -15468,6 +17358,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -15512,7 +17403,7 @@ public final class InterfaceDevice {
      *发起请求的设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     int getDeviceid();
 
@@ -15521,7 +17412,7 @@ public final class InterfaceDevice {
      *发起请求的人员ID
      * </pre>
      *
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     int getMemberid();
   }
@@ -15549,7 +17440,7 @@ public final class InterfaceDevice {
      *发起请求的设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     public int getDeviceid() {
       return deviceid_;
@@ -15559,7 +17450,7 @@ public final class InterfaceDevice {
      *发起请求的设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     private void setDeviceid(int value) {
       
@@ -15570,7 +17461,7 @@ public final class InterfaceDevice {
      *发起请求的设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     private void clearDeviceid() {
       
@@ -15584,7 +17475,7 @@ public final class InterfaceDevice {
      *发起请求的人员ID
      * </pre>
      *
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     public int getMemberid() {
       return memberid_;
@@ -15594,7 +17485,7 @@ public final class InterfaceDevice {
      *发起请求的人员ID
      * </pre>
      *
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     private void setMemberid(int value) {
       
@@ -15605,7 +17496,7 @@ public final class InterfaceDevice {
      *发起请求的人员ID
      * </pre>
      *
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     private void clearMemberid() {
       
@@ -15639,6 +17530,19 @@ public final class InterfaceDevice {
       return size;
     }
 
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRequestManageNotify parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRequestManageNotify parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRequestManageNotify parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -15733,7 +17637,7 @@ public final class InterfaceDevice {
        *发起请求的设备ID
        * </pre>
        *
-       * <code>optional fixed32 deviceid = 1;</code>
+       * <code>fixed32 deviceid = 1;</code>
        */
       public int getDeviceid() {
         return instance.getDeviceid();
@@ -15743,7 +17647,7 @@ public final class InterfaceDevice {
        *发起请求的设备ID
        * </pre>
        *
-       * <code>optional fixed32 deviceid = 1;</code>
+       * <code>fixed32 deviceid = 1;</code>
        */
       public Builder setDeviceid(int value) {
         copyOnWrite();
@@ -15755,7 +17659,7 @@ public final class InterfaceDevice {
        *发起请求的设备ID
        * </pre>
        *
-       * <code>optional fixed32 deviceid = 1;</code>
+       * <code>fixed32 deviceid = 1;</code>
        */
       public Builder clearDeviceid() {
         copyOnWrite();
@@ -15768,7 +17672,7 @@ public final class InterfaceDevice {
        *发起请求的人员ID
        * </pre>
        *
-       * <code>optional fixed32 memberid = 2;</code>
+       * <code>fixed32 memberid = 2;</code>
        */
       public int getMemberid() {
         return instance.getMemberid();
@@ -15778,7 +17682,7 @@ public final class InterfaceDevice {
        *发起请求的人员ID
        * </pre>
        *
-       * <code>optional fixed32 memberid = 2;</code>
+       * <code>fixed32 memberid = 2;</code>
        */
       public Builder setMemberid(int value) {
         copyOnWrite();
@@ -15790,7 +17694,7 @@ public final class InterfaceDevice {
        *发起请求的人员ID
        * </pre>
        *
-       * <code>optional fixed32 memberid = 2;</code>
+       * <code>fixed32 memberid = 2;</code>
        */
       public Builder clearMemberid() {
         copyOnWrite();
@@ -15800,6 +17704,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_Type_MeetRequestManageNotify)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -15868,6 +17773,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -15937,7 +17843,7 @@ public final class InterfaceDevice {
      *1=同意,0=不同意
      * </pre>
      *
-     * <code>optional fixed32 returncode = 2;</code>
+     * <code>fixed32 returncode = 2;</code>
      */
     int getReturncode();
   }
@@ -16053,7 +17959,7 @@ public final class InterfaceDevice {
      *1=同意,0=不同意
      * </pre>
      *
-     * <code>optional fixed32 returncode = 2;</code>
+     * <code>fixed32 returncode = 2;</code>
      */
     public int getReturncode() {
       return returncode_;
@@ -16063,7 +17969,7 @@ public final class InterfaceDevice {
      *1=同意,0=不同意
      * </pre>
      *
-     * <code>optional fixed32 returncode = 2;</code>
+     * <code>fixed32 returncode = 2;</code>
      */
     private void setReturncode(int value) {
       
@@ -16074,7 +17980,7 @@ public final class InterfaceDevice {
      *1=同意,0=不同意
      * </pre>
      *
-     * <code>optional fixed32 returncode = 2;</code>
+     * <code>fixed32 returncode = 2;</code>
      */
     private void clearReturncode() {
       
@@ -16111,6 +18017,19 @@ public final class InterfaceDevice {
       return size;
     }
 
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetResponseRequestManage parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetResponseRequestManage parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetResponseRequestManage parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -16288,7 +18207,7 @@ public final class InterfaceDevice {
        *1=同意,0=不同意
        * </pre>
        *
-       * <code>optional fixed32 returncode = 2;</code>
+       * <code>fixed32 returncode = 2;</code>
        */
       public int getReturncode() {
         return instance.getReturncode();
@@ -16298,7 +18217,7 @@ public final class InterfaceDevice {
        *1=同意,0=不同意
        * </pre>
        *
-       * <code>optional fixed32 returncode = 2;</code>
+       * <code>fixed32 returncode = 2;</code>
        */
       public Builder setReturncode(int value) {
         copyOnWrite();
@@ -16310,7 +18229,7 @@ public final class InterfaceDevice {
        *1=同意,0=不同意
        * </pre>
        *
-       * <code>optional fixed32 returncode = 2;</code>
+       * <code>fixed32 returncode = 2;</code>
        */
       public Builder clearReturncode() {
         copyOnWrite();
@@ -16320,6 +18239,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_Type_MeetResponseRequestManage)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -16406,6 +18326,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -16450,7 +18371,7 @@ public final class InterfaceDevice {
      *发起请求的设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     int getDeviceid();
 
@@ -16459,7 +18380,7 @@ public final class InterfaceDevice {
      *发起请求的人员ID
      * </pre>
      *
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     int getMemberid();
 
@@ -16468,7 +18389,7 @@ public final class InterfaceDevice {
      *1=同意,0=不同意
      * </pre>
      *
-     * <code>optional fixed32 returncode = 3;</code>
+     * <code>fixed32 returncode = 3;</code>
      */
     int getReturncode();
   }
@@ -16496,7 +18417,7 @@ public final class InterfaceDevice {
      *发起请求的设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     public int getDeviceid() {
       return deviceid_;
@@ -16506,7 +18427,7 @@ public final class InterfaceDevice {
      *发起请求的设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     private void setDeviceid(int value) {
       
@@ -16517,7 +18438,7 @@ public final class InterfaceDevice {
      *发起请求的设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     private void clearDeviceid() {
       
@@ -16531,7 +18452,7 @@ public final class InterfaceDevice {
      *发起请求的人员ID
      * </pre>
      *
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     public int getMemberid() {
       return memberid_;
@@ -16541,7 +18462,7 @@ public final class InterfaceDevice {
      *发起请求的人员ID
      * </pre>
      *
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     private void setMemberid(int value) {
       
@@ -16552,7 +18473,7 @@ public final class InterfaceDevice {
      *发起请求的人员ID
      * </pre>
      *
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     private void clearMemberid() {
       
@@ -16566,7 +18487,7 @@ public final class InterfaceDevice {
      *1=同意,0=不同意
      * </pre>
      *
-     * <code>optional fixed32 returncode = 3;</code>
+     * <code>fixed32 returncode = 3;</code>
      */
     public int getReturncode() {
       return returncode_;
@@ -16576,7 +18497,7 @@ public final class InterfaceDevice {
      *1=同意,0=不同意
      * </pre>
      *
-     * <code>optional fixed32 returncode = 3;</code>
+     * <code>fixed32 returncode = 3;</code>
      */
     private void setReturncode(int value) {
       
@@ -16587,7 +18508,7 @@ public final class InterfaceDevice {
      *1=同意,0=不同意
      * </pre>
      *
-     * <code>optional fixed32 returncode = 3;</code>
+     * <code>fixed32 returncode = 3;</code>
      */
     private void clearReturncode() {
       
@@ -16628,6 +18549,19 @@ public final class InterfaceDevice {
       return size;
     }
 
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRequestManageResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRequestManageResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRequestManageResponse parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -16722,7 +18656,7 @@ public final class InterfaceDevice {
        *发起请求的设备ID
        * </pre>
        *
-       * <code>optional fixed32 deviceid = 1;</code>
+       * <code>fixed32 deviceid = 1;</code>
        */
       public int getDeviceid() {
         return instance.getDeviceid();
@@ -16732,7 +18666,7 @@ public final class InterfaceDevice {
        *发起请求的设备ID
        * </pre>
        *
-       * <code>optional fixed32 deviceid = 1;</code>
+       * <code>fixed32 deviceid = 1;</code>
        */
       public Builder setDeviceid(int value) {
         copyOnWrite();
@@ -16744,7 +18678,7 @@ public final class InterfaceDevice {
        *发起请求的设备ID
        * </pre>
        *
-       * <code>optional fixed32 deviceid = 1;</code>
+       * <code>fixed32 deviceid = 1;</code>
        */
       public Builder clearDeviceid() {
         copyOnWrite();
@@ -16757,7 +18691,7 @@ public final class InterfaceDevice {
        *发起请求的人员ID
        * </pre>
        *
-       * <code>optional fixed32 memberid = 2;</code>
+       * <code>fixed32 memberid = 2;</code>
        */
       public int getMemberid() {
         return instance.getMemberid();
@@ -16767,7 +18701,7 @@ public final class InterfaceDevice {
        *发起请求的人员ID
        * </pre>
        *
-       * <code>optional fixed32 memberid = 2;</code>
+       * <code>fixed32 memberid = 2;</code>
        */
       public Builder setMemberid(int value) {
         copyOnWrite();
@@ -16779,7 +18713,7 @@ public final class InterfaceDevice {
        *发起请求的人员ID
        * </pre>
        *
-       * <code>optional fixed32 memberid = 2;</code>
+       * <code>fixed32 memberid = 2;</code>
        */
       public Builder clearMemberid() {
         copyOnWrite();
@@ -16792,7 +18726,7 @@ public final class InterfaceDevice {
        *1=同意,0=不同意
        * </pre>
        *
-       * <code>optional fixed32 returncode = 3;</code>
+       * <code>fixed32 returncode = 3;</code>
        */
       public int getReturncode() {
         return instance.getReturncode();
@@ -16802,7 +18736,7 @@ public final class InterfaceDevice {
        *1=同意,0=不同意
        * </pre>
        *
-       * <code>optional fixed32 returncode = 3;</code>
+       * <code>fixed32 returncode = 3;</code>
        */
       public Builder setReturncode(int value) {
         copyOnWrite();
@@ -16814,7 +18748,7 @@ public final class InterfaceDevice {
        *1=同意,0=不同意
        * </pre>
        *
-       * <code>optional fixed32 returncode = 3;</code>
+       * <code>fixed32 returncode = 3;</code>
        */
       public Builder clearReturncode() {
         copyOnWrite();
@@ -16824,6 +18758,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_Type_MeetRequestManageResponse)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -16899,6 +18834,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -16968,7 +18904,7 @@ public final class InterfaceDevice {
      *申请的权限 参见Pb_MemberPermissionPropertyID
      * </pre>
      *
-     * <code>optional fixed32 privilege = 2;</code>
+     * <code>fixed32 privilege = 2;</code>
      */
     int getPrivilege();
   }
@@ -17084,7 +19020,7 @@ public final class InterfaceDevice {
      *申请的权限 参见Pb_MemberPermissionPropertyID
      * </pre>
      *
-     * <code>optional fixed32 privilege = 2;</code>
+     * <code>fixed32 privilege = 2;</code>
      */
     public int getPrivilege() {
       return privilege_;
@@ -17094,7 +19030,7 @@ public final class InterfaceDevice {
      *申请的权限 参见Pb_MemberPermissionPropertyID
      * </pre>
      *
-     * <code>optional fixed32 privilege = 2;</code>
+     * <code>fixed32 privilege = 2;</code>
      */
     private void setPrivilege(int value) {
       
@@ -17105,7 +19041,7 @@ public final class InterfaceDevice {
      *申请的权限 参见Pb_MemberPermissionPropertyID
      * </pre>
      *
-     * <code>optional fixed32 privilege = 2;</code>
+     * <code>fixed32 privilege = 2;</code>
      */
     private void clearPrivilege() {
       
@@ -17142,6 +19078,19 @@ public final class InterfaceDevice {
       return size;
     }
 
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRequestPrivilege parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRequestPrivilege parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRequestPrivilege parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -17319,7 +19268,7 @@ public final class InterfaceDevice {
        *申请的权限 参见Pb_MemberPermissionPropertyID
        * </pre>
        *
-       * <code>optional fixed32 privilege = 2;</code>
+       * <code>fixed32 privilege = 2;</code>
        */
       public int getPrivilege() {
         return instance.getPrivilege();
@@ -17329,7 +19278,7 @@ public final class InterfaceDevice {
        *申请的权限 参见Pb_MemberPermissionPropertyID
        * </pre>
        *
-       * <code>optional fixed32 privilege = 2;</code>
+       * <code>fixed32 privilege = 2;</code>
        */
       public Builder setPrivilege(int value) {
         copyOnWrite();
@@ -17341,7 +19290,7 @@ public final class InterfaceDevice {
        *申请的权限 参见Pb_MemberPermissionPropertyID
        * </pre>
        *
-       * <code>optional fixed32 privilege = 2;</code>
+       * <code>fixed32 privilege = 2;</code>
        */
       public Builder clearPrivilege() {
         copyOnWrite();
@@ -17351,6 +19300,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_Type_MeetRequestPrivilege)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -17437,6 +19387,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -17481,7 +19432,7 @@ public final class InterfaceDevice {
      *发起请求的设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     int getDeviceid();
 
@@ -17490,7 +19441,7 @@ public final class InterfaceDevice {
      *发起请求的人员ID
      * </pre>
      *
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     int getMemberid();
 
@@ -17499,7 +19450,7 @@ public final class InterfaceDevice {
      *申请的权限 参见Pb_MemberPermissionPropertyID
      * </pre>
      *
-     * <code>optional fixed32 privilege = 3;</code>
+     * <code>fixed32 privilege = 3;</code>
      */
     int getPrivilege();
   }
@@ -17527,7 +19478,7 @@ public final class InterfaceDevice {
      *发起请求的设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     public int getDeviceid() {
       return deviceid_;
@@ -17537,7 +19488,7 @@ public final class InterfaceDevice {
      *发起请求的设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     private void setDeviceid(int value) {
       
@@ -17548,7 +19499,7 @@ public final class InterfaceDevice {
      *发起请求的设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     private void clearDeviceid() {
       
@@ -17562,7 +19513,7 @@ public final class InterfaceDevice {
      *发起请求的人员ID
      * </pre>
      *
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     public int getMemberid() {
       return memberid_;
@@ -17572,7 +19523,7 @@ public final class InterfaceDevice {
      *发起请求的人员ID
      * </pre>
      *
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     private void setMemberid(int value) {
       
@@ -17583,7 +19534,7 @@ public final class InterfaceDevice {
      *发起请求的人员ID
      * </pre>
      *
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     private void clearMemberid() {
       
@@ -17597,7 +19548,7 @@ public final class InterfaceDevice {
      *申请的权限 参见Pb_MemberPermissionPropertyID
      * </pre>
      *
-     * <code>optional fixed32 privilege = 3;</code>
+     * <code>fixed32 privilege = 3;</code>
      */
     public int getPrivilege() {
       return privilege_;
@@ -17607,7 +19558,7 @@ public final class InterfaceDevice {
      *申请的权限 参见Pb_MemberPermissionPropertyID
      * </pre>
      *
-     * <code>optional fixed32 privilege = 3;</code>
+     * <code>fixed32 privilege = 3;</code>
      */
     private void setPrivilege(int value) {
       
@@ -17618,7 +19569,7 @@ public final class InterfaceDevice {
      *申请的权限 参见Pb_MemberPermissionPropertyID
      * </pre>
      *
-     * <code>optional fixed32 privilege = 3;</code>
+     * <code>fixed32 privilege = 3;</code>
      */
     private void clearPrivilege() {
       
@@ -17659,6 +19610,19 @@ public final class InterfaceDevice {
       return size;
     }
 
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRequestPrivilegeNotify parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRequestPrivilegeNotify parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRequestPrivilegeNotify parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -17753,7 +19717,7 @@ public final class InterfaceDevice {
        *发起请求的设备ID
        * </pre>
        *
-       * <code>optional fixed32 deviceid = 1;</code>
+       * <code>fixed32 deviceid = 1;</code>
        */
       public int getDeviceid() {
         return instance.getDeviceid();
@@ -17763,7 +19727,7 @@ public final class InterfaceDevice {
        *发起请求的设备ID
        * </pre>
        *
-       * <code>optional fixed32 deviceid = 1;</code>
+       * <code>fixed32 deviceid = 1;</code>
        */
       public Builder setDeviceid(int value) {
         copyOnWrite();
@@ -17775,7 +19739,7 @@ public final class InterfaceDevice {
        *发起请求的设备ID
        * </pre>
        *
-       * <code>optional fixed32 deviceid = 1;</code>
+       * <code>fixed32 deviceid = 1;</code>
        */
       public Builder clearDeviceid() {
         copyOnWrite();
@@ -17788,7 +19752,7 @@ public final class InterfaceDevice {
        *发起请求的人员ID
        * </pre>
        *
-       * <code>optional fixed32 memberid = 2;</code>
+       * <code>fixed32 memberid = 2;</code>
        */
       public int getMemberid() {
         return instance.getMemberid();
@@ -17798,7 +19762,7 @@ public final class InterfaceDevice {
        *发起请求的人员ID
        * </pre>
        *
-       * <code>optional fixed32 memberid = 2;</code>
+       * <code>fixed32 memberid = 2;</code>
        */
       public Builder setMemberid(int value) {
         copyOnWrite();
@@ -17810,7 +19774,7 @@ public final class InterfaceDevice {
        *发起请求的人员ID
        * </pre>
        *
-       * <code>optional fixed32 memberid = 2;</code>
+       * <code>fixed32 memberid = 2;</code>
        */
       public Builder clearMemberid() {
         copyOnWrite();
@@ -17823,7 +19787,7 @@ public final class InterfaceDevice {
        *申请的权限 参见Pb_MemberPermissionPropertyID
        * </pre>
        *
-       * <code>optional fixed32 privilege = 3;</code>
+       * <code>fixed32 privilege = 3;</code>
        */
       public int getPrivilege() {
         return instance.getPrivilege();
@@ -17833,7 +19797,7 @@ public final class InterfaceDevice {
        *申请的权限 参见Pb_MemberPermissionPropertyID
        * </pre>
        *
-       * <code>optional fixed32 privilege = 3;</code>
+       * <code>fixed32 privilege = 3;</code>
        */
       public Builder setPrivilege(int value) {
         copyOnWrite();
@@ -17845,7 +19809,7 @@ public final class InterfaceDevice {
        *申请的权限 参见Pb_MemberPermissionPropertyID
        * </pre>
        *
-       * <code>optional fixed32 privilege = 3;</code>
+       * <code>fixed32 privilege = 3;</code>
        */
       public Builder clearPrivilege() {
         copyOnWrite();
@@ -17855,6 +19819,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_Type_MeetRequestPrivilegeNotify)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -17930,6 +19895,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -17999,7 +19965,7 @@ public final class InterfaceDevice {
      *1=同意,0=不同意
      * </pre>
      *
-     * <code>optional fixed32 returncode = 2;</code>
+     * <code>fixed32 returncode = 2;</code>
      */
     int getReturncode();
   }
@@ -18115,7 +20081,7 @@ public final class InterfaceDevice {
      *1=同意,0=不同意
      * </pre>
      *
-     * <code>optional fixed32 returncode = 2;</code>
+     * <code>fixed32 returncode = 2;</code>
      */
     public int getReturncode() {
       return returncode_;
@@ -18125,7 +20091,7 @@ public final class InterfaceDevice {
      *1=同意,0=不同意
      * </pre>
      *
-     * <code>optional fixed32 returncode = 2;</code>
+     * <code>fixed32 returncode = 2;</code>
      */
     private void setReturncode(int value) {
       
@@ -18136,7 +20102,7 @@ public final class InterfaceDevice {
      *1=同意,0=不同意
      * </pre>
      *
-     * <code>optional fixed32 returncode = 2;</code>
+     * <code>fixed32 returncode = 2;</code>
      */
     private void clearReturncode() {
       
@@ -18173,6 +20139,19 @@ public final class InterfaceDevice {
       return size;
     }
 
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetResponseRequestPrivilege parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetResponseRequestPrivilege parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetResponseRequestPrivilege parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -18350,7 +20329,7 @@ public final class InterfaceDevice {
        *1=同意,0=不同意
        * </pre>
        *
-       * <code>optional fixed32 returncode = 2;</code>
+       * <code>fixed32 returncode = 2;</code>
        */
       public int getReturncode() {
         return instance.getReturncode();
@@ -18360,7 +20339,7 @@ public final class InterfaceDevice {
        *1=同意,0=不同意
        * </pre>
        *
-       * <code>optional fixed32 returncode = 2;</code>
+       * <code>fixed32 returncode = 2;</code>
        */
       public Builder setReturncode(int value) {
         copyOnWrite();
@@ -18372,7 +20351,7 @@ public final class InterfaceDevice {
        *1=同意,0=不同意
        * </pre>
        *
-       * <code>optional fixed32 returncode = 2;</code>
+       * <code>fixed32 returncode = 2;</code>
        */
       public Builder clearReturncode() {
         copyOnWrite();
@@ -18382,6 +20361,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_Type_MeetResponseRequestPrivilege)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -18468,6 +20448,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -18512,7 +20493,7 @@ public final class InterfaceDevice {
      *发起请求的设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     int getDeviceid();
 
@@ -18521,7 +20502,7 @@ public final class InterfaceDevice {
      *发起请求的人员ID
      * </pre>
      *
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     int getMemberid();
 
@@ -18530,7 +20511,7 @@ public final class InterfaceDevice {
      *1=同意,0=不同意
      * </pre>
      *
-     * <code>optional fixed32 returncode = 3;</code>
+     * <code>fixed32 returncode = 3;</code>
      */
     int getReturncode();
   }
@@ -18558,7 +20539,7 @@ public final class InterfaceDevice {
      *发起请求的设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     public int getDeviceid() {
       return deviceid_;
@@ -18568,7 +20549,7 @@ public final class InterfaceDevice {
      *发起请求的设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     private void setDeviceid(int value) {
       
@@ -18579,7 +20560,7 @@ public final class InterfaceDevice {
      *发起请求的设备ID
      * </pre>
      *
-     * <code>optional fixed32 deviceid = 1;</code>
+     * <code>fixed32 deviceid = 1;</code>
      */
     private void clearDeviceid() {
       
@@ -18593,7 +20574,7 @@ public final class InterfaceDevice {
      *发起请求的人员ID
      * </pre>
      *
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     public int getMemberid() {
       return memberid_;
@@ -18603,7 +20584,7 @@ public final class InterfaceDevice {
      *发起请求的人员ID
      * </pre>
      *
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     private void setMemberid(int value) {
       
@@ -18614,7 +20595,7 @@ public final class InterfaceDevice {
      *发起请求的人员ID
      * </pre>
      *
-     * <code>optional fixed32 memberid = 2;</code>
+     * <code>fixed32 memberid = 2;</code>
      */
     private void clearMemberid() {
       
@@ -18628,7 +20609,7 @@ public final class InterfaceDevice {
      *1=同意,0=不同意
      * </pre>
      *
-     * <code>optional fixed32 returncode = 3;</code>
+     * <code>fixed32 returncode = 3;</code>
      */
     public int getReturncode() {
       return returncode_;
@@ -18638,7 +20619,7 @@ public final class InterfaceDevice {
      *1=同意,0=不同意
      * </pre>
      *
-     * <code>optional fixed32 returncode = 3;</code>
+     * <code>fixed32 returncode = 3;</code>
      */
     private void setReturncode(int value) {
       
@@ -18649,7 +20630,7 @@ public final class InterfaceDevice {
      *1=同意,0=不同意
      * </pre>
      *
-     * <code>optional fixed32 returncode = 3;</code>
+     * <code>fixed32 returncode = 3;</code>
      */
     private void clearReturncode() {
       
@@ -18690,6 +20671,19 @@ public final class InterfaceDevice {
       return size;
     }
 
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRequestPrivilegeResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRequestPrivilegeResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRequestPrivilegeResponse parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -18784,7 +20778,7 @@ public final class InterfaceDevice {
        *发起请求的设备ID
        * </pre>
        *
-       * <code>optional fixed32 deviceid = 1;</code>
+       * <code>fixed32 deviceid = 1;</code>
        */
       public int getDeviceid() {
         return instance.getDeviceid();
@@ -18794,7 +20788,7 @@ public final class InterfaceDevice {
        *发起请求的设备ID
        * </pre>
        *
-       * <code>optional fixed32 deviceid = 1;</code>
+       * <code>fixed32 deviceid = 1;</code>
        */
       public Builder setDeviceid(int value) {
         copyOnWrite();
@@ -18806,7 +20800,7 @@ public final class InterfaceDevice {
        *发起请求的设备ID
        * </pre>
        *
-       * <code>optional fixed32 deviceid = 1;</code>
+       * <code>fixed32 deviceid = 1;</code>
        */
       public Builder clearDeviceid() {
         copyOnWrite();
@@ -18819,7 +20813,7 @@ public final class InterfaceDevice {
        *发起请求的人员ID
        * </pre>
        *
-       * <code>optional fixed32 memberid = 2;</code>
+       * <code>fixed32 memberid = 2;</code>
        */
       public int getMemberid() {
         return instance.getMemberid();
@@ -18829,7 +20823,7 @@ public final class InterfaceDevice {
        *发起请求的人员ID
        * </pre>
        *
-       * <code>optional fixed32 memberid = 2;</code>
+       * <code>fixed32 memberid = 2;</code>
        */
       public Builder setMemberid(int value) {
         copyOnWrite();
@@ -18841,7 +20835,7 @@ public final class InterfaceDevice {
        *发起请求的人员ID
        * </pre>
        *
-       * <code>optional fixed32 memberid = 2;</code>
+       * <code>fixed32 memberid = 2;</code>
        */
       public Builder clearMemberid() {
         copyOnWrite();
@@ -18854,7 +20848,7 @@ public final class InterfaceDevice {
        *1=同意,0=不同意
        * </pre>
        *
-       * <code>optional fixed32 returncode = 3;</code>
+       * <code>fixed32 returncode = 3;</code>
        */
       public int getReturncode() {
         return instance.getReturncode();
@@ -18864,7 +20858,7 @@ public final class InterfaceDevice {
        *1=同意,0=不同意
        * </pre>
        *
-       * <code>optional fixed32 returncode = 3;</code>
+       * <code>fixed32 returncode = 3;</code>
        */
       public Builder setReturncode(int value) {
         copyOnWrite();
@@ -18876,7 +20870,7 @@ public final class InterfaceDevice {
        *1=同意,0=不同意
        * </pre>
        *
-       * <code>optional fixed32 returncode = 3;</code>
+       * <code>fixed32 returncode = 3;</code>
        */
       public Builder clearReturncode() {
         copyOnWrite();
@@ -18886,6 +20880,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_Type_MeetRequestPrivilegeResponse)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -18961,6 +20956,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -19154,6 +21150,19 @@ public final class InterfaceDevice {
     }
 
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DoDeviceLocate parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DoDeviceLocate parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DoDeviceLocate parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return com.google.protobuf.GeneratedMessageLite.parseFrom(
@@ -19328,6 +21337,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_Type_DoDeviceLocate)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -19406,6 +21416,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -19450,7 +21461,7 @@ public final class InterfaceDevice {
      *发送该命令的设备ID
      * </pre>
      *
-     * <code>optional fixed32 oeprdeviceid = 1;</code>
+     * <code>fixed32 oeprdeviceid = 1;</code>
      */
     int getOeprdeviceid();
   }
@@ -19478,7 +21489,7 @@ public final class InterfaceDevice {
      *发送该命令的设备ID
      * </pre>
      *
-     * <code>optional fixed32 oeprdeviceid = 1;</code>
+     * <code>fixed32 oeprdeviceid = 1;</code>
      */
     public int getOeprdeviceid() {
       return oeprdeviceid_;
@@ -19488,7 +21499,7 @@ public final class InterfaceDevice {
      *发送该命令的设备ID
      * </pre>
      *
-     * <code>optional fixed32 oeprdeviceid = 1;</code>
+     * <code>fixed32 oeprdeviceid = 1;</code>
      */
     private void setOeprdeviceid(int value) {
       
@@ -19499,7 +21510,7 @@ public final class InterfaceDevice {
      *发送该命令的设备ID
      * </pre>
      *
-     * <code>optional fixed32 oeprdeviceid = 1;</code>
+     * <code>fixed32 oeprdeviceid = 1;</code>
      */
     private void clearOeprdeviceid() {
       
@@ -19526,6 +21537,19 @@ public final class InterfaceDevice {
       return size;
     }
 
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceLocate parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceLocate parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceLocate parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -19620,7 +21644,7 @@ public final class InterfaceDevice {
        *发送该命令的设备ID
        * </pre>
        *
-       * <code>optional fixed32 oeprdeviceid = 1;</code>
+       * <code>fixed32 oeprdeviceid = 1;</code>
        */
       public int getOeprdeviceid() {
         return instance.getOeprdeviceid();
@@ -19630,7 +21654,7 @@ public final class InterfaceDevice {
        *发送该命令的设备ID
        * </pre>
        *
-       * <code>optional fixed32 oeprdeviceid = 1;</code>
+       * <code>fixed32 oeprdeviceid = 1;</code>
        */
       public Builder setOeprdeviceid(int value) {
         copyOnWrite();
@@ -19642,7 +21666,7 @@ public final class InterfaceDevice {
        *发送该命令的设备ID
        * </pre>
        *
-       * <code>optional fixed32 oeprdeviceid = 1;</code>
+       * <code>fixed32 oeprdeviceid = 1;</code>
        */
       public Builder clearOeprdeviceid() {
         copyOnWrite();
@@ -19652,6 +21676,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_Type_DeviceLocate)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -19713,6 +21738,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -19782,7 +21808,7 @@ public final class InterfaceDevice {
      *文本类型 参见Pb_TextBroadcast_Type
      * </pre>
      *
-     * <code>optional fixed32 texttype = 2;</code>
+     * <code>fixed32 texttype = 2;</code>
      */
     int getTexttype();
 
@@ -19791,7 +21817,7 @@ public final class InterfaceDevice {
      *文本信息
      * </pre>
      *
-     * <code>optional bytes ptextmsg = 3;</code>
+     * <code>bytes ptextmsg = 3;</code>
      */
     com.google.protobuf.ByteString getPtextmsg();
   }
@@ -19908,7 +21934,7 @@ public final class InterfaceDevice {
      *文本类型 参见Pb_TextBroadcast_Type
      * </pre>
      *
-     * <code>optional fixed32 texttype = 2;</code>
+     * <code>fixed32 texttype = 2;</code>
      */
     public int getTexttype() {
       return texttype_;
@@ -19918,7 +21944,7 @@ public final class InterfaceDevice {
      *文本类型 参见Pb_TextBroadcast_Type
      * </pre>
      *
-     * <code>optional fixed32 texttype = 2;</code>
+     * <code>fixed32 texttype = 2;</code>
      */
     private void setTexttype(int value) {
       
@@ -19929,7 +21955,7 @@ public final class InterfaceDevice {
      *文本类型 参见Pb_TextBroadcast_Type
      * </pre>
      *
-     * <code>optional fixed32 texttype = 2;</code>
+     * <code>fixed32 texttype = 2;</code>
      */
     private void clearTexttype() {
       
@@ -19943,7 +21969,7 @@ public final class InterfaceDevice {
      *文本信息
      * </pre>
      *
-     * <code>optional bytes ptextmsg = 3;</code>
+     * <code>bytes ptextmsg = 3;</code>
      */
     public com.google.protobuf.ByteString getPtextmsg() {
       return ptextmsg_;
@@ -19953,7 +21979,7 @@ public final class InterfaceDevice {
      *文本信息
      * </pre>
      *
-     * <code>optional bytes ptextmsg = 3;</code>
+     * <code>bytes ptextmsg = 3;</code>
      */
     private void setPtextmsg(com.google.protobuf.ByteString value) {
       if (value == null) {
@@ -19967,7 +21993,7 @@ public final class InterfaceDevice {
      *文本信息
      * </pre>
      *
-     * <code>optional bytes ptextmsg = 3;</code>
+     * <code>bytes ptextmsg = 3;</code>
      */
     private void clearPtextmsg() {
       
@@ -20011,6 +22037,19 @@ public final class InterfaceDevice {
       return size;
     }
 
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoTextBrodcast parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoTextBrodcast parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoTextBrodcast parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -20188,7 +22227,7 @@ public final class InterfaceDevice {
        *文本类型 参见Pb_TextBroadcast_Type
        * </pre>
        *
-       * <code>optional fixed32 texttype = 2;</code>
+       * <code>fixed32 texttype = 2;</code>
        */
       public int getTexttype() {
         return instance.getTexttype();
@@ -20198,7 +22237,7 @@ public final class InterfaceDevice {
        *文本类型 参见Pb_TextBroadcast_Type
        * </pre>
        *
-       * <code>optional fixed32 texttype = 2;</code>
+       * <code>fixed32 texttype = 2;</code>
        */
       public Builder setTexttype(int value) {
         copyOnWrite();
@@ -20210,7 +22249,7 @@ public final class InterfaceDevice {
        *文本类型 参见Pb_TextBroadcast_Type
        * </pre>
        *
-       * <code>optional fixed32 texttype = 2;</code>
+       * <code>fixed32 texttype = 2;</code>
        */
       public Builder clearTexttype() {
         copyOnWrite();
@@ -20223,7 +22262,7 @@ public final class InterfaceDevice {
        *文本信息
        * </pre>
        *
-       * <code>optional bytes ptextmsg = 3;</code>
+       * <code>bytes ptextmsg = 3;</code>
        */
       public com.google.protobuf.ByteString getPtextmsg() {
         return instance.getPtextmsg();
@@ -20233,7 +22272,7 @@ public final class InterfaceDevice {
        *文本信息
        * </pre>
        *
-       * <code>optional bytes ptextmsg = 3;</code>
+       * <code>bytes ptextmsg = 3;</code>
        */
       public Builder setPtextmsg(com.google.protobuf.ByteString value) {
         copyOnWrite();
@@ -20245,7 +22284,7 @@ public final class InterfaceDevice {
        *文本信息
        * </pre>
        *
-       * <code>optional bytes ptextmsg = 3;</code>
+       * <code>bytes ptextmsg = 3;</code>
        */
       public Builder clearPtextmsg() {
         copyOnWrite();
@@ -20255,6 +22294,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_Type_MeetDoTextBrodcast)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -20348,6 +22388,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -20392,7 +22433,7 @@ public final class InterfaceDevice {
      *文本类型 参见Pb_TextBroadcast_Type
      * </pre>
      *
-     * <code>optional fixed32 texttype = 1;</code>
+     * <code>fixed32 texttype = 1;</code>
      */
     int getTexttype();
 
@@ -20401,7 +22442,7 @@ public final class InterfaceDevice {
      *文本信息
      * </pre>
      *
-     * <code>optional bytes ptextmsg = 2;</code>
+     * <code>bytes ptextmsg = 2;</code>
      */
     com.google.protobuf.ByteString getPtextmsg();
   }
@@ -20430,7 +22471,7 @@ public final class InterfaceDevice {
      *文本类型 参见Pb_TextBroadcast_Type
      * </pre>
      *
-     * <code>optional fixed32 texttype = 1;</code>
+     * <code>fixed32 texttype = 1;</code>
      */
     public int getTexttype() {
       return texttype_;
@@ -20440,7 +22481,7 @@ public final class InterfaceDevice {
      *文本类型 参见Pb_TextBroadcast_Type
      * </pre>
      *
-     * <code>optional fixed32 texttype = 1;</code>
+     * <code>fixed32 texttype = 1;</code>
      */
     private void setTexttype(int value) {
       
@@ -20451,7 +22492,7 @@ public final class InterfaceDevice {
      *文本类型 参见Pb_TextBroadcast_Type
      * </pre>
      *
-     * <code>optional fixed32 texttype = 1;</code>
+     * <code>fixed32 texttype = 1;</code>
      */
     private void clearTexttype() {
       
@@ -20465,7 +22506,7 @@ public final class InterfaceDevice {
      *文本信息
      * </pre>
      *
-     * <code>optional bytes ptextmsg = 2;</code>
+     * <code>bytes ptextmsg = 2;</code>
      */
     public com.google.protobuf.ByteString getPtextmsg() {
       return ptextmsg_;
@@ -20475,7 +22516,7 @@ public final class InterfaceDevice {
      *文本信息
      * </pre>
      *
-     * <code>optional bytes ptextmsg = 2;</code>
+     * <code>bytes ptextmsg = 2;</code>
      */
     private void setPtextmsg(com.google.protobuf.ByteString value) {
       if (value == null) {
@@ -20489,7 +22530,7 @@ public final class InterfaceDevice {
      *文本信息
      * </pre>
      *
-     * <code>optional bytes ptextmsg = 2;</code>
+     * <code>bytes ptextmsg = 2;</code>
      */
     private void clearPtextmsg() {
       
@@ -20523,6 +22564,19 @@ public final class InterfaceDevice {
       return size;
     }
 
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetTextBrodcast parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetTextBrodcast parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetTextBrodcast parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -20617,7 +22671,7 @@ public final class InterfaceDevice {
        *文本类型 参见Pb_TextBroadcast_Type
        * </pre>
        *
-       * <code>optional fixed32 texttype = 1;</code>
+       * <code>fixed32 texttype = 1;</code>
        */
       public int getTexttype() {
         return instance.getTexttype();
@@ -20627,7 +22681,7 @@ public final class InterfaceDevice {
        *文本类型 参见Pb_TextBroadcast_Type
        * </pre>
        *
-       * <code>optional fixed32 texttype = 1;</code>
+       * <code>fixed32 texttype = 1;</code>
        */
       public Builder setTexttype(int value) {
         copyOnWrite();
@@ -20639,7 +22693,7 @@ public final class InterfaceDevice {
        *文本类型 参见Pb_TextBroadcast_Type
        * </pre>
        *
-       * <code>optional fixed32 texttype = 1;</code>
+       * <code>fixed32 texttype = 1;</code>
        */
       public Builder clearTexttype() {
         copyOnWrite();
@@ -20652,7 +22706,7 @@ public final class InterfaceDevice {
        *文本信息
        * </pre>
        *
-       * <code>optional bytes ptextmsg = 2;</code>
+       * <code>bytes ptextmsg = 2;</code>
        */
       public com.google.protobuf.ByteString getPtextmsg() {
         return instance.getPtextmsg();
@@ -20662,7 +22716,7 @@ public final class InterfaceDevice {
        *文本信息
        * </pre>
        *
-       * <code>optional bytes ptextmsg = 2;</code>
+       * <code>bytes ptextmsg = 2;</code>
        */
       public Builder setPtextmsg(com.google.protobuf.ByteString value) {
         copyOnWrite();
@@ -20674,7 +22728,7 @@ public final class InterfaceDevice {
        *文本信息
        * </pre>
        *
-       * <code>optional bytes ptextmsg = 2;</code>
+       * <code>bytes ptextmsg = 2;</code>
        */
       public Builder clearPtextmsg() {
         copyOnWrite();
@@ -20684,6 +22738,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_Type_MeetTextBrodcast)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -20752,6 +22807,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -20796,7 +22852,7 @@ public final class InterfaceDevice {
      *设备对讲标志 Pb_DeviceInviteFlag
      * </pre>
      *
-     * <code>optional fixed32 inviteflag = 1;</code>
+     * <code>fixed32 inviteflag = 1;</code>
      */
     int getInviteflag();
 
@@ -20851,7 +22907,7 @@ public final class InterfaceDevice {
      *设备对讲标志 Pb_DeviceInviteFlag
      * </pre>
      *
-     * <code>optional fixed32 inviteflag = 1;</code>
+     * <code>fixed32 inviteflag = 1;</code>
      */
     public int getInviteflag() {
       return inviteflag_;
@@ -20861,7 +22917,7 @@ public final class InterfaceDevice {
      *设备对讲标志 Pb_DeviceInviteFlag
      * </pre>
      *
-     * <code>optional fixed32 inviteflag = 1;</code>
+     * <code>fixed32 inviteflag = 1;</code>
      */
     private void setInviteflag(int value) {
       
@@ -20872,7 +22928,7 @@ public final class InterfaceDevice {
      *设备对讲标志 Pb_DeviceInviteFlag
      * </pre>
      *
-     * <code>optional fixed32 inviteflag = 1;</code>
+     * <code>fixed32 inviteflag = 1;</code>
      */
     private void clearInviteflag() {
       
@@ -20996,6 +23052,19 @@ public final class InterfaceDevice {
     }
 
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DoDeviceChat parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DoDeviceChat parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DoDeviceChat parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return com.google.protobuf.GeneratedMessageLite.parseFrom(
@@ -21089,7 +23158,7 @@ public final class InterfaceDevice {
        *设备对讲标志 Pb_DeviceInviteFlag
        * </pre>
        *
-       * <code>optional fixed32 inviteflag = 1;</code>
+       * <code>fixed32 inviteflag = 1;</code>
        */
       public int getInviteflag() {
         return instance.getInviteflag();
@@ -21099,7 +23168,7 @@ public final class InterfaceDevice {
        *设备对讲标志 Pb_DeviceInviteFlag
        * </pre>
        *
-       * <code>optional fixed32 inviteflag = 1;</code>
+       * <code>fixed32 inviteflag = 1;</code>
        */
       public Builder setInviteflag(int value) {
         copyOnWrite();
@@ -21111,7 +23180,7 @@ public final class InterfaceDevice {
        *设备对讲标志 Pb_DeviceInviteFlag
        * </pre>
        *
-       * <code>optional fixed32 inviteflag = 1;</code>
+       * <code>fixed32 inviteflag = 1;</code>
        */
       public Builder clearInviteflag() {
         copyOnWrite();
@@ -21204,6 +23273,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_Type_DoDeviceChat)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -21290,6 +23360,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -21334,7 +23405,7 @@ public final class InterfaceDevice {
      *设备对讲标志 Pb_DeviceInviteFlag
      * </pre>
      *
-     * <code>optional fixed32 inviteflag = 1;</code>
+     * <code>fixed32 inviteflag = 1;</code>
      */
     int getInviteflag();
 
@@ -21343,7 +23414,7 @@ public final class InterfaceDevice {
      *发起端设备ID、处理该请求的设备ID
      * </pre>
      *
-     * <code>optional fixed32 operdeviceid = 2;</code>
+     * <code>fixed32 operdeviceid = 2;</code>
      */
     int getOperdeviceid();
   }
@@ -21371,7 +23442,7 @@ public final class InterfaceDevice {
      *设备对讲标志 Pb_DeviceInviteFlag
      * </pre>
      *
-     * <code>optional fixed32 inviteflag = 1;</code>
+     * <code>fixed32 inviteflag = 1;</code>
      */
     public int getInviteflag() {
       return inviteflag_;
@@ -21381,7 +23452,7 @@ public final class InterfaceDevice {
      *设备对讲标志 Pb_DeviceInviteFlag
      * </pre>
      *
-     * <code>optional fixed32 inviteflag = 1;</code>
+     * <code>fixed32 inviteflag = 1;</code>
      */
     private void setInviteflag(int value) {
       
@@ -21392,7 +23463,7 @@ public final class InterfaceDevice {
      *设备对讲标志 Pb_DeviceInviteFlag
      * </pre>
      *
-     * <code>optional fixed32 inviteflag = 1;</code>
+     * <code>fixed32 inviteflag = 1;</code>
      */
     private void clearInviteflag() {
       
@@ -21406,7 +23477,7 @@ public final class InterfaceDevice {
      *发起端设备ID、处理该请求的设备ID
      * </pre>
      *
-     * <code>optional fixed32 operdeviceid = 2;</code>
+     * <code>fixed32 operdeviceid = 2;</code>
      */
     public int getOperdeviceid() {
       return operdeviceid_;
@@ -21416,7 +23487,7 @@ public final class InterfaceDevice {
      *发起端设备ID、处理该请求的设备ID
      * </pre>
      *
-     * <code>optional fixed32 operdeviceid = 2;</code>
+     * <code>fixed32 operdeviceid = 2;</code>
      */
     private void setOperdeviceid(int value) {
       
@@ -21427,7 +23498,7 @@ public final class InterfaceDevice {
      *发起端设备ID、处理该请求的设备ID
      * </pre>
      *
-     * <code>optional fixed32 operdeviceid = 2;</code>
+     * <code>fixed32 operdeviceid = 2;</code>
      */
     private void clearOperdeviceid() {
       
@@ -21461,6 +23532,19 @@ public final class InterfaceDevice {
       return size;
     }
 
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceChat parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceChat parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DeviceChat parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -21555,7 +23639,7 @@ public final class InterfaceDevice {
        *设备对讲标志 Pb_DeviceInviteFlag
        * </pre>
        *
-       * <code>optional fixed32 inviteflag = 1;</code>
+       * <code>fixed32 inviteflag = 1;</code>
        */
       public int getInviteflag() {
         return instance.getInviteflag();
@@ -21565,7 +23649,7 @@ public final class InterfaceDevice {
        *设备对讲标志 Pb_DeviceInviteFlag
        * </pre>
        *
-       * <code>optional fixed32 inviteflag = 1;</code>
+       * <code>fixed32 inviteflag = 1;</code>
        */
       public Builder setInviteflag(int value) {
         copyOnWrite();
@@ -21577,7 +23661,7 @@ public final class InterfaceDevice {
        *设备对讲标志 Pb_DeviceInviteFlag
        * </pre>
        *
-       * <code>optional fixed32 inviteflag = 1;</code>
+       * <code>fixed32 inviteflag = 1;</code>
        */
       public Builder clearInviteflag() {
         copyOnWrite();
@@ -21590,7 +23674,7 @@ public final class InterfaceDevice {
        *发起端设备ID、处理该请求的设备ID
        * </pre>
        *
-       * <code>optional fixed32 operdeviceid = 2;</code>
+       * <code>fixed32 operdeviceid = 2;</code>
        */
       public int getOperdeviceid() {
         return instance.getOperdeviceid();
@@ -21600,7 +23684,7 @@ public final class InterfaceDevice {
        *发起端设备ID、处理该请求的设备ID
        * </pre>
        *
-       * <code>optional fixed32 operdeviceid = 2;</code>
+       * <code>fixed32 operdeviceid = 2;</code>
        */
       public Builder setOperdeviceid(int value) {
         copyOnWrite();
@@ -21612,7 +23696,7 @@ public final class InterfaceDevice {
        *发起端设备ID、处理该请求的设备ID
        * </pre>
        *
-       * <code>optional fixed32 operdeviceid = 2;</code>
+       * <code>fixed32 operdeviceid = 2;</code>
        */
       public Builder clearOperdeviceid() {
         copyOnWrite();
@@ -21622,6 +23706,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_Type_DeviceChat)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -21690,6 +23775,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -21734,7 +23820,7 @@ public final class InterfaceDevice {
      *发起端设备ID
      * </pre>
      *
-     * <code>optional fixed32 operdeviceid = 1;</code>
+     * <code>fixed32 operdeviceid = 1;</code>
      */
     int getOperdeviceid();
   }
@@ -21762,7 +23848,7 @@ public final class InterfaceDevice {
      *发起端设备ID
      * </pre>
      *
-     * <code>optional fixed32 operdeviceid = 1;</code>
+     * <code>fixed32 operdeviceid = 1;</code>
      */
     public int getOperdeviceid() {
       return operdeviceid_;
@@ -21772,7 +23858,7 @@ public final class InterfaceDevice {
      *发起端设备ID
      * </pre>
      *
-     * <code>optional fixed32 operdeviceid = 1;</code>
+     * <code>fixed32 operdeviceid = 1;</code>
      */
     private void setOperdeviceid(int value) {
       
@@ -21783,7 +23869,7 @@ public final class InterfaceDevice {
      *发起端设备ID
      * </pre>
      *
-     * <code>optional fixed32 operdeviceid = 1;</code>
+     * <code>fixed32 operdeviceid = 1;</code>
      */
     private void clearOperdeviceid() {
       
@@ -21810,6 +23896,19 @@ public final class InterfaceDevice {
       return size;
     }
 
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DoExitDeviceChat parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DoExitDeviceChat parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_DoExitDeviceChat parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -21904,7 +24003,7 @@ public final class InterfaceDevice {
        *发起端设备ID
        * </pre>
        *
-       * <code>optional fixed32 operdeviceid = 1;</code>
+       * <code>fixed32 operdeviceid = 1;</code>
        */
       public int getOperdeviceid() {
         return instance.getOperdeviceid();
@@ -21914,7 +24013,7 @@ public final class InterfaceDevice {
        *发起端设备ID
        * </pre>
        *
-       * <code>optional fixed32 operdeviceid = 1;</code>
+       * <code>fixed32 operdeviceid = 1;</code>
        */
       public Builder setOperdeviceid(int value) {
         copyOnWrite();
@@ -21926,7 +24025,7 @@ public final class InterfaceDevice {
        *发起端设备ID
        * </pre>
        *
-       * <code>optional fixed32 operdeviceid = 1;</code>
+       * <code>fixed32 operdeviceid = 1;</code>
        */
       public Builder clearOperdeviceid() {
         copyOnWrite();
@@ -21936,6 +24035,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_Type_DoExitDeviceChat)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -21997,6 +24097,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -22041,7 +24142,7 @@ public final class InterfaceDevice {
      *发起端设备ID
      * </pre>
      *
-     * <code>optional fixed32 operdeviceid = 1;</code>
+     * <code>fixed32 operdeviceid = 1;</code>
      */
     int getOperdeviceid();
 
@@ -22050,7 +24151,7 @@ public final class InterfaceDevice {
      *退出的设备ID
      * </pre>
      *
-     * <code>optional fixed32 exitdeviceid = 2;</code>
+     * <code>fixed32 exitdeviceid = 2;</code>
      */
     int getExitdeviceid();
   }
@@ -22078,7 +24179,7 @@ public final class InterfaceDevice {
      *发起端设备ID
      * </pre>
      *
-     * <code>optional fixed32 operdeviceid = 1;</code>
+     * <code>fixed32 operdeviceid = 1;</code>
      */
     public int getOperdeviceid() {
       return operdeviceid_;
@@ -22088,7 +24189,7 @@ public final class InterfaceDevice {
      *发起端设备ID
      * </pre>
      *
-     * <code>optional fixed32 operdeviceid = 1;</code>
+     * <code>fixed32 operdeviceid = 1;</code>
      */
     private void setOperdeviceid(int value) {
       
@@ -22099,7 +24200,7 @@ public final class InterfaceDevice {
      *发起端设备ID
      * </pre>
      *
-     * <code>optional fixed32 operdeviceid = 1;</code>
+     * <code>fixed32 operdeviceid = 1;</code>
      */
     private void clearOperdeviceid() {
       
@@ -22113,7 +24214,7 @@ public final class InterfaceDevice {
      *退出的设备ID
      * </pre>
      *
-     * <code>optional fixed32 exitdeviceid = 2;</code>
+     * <code>fixed32 exitdeviceid = 2;</code>
      */
     public int getExitdeviceid() {
       return exitdeviceid_;
@@ -22123,7 +24224,7 @@ public final class InterfaceDevice {
      *退出的设备ID
      * </pre>
      *
-     * <code>optional fixed32 exitdeviceid = 2;</code>
+     * <code>fixed32 exitdeviceid = 2;</code>
      */
     private void setExitdeviceid(int value) {
       
@@ -22134,7 +24235,7 @@ public final class InterfaceDevice {
      *退出的设备ID
      * </pre>
      *
-     * <code>optional fixed32 exitdeviceid = 2;</code>
+     * <code>fixed32 exitdeviceid = 2;</code>
      */
     private void clearExitdeviceid() {
       
@@ -22168,6 +24269,19 @@ public final class InterfaceDevice {
       return size;
     }
 
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_ExitDeviceChat parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_ExitDeviceChat parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
     public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_ExitDeviceChat parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -22262,7 +24376,7 @@ public final class InterfaceDevice {
        *发起端设备ID
        * </pre>
        *
-       * <code>optional fixed32 operdeviceid = 1;</code>
+       * <code>fixed32 operdeviceid = 1;</code>
        */
       public int getOperdeviceid() {
         return instance.getOperdeviceid();
@@ -22272,7 +24386,7 @@ public final class InterfaceDevice {
        *发起端设备ID
        * </pre>
        *
-       * <code>optional fixed32 operdeviceid = 1;</code>
+       * <code>fixed32 operdeviceid = 1;</code>
        */
       public Builder setOperdeviceid(int value) {
         copyOnWrite();
@@ -22284,7 +24398,7 @@ public final class InterfaceDevice {
        *发起端设备ID
        * </pre>
        *
-       * <code>optional fixed32 operdeviceid = 1;</code>
+       * <code>fixed32 operdeviceid = 1;</code>
        */
       public Builder clearOperdeviceid() {
         copyOnWrite();
@@ -22297,7 +24411,7 @@ public final class InterfaceDevice {
        *退出的设备ID
        * </pre>
        *
-       * <code>optional fixed32 exitdeviceid = 2;</code>
+       * <code>fixed32 exitdeviceid = 2;</code>
        */
       public int getExitdeviceid() {
         return instance.getExitdeviceid();
@@ -22307,7 +24421,7 @@ public final class InterfaceDevice {
        *退出的设备ID
        * </pre>
        *
-       * <code>optional fixed32 exitdeviceid = 2;</code>
+       * <code>fixed32 exitdeviceid = 2;</code>
        */
       public Builder setExitdeviceid(int value) {
         copyOnWrite();
@@ -22319,7 +24433,7 @@ public final class InterfaceDevice {
        *退出的设备ID
        * </pre>
        *
-       * <code>optional fixed32 exitdeviceid = 2;</code>
+       * <code>fixed32 exitdeviceid = 2;</code>
        */
       public Builder clearExitdeviceid() {
         copyOnWrite();
@@ -22329,6 +24443,7 @@ public final class InterfaceDevice {
 
       // @@protoc_insertion_point(builder_scope:pbui_Type_ExitDeviceChat)
     }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
         Object arg0, Object arg1) {
@@ -22397,6 +24512,7 @@ public final class InterfaceDevice {
           } finally {
           }
         }
+        // fall through
         case GET_DEFAULT_INSTANCE: {
           return DEFAULT_INSTANCE;
         }
@@ -22428,6 +24544,982 @@ public final class InterfaceDevice {
     private static volatile com.google.protobuf.Parser<pbui_Type_ExitDeviceChat> PARSER;
 
     public static com.google.protobuf.Parser<pbui_Type_ExitDeviceChat> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
+  public interface pbui_Type_MeetDoRemoteSetOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:pbui_Type_MeetDoRemoteSet)
+      com.google.protobuf.MessageLiteOrBuilder {
+
+    /**
+     * <pre>
+     *指定收到该请求的设备ID
+     * </pre>
+     *
+     * <code>repeated fixed32 deviceid = 1;</code>
+     */
+    java.util.List<java.lang.Integer> getDeviceidList();
+    /**
+     * <pre>
+     *指定收到该请求的设备ID
+     * </pre>
+     *
+     * <code>repeated fixed32 deviceid = 1;</code>
+     */
+    int getDeviceidCount();
+    /**
+     * <pre>
+     *指定收到该请求的设备ID
+     * </pre>
+     *
+     * <code>repeated fixed32 deviceid = 1;</code>
+     */
+    int getDeviceid(int index);
+
+    /**
+     * <pre>
+     *要设置的配置参数 ,参见下方的json协议定义
+     * </pre>
+     *
+     * <code>bytes jsontext = 2;</code>
+     */
+    com.google.protobuf.ByteString getJsontext();
+  }
+  /**
+   * <pre>
+   *远程配置设备参数
+   *call
+   *type:TYPE_MEET_INTERFACE_DEVICEOPER
+   *method: METHOD_MEET_INTERFACE_REMOTESET
+   * </pre>
+   *
+   * Protobuf type {@code pbui_Type_MeetDoRemoteSet}
+   */
+  public  static final class pbui_Type_MeetDoRemoteSet extends
+      com.google.protobuf.GeneratedMessageLite<
+          pbui_Type_MeetDoRemoteSet, pbui_Type_MeetDoRemoteSet.Builder> implements
+      // @@protoc_insertion_point(message_implements:pbui_Type_MeetDoRemoteSet)
+      pbui_Type_MeetDoRemoteSetOrBuilder {
+    private pbui_Type_MeetDoRemoteSet() {
+      deviceid_ = emptyIntList();
+      jsontext_ = com.google.protobuf.ByteString.EMPTY;
+    }
+    private int bitField0_;
+    public static final int DEVICEID_FIELD_NUMBER = 1;
+    private com.google.protobuf.Internal.IntList deviceid_;
+    /**
+     * <pre>
+     *指定收到该请求的设备ID
+     * </pre>
+     *
+     * <code>repeated fixed32 deviceid = 1;</code>
+     */
+    public java.util.List<java.lang.Integer>
+        getDeviceidList() {
+      return deviceid_;
+    }
+    /**
+     * <pre>
+     *指定收到该请求的设备ID
+     * </pre>
+     *
+     * <code>repeated fixed32 deviceid = 1;</code>
+     */
+    public int getDeviceidCount() {
+      return deviceid_.size();
+    }
+    /**
+     * <pre>
+     *指定收到该请求的设备ID
+     * </pre>
+     *
+     * <code>repeated fixed32 deviceid = 1;</code>
+     */
+    public int getDeviceid(int index) {
+      return deviceid_.getInt(index);
+    }
+    private void ensureDeviceidIsMutable() {
+      if (!deviceid_.isModifiable()) {
+        deviceid_ =
+            com.google.protobuf.GeneratedMessageLite.mutableCopy(deviceid_);
+       }
+    }
+    /**
+     * <pre>
+     *指定收到该请求的设备ID
+     * </pre>
+     *
+     * <code>repeated fixed32 deviceid = 1;</code>
+     */
+    private void setDeviceid(
+        int index, int value) {
+      ensureDeviceidIsMutable();
+      deviceid_.setInt(index, value);
+    }
+    /**
+     * <pre>
+     *指定收到该请求的设备ID
+     * </pre>
+     *
+     * <code>repeated fixed32 deviceid = 1;</code>
+     */
+    private void addDeviceid(int value) {
+      ensureDeviceidIsMutable();
+      deviceid_.addInt(value);
+    }
+    /**
+     * <pre>
+     *指定收到该请求的设备ID
+     * </pre>
+     *
+     * <code>repeated fixed32 deviceid = 1;</code>
+     */
+    private void addAllDeviceid(
+        java.lang.Iterable<? extends java.lang.Integer> values) {
+      ensureDeviceidIsMutable();
+      com.google.protobuf.AbstractMessageLite.addAll(
+          values, deviceid_);
+    }
+    /**
+     * <pre>
+     *指定收到该请求的设备ID
+     * </pre>
+     *
+     * <code>repeated fixed32 deviceid = 1;</code>
+     */
+    private void clearDeviceid() {
+      deviceid_ = emptyIntList();
+    }
+
+    public static final int JSONTEXT_FIELD_NUMBER = 2;
+    private com.google.protobuf.ByteString jsontext_;
+    /**
+     * <pre>
+     *要设置的配置参数 ,参见下方的json协议定义
+     * </pre>
+     *
+     * <code>bytes jsontext = 2;</code>
+     */
+    public com.google.protobuf.ByteString getJsontext() {
+      return jsontext_;
+    }
+    /**
+     * <pre>
+     *要设置的配置参数 ,参见下方的json协议定义
+     * </pre>
+     *
+     * <code>bytes jsontext = 2;</code>
+     */
+    private void setJsontext(com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      jsontext_ = value;
+    }
+    /**
+     * <pre>
+     *要设置的配置参数 ,参见下方的json协议定义
+     * </pre>
+     *
+     * <code>bytes jsontext = 2;</code>
+     */
+    private void clearJsontext() {
+      
+      jsontext_ = getDefaultInstance().getJsontext();
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      for (int i = 0; i < deviceid_.size(); i++) {
+        output.writeFixed32(1, deviceid_.getInt(i));
+      }
+      if (!jsontext_.isEmpty()) {
+        output.writeBytes(2, jsontext_);
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      {
+        int dataSize = 0;
+        dataSize = 4 * getDeviceidList().size();
+        size += dataSize;
+        size += 1 * getDeviceidList().size();
+      }
+      if (!jsontext_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, jsontext_);
+      }
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoRemoteSet parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoRemoteSet parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoRemoteSet parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoRemoteSet parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoRemoteSet parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoRemoteSet parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoRemoteSet parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoRemoteSet parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoRemoteSet parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoRemoteSet parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoRemoteSet parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoRemoteSet parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoRemoteSet prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    /**
+     * <pre>
+     *远程配置设备参数
+     *call
+     *type:TYPE_MEET_INTERFACE_DEVICEOPER
+     *method: METHOD_MEET_INTERFACE_REMOTESET
+     * </pre>
+     *
+     * Protobuf type {@code pbui_Type_MeetDoRemoteSet}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoRemoteSet, Builder> implements
+        // @@protoc_insertion_point(builder_implements:pbui_Type_MeetDoRemoteSet)
+        com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoRemoteSetOrBuilder {
+      // Construct using com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoRemoteSet.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      /**
+       * <pre>
+       *指定收到该请求的设备ID
+       * </pre>
+       *
+       * <code>repeated fixed32 deviceid = 1;</code>
+       */
+      public java.util.List<java.lang.Integer>
+          getDeviceidList() {
+        return java.util.Collections.unmodifiableList(
+            instance.getDeviceidList());
+      }
+      /**
+       * <pre>
+       *指定收到该请求的设备ID
+       * </pre>
+       *
+       * <code>repeated fixed32 deviceid = 1;</code>
+       */
+      public int getDeviceidCount() {
+        return instance.getDeviceidCount();
+      }
+      /**
+       * <pre>
+       *指定收到该请求的设备ID
+       * </pre>
+       *
+       * <code>repeated fixed32 deviceid = 1;</code>
+       */
+      public int getDeviceid(int index) {
+        return instance.getDeviceid(index);
+      }
+      /**
+       * <pre>
+       *指定收到该请求的设备ID
+       * </pre>
+       *
+       * <code>repeated fixed32 deviceid = 1;</code>
+       */
+      public Builder setDeviceid(
+          int index, int value) {
+        copyOnWrite();
+        instance.setDeviceid(index, value);
+        return this;
+      }
+      /**
+       * <pre>
+       *指定收到该请求的设备ID
+       * </pre>
+       *
+       * <code>repeated fixed32 deviceid = 1;</code>
+       */
+      public Builder addDeviceid(int value) {
+        copyOnWrite();
+        instance.addDeviceid(value);
+        return this;
+      }
+      /**
+       * <pre>
+       *指定收到该请求的设备ID
+       * </pre>
+       *
+       * <code>repeated fixed32 deviceid = 1;</code>
+       */
+      public Builder addAllDeviceid(
+          java.lang.Iterable<? extends java.lang.Integer> values) {
+        copyOnWrite();
+        instance.addAllDeviceid(values);
+        return this;
+      }
+      /**
+       * <pre>
+       *指定收到该请求的设备ID
+       * </pre>
+       *
+       * <code>repeated fixed32 deviceid = 1;</code>
+       */
+      public Builder clearDeviceid() {
+        copyOnWrite();
+        instance.clearDeviceid();
+        return this;
+      }
+
+      /**
+       * <pre>
+       *要设置的配置参数 ,参见下方的json协议定义
+       * </pre>
+       *
+       * <code>bytes jsontext = 2;</code>
+       */
+      public com.google.protobuf.ByteString getJsontext() {
+        return instance.getJsontext();
+      }
+      /**
+       * <pre>
+       *要设置的配置参数 ,参见下方的json协议定义
+       * </pre>
+       *
+       * <code>bytes jsontext = 2;</code>
+       */
+      public Builder setJsontext(com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setJsontext(value);
+        return this;
+      }
+      /**
+       * <pre>
+       *要设置的配置参数 ,参见下方的json协议定义
+       * </pre>
+       *
+       * <code>bytes jsontext = 2;</code>
+       */
+      public Builder clearJsontext() {
+        copyOnWrite();
+        instance.clearJsontext();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:pbui_Type_MeetDoRemoteSet)
+    }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
+    protected final Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        Object arg0, Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoRemoteSet();
+        }
+        case IS_INITIALIZED: {
+          return DEFAULT_INSTANCE;
+        }
+        case MAKE_IMMUTABLE: {
+          deviceid_.makeImmutable();
+          return null;
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case VISIT: {
+          Visitor visitor = (Visitor) arg0;
+          com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoRemoteSet other = (com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoRemoteSet) arg1;
+          deviceid_= visitor.visitIntList(deviceid_, other.deviceid_);
+          jsontext_ = visitor.visitByteString(jsontext_ != com.google.protobuf.ByteString.EMPTY, jsontext_,
+              other.jsontext_ != com.google.protobuf.ByteString.EMPTY, other.jsontext_);
+          if (visitor == com.google.protobuf.GeneratedMessageLite.MergeFromVisitor
+              .INSTANCE) {
+            bitField0_ |= other.bitField0_;
+          }
+          return this;
+        }
+        case MERGE_FROM_STREAM: {
+          com.google.protobuf.CodedInputStream input =
+              (com.google.protobuf.CodedInputStream) arg0;
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry =
+              (com.google.protobuf.ExtensionRegistryLite) arg1;
+          try {
+            boolean done = false;
+            while (!done) {
+              int tag = input.readTag();
+              switch (tag) {
+                case 0:
+                  done = true;
+                  break;
+                default: {
+                  if (!input.skipField(tag)) {
+                    done = true;
+                  }
+                  break;
+                }
+                case 13: {
+                  if (!deviceid_.isModifiable()) {
+                    deviceid_ =
+                        com.google.protobuf.GeneratedMessageLite.mutableCopy(deviceid_);
+                  }
+                  deviceid_.addInt(input.readFixed32());
+                  break;
+                }
+                case 10: {
+                  int length = input.readRawVarint32();
+                  int limit = input.pushLimit(length);
+                  if (!deviceid_.isModifiable() && input.getBytesUntilLimit() > 0) {
+                    final int currentSize = deviceid_.size();
+                    deviceid_ = deviceid_.mutableCopyWithCapacity(
+                        currentSize + (length/4));
+                  }
+                  while (input.getBytesUntilLimit() > 0) {
+                    deviceid_.addInt(input.readFixed32());
+                  }
+                  input.popLimit(limit);
+                  break;
+                }
+                case 18: {
+
+                  jsontext_ = input.readBytes();
+                  break;
+                }
+              }
+            }
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw new RuntimeException(e.setUnfinishedMessage(this));
+          } catch (java.io.IOException e) {
+            throw new RuntimeException(
+                new com.google.protobuf.InvalidProtocolBufferException(
+                    e.getMessage()).setUnfinishedMessage(this));
+          } finally {
+          }
+        }
+        // fall through
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          if (PARSER == null) {    synchronized (com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoRemoteSet.class) {
+              if (PARSER == null) {
+                PARSER = new DefaultInstanceBasedParser(DEFAULT_INSTANCE);
+              }
+            }
+          }
+          return PARSER;
+        }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:pbui_Type_MeetDoRemoteSet)
+    private static final com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoRemoteSet DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new pbui_Type_MeetDoRemoteSet();
+      DEFAULT_INSTANCE.makeImmutable();
+    }
+
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetDoRemoteSet getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<pbui_Type_MeetDoRemoteSet> PARSER;
+
+    public static com.google.protobuf.Parser<pbui_Type_MeetDoRemoteSet> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
+  public interface pbui_Type_MeetRemoteSetNotifyOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:pbui_Type_MeetRemoteSetNotify)
+      com.google.protobuf.MessageLiteOrBuilder {
+
+    /**
+     * <pre>
+     *发起请求的设备ID
+     * </pre>
+     *
+     * <code>fixed32 deviceid = 1;</code>
+     */
+    int getDeviceid();
+
+    /**
+     * <pre>
+     *文本信息
+     * </pre>
+     *
+     * <code>bytes jsontext = 2;</code>
+     */
+    com.google.protobuf.ByteString getJsontext();
+  }
+  /**
+   * <pre>
+   *收到远程配置设备参数
+   *callback
+   *type:TYPE_MEET_INTERFACE_DEVICEOPER
+   *method: METHOD_MEET_INTERFACE_REMOTESET
+   * </pre>
+   *
+   * Protobuf type {@code pbui_Type_MeetRemoteSetNotify}
+   */
+  public  static final class pbui_Type_MeetRemoteSetNotify extends
+      com.google.protobuf.GeneratedMessageLite<
+          pbui_Type_MeetRemoteSetNotify, pbui_Type_MeetRemoteSetNotify.Builder> implements
+      // @@protoc_insertion_point(message_implements:pbui_Type_MeetRemoteSetNotify)
+      pbui_Type_MeetRemoteSetNotifyOrBuilder {
+    private pbui_Type_MeetRemoteSetNotify() {
+      jsontext_ = com.google.protobuf.ByteString.EMPTY;
+    }
+    public static final int DEVICEID_FIELD_NUMBER = 1;
+    private int deviceid_;
+    /**
+     * <pre>
+     *发起请求的设备ID
+     * </pre>
+     *
+     * <code>fixed32 deviceid = 1;</code>
+     */
+    public int getDeviceid() {
+      return deviceid_;
+    }
+    /**
+     * <pre>
+     *发起请求的设备ID
+     * </pre>
+     *
+     * <code>fixed32 deviceid = 1;</code>
+     */
+    private void setDeviceid(int value) {
+      
+      deviceid_ = value;
+    }
+    /**
+     * <pre>
+     *发起请求的设备ID
+     * </pre>
+     *
+     * <code>fixed32 deviceid = 1;</code>
+     */
+    private void clearDeviceid() {
+      
+      deviceid_ = 0;
+    }
+
+    public static final int JSONTEXT_FIELD_NUMBER = 2;
+    private com.google.protobuf.ByteString jsontext_;
+    /**
+     * <pre>
+     *文本信息
+     * </pre>
+     *
+     * <code>bytes jsontext = 2;</code>
+     */
+    public com.google.protobuf.ByteString getJsontext() {
+      return jsontext_;
+    }
+    /**
+     * <pre>
+     *文本信息
+     * </pre>
+     *
+     * <code>bytes jsontext = 2;</code>
+     */
+    private void setJsontext(com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      jsontext_ = value;
+    }
+    /**
+     * <pre>
+     *文本信息
+     * </pre>
+     *
+     * <code>bytes jsontext = 2;</code>
+     */
+    private void clearJsontext() {
+      
+      jsontext_ = getDefaultInstance().getJsontext();
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (deviceid_ != 0) {
+        output.writeFixed32(1, deviceid_);
+      }
+      if (!jsontext_.isEmpty()) {
+        output.writeBytes(2, jsontext_);
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (deviceid_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed32Size(1, deviceid_);
+      }
+      if (!jsontext_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, jsontext_);
+      }
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRemoteSetNotify parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRemoteSetNotify parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRemoteSetNotify parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRemoteSetNotify parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRemoteSetNotify parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRemoteSetNotify parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRemoteSetNotify parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRemoteSetNotify parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRemoteSetNotify parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRemoteSetNotify parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRemoteSetNotify parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRemoteSetNotify parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRemoteSetNotify prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    /**
+     * <pre>
+     *收到远程配置设备参数
+     *callback
+     *type:TYPE_MEET_INTERFACE_DEVICEOPER
+     *method: METHOD_MEET_INTERFACE_REMOTESET
+     * </pre>
+     *
+     * Protobuf type {@code pbui_Type_MeetRemoteSetNotify}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRemoteSetNotify, Builder> implements
+        // @@protoc_insertion_point(builder_implements:pbui_Type_MeetRemoteSetNotify)
+        com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRemoteSetNotifyOrBuilder {
+      // Construct using com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRemoteSetNotify.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      /**
+       * <pre>
+       *发起请求的设备ID
+       * </pre>
+       *
+       * <code>fixed32 deviceid = 1;</code>
+       */
+      public int getDeviceid() {
+        return instance.getDeviceid();
+      }
+      /**
+       * <pre>
+       *发起请求的设备ID
+       * </pre>
+       *
+       * <code>fixed32 deviceid = 1;</code>
+       */
+      public Builder setDeviceid(int value) {
+        copyOnWrite();
+        instance.setDeviceid(value);
+        return this;
+      }
+      /**
+       * <pre>
+       *发起请求的设备ID
+       * </pre>
+       *
+       * <code>fixed32 deviceid = 1;</code>
+       */
+      public Builder clearDeviceid() {
+        copyOnWrite();
+        instance.clearDeviceid();
+        return this;
+      }
+
+      /**
+       * <pre>
+       *文本信息
+       * </pre>
+       *
+       * <code>bytes jsontext = 2;</code>
+       */
+      public com.google.protobuf.ByteString getJsontext() {
+        return instance.getJsontext();
+      }
+      /**
+       * <pre>
+       *文本信息
+       * </pre>
+       *
+       * <code>bytes jsontext = 2;</code>
+       */
+      public Builder setJsontext(com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setJsontext(value);
+        return this;
+      }
+      /**
+       * <pre>
+       *文本信息
+       * </pre>
+       *
+       * <code>bytes jsontext = 2;</code>
+       */
+      public Builder clearJsontext() {
+        copyOnWrite();
+        instance.clearJsontext();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:pbui_Type_MeetRemoteSetNotify)
+    }
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
+    protected final Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        Object arg0, Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRemoteSetNotify();
+        }
+        case IS_INITIALIZED: {
+          return DEFAULT_INSTANCE;
+        }
+        case MAKE_IMMUTABLE: {
+          return null;
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case VISIT: {
+          Visitor visitor = (Visitor) arg0;
+          com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRemoteSetNotify other = (com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRemoteSetNotify) arg1;
+          deviceid_ = visitor.visitInt(deviceid_ != 0, deviceid_,
+              other.deviceid_ != 0, other.deviceid_);
+          jsontext_ = visitor.visitByteString(jsontext_ != com.google.protobuf.ByteString.EMPTY, jsontext_,
+              other.jsontext_ != com.google.protobuf.ByteString.EMPTY, other.jsontext_);
+          if (visitor == com.google.protobuf.GeneratedMessageLite.MergeFromVisitor
+              .INSTANCE) {
+          }
+          return this;
+        }
+        case MERGE_FROM_STREAM: {
+          com.google.protobuf.CodedInputStream input =
+              (com.google.protobuf.CodedInputStream) arg0;
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry =
+              (com.google.protobuf.ExtensionRegistryLite) arg1;
+          try {
+            boolean done = false;
+            while (!done) {
+              int tag = input.readTag();
+              switch (tag) {
+                case 0:
+                  done = true;
+                  break;
+                default: {
+                  if (!input.skipField(tag)) {
+                    done = true;
+                  }
+                  break;
+                }
+                case 13: {
+
+                  deviceid_ = input.readFixed32();
+                  break;
+                }
+                case 18: {
+
+                  jsontext_ = input.readBytes();
+                  break;
+                }
+              }
+            }
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw new RuntimeException(e.setUnfinishedMessage(this));
+          } catch (java.io.IOException e) {
+            throw new RuntimeException(
+                new com.google.protobuf.InvalidProtocolBufferException(
+                    e.getMessage()).setUnfinishedMessage(this));
+          } finally {
+          }
+        }
+        // fall through
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          if (PARSER == null) {    synchronized (com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRemoteSetNotify.class) {
+              if (PARSER == null) {
+                PARSER = new DefaultInstanceBasedParser(DEFAULT_INSTANCE);
+              }
+            }
+          }
+          return PARSER;
+        }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:pbui_Type_MeetRemoteSetNotify)
+    private static final com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRemoteSetNotify DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new pbui_Type_MeetRemoteSetNotify();
+      DEFAULT_INSTANCE.makeImmutable();
+    }
+
+    public static com.mogujie.tt.protobuf.InterfaceDevice.pbui_Type_MeetRemoteSetNotify getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<pbui_Type_MeetRemoteSetNotify> PARSER;
+
+    public static com.google.protobuf.Parser<pbui_Type_MeetRemoteSetNotify> parser() {
       return DEFAULT_INSTANCE.getParserForType();
     }
   }

@@ -41,7 +41,7 @@
             android:layout_gravity="center_vertical"
             android:layout_margin="@dimen/dp_5"
             android:layout_weight="1"
-            android:background="@drawable/shape_edt"
+            android:background="@drawable/shape_edt_blue"
             android:ellipsize="end"
             android:singleLine="true"
             tools:text="www.baidu.com" />
@@ -52,6 +52,12 @@
             android:layout_margin="@dimen/dp_5"
             android:text="GO" />
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_web"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white" />
 
     <com.wang.avi.AVLoadingIndicatorView
         android:id="@+id/f_web_loading"
@@ -66,5 +72,6 @@
         android:id="@+id/f_web_x5view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/dp_5" />
+        android:layout_margin="@dimen/dp_5"
+        android:visibility="gone" />
 </LinearLayout>

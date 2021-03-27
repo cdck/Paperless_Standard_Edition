@@ -1,11 +1,11 @@
 package xlk.paperless.standard.view.fragment.annotation;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.PopupWindow;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.mogujie.tt.protobuf.InterfaceDevice;
 import com.mogujie.tt.protobuf.InterfaceFile;
 import com.mogujie.tt.protobuf.InterfaceMacro;
@@ -146,7 +147,7 @@ public class MeetAnnotationFragment extends BaseFragment implements View.OnClick
         }
         List<InterfaceFile.pbui_Item_MeetDirFileDetailInfo> temps = new ArrayList<>(currentFiles);
         View inflate = LayoutInflater.from(getContext()).inflate(R.layout.pop_export_file, null);
-        PopupWindow exportPop = PopUtil.create(inflate, Values.screen_width / 3 * 2, Values.screen_height / 3 * 2, true, f_annotation_export);
+        PopupWindow exportPop = PopUtil.create(inflate, Values.screen_width / 3 * 2, Values.screen_height / 3 * 2,  f_annotation_export);
         RecyclerView pop_export_rv = inflate.findViewById(R.id.pop_export_rv);
         Button pop_export_download = inflate.findViewById(R.id.pop_export_download);
         Button pop_export_back = inflate.findViewById(R.id.pop_export_back);
@@ -210,10 +211,10 @@ public class MeetAnnotationFragment extends BaseFragment implements View.OnClick
     public void updateFileRv(List<InterfaceFile.pbui_Item_MeetDirFileDetailInfo> fileDetailInfos) {
         allFiles.clear();
         allFiles.addAll(fileDetailInfos);
-        for (int i = 0; i < allFiles.size(); i++) {
-            InterfaceFile.pbui_Item_MeetDirFileDetailInfo item = allFiles.get(i);
-            LogUtil.i(TAG, "updateFileRv 文件=" + item.getName().toStringUtf8() + ", 上传者=" + item.getUploaderName().toStringUtf8());
-        }
+//        for (int i = 0; i < allFiles.size(); i++) {
+//            InterfaceFile.pbui_Item_MeetDirFileDetailInfo item = allFiles.get(i);
+//            LogUtil.i(TAG, "updateFileRv 文件=" + item.getName().toStringUtf8() + ", 上传者=" + item.getUploaderName().toStringUtf8());
+//        }
         if (memberAdapter != null) {
             if (currentMemberId != 0) {
                 showFile();
@@ -250,7 +251,7 @@ public class MeetAnnotationFragment extends BaseFragment implements View.OnClick
                         break;
                     case 2:
 //                        if (Constant.isVideo(info.getMediaid())) {
-                        if (FileUtil.isVideoFile(info.getName().toStringUtf8())) {
+                        if (FileUtil.isAudioAndVideoFile(info.getName().toStringUtf8())) {
                             currentFiles.add(info);
                         }
                         break;
@@ -271,6 +272,7 @@ public class MeetAnnotationFragment extends BaseFragment implements View.OnClick
             fileAdapter = new MeetDataFileAdapter(R.layout.item_meet_data_file, currentFiles);
             f_annotation_file_rv.setLayoutManager(new LinearLayoutManager(getContext()));
             f_annotation_file_rv.setAdapter(fileAdapter);
+            fileAdapter.addChildClickViewIds(R.id.i_m_d_file_view,R.id.i_m_d_file_download);
             fileAdapter.setOnItemChildClickListener((adapter, view, position) -> {
                 if (view.getId() == R.id.i_m_d_file_download) {
                     presenter.downloadFile(currentFiles.get(position));
@@ -304,15 +306,15 @@ public class MeetAnnotationFragment extends BaseFragment implements View.OnClick
             pushProjectionAdapter.notifyChecks();
         } else {
             View inflate = LayoutInflater.from(getContext()).inflate(R.layout.pop_push_view, null);
-            pushPop = PopUtil.create(inflate, Values.screen_width / 2, Values.screen_height / 2, true, f_annotation_push);
+            pushPop = PopUtil.create(inflate,  f_annotation_push);
             CheckBox pop_push_member_cb = inflate.findViewById(R.id.pop_push_member_cb);
             RecyclerView pop_push_member_rv = inflate.findViewById(R.id.pop_push_member_rv);
             pushMemberAdapter = new PopPushMemberAdapter(R.layout.item_single_button, onlineMembers);
             pop_push_member_rv.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
             pop_push_member_rv.setAdapter(pushMemberAdapter);
-            pushMemberAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            pushMemberAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
-                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                     pushMemberAdapter.choose(onlineMembers.get(position).getDeviceDetailInfo().getDevcieid());
                     pop_push_member_cb.setChecked(pushMemberAdapter.isChooseAll());
                 }

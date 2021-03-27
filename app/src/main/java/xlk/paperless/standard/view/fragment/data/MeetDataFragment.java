@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +25,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.mogujie.tt.protobuf.InterfaceDevice;
 import com.mogujie.tt.protobuf.InterfaceFile;
 import com.mogujie.tt.protobuf.InterfaceMacro;
@@ -86,7 +91,8 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View inflate = inflater.inflate(R.layout.fragment_data, container, false);
         initView(inflate);
         presenter = new MeetDataPresenter(getContext(), this);
@@ -137,6 +143,7 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
         }
         dirAdapter.setOnItemClickListener((adapter, view, position) -> {
             currentDirId = dirDetailInfos.get(position).getId();
+            f_data_upload_file.setVisibility(currentDirId == Constant.SHARED_FILE_DIRECTORY_ID ? View.VISIBLE : View.INVISIBLE);
             dirAdapter.setChoose(currentDirId);
             presenter.queryMeetFileByDir(currentDirId);
         });
@@ -213,6 +220,7 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
         } else {
             fileAdapter.notifyDataSetChanged();
         }
+        fileAdapter.addChildClickViewIds(R.id.i_m_d_file_view,R.id.i_m_d_file_download);
         fileAdapter.setOnItemClickListener((adapter, view, position) -> {
             fileAdapter.setChoose(typeFileDetailInfos.get(position).getMediaid());
         });
@@ -227,7 +235,7 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
             } else if (view.getId() == R.id.i_m_d_file_view) {
                 LogUtil.d(TAG, "rvFile -->" + "查看文件");
 //                if (Constant.isVideo(info.getMediaid())) {
-                if (FileUtil.isVideoFile(info.getName().toStringUtf8())) {
+                if (FileUtil.isAudioAndVideoFile(info.getName().toStringUtf8())) {
                     List<Integer> devIds = new ArrayList<>();
                     devIds.add(Values.localDeviceId);
                     JniHandler.getInstance().mediaPlayOperate(info.getMediaid(), devIds, 0, RESOURCE_0, 0, 0);
@@ -243,7 +251,8 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
     }
 
     @Override
-    public void showPushView(List<DevMember> onlineMembers, List<InterfaceDevice.pbui_Item_DeviceDetailInfo> onLineProjectors, int mediaId) {
+    public void showPushView(List<DevMember> onlineMembers,
+                             List<InterfaceDevice.pbui_Item_DeviceDetailInfo> onLineProjectors, int mediaId) {
         LogUtil.d(TAG, "showPushView -->" + "展示推送弹框视图");
         if (pushPop != null && pushPop.isShowing()) {
             pushMemberAdapter.notifyDataSetChanged();
@@ -252,15 +261,15 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
             pushProjectionAdapter.notifyChecks();
         } else {
             View inflate = LayoutInflater.from(getContext()).inflate(R.layout.pop_push_view, null);
-            pushPop = PopUtil.create(inflate, Values.screen_width / 2, Values.screen_height / 2, true, f_data_upload_file);
+            pushPop = PopUtil.create(inflate, f_data_upload_file);
             CheckBox pop_push_member_cb = inflate.findViewById(R.id.pop_push_member_cb);
             RecyclerView pop_push_member_rv = inflate.findViewById(R.id.pop_push_member_rv);
             pushMemberAdapter = new PopPushMemberAdapter(R.layout.item_single_button, onlineMembers);
             pop_push_member_rv.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
             pop_push_member_rv.setAdapter(pushMemberAdapter);
-            pushMemberAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            pushMemberAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
-                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                     pushMemberAdapter.choose(onlineMembers.get(position).getDeviceDetailInfo().getDevcieid());
                     pop_push_member_cb.setChecked(pushMemberAdapter.isChooseAll());
                 }
@@ -278,58 +287,43 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
             pushProjectionAdapter = new PopPushProjectionAdapter(R.layout.item_single_button, onLineProjectors);
             pop_push_projection_rv.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
             pop_push_projection_rv.setAdapter(pushProjectionAdapter);
-            pushProjectionAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                    pushProjectionAdapter.choose(onlineMembers.get(position).getDeviceDetailInfo().getDevcieid());
-                    pop_push_projection_cb.setChecked(pushProjectionAdapter.isChooseAll());
-                }
+            pushProjectionAdapter.setOnItemClickListener((adapter, view, position) -> {
+                pushProjectionAdapter.choose(onlineMembers.get(position).getDeviceDetailInfo().getDevcieid());
+                pop_push_projection_cb.setChecked(pushProjectionAdapter.isChooseAll());
             });
-            pop_push_projection_cb.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    boolean checked = pop_push_projection_cb.isChecked();
-                    pop_push_projection_cb.setChecked(checked);
-                    pushProjectionAdapter.setChooseAll(checked);
-                }
+            pop_push_projection_cb.setOnClickListener(v -> {
+                boolean checked = pop_push_projection_cb.isChecked();
+                pop_push_projection_cb.setChecked(checked);
+                pushProjectionAdapter.setChooseAll(checked);
             });
             //推送文件
-            inflate.findViewById(R.id.pop_push_determine).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    List<Integer> devIds = pushMemberAdapter.getDevIds();
-                    devIds.addAll(pushProjectionAdapter.getDevIds());
-                    if (!devIds.isEmpty()) {
-                        pushPop.dismiss();
-                        presenter.mediaPlayOperate(mediaId, devIds, 0, RESOURCE_0, 0, InterfaceMacro.Pb_MeetPlayFlag.Pb_MEDIA_PLAYFLAG_ZERO.getNumber());
-                    } else {
-                        ToastUtil.show(R.string.please_choose_push_target);
-                    }
+            inflate.findViewById(R.id.pop_push_determine).setOnClickListener(v -> {
+                List<Integer> devIds = pushMemberAdapter.getDevIds();
+                devIds.addAll(pushProjectionAdapter.getDevIds());
+                if (!devIds.isEmpty()) {
+                    pushPop.dismiss();
+                    presenter.mediaPlayOperate(mediaId, devIds, 0, RESOURCE_0, 0, InterfaceMacro.Pb_MeetPlayFlag.Pb_MEDIA_PLAYFLAG_ZERO.getNumber());
+                } else {
+                    ToastUtil.show(R.string.please_choose_push_target);
                 }
             });
             //停止推送
-            inflate.findViewById(R.id.pop_push_stop).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    List<Integer> devIds = pushMemberAdapter.getDevIds();
-                    devIds.addAll(pushProjectionAdapter.getDevIds());
-                    if (!devIds.isEmpty()) {
-                        pushPop.dismiss();
-                        List<Integer> temps = new ArrayList<>();
-                        temps.add(0);
-                        presenter.stopPush(temps, devIds);
-                    } else {
-                        ToastUtil.show(R.string.please_choose_push_target);
-                    }
+            inflate.findViewById(R.id.pop_push_stop).setOnClickListener(v -> {
+                List<Integer> devIds = pushMemberAdapter.getDevIds();
+                devIds.addAll(pushProjectionAdapter.getDevIds());
+                if (!devIds.isEmpty()) {
+                    pushPop.dismiss();
+                    List<Integer> temps = new ArrayList<>();
+                    temps.add(0);
+                    presenter.stopPush(temps, devIds);
+                } else {
+                    ToastUtil.show(R.string.please_choose_push_target);
                 }
             });
             //取消
-            inflate.findViewById(R.id.pop_push_cancel).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    pushPop.dismiss();
-                    pushPop = null;
-                }
+            inflate.findViewById(R.id.pop_push_cancel).setOnClickListener(v -> {
+                pushPop.dismiss();
+                pushPop = null;
             });
         }
     }
@@ -341,16 +335,16 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
         }
         List<InterfaceFile.pbui_Item_MeetDirFileDetailInfo> temps = new ArrayList<>(allFileDetailInfos);
         View inflate = LayoutInflater.from(getContext()).inflate(R.layout.pop_export_file, null);
-        PopupWindow exportPop = PopUtil.create(inflate, Values.screen_width / 3 * 2, Values.screen_height / 3 * 2, true, f_data_upload_file);
+        PopupWindow exportPop = PopUtil.create(inflate, Values.screen_width / 3 * 2, Values.screen_height / 3 * 2, f_data_upload_file);
         RecyclerView pop_export_rv = inflate.findViewById(R.id.pop_export_rv);
         Button pop_export_download = inflate.findViewById(R.id.pop_export_download);
         Button pop_export_back = inflate.findViewById(R.id.pop_export_back);
         MeetDataExportAdapter exportAdapter = new MeetDataExportAdapter(R.layout.item_meet_data_export, temps);
         pop_export_rv.setLayoutManager(new LinearLayoutManager(getContext()));
         pop_export_rv.setAdapter(exportAdapter);
-        exportAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        exportAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 long mediaid = temps.get(position).getMediaid();
                 LogUtil.d(TAG, "onItemClick -->" + position + ", mediaid= " + mediaid);
                 exportAdapter.setChoose(mediaid);
@@ -415,11 +409,9 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
                 .setPositiveButton(getResources().getString(R.string.determine), (dialogInterface, i) -> {
                     if (!(TextUtils.isEmpty(editText.getText().toString().trim()))) {
                         String shareFileName = editText.getText().toString();
-                        //计算出 媒体ID
-                        int mediaid = Constant.getMediaId(path);
                         presenter.uploadFile(InterfaceMacro.Pb_Upload_Flag.Pb_MEET_UPLOADFLAG_ONLYENDCALLBACK_VALUE,
                                 currentDirId, 0, shareFileName + finalSuffix, path,
-                                0, mediaid, Constant.UPLOAD_CHOOSE_FILE);
+                                0, Constant.UPLOAD_CHOOSE_FILE);
                         dialogInterface.dismiss();
                     } else {
                         ToastUtil.show(R.string.please_enter_valid_file_name);
@@ -472,7 +464,7 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
                 for (int i = 0; i < allFileDetailInfos.size(); i++) {
                     InterfaceFile.pbui_Item_MeetDirFileDetailInfo info = allFileDetailInfos.get(i);
 //                    if(Constant.isVideo(info.getMediaid())){
-                    if (FileUtil.isVideoFile(info.getName().toStringUtf8())) {
+                    if (FileUtil.isAudioAndVideoFile(info.getName().toStringUtf8())) {
                         typeFileDetailInfos.add(info);
                     }
                 }

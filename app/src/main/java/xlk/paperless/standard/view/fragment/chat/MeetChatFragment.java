@@ -2,10 +2,10 @@ package xlk.paperless.standard.view.fragment.chat;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.mogujie.tt.protobuf.InterfaceIM;
 import com.mogujie.tt.protobuf.InterfaceMacro;
 
@@ -99,9 +100,9 @@ public class MeetChatFragment extends BaseFragment implements View.OnClickListen
             memberAdapter = new MeetChatMemberAdapter(R.layout.item_chat_member, onLineMembers);
             m_c_f_member_rv.setLayoutManager(new LinearLayoutManager(getContext()));
             m_c_f_member_rv.setAdapter(memberAdapter);
-            memberAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            memberAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
-                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                     memberAdapter.setCheck(onLineMembers.get(position).getMemberDetailInfo().getPersonid());
                     m_c_f_cb.setChecked(memberAdapter.isCheckAll());
                 }
@@ -132,7 +133,7 @@ public class MeetChatFragment extends BaseFragment implements View.OnClickListen
                     String trim = m_c_f_edt.getText().toString().trim();
                     if (trim.isEmpty()) {
                         ToastUtil.show(R.string.please_enter_message);
-                    } else if (trim.length() > 300) {
+                    } else if (trim.length() > InterfaceMacro.Pb_String_LenLimit.Pb_MEETIM_CHAR_MSG_MAXLEN_VALUE) {
                         ToastUtil.show(R.string.exceed_max_words);
                     } else {
                         presenter.sendChatMessage(trim, InterfaceMacro.Pb_MeetIMMSG_TYPE.Pb_MEETIM_CHAT_Message.getNumber(), check);

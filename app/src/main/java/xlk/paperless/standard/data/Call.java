@@ -2,6 +2,8 @@ package xlk.paperless.standard.data;
 
 import android.content.Intent;
 
+import com.mogujie.tt.protobuf.InterfaceMacro;
+
 import org.greenrobot.eventbus.EventBus;
 
 import xlk.paperless.standard.util.LogUtil;
@@ -187,7 +189,12 @@ public class Call {
         if (type != 1) {
             LogUtil.v("后台回调", "callback_method type=" + type + ",method=" + method);
         }
-        EventBus.getDefault().post(new EventMessage.Builder().type(type).method(method).objects(data, datalen).build());
+        //升级包下载完成通知
+        if (type == InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_UPDATE_VALUE) {
+            EventBus.getDefault().postSticky(new EventMessage.Builder().type(type).method(method).objects(data, datalen).build());
+        } else {
+            EventBus.getDefault().post(new EventMessage.Builder().type(type).method(method).objects(data, datalen).build());
+        }
         return 0;
     }
 }

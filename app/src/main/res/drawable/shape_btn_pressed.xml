@@ -12,7 +12,7 @@
             <solid android:color="@color/white" />
             <size android:width="@dimen/dp_60" android:height="@dimen/dp_25" />
             <corners android:radius="@dimen/dp_2" />
-            <stroke android:width="@dimen/dp_1" android:color="@color/black" />
+            <stroke android:width="@dimen/dp_1" android:color="@color/light_black" />
         </shape>
     </item>
     <!--<item android:state_pressed="true" android:drawable="@drawable/icon_btn_t"/>-->

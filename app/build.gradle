@@ -15,15 +15,15 @@ android {
             storePassword 'android'
         }
     }
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion 29
+    buildToolsVersion '29.0.1'
     defaultConfig {
         applicationId "xlk.paperless.standard"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        versionCode 2
+        versionName "1.2"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
                 cppFlags "-frtti -fexceptions"
@@ -53,12 +53,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    //指定打包后应用名称
-    applicationVariants.all { variant ->
-        variant.outputs.all {
-            outputFileName = "无纸化标准版-V${variant.versionName}.apk"
-        }
-    }
+//    //指定打包后应用名称
+//    applicationVariants.all { variant ->
+//        variant.outputs.all {
+//            outputFileName = "无纸化标准版-V${variant.versionName}.apk"
+//        }
+//    }
     //解决API 28只创建arm64目录，导致找不到库的问题
     splits {
         abi {
@@ -72,19 +72,32 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:2.0.1'
-    implementation 'com.android.support:design:28.0.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'com.google.android.material:material:1.2.1'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation files('libs/ini4j-0.5.2.jar')
     implementation files('libs/protobuf-java-3.3.0.jar')
-
     //腾讯TBS
     implementation files('libs/tbs_sdk_thirdapp_v4.3.0.3_43903_sharewithdownloadwithfile_withoutGame_obfs_20200402_121309.jar')
     //Excel表格相关
     implementation files('libs/jxl.jar')
+
+    //https://github.com/greenrobot/EventBus
+    implementation 'org.greenrobot:eventbus:3.2.0'
+    //权限申请框架：https://github.com/getActivity/XXPermissions
+    implementation 'com.hjq:xxpermissions:6.5'
+//    implementation 'com.hjq:xxpermissions:9.8'
+    //屏幕适配：https://github.com/JessYanCoding/AndroidAutoSize
+    implementation 'me.jessyan:autosize:1.2.1'
+    //基础工具类大全：https://github.com/Blankj/AndroidUtilCode
+    implementation 'com.blankj:utilcodex:1.30.4'
+
+    //在androidx中 1.1.0-alpha01版本 localbroadcastmanager已经被弃用了
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
+
 
     //二维码扫描库:https://github.com/GuoJinyu/SimpleZXing
     implementation 'com.acker:simplezxing:1.5'
@@ -98,30 +111,51 @@ dependencies {
     //图形百分比：https://github.com/IntruderShanky/Scatter-PieChart
     implementation 'com.github.IntruderShanky:scatter-piechart:1.0.0'
 
-    //https://github.com/greenrobot/EventBus
-    implementation 'org.greenrobot:eventbus:3.2.0'
-
-    //权限申请框架：https://github.com/getActivity/XXPermissions
-    implementation 'com.hjq:xxpermissions:6.5'
 
     //https://github.com/CymChad/BaseRecyclerViewAdapterHelper
-    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.46'
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
 
-    //屏幕适配：https://github.com/JessYanCoding/AndroidAutoSize
-    implementation 'me.jessyan:autosize:1.2.1'
 
     //图片加载框架:https://github.com/bumptech/glide
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
-//    当前不需要网络加载图片
-//    implementation 'com.github.bumptech.glide:okhttp3-integration:4.8.0'
+
+    //    当前不需要网络加载图片
+
+    //    implementation 'com.github.bumptech.glide:okhttp3-integration:4.8.0'
 
     //查看大图：https://github.com/SherlockGougou/BigImageViewPager
     implementation 'com.github.SherlockGougou:BigImageViewPager:v4_6.0.0'
 
     //表格控件：https://github.com/RmondJone/LockTableView
-//    implementation 'com.github.RmondJone:LockTableView:1.1.2'
+
+    //    implementation 'com.github.RmondJone:LockTableView:1.1.2'
 
     //内存泄漏检测：https://github.com/square/leakcanary
-//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
+
+    //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
+
+    //选择器：https://github.com/Bigkoo/Android-PickerView
+    implementation 'com.contrarywind:Android-PickerView:4.1.9'
+
+    //    implementation 'com.itextpdf:itextpdf:5.5.13'
+
+    //    implementation 'com.itextpdf:itext-asian:5.2.0'
+    implementation files('libs/iTextpdf.jar')
+
+
+    //https://github.com/alibaba/fastjson
+    implementation 'com.alibaba:fastjson:1.2.75'
+
+    //发送邮件：https://github.com/teprinciple/MailSender
+//    implementation 'com.teprinciple:mailsender:1.2.0'
+
+    implementation 'com.sun.mail:android-mail:1.6.0'
+    implementation 'com.sun.mail:android-activation:1.6.0'
+
+    //https://github.com/srikanth-lingala/zip4j
+    implementation 'net.lingala.zip4j:zip4j:2.6.4'
+
+    //分页RecyclerView：https://github.com/GcsSloop/pager-layoutmanager
+    implementation 'com.gcssloop.recyclerview:pagerlayoutmanager:2.3.8'
 }

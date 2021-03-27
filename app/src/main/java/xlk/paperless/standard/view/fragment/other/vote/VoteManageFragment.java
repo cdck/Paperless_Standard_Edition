@@ -6,10 +6,11 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -101,17 +102,16 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
             vote_manage_rv.setAdapter(voteManageAdapter);
         } else {
             voteManageAdapter.notifyDataSetChanged();
-            voteManageAdapter.notitySelect();
         }
         voteManageAdapter.setOnItemClickListener((adapter, view, position) -> {
             InterfaceVote.pbui_Item_MeetVoteDetailInfo voteInfo = presenter.voteInfos.get(position);
-            voteManageAdapter.setSelect(voteInfo);
+            voteManageAdapter.setSelect(voteInfo.getVoteid());
             updateUI(voteInfo);
         });
         if (voteManageAdapter.getSelectedVote() == null) {
             if (!presenter.voteInfos.isEmpty()) {
                 InterfaceVote.pbui_Item_MeetVoteDetailInfo info = presenter.voteInfos.get(0);
-                voteManageAdapter.setSelect(info);
+                voteManageAdapter.setSelect(info.getVoteid());
                 updateUI(info);
             } else {
                 updateUI(null);
@@ -356,23 +356,23 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
                 if (i == 0) {
                     holder.pop_option_a_ll.setVisibility(View.VISIBLE);
                     holder.pop_option_a_tv.setText(getString(R.string.vote_count, text, selcnt + ""));
-                    setChartData(count, selcnt, Color.parseColor("#000000"), Color.parseColor("#FF0000"));
+                    setChartData(count, selcnt, Color.parseColor("#000000"), ContextCompat.getColor(getContext(),R.color.option_a));
                 } else if (i == 1) {
                     holder.pop_option_b_ll.setVisibility(View.VISIBLE);
                     holder.pop_option_b_tv.setText(getString(R.string.vote_count, text, selcnt + ""));
-                    setChartData(count, selcnt, Color.parseColor("#000000"), Color.parseColor("#00FF00"));
+                    setChartData(count, selcnt, Color.parseColor("#000000"), ContextCompat.getColor(getContext(),R.color.option_b));
                 } else if (i == 2) {
                     holder.pop_option_c_ll.setVisibility(View.VISIBLE);
                     holder.pop_option_c_tv.setText(getString(R.string.vote_count, text, selcnt + ""));
-                    setChartData(count, selcnt, Color.parseColor("#000000"), Color.parseColor("#0000FF"));
+                    setChartData(count, selcnt, Color.parseColor("#000000"), ContextCompat.getColor(getContext(),R.color.option_c));
                 } else if (i == 3) {
                     holder.pop_option_d_ll.setVisibility(View.VISIBLE);
                     holder.pop_option_d_tv.setText(getString(R.string.vote_count, text, selcnt + ""));
-                    setChartData(count, selcnt, Color.parseColor("#000000"), Color.parseColor("#00FFFF"));
+                    setChartData(count, selcnt, Color.parseColor("#000000"), ContextCompat.getColor(getContext(),R.color.option_d));
                 } else if (i == 4) {
                     holder.pop_option_e_ll.setVisibility(View.VISIBLE);
                     holder.pop_option_e_tv.setText(getString(R.string.vote_count, text, selcnt + ""));
-                    setChartData(count, selcnt, Color.parseColor("#000000"), Color.parseColor("#FF00FF"));
+                    setChartData(count, selcnt, Color.parseColor("#000000"), ContextCompat.getColor(getContext(),R.color.option_e));
                 }
             }
         }
@@ -416,7 +416,11 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
     @Override
     public void showSubmittedPop(InterfaceVote.pbui_Item_MeetVoteDetailInfo vote) {
         View inflate = LayoutInflater.from(getContext()).inflate(R.layout.pop_submitted_member, null);
-        PopupWindow popupWindow = new PopupWindow(inflate, MeetingActivity.frameLayoutWidth, MeetingActivity.frameLayoutHeight);
+        View admin_fl = getActivity().findViewById(R.id.meet_frame_layout);
+        int width = admin_fl.getWidth();
+        int height = admin_fl.getHeight();
+        LogUtil.i(TAG, "showSubmittedPop fragment的大小 width=" + width + ",height=" + height);
+        PopupWindow popupWindow = new PopupWindow(inflate, width, height);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
         // 设置popWindow弹出窗体可点击，这句话必须添加，并且是true
         popupWindow.setTouchable(true);
@@ -432,7 +436,7 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
         inflate.findViewById(R.id.submit_member_back).setOnClickListener(v -> popupWindow.dismiss());
         inflate.findViewById(R.id.submit_member_export).setOnClickListener(v -> {
             String[] strings = presenter.queryYd(vote);
-            String createTime = DateUtil.nowDate(System.currentTimeMillis());
+            String createTime = DateUtil.nowDate();
             ExportSubmitMember exportSubmitMember = new ExportSubmitMember(vote.getContent().toStringUtf8(), createTime, strings[0], strings[1], strings[2], strings[3], presenter.submitMembers);
             JxlUtil.exportSubmitMember(exportSubmitMember);
         });
@@ -448,7 +452,11 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
     private void showMember() {
         presenter.queryMember();
         View inflate = LayoutInflater.from(getContext()).inflate(R.layout.pop_vote_member, null);
-        memberPop = new PopupWindow(inflate, MeetingActivity.frameLayoutWidth, MeetingActivity.frameLayoutHeight);
+        View admin_fl = getActivity().findViewById(R.id.meet_frame_layout);
+        int width = admin_fl.getWidth();
+        int height = admin_fl.getHeight();
+        LogUtil.i(TAG, "showMemberRole fragment的大小 width=" + width + ",height=" + height);
+        memberPop = new PopupWindow(inflate, width, height);
         memberPop.setBackgroundDrawable(new BitmapDrawable());
         // 设置popWindow弹出窗体可点击，这句话必须添加，并且是true
         memberPop.setTouchable(true);

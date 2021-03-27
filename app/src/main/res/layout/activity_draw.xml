@@ -246,7 +246,7 @@
             android:layout_marginStart="@dimen/dp_50"
             android:orientation="horizontal">
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/draw_seekbar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -262,7 +262,7 @@
                 android:layout_marginStart="@dimen/dp_5"
                 android:gravity="center"
                 android:text="10"
-                android:textColor="@color/black" />
+                android:textColor="@color/light_black" />
         </LinearLayout>
 
     </LinearLayout>

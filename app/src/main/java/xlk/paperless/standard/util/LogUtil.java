@@ -8,7 +8,7 @@ import android.util.Log;
  * @desc 日志打印工具类
  */
 public class LogUtil {
-    private static final boolean log_enable = false;
+    private static final boolean log_enable = true;
     private static final int log_level_e = 0;
     private static final int log_level_w = 1;
     private static final int log_level_i = 2;

@@ -1,9 +1,9 @@
 package xlk.paperless.standard.adapter;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 
 import java.util.List;
 
@@ -37,8 +37,8 @@ public class MeetAnnotationAdapter extends BaseQuickAdapter<SeatMember, BaseView
 
     public void notifySelect() {
         boolean have = false;
-        for (int i = 0; i < mData.size(); i++) {
-            if (mData.get(i).getSeatDetailInfo().getSeatid() == selectedDevId) {
+        for (int i = 0; i < getData().size(); i++) {
+            if (getData().get(i).getSeatDetailInfo().getSeatid() == selectedDevId) {
                 have = true;
                 break;
             }

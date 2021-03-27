@@ -1,10 +1,12 @@
 package xlk.paperless.standard.view.fragment.other.devicecontrol;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -128,17 +130,50 @@ public class DeviceControlFragment extends BaseFragment implements View.OnClickL
         }
         switch (v.getId()) {
             //上升
-            case R.id.dev_control_rise:
-                presenter.executeTerminalControl(InterfaceMacro.Pb_DeviceControlFlag.Pb_DEVICECONTORL_LIFTUP_VALUE, devControlAdapter.getChooseIds());
+            case R.id.dev_control_rise: {
+                int value = 0;
+                if (dev_control_elevator_cb.isChecked()) {
+                    value = InterfaceMacro.Pb_LiftFlag.Pb_LIFT_FLAG_MACHICE_VALUE;
+                }
+                if (dev_control_microphone_cb.isChecked()) {
+                    value = value | InterfaceMacro.Pb_LiftFlag.Pb_LIFT_FLAG_MIC_VALUE;
+                }
+                if (value == 0) {
+                    ToastUtil.show(R.string.please_choose_lift_or_mike);
+                }
+                presenter.rise(value, devControlAdapter.getChooseIds());
                 break;
+            }
             //停止
-            case R.id.dev_control_stop:
-                presenter.executeTerminalControl(InterfaceMacro.Pb_DeviceControlFlag.Pb_DEVICECONTORL_LIFTSTOP_VALUE, devControlAdapter.getChooseIds());
+            case R.id.dev_control_stop: {
+                int value = 0;
+                if (dev_control_elevator_cb.isChecked()) {
+                    value = InterfaceMacro.Pb_LiftFlag.Pb_LIFT_FLAG_MACHICE_VALUE;
+                }
+                if (dev_control_microphone_cb.isChecked()) {
+                    value = value | InterfaceMacro.Pb_LiftFlag.Pb_LIFT_FLAG_MIC_VALUE;
+                }
+                if (value == 0) {
+                    ToastUtil.show(R.string.please_choose_lift_or_mike);
+                }
+                presenter.stop(value, devControlAdapter.getChooseIds());
                 break;
+            }
             //下降
-            case R.id.dev_control_decline:
-                presenter.executeTerminalControl(InterfaceMacro.Pb_DeviceControlFlag.Pb_DEVICECONTORL_LIFTDOWN_VALUE, devControlAdapter.getChooseIds());
+            case R.id.dev_control_decline: {
+                int value = 0;
+                if (dev_control_elevator_cb.isChecked()) {
+                    value = InterfaceMacro.Pb_LiftFlag.Pb_LIFT_FLAG_MACHICE_VALUE;
+                }
+                if (dev_control_microphone_cb.isChecked()) {
+                    value = value | InterfaceMacro.Pb_LiftFlag.Pb_LIFT_FLAG_MIC_VALUE;
+                }
+                if (value == 0) {
+                    ToastUtil.show(R.string.please_choose_lift_or_mike);
+                }
+                presenter.decline(value, devControlAdapter.getChooseIds());
                 break;
+            }
             //软件重启
             case R.id.dev_control_app_restart:
                 presenter.executeTerminalControl(InterfaceMacro.Pb_DeviceControlFlag.Pb_DEVICECONTORL_PROGRAMRESTART_VALUE, devControlAdapter.getChooseIds());
@@ -153,7 +188,7 @@ public class DeviceControlFragment extends BaseFragment implements View.OnClickL
                 break;
             //网络唤醒
             case R.id.dev_control_wake_on:
-
+                jni.wakeOnLan(devControlAdapter.getChooseIds());
                 break;
             //外部打开文档
             case R.id.dev_control_open_document:
@@ -177,7 +212,7 @@ public class DeviceControlFragment extends BaseFragment implements View.OnClickL
 
     private void showSetRolePop() {
         View inflate = LayoutInflater.from(getContext()).inflate(R.layout.pop_role_spinner, null);
-        PopupWindow popupWindow = PopUtil.create(inflate, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true, dev_control_set_role);
+        PopupWindow popupWindow = PopUtil.create(inflate, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT,  dev_control_set_role);
         Spinner spinner = inflate.findViewById(R.id.pop_role_sp);
         spinner.setAdapter(adapter);
         inflate.findViewById(R.id.pop_role_determine).setOnClickListener(v -> {

@@ -1,9 +1,12 @@
 package xlk.paperless.standard.view.admin.fragment.system.room;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.mogujie.tt.protobuf.InterfaceDevice;
 import com.mogujie.tt.protobuf.InterfaceRoom;
 
@@ -45,7 +49,7 @@ public class AdminRoomManageFragment extends BaseFragment implements AdminRoomMa
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View inflate = inflater.inflate(R.layout.admin_fragment_room_manage, container, false);
         initView(inflate);
-        presenter = new AdminRoomManagePresenter(getContext(),this);
+        presenter = new AdminRoomManagePresenter(getContext(), this);
         presenter.queryRoom();
         return inflate;
     }
@@ -113,9 +117,9 @@ public class AdminRoomManageFragment extends BaseFragment implements AdminRoomMa
             roomAdapter = new AdminRoomAdapter(R.layout.item_admin_room, roomInfos);
             rv_room.setLayoutManager(new LinearLayoutManager(getContext()));
             rv_room.setAdapter(roomAdapter);
-            roomAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            roomAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
-                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                     InterfaceRoom.pbui_Item_MeetRoomDetailInfo room = roomInfos.get(position);
                     int roomid = room.getRoomid();
                     roomAdapter.setSelected(roomid);
@@ -136,9 +140,9 @@ public class AdminRoomManageFragment extends BaseFragment implements AdminRoomMa
             adminRoomDevAdapter = new AdminRoomDevAdapter(R.layout.item_table_3, roomDevices);
             rv_room_dev.setLayoutManager(new LinearLayoutManager(getContext()));
             rv_room_dev.setAdapter(adminRoomDevAdapter);
-            adminRoomDevAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            adminRoomDevAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
-                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                     int devcieid = roomDevices.get(position).getDevcieid();
                     adminRoomDevAdapter.setSelected(devcieid);
                     presenter.setSelectedLeftDevId(devcieid);
@@ -155,9 +159,9 @@ public class AdminRoomManageFragment extends BaseFragment implements AdminRoomMa
             allDevAdapter = new AdminRoomDevAdapter(R.layout.item_table_3, allDevices);
             rv_all_dev.setLayoutManager(new LinearLayoutManager(getContext()));
             rv_all_dev.setAdapter(allDevAdapter);
-            allDevAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            allDevAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
-                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                     int devcieid = allDevices.get(position).getDevcieid();
                     allDevAdapter.setSelected(devcieid);
                     presenter.setSelectedRightDevId(devcieid);
@@ -172,5 +176,13 @@ public class AdminRoomManageFragment extends BaseFragment implements AdminRoomMa
     public void onDestroy() {
         super.onDestroy();
         presenter.onDestroy();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            presenter.queryRoom();
+        }
     }
 }

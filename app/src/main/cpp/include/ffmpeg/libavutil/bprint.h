@@ -99,7 +99,7 @@ FF_PAD_STRUCTURE(AVBPrint, 1024,
  * Init a print buffer.
  *
  * @param buf        buffer to init
- * @param size_init  initialization size (including the final 0)
+ * @param size_init  initial size (including the final 0)
  * @param size_max   maximum size;
  *                   0 means do not write anything, just count the length;
  *                   1 is replaced by the maximum value for automatic storage;

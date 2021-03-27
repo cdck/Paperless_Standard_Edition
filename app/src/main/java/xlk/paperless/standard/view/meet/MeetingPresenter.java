@@ -218,7 +218,7 @@ public class MeetingPresenter extends BasePresenter {
 
     public void initial() {
         //  修改本机界面状态
-        jni.setInterfaceState(InterfaceMacro.Pb_ContextPropertyID.Pb_MEETCONTEXT_PROPERTY_ROLE_VALUE,
+        jni.modifyContextProperties(InterfaceMacro.Pb_ContextPropertyID.Pb_MEETCONTEXT_PROPERTY_ROLE_VALUE,
                 InterfaceMacro.Pb_MeetFaceStatus.Pb_MemState_MemFace_VALUE);
         //缓存会议目录
         jni.cacheData(InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETDIRECTORY.getNumber());
@@ -341,7 +341,6 @@ public class MeetingPresenter extends BasePresenter {
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
-
     }
 
     public void queryDeviceMeetInfo() {

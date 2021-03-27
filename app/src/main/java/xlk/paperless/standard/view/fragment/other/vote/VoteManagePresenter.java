@@ -56,16 +56,16 @@ public class VoteManagePresenter extends BasePresenter {
                 LogUtil.d(TAG, "BusEvent -->" + "投票变更通知");
                 queryVote();
                 break;
-            //参会人员变更通知
-            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEMBER_VALUE:
-                LogUtil.d(TAG, "BusEvent -->" + "参会人员变更通知");
-                queryMember();
-                break;
             //会议排位变更通知
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETSEAT_VALUE:
                 LogUtil.d(TAG, "BusEvent -->" + "会议排位变更通知");
                 querySecretary();
 //                queryMember();
+                break;
+            //参会人员变更通知
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEMBER_VALUE:
+                LogUtil.d(TAG, "BusEvent -->" + "参会人员变更通知");
+                queryMember();
                 break;
             //参会人员权限变更通知
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEMBERPERMISSION_VALUE:

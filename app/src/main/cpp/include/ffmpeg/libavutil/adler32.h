@@ -45,7 +45,7 @@
  * allows the checksum of multiple buffers to be calculated as though
  * they were concatenated.
  *
- * @param adler initialization checksum value
+ * @param adler initial checksum value
  * @param buf   pointer to input buffer
  * @param len   size of input buffer
  * @return      updated checksum

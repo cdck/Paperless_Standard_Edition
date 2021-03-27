@@ -130,7 +130,7 @@
  * call avcodec_send_packet() repeatedly without calling
  * avcodec_receive_frame(). In this case, avcodec_send_packet() will succeed
  * until the codec's internal buffer has been filled up (which is typically of
- * size 1 per output frame, after initialization input), and then reject input with
+ * size 1 per output frame, after initial input), and then reject input with
  * AVERROR(EAGAIN). Once it starts rejecting input, you have no choice but to
  * read at least some output.
  *

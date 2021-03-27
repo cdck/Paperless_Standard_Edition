@@ -178,6 +178,7 @@
 #define TYPE_MEET_INTERFACE_TOPIC  67 //会议议题
 #define TYPE_MEET_INTERFACE_TOPICGROUP  68 // 会议议题参加单位
 #define TYPE_MEET_INTERFACE_TOPICPERMINSSION      69 // 会议议题权限
+#define TYPE_MEET_INTERFACE_MEETTASK      70 // 会议发布任务
 
 //注：这里所有的字符串都约定为utf8编码
 #define DEFAULT_NAME_MAXLEN   48 //默认名称长度
@@ -187,6 +188,7 @@
 #define DEFAULT_SHORT_DESCRIBE_LENG 40//默认描述字符串长度
 #define DEFAULT_PASSWORD_LENG 40 //默认密码长度
 #define DEFAULT_FILENAME_LENG 150 //默认文件名长度
+#define MEET_MAX_TASKNAMELEN  80 //会议任务名称长度
 
 //font align flag 字体对齐方式
 #define MEET_FONTFLAG_LEFT			0x0001 //左对齐
@@ -414,7 +416,7 @@ typedef struct
 {
 	int32u devcieid;
 	char   devname[DEVICE_NAME_MAXLEN];
-	int32u netstate;
+	int32u netstate;//0=离线 1=在线
 	int32u version;////soft(high16):hard(low16) 
 
 	SubItem_DeviceIpAddrInfo ipinfo[MAX_DEVICEIPADDR_NUM];
@@ -428,12 +430,49 @@ typedef struct
 }Item_DeviceDetailInfo, *pItem_DeviceDetailInfo;
 
 //type:TYPE_MEET_INTERFACE_DEVICEINFO
-//method: query
+//method: query/complexquery返回
 typedef struct
 {
 	Type_HeaderInfo hdr;
 	int32u			devnum;
 }Type_DeviceDetailInfo, *pType_DeviceDetailInfo;
+
+#define DEVICE_COMPLEXQUERY_DEVICETYPE 0x00000001 //devcietype mask有效
+#define DEVICE_COMPLEXQUERY_DEVICENAME 0x00000002 //devname 有效
+#define DEVICE_COMPLEXQUERY_DEVICESTAT 0x00000004 //netstate 有效
+#define DEVICE_COMPLEXQUERY_DEVICEMEET 0x00000008 //meetingid 有效
+//组合查询设备
+//call
+//type:TYPE_MEET_INTERFACE_DEVICEINFO
+//method: complexquery--Type_DeviceDetailInfo返回
+typedef struct
+{
+	Type_HeaderInfo hdr;
+	int32u			queryflag;//查询标志,用于指定查询规则
+	int32u			devcietype;//与mask结合可以查询符合的设备 devcieid & mask == devcietype 参见deviceid_suffix.h
+	int32u			mask;//0xff00000
+	char			devname[DEVICE_NAME_MAXLEN];//模糊查询,返回含有字符串的设备
+	int32u		    netstate;//0=离线 1=在线
+	int32u			meetingid;//等于该会议ID的设备
+}Type_DeviceComplexQuery, *pType_DeviceComplexQuery;
+
+#define DEVICEQUERYSTREAM_DEVICETYPE 0x00000001 //devcietype mask有效
+#define DEVICEQUERYSTREAM_DEVICESTAT 0x00000002 //netstate 有效
+#define DEVICEQUERYSTREAM_DEVICEID   0x00000004 //devcieid 有效,注:该值有效,不处理其它标志位
+
+//组合查询设备流通道
+//call
+//type:TYPE_MEET_INTERFACE_DEVICEINFO
+//method: METHOD_MEET_INTERFACE_MAKEVIDEO--Type_MeetVideoDetailInfo返回
+typedef struct
+{
+	Type_HeaderInfo hdr;
+	int32u			queryflag;//查询标志,用于指定查询规则
+	int32u			devcietype;//与mask结合可以查询符合的设备 devcieid & mask == devcietype 参见deviceid_suffix.h
+	int32u			mask;//0xff00000
+	int32u		    netstate;//0=离线 1=在线
+	int32u			devcieid;//查询指定设备,为0表示本机
+}Type_DeviceQueryStream, *pType_DeviceQueryStream;
 
 typedef struct
 {
@@ -802,9 +841,12 @@ typedef struct
 }Type_MeetRequestPrivilegeResponse, *pType_MeetRequestPrivilegeResponse;
 
 //texttype
-#define TEXTBRODCAST_TYPE_COMMONTEXT 0 //普通文本信息
+#define TEXTBRODCAST_TYPE_COMMONTEXT  0 //普通文本信息
 #define TEXTBRODCAST_TYPE_MEETINGTEXT 1 //会议名称文本信息
-#define TEXTBRODCAST_TYPE_MEMBERTEXT 2 //参会人文本信息
+#define TEXTBRODCAST_TYPE_MEMBERTEXT  2 //参会人文本信息
+#define TEXTBRODCAST_TYPE_IATTEXT     3 //会议纪要文本信息
+#define TEXTBRODCAST_TYPE_SUMARYTEXT  4 //会议纪要文本信息
+#define TEXTBRODCAST_TYPE_CLOSTSUMARY 5 //关闭会议纪要文本信息
 
 //发送文本广播
 //call
@@ -916,6 +958,7 @@ typedef struct
 #define MEETCONTEXT_PROPERTY_MEDIACHECK  		28 //指定的设备或者服务器是否已经探测成功 query(propertyval int32u) 1表示已经探测成功, 0表示未探测到
 #define MEETCONTEXT_PROPERTY_MEETCACHEDIR  		29 //获取会议离线缓存的目录 query(string)
 #define MEETCONTEXT_PROPERTY_LOGONMODE  		30 //获取登陆模式，调用登陆时接口会保存 set/query(string)
+#define MEETCONTEXT_PROPERTY_HASONLIETRIGGER	31 //是否存在上线触发事件 query(int32u) 返回触发器ID 0表示没有
 
 //type: TYPE_MEET_INTERFACE_MEETCONTEXT
 //method: queryproperty/setproperty
@@ -1225,19 +1268,21 @@ typedef struct
 	int32u	 num; //
 }Type_MeetManagerRoomDetailInfo, *pType_MeetManagerRoomDetailInfo;
 
+//fontcolor index
+//white=0 black red green blue yellow darkred darkgreen darkblue darkyellow transparent gray darkgray lightgray magenta darkmagenta cyan darkcyan color0 color1
 //终端控制
 //oper
 #define DEVICECONTORL_SHUTDOWN 1 //关机
 #define DEVICECONTORL_REBOOT  2 //重启
 #define DEVICECONTORL_PROGRAMRESTART  3 //重启软件
-#define DEVICECONTORL_LIFTUP  4 //升
-#define DEVICECONTORL_LIFTDOWN  5 //降
-#define DEVICECONTORL_LIFTSTOP  6 //停止升（降）
-#define DEVICECONTORL_MODIFYLOGO  7 //更换LOGO
-#define DEVICECONTORL_MODIFYMAINBG  8 //更换主界面
-#define DEVICECONTORL_MODIFYPROJECTBG  9 //更换投影界面
-#define DEVICECONTORL_MODIFYSUBBG  10 //更换子界面
-#define DEVICECONTORL_MODIFYFONTCOLOR  11 //更换字体颜色
+#define DEVICECONTORL_LIFTUP  4 //升 operval1有效 参考LIFT_FLAG_MACHICE
+#define DEVICECONTORL_LIFTDOWN  5 //降 operval1有效 参考LIFT_FLAG_MACHICE
+#define DEVICECONTORL_LIFTSTOP  6 //停止升（降） operval1有效 参考LIFT_FLAG_MACHICE
+#define DEVICECONTORL_MODIFYLOGO  7 //更换LOGO operval1有效 指媒体ID
+#define DEVICECONTORL_MODIFYMAINBG  8 //更换主界面 operval1有效 指媒体ID
+#define DEVICECONTORL_MODIFYPROJECTBG  9 //更换投影界面 operval1有效 指媒体ID
+#define DEVICECONTORL_MODIFYSUBBG  10 //更换子界面 operval1有效 指媒体ID
+#define DEVICECONTORL_MODIFYFONTCOLOR  11 //更换字体颜色 operval1有效 指颜色标号 参见fontcolor index
 
 //callback
 //method: notify
@@ -1659,6 +1704,20 @@ typedef struct
 	//Item_MeetMemberDetailInfo [num]
 }Type_MeetMemberDetailInfo, *pType_MeetMemberDetailInfo;
 
+#define MEET_SMS_OPERTEMP_START  0//=会议通知
+#define MEET_SMS_OPERTEMP_LATE   1//=会议延期
+#define MEET_SMS_OPERTEMP_CANCLE 2//=会议取消
+//短信通知会议
+//call
+//type：TYPE_MEET_INTERFACE_MEMBER
+//fun: FUN_All 会议短信通知
+//method:METHOD_MEET_INTERFACE_NOTIFY
+typedef struct
+{
+	Type_HeaderInfo hdr;
+	int    templateindex;//=0会议通知, =1会议延期, =2会议取消 需要指定模板，后台会根据模板去发送
+}Type_MeetSMSNotify, *pType_MeetSMSNotify;
+
 //查询指定参会人员的某项属性
 //property id
 #define MEETMEMBER_PROPERTY_NAME				1 //名称 query(string)
@@ -2023,6 +2082,7 @@ typedef struct
 #define 	MEETING_STATUS_Start  1//会议开始进行中
 #define 	MEETING_STATUS_End    2//会议结束
 #define 	MEETING_STATUS_PAUSE  3//会议暂停
+#define 	MEETING_STATUS_Model  4//模板会议
 
 #define SIGNIN_PSW_LEN 16
 //会议信息
@@ -2712,6 +2772,10 @@ typedef struct
 typedef struct
 {
 	char fontname[DEFAULT_NAME_MAXLEN];//使用字体名称
+	/* 桌面字体大小计算方法
+	fontsize * 当前屏幕高度 / 基准屏幕高度
+	eg: 收到字体大小是100，当前的屏幕高度是720，推算出真实的字体大小为：100 * 720 / 1080 = 67
+	*/
 	int32u fontsize;//字体 大小
 	int32u fontcolor;//字体颜色
 	float lx;//左上角 x坐标 相对宽的百分比 如：lx=0.1 当宽为1920时 真正的lx应该= 0.1 * 1920 = 192
@@ -3765,7 +3829,7 @@ typedef struct
 	Type_HeaderInfo hdr;
 	int32u  type;
 	int32u  method;
-	int32u  status;
+	int32u  status; 
 }Type_MeetDBServerOperError, *pType_MeetDBServerOperError;
 
 //视频播放资源初始化
@@ -4248,6 +4312,7 @@ typedef struct
 }Type_MeetQuarterStatisticInfo, *pType_MeetQuarterStatisticInfo;
 
 #ifndef MEET_FACEID_MAINBG
+#define MEET_FACEID_MAINBG
 //返回查询界面配置
 //会议界面设置
 //faceid
@@ -4323,6 +4388,10 @@ typedef struct
 	unsigned int faceid;  //界面项ID
 	unsigned int flag;	  //属性值
 
+	/* 桌面字体大小计算方法
+	fontsize * 当前屏幕高度 / 基准屏幕高度
+	eg: 收到字体大小是100，当前的屏幕高度是720，推算出真实的字体大小为：100 * 720 / 1080 = 67
+	*/
 	unsigned short  fontsize;	//字体大小
 	unsigned int    color;		//字体rgba颜色
 	unsigned short  align;		//对齐 参见本文件的font align flag
@@ -4894,6 +4963,58 @@ typedef struct
 	//Item_TopicPermItemInfo; //根据前面总数列写Item_TopicPermItemInfo
 
 }Type_MeetTopicPerms, *pType_MeetTopicPerms;
+
+///////////////////////////////Meet Task//////////////////////////////////////
+//查询会议发布任务
+typedef struct
+{
+	int32u taskid;//任务ID
+	char   taskname[MEET_MAX_TASKNAMELEN];//任务名称
+}Item_MeetTaskInfo, *pItem_MeetTaskInfo;
+
+//call
+//type:TYPE_MEET_INTERFACE_MEETTASK
+//method: query
+typedef struct
+{
+	Type_HeaderInfo hdr;
+	int32u	 num; //
+}Type_MeetTaskInfo, *pType_MeetTaskInfo;
+
+//查询指定ID的会议发布任务
+typedef struct
+{
+	int32u mediaid;//媒体ID
+	char   name[DEFAULT_DESCRIBE_LENG];//add/modify不需要设置该项
+}Item_MediaTaskDetailInfo, *pItem_MediaTaskDetailInfo;
+
+typedef struct
+{
+	int32u deviceid;//设备ID
+	char   name[DEFAULT_DESCRIBE_LENG];//add/modify不需要设置该项
+}Item_DeviceTaskDetailInfo, *pItem_DeviceTaskDetailInfo;
+
+typedef struct
+{
+	int32u taskid;//任务ID -->查询和删除只需要指定ID即可 添加成功后会返回任务ID可以直接更新界面不用再重新查询
+	char   taskname[MEET_MAX_TASKNAMELEN];//任务名称
+	int    playmode;//=1 随机播放 =2 顺序播放
+	int    medianum;
+	int    devicenum;
+	//Item_MediaTaskDetailInfo [medianum]
+	//Item_DeviceTaskDetailInfo[devicenum]
+}Item_MeetTaskDetailInfo, *pItem_MeetTaskDetailInfo;
+
+//call
+//type:TYPE_MEET_INTERFACE_MEETTASK
+//method: 
+//METHOD_MEET_INTERFACE_SINGLEQUERYBYID|delete|start|stop使用TypeQueryInfoByID 
+//add|modify使用Type_MeetTaskDetailInfo(add|update一次只处理一个)
+typedef struct
+{
+	Type_HeaderInfo hdr;
+	int32u	 num; //
+}Type_MeetTaskDetailInfo, *pType_MeetTaskDetailInfo;
 
 #pragma pack(pop)
 // #ifdef __cplusplus

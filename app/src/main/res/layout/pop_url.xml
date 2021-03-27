@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dialog_bottom_holo_light"
+    android:orientation="vertical">
+
+    <include layout="@layout/item_other_url" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_pop_url"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_5"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/name_" />
+
+        <EditText
+            android:id="@+id/edt_pop_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/shape_edt_black"
+            android:lines="1"
+            android:paddingStart="@dimen/dp_2"
+            android:singleLine="true"
+            android:textSize="@dimen/sp_14" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:text="@string/URL_" />
+
+        <EditText
+            android:id="@+id/edt_pop_url"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/shape_edt_black"
+            android:lines="1"
+            android:paddingStart="@dimen/dp_2"
+            android:singleLine="true"
+            android:textSize="@dimen/sp_14" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_pop_add"
+            style="@style/btn_pressed_style"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="@dimen/dp_5"
+            android:text="@string/add" />
+
+        <Button
+            android:id="@+id/btn_pop_modify"
+            style="@style/btn_pressed_style"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="@dimen/dp_5"
+            android:text="@string/modify" />
+
+        <Button
+            android:id="@+id/btn_pop_delete"
+            style="@style/btn_pressed_style"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="@dimen/dp_5"
+            android:text="@string/delete" />
+
+        <Button
+            android:id="@+id/btn_pop_close"
+            style="@style/btn_pressed_style"
+            android:layout_width="wrap_content"
+            android:text="@string/close" />
+    </LinearLayout>
+</LinearLayout>

@@ -91,7 +91,7 @@ public class ScoreActivity extends BaseActivity implements IScore, View.OnClickL
     @Override
     public void update(InterfaceFilescorevote.pbui_Type_Item_UserDefineFileScore info) {
         score_desc_tv.setText(info.getContent().toStringUtf8());
-        score_file_tv.setText(JniHandler.getInstance().getFileName(info.getFileid()));
+        score_file_tv.setText(JniHandler.getInstance().queryFileNameByMediaId(info.getFileid()));
         score_register_tv.setText(info.getMode() == 1 ? getString(R.string.mode_register) : getString(R.string.mode_anonymous));
         int selectcount = info.getSelectcount();
         List<ByteString> voteTextList = info.getVoteTextList();

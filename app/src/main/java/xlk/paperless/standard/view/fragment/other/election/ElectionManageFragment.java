@@ -6,10 +6,11 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -134,32 +135,6 @@ public class ElectionManageFragment extends BaseFragment implements View.OnClick
         election_manage_stop.setOnClickListener(this);
     }
 
-    private int getType() {
-        int position = election_manage_type_sp.getSelectedItemPosition();
-        int type = 0;
-        switch (position) {
-            case 0:
-                type = InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_MANY_VALUE;
-                break;
-            case 1:
-                type = InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_SINGLE_VALUE;
-                break;
-            case 2:
-                type = InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_4_5_VALUE;
-                break;
-            case 3:
-                type = InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_3_5_VALUE;
-                break;
-            case 4:
-                type = InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_2_5_VALUE;
-                break;
-            case 5:
-                type = InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_2_3_VALUE;
-                break;
-        }
-        return type;
-    }
-
     private int getTimeouts() {
         int position = election_manage_countdown_sp.getSelectedItemPosition();
         int timeouts = 0;
@@ -207,7 +182,7 @@ public class ElectionManageFragment extends BaseFragment implements View.OnClick
         String option3 = election_manage_option3.getText().toString().trim();
         String option4 = election_manage_option4.getText().toString().trim();
         String option5 = election_manage_option5.getText().toString().trim();
-        int type = getType();
+        int type = election_manage_type_sp.getSelectedItemPosition();
         List<ByteString> all = new ArrayList<>();
         if (type == InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_4_5_VALUE
                 || type == InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_3_5_VALUE
@@ -379,7 +354,8 @@ public class ElectionManageFragment extends BaseFragment implements View.OnClick
     private void showMember() {
         presenter.queryMember();
         View inflate = LayoutInflater.from(getContext()).inflate(R.layout.pop_vote_member, null);
-        PopupWindow memberPop = new PopupWindow(inflate, MeetingActivity.frameLayoutWidth, MeetingActivity.frameLayoutHeight);
+        View view1 = getActivity().findViewById(R.id.meet_frame_layout);
+        PopupWindow memberPop = new PopupWindow(inflate, view1.getWidth(), view1.getHeight());
         memberPop.setBackgroundDrawable(new BitmapDrawable());
         // 设置popWindow弹出窗体可点击，这句话必须添加，并且是true
         memberPop.setTouchable(true);
@@ -440,17 +416,16 @@ public class ElectionManageFragment extends BaseFragment implements View.OnClick
             election_manage_rv.setAdapter(electionManageAdapter);
         } else {
             electionManageAdapter.notifyDataSetChanged();
-            electionManageAdapter.notitySelect();
         }
         electionManageAdapter.setOnItemClickListener((adapter, view, position) -> {
             InterfaceVote.pbui_Item_MeetVoteDetailInfo voteInfo = presenter.voteInfos.get(position);
-            electionManageAdapter.setSelect(voteInfo);
+            electionManageAdapter.setSelect(voteInfo.getVoteid());
             updateUI(voteInfo);
         });
         if (electionManageAdapter.getSelectedVote() == null) {
             if (!presenter.voteInfos.isEmpty()) {
                 InterfaceVote.pbui_Item_MeetVoteDetailInfo info = presenter.voteInfos.get(0);
-                electionManageAdapter.setSelect(info);
+                electionManageAdapter.setSelect(info.getVoteid());
                 updateUI(info);
             } else {
                 updateUI(null);
@@ -502,35 +477,15 @@ public class ElectionManageFragment extends BaseFragment implements View.OnClick
                 if (i == 4) election_manage_option5.setText(item.getText().toStringUtf8());
             }
             int type = info.getType();
-            int posion = 0;
-            switch (type) {
-                case InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_MANY_VALUE:
-                    posion = 0;
-                    break;
-                case InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_SINGLE_VALUE:
-                    posion = 1;
-                    break;
-                case InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_4_5_VALUE:
-                    posion = 2;
-                    break;
-                case InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_3_5_VALUE:
-                    posion = 3;
-                    break;
-                case InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_2_5_VALUE:
-                    posion = 4;
-                    break;
-                case InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_2_3_VALUE:
-                    posion = 5;
-                    break;
-            }
-            election_manage_type_sp.setSelection(posion, true);
+            election_manage_type_sp.setSelection(type, true);
         }
     }
 
     @Override
     public void showSubmittedPop(InterfaceVote.pbui_Item_MeetVoteDetailInfo vote) {
         View inflate = LayoutInflater.from(getContext()).inflate(R.layout.pop_submitted_member, null);
-        PopupWindow popupWindow = new PopupWindow(inflate, MeetingActivity.frameLayoutWidth, MeetingActivity.frameLayoutHeight);
+        View view1 = getActivity().findViewById(R.id.meet_frame_layout);
+        PopupWindow popupWindow = new PopupWindow(inflate, view1.getWidth(), view1.getHeight());
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
         // 设置popWindow弹出窗体可点击，这句话必须添加，并且是true
         popupWindow.setTouchable(true);
@@ -546,7 +501,7 @@ public class ElectionManageFragment extends BaseFragment implements View.OnClick
         inflate.findViewById(R.id.submit_member_back).setOnClickListener(v -> popupWindow.dismiss());
         inflate.findViewById(R.id.submit_member_export).setOnClickListener(v -> {
             String[] strings = presenter.queryYd(vote);
-            String createTime = DateUtil.nowDate(System.currentTimeMillis());
+            String createTime = DateUtil.nowDate();
             ExportSubmitMember exportSubmitMember = new ExportSubmitMember(vote.getContent().toStringUtf8(), createTime, strings[0], strings[1], strings[2], strings[3], presenter.submitMembers);
             JxlUtil.exportSubmitMember(exportSubmitMember);
         });
@@ -590,23 +545,23 @@ public class ElectionManageFragment extends BaseFragment implements View.OnClick
                 if (i == 0) {
                     holder.pop_option_a_ll.setVisibility(View.VISIBLE);
                     holder.pop_option_a_tv.setText(getString(R.string.vote_count, text, selcnt + ""));
-                    setChartData(count, selcnt, Color.parseColor("#000000"), Color.parseColor("#FF0000"));
+                    setChartData(count, selcnt, Color.parseColor("#000000"), ContextCompat.getColor(getContext(),R.color.option_a));
                 } else if (i == 1) {
                     holder.pop_option_b_ll.setVisibility(View.VISIBLE);
                     holder.pop_option_b_tv.setText(getString(R.string.vote_count, text, selcnt + ""));
-                    setChartData(count, selcnt, Color.parseColor("#000000"), Color.parseColor("#00FF00"));
+                    setChartData(count, selcnt, Color.parseColor("#000000"), ContextCompat.getColor(getContext(),R.color.option_b));
                 } else if (i == 2) {
                     holder.pop_option_c_ll.setVisibility(View.VISIBLE);
                     holder.pop_option_c_tv.setText(getString(R.string.vote_count, text, selcnt + ""));
-                    setChartData(count, selcnt, Color.parseColor("#000000"), Color.parseColor("#0000FF"));
+                    setChartData(count, selcnt, Color.parseColor("#000000"), ContextCompat.getColor(getContext(),R.color.option_c));
                 } else if (i == 3) {
                     holder.pop_option_d_ll.setVisibility(View.VISIBLE);
                     holder.pop_option_d_tv.setText(getString(R.string.vote_count, text, selcnt + ""));
-                    setChartData(count, selcnt, Color.parseColor("#000000"), Color.parseColor("#00FFFF"));
+                    setChartData(count, selcnt, Color.parseColor("#000000"), ContextCompat.getColor(getContext(),R.color.option_d));
                 } else if (i == 4) {
                     holder.pop_option_e_ll.setVisibility(View.VISIBLE);
                     holder.pop_option_e_tv.setText(getString(R.string.vote_count, text, selcnt + ""));
-                    setChartData(count, selcnt, Color.parseColor("#000000"), Color.parseColor("#FF00FF"));
+                    setChartData(count, selcnt, Color.parseColor("#000000"), ContextCompat.getColor(getContext(),R.color.option_e));
                 }
             }
         }

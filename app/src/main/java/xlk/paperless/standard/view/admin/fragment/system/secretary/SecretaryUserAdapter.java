@@ -1,9 +1,9 @@
 package xlk.paperless.standard.view.admin.fragment.system.secretary;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.mogujie.tt.protobuf.InterfaceAdmin;
 
 import java.util.List;
@@ -29,14 +29,14 @@ public class SecretaryUserAdapter extends BaseQuickAdapter<InterfaceAdmin.pbui_I
                 .setText(R.id.item_tv_phone, item.getPhone().toStringUtf8())
                 .setText(R.id.item_tv_email, item.getEmail().toStringUtf8());
 
-        int textColor = (selectedId == item.getAdminid()) ? mContext.getColor(R.color.white) : mContext.getColor(R.color.black);
+        int textColor = (selectedId == item.getAdminid()) ? getContext().getColor(R.color.white) : getContext().getColor(R.color.light_black);
         helper.setTextColor(R.id.item_tv_username, textColor)
                 .setTextColor(R.id.item_tv_pwd, textColor)
                 .setTextColor(R.id.item_tv_remarks, textColor)
                 .setTextColor(R.id.item_tv_phone, textColor)
                 .setTextColor(R.id.item_tv_email, textColor);
 
-        int backgroundColor = (selectedId == item.getAdminid()) ? mContext.getColor(R.color.light_blue) : mContext.getColor(R.color.white);
+        int backgroundColor = (selectedId == item.getAdminid()) ? getContext().getColor(R.color.light_blue) : getContext().getColor(R.color.white);
         helper.setBackgroundColor(R.id.item_tv_username, backgroundColor)
                 .setBackgroundColor(R.id.item_tv_pwd, backgroundColor)
                 .setBackgroundColor(R.id.item_tv_remarks, backgroundColor)

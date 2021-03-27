@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/dialog_full_holo_light">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="@dimen/dp_5"
+            android:text="@string/upgrade"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/dev_view"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginStart="@dimen/dp_5"
+            android:layout_marginEnd="@dimen/dp_5"
+            android:background="@color/div_line"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+        <TextView
+            android:id="@+id/tv_nv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_5"
+            android:layout_marginTop="@dimen/dp_5"
+            android:text="@string/new_version_"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dev_view" />
+
+        <TextView
+            android:id="@+id/tv_new_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tv_nv"
+            app:layout_constraintStart_toEndOf="@+id/tv_nv"
+            tools:text="0.0.0" />
+
+        <TextView
+            android:id="@+id/tv_old_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_5"
+            android:textColor="@color/blue"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tv_nv"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="0.0.0" />
+
+        <TextView
+            android:id="@+id/tv_ov"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/current_version_"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tv_nv"
+            app:layout_constraintEnd_toStartOf="@+id/tv_old_version" />
+
+        <TextView
+            android:id="@+id/tv_upgrade_doc_"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:text="@string/upgrade_doc_"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_nv" />
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/dp_5"
+            app:layout_constraintBottom_toTopOf="@+id/btn_next_time"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_upgrade_doc_">
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="多斯拉克福建省来看待解放路开始角度" />
+        </ScrollView>
+
+        <Button
+            android:id="@+id/btn_next_time"
+            style="@style/btn_pressed_style"
+            android:layout_width="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:text="@string/next_time_upgrade"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/btn_upgrade"
+            style="@style/btn_pressed_style"
+            android:layout_width="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:text="@string/upgrade_now"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

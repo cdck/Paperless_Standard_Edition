@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/shape_edt"
+    android:background="@drawable/shape_edt_blue"
     android:padding="@dimen/dp_5"
     android:orientation="vertical">
 
@@ -23,7 +23,7 @@
         android:layout_marginEnd="@dimen/dp_10"
         android:text="@string/check_all" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/pop_artboard_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/meet_fragment_bg">
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/f_data_dir_rv"
         android:layout_width="@dimen/dp_100"
         android:layout_height="0dp"
@@ -19,6 +19,7 @@
     <Button
         android:id="@+id/f_data_upload_file"
         style="@style/btn_pressed_style"
+        android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_marginStart="@dimen/dp_16"
         android:layout_marginTop="@dimen/dp_8"
@@ -32,7 +33,7 @@
         style="@style/btn_pressed_style"
         android:layout_width="wrap_content"
         android:layout_margin="@dimen/dp_2"
-        android:text="@string/documentation"
+        android:text="@string/documentation_data"
         app:layout_constraintBaseline_toBaselineOf="@+id/f_data_upload_file"
         app:layout_constraintEnd_toStartOf="@+id/f_data_picture"
         app:layout_constraintStart_toEndOf="@+id/f_data_upload_file" />
@@ -85,7 +86,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/f_data_dir_rv" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/f_data_file_rv"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -125,7 +126,7 @@
         android:layout_centerInParent="true"
         android:layout_marginStart="@dimen/dp_8"
         android:layout_marginEnd="@dimen/dp_8"
-        android:textColor="@color/black"
+        android:textColor="@color/light_black"
         android:textSize="@dimen/sp_14"
         android:visibility="gone"
         app:layout_constraintBaseline_toBaselineOf="@+id/f_data_nextpage_btn"
@@ -146,4 +147,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

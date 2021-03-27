@@ -11,9 +11,11 @@ import android.graphics.Path;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.AppCompatSeekBar;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatSeekBar;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -273,6 +275,8 @@ public class DrawActivity extends BaseActivity implements IDraw, View.OnClickLis
             case R.id.draw_stop:
                 finish();
                 break;
+            default:
+                break;
         }
     }
 
@@ -288,9 +292,9 @@ public class DrawActivity extends BaseActivity implements IDraw, View.OnClickLis
         builder.setPositiveButton(getResources().getString(R.string.save_server), (dialog, which) -> {
             String name = edt.getText().toString().trim();
             if (name.isEmpty()) {
-                ToastUtil.show( R.string.please_enter_file_name);
+                ToastUtil.show(R.string.please_enter_file_name);
             } else if (!FileUtil.isLegalName(name)) {
-                ToastUtil.show( R.string.tip_file_name_unlawfulness);
+                ToastUtil.show(R.string.tip_file_name_unlawfulness);
             } else {
                 presenter.savePicture(name, true, artBoard.getCanvasBmp());
                 dialog.dismiss();
@@ -299,21 +303,16 @@ public class DrawActivity extends BaseActivity implements IDraw, View.OnClickLis
         builder.setNeutralButton(getResources().getString(R.string.save_local), (dialog, which) -> {
             final String name = edt.getText().toString().trim();
             if (name.isEmpty()) {
-                ToastUtil.show( R.string.please_enter_file_name);
+                ToastUtil.show(R.string.please_enter_file_name);
             } else if (!FileUtil.isLegalName(name)) {
-                ToastUtil.show( R.string.tip_file_name_unlawfulness);
+                ToastUtil.show(R.string.tip_file_name_unlawfulness);
             } else {
                 presenter.savePicture(name, false, artBoard.getCanvasBmp());
                 ToastUtil.show(getResources().getString(R.string.tip_save_as, Constant.DIR_PICTURE));
                 dialog.dismiss();
             }
         });
-        builder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        builder.setNegativeButton(getResources().getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
         builder.create().show();
     }
 
@@ -373,7 +372,7 @@ public class DrawActivity extends BaseActivity implements IDraw, View.OnClickLis
             LogUtil.e(TAG, "DrawBoardActivity.onActivityResult :  选中的文件路径 --->>> " + realPath);
             if (realPath == null) {
                 LogUtil.e(TAG, "onActivityResult: 获取该文件的路径失败....");
-                ToastUtil.show( R.string.get_file_path_fail);
+                ToastUtil.show(R.string.get_file_path_fail);
             } else {
                 // 执行操作
                 Bitmap dstbmp = BitmapFactory.decodeFile(realPath);

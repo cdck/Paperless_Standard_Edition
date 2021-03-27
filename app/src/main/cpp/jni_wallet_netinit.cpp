@@ -12,9 +12,9 @@
 // c call java method
 
 #if Paperless_TYPE == 1
-static const char *main_interface_class_path_name = "xlk/paperless/standard/data/Call";
+static const char *main_interface_class_path_name = "com/paperless/model/NativeUtil";
 #elif Paperless_TYPE == 2
-static const char* main_interface_class_path_name = "xlk/paperless/standard/data/Call";
+static const char* main_interface_class_path_name = "com/wind/myapplication/NativeUtil";
 #else
 static const char* main_interface_class_path_name = "xlk/paperless/standard/data/Call";
 #endif
@@ -151,19 +151,19 @@ int jni_initforjava(JNIEnv *env, jobject obj) {
         env->DeleteLocalRef(clss);
 
         g_pinternalparam->mCallBack_DataProc = env->GetMethodID(
-                g_pinternalparam->clssJNINet, "callback_method", "(II[BI)I");
+                g_pinternalparam->clssJNINet, "callback_method", "(II[BI)I");//(int type, int method, byte[] pdata, int datalen)
         if (g_pinternalparam->mCallBack_DataProc == NULL) {
             LOGI("jni_initforjava mCallBack_DataProc %d", __LINE__);
             break;
         }
         g_pinternalparam->mDoCaptureOper = env->GetMethodID(g_pinternalparam->clssJNINet,
-                                                            "callback", "(II)I");
+                                                            "callback", "(II)I");//(int channelstart, int oper)
         if (g_pinternalparam->mDoCaptureOper == NULL) {
             LOGI("jni_initforjava mDoCaptureOper %d", __LINE__);
             break;
         }
         g_pinternalparam->merrorProc = env->GetMethodID(g_pinternalparam->clssJNINet,
-                                                            "error_ret", "(III)V");
+                                                            "error_ret", "(III)V");//(int type, int method, int retcode)
         if (g_pinternalparam->merrorProc == NULL) {
             LOGI("jni_initforjava merrorProc %d", __LINE__);
             //break;
@@ -447,7 +447,9 @@ int Init_walletSys(JNIEnv *env, jobject thiz, jbyteArray pdata) {
         MeetPBCore_CallBack cb = {0};
         cb.pfunc = CallbackFunc;
         cb.plogfunc = CBLogInfo;
+		LOGI("%s: %d ", __FUNCTION__, __LINE__);
         SetmeetPB_callbackFunction(&cb);
+		LOGI("%s: %d ", __FUNCTION__, __LINE__);
         ret = meetPB_call(/*Pb_TYPE_MEET_INTERFACE_INITENV, Pb_METHOD_MEET_INTERFACE_START*/0, 0, jBuf, length, 0, 0, 0);
         env->ReleaseByteArrayElements(pdata, jBuf, 0);
 

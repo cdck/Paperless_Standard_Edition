@@ -119,4 +119,19 @@
         android:singleLine="true"
         android:text="@string/email"
         android:textColor="@color/white" />
+    <TextView
+        android:id="@+id/item_tv_8"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="1px"
+        android:layout_marginBottom="1px"
+        android:layout_weight="2"
+        android:background="@color/admin_table_title_bg"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:lines="1"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:text="@string/sign_in_password"
+        android:textColor="@color/white" />
 </LinearLayout>

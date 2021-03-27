@@ -1,10 +1,13 @@
 package xlk.paperless.standard.base;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.PopupWindow;
 
 import xlk.paperless.standard.R;
+import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.view.meet.MeetingActivity;
 
@@ -20,8 +24,9 @@ import xlk.paperless.standard.view.meet.MeetingActivity;
  * @date 2020/3/14
  * @desc
  */
-public class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
 
+    protected JniHandler jni = JniHandler.getInstance();
     protected final String TAG = getClass().getSimpleName() + "-->";
 
     /**
@@ -32,7 +37,8 @@ public class BaseFragment extends Fragment {
      * @return
      */
     protected PopupWindow showPop(View parent, View contentView) {
-        PopupWindow popupWindow = new PopupWindow(contentView, MeetingActivity.frameLayoutWidth, MeetingActivity.frameLayoutHeight);
+        View viewById = getActivity().findViewById(R.id.meet_frame_layout);
+        PopupWindow popupWindow = new PopupWindow(contentView, viewById.getWidth(), viewById.getHeight());
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
         // 设置popWindow弹出窗体可点击，这句话必须添加，并且是true
         popupWindow.setTouchable(true);
@@ -42,6 +48,31 @@ public class BaseFragment extends Fragment {
         popupWindow.setAnimationStyle(R.style.pop_Animation);
         popupWindow.showAtLocation(parent, Gravity.END | Gravity.BOTTOM, 0, 0);
         return popupWindow;
+    }
+
+    /**
+     * 打开选择本地文件
+     *
+     * @param requestCode 返回码
+     */
+    protected void chooseLocalFile(int requestCode) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(intent, requestCode);
+    }
+
+    /**
+     * 打开选择本地文件
+     *
+     * @param type        指定打开类型
+     * @param requestCode 返回码
+     */
+    protected void chooseLocalFile(String type, int requestCode) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType(type);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(intent, requestCode);
     }
 
     @Nullable
@@ -115,5 +146,16 @@ public class BaseFragment extends Fragment {
     public void onHiddenChanged(boolean hidden) {
         LogUtil.i("F_life", this.getClass().getSimpleName() + ".onHiddenChanged :   --> " + hidden);
         super.onHiddenChanged(hidden);
+        if (!hidden) {
+            reShow();
+        }
     }
+
+    /**
+     * Fragment重新显示
+     */
+    protected void reShow() {
+
+    }
+
 }

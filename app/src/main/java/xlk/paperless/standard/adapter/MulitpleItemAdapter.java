@@ -1,7 +1,7 @@
 package xlk.paperless.standard.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,8 +55,7 @@ public class MulitpleItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             long utcsecond = message.getUtcsecond();
             String time = DateUtil.getHHss(utcsecond);
             String name = message.getMembername().toStringUtf8();
-            String title = mContext.getResources().getString(R.string.time, name, time);
-            mContext.getResources().getString(R.string.me_time);
+            String title =mContext.getResources().getString(R.string.time, name, time);
             ((LeftViewHolder) holder).i_m_c_l_message_title.setText(title);
             ((LeftViewHolder) holder).i_m_c_l_message_content.setText(msg);
         } else {

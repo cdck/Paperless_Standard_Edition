@@ -1,9 +1,9 @@
 package xlk.paperless.standard.adapter;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.mogujie.tt.protobuf.InterfaceFile;
 
 import java.util.List;
@@ -29,8 +29,8 @@ public class MeetDataFileAdapter extends BaseQuickAdapter<InterfaceFile.pbui_Ite
         helper.setText(R.id.i_m_d_file_number, String.valueOf(helper.getLayoutPosition() + 1))
                 .setText(R.id.i_m_d_file_name, item.getName().toStringUtf8())
                 .setText(R.id.i_m_d_file_size, FileUtil.formatFileSize(item.getSize()));
-        helper.addOnClickListener(R.id.i_m_d_file_view);
-        helper.addOnClickListener(R.id.i_m_d_file_download);
+//        helper.addOnClickListener(R.id.i_m_d_file_view);
+//        helper.addOnClickListener(R.id.i_m_d_file_download);
         helper.getView(R.id.i_m_d_file_root).setSelected(chooseId == item.getMediaid());
     }
 

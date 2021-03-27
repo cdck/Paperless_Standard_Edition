@@ -1,9 +1,9 @@
 package xlk.paperless.standard.adapter;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +39,8 @@ public class WmScreenMemberAdapter extends BaseQuickAdapter<DevMember, BaseViewH
      * @return
      */
     public DevMember getChoose() {
-        for (int i = 0; i < mData.size(); i++) {
-            DevMember devMember = mData.get(i);
+        for (int i = 0; i < getData().size(); i++) {
+            DevMember devMember = getData().get(i);
             if (ids.contains(devMember.getDeviceDetailInfo().getDevcieid())) {
                 return devMember;
             }
@@ -50,8 +50,8 @@ public class WmScreenMemberAdapter extends BaseQuickAdapter<DevMember, BaseViewH
 
     public List<Integer> getChooseMemberIds() {
         List<Integer> temps = new ArrayList<>();
-        for (int i = 0; i < mData.size(); i++) {
-            DevMember devMember = mData.get(i);
+        for (int i = 0; i < getData().size(); i++) {
+            DevMember devMember = getData().get(i);
             if (ids.contains(devMember.getDeviceDetailInfo().getDevcieid())) {
                 temps.add(devMember.getMemberDetailInfo().getPersonid());
             }
@@ -61,9 +61,9 @@ public class WmScreenMemberAdapter extends BaseQuickAdapter<DevMember, BaseViewH
 
     public void notifyChecks() {
         List<Integer> temp = new ArrayList<>();
-        for (int i = 0; i < mData.size(); i++) {
-            if (ids.contains(mData.get(i).getDeviceDetailInfo().getDevcieid())) {
-                temp.add(mData.get(i).getDeviceDetailInfo().getDevcieid());
+        for (int i = 0; i < getData().size(); i++) {
+            if (ids.contains(getData().get(i).getDeviceDetailInfo().getDevcieid())) {
+                temp.add(getData().get(i).getDeviceDetailInfo().getDevcieid());
             }
         }
         ids = temp;
@@ -80,14 +80,14 @@ public class WmScreenMemberAdapter extends BaseQuickAdapter<DevMember, BaseViewH
     }
 
     public boolean isChooseAll() {
-        return mData.size() == ids.size();
+        return getData().size() == ids.size();
     }
 
     public void setChooseAll(boolean isAll) {
         ids.clear();
         if (isAll) {
-            for (int i = 0; i < mData.size(); i++) {
-                ids.add(mData.get(i).getDeviceDetailInfo().getDevcieid());
+            for (int i = 0; i < getData().size(); i++) {
+                ids.add(getData().get(i).getDeviceDetailInfo().getDevcieid());
             }
         }
         notifyDataSetChanged();

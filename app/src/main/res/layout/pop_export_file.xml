@@ -47,10 +47,10 @@
             android:layout_weight="1"
             android:background="@color/table_tv_content"
             android:gravity="center"
-            android:text="@string/id_s" />
+            android:text="@string/id" />
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/pop_export_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"

@@ -152,6 +152,7 @@ public class MeetScorePresenter extends BasePresenter {
                     InterfaceMember.pbui_Item_MemberDetailInfo member = memberInfos.get(j);
                     if (member.getPersonid() == item.getMemberid()) {
                         scoreMembers.add(new ScoreMember(member, item));
+                        break;
                     }
                 }
             }

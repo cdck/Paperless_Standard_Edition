@@ -1,7 +1,7 @@
 package xlk.paperless.standard.ui;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
@@ -9,7 +9,7 @@ import android.util.AttributeSet;
  * Created by xlk on 2019/8/9.
  * 用于实现需要多个TextView实现跑马灯效果，获取不到焦点
  */
-public class MarqueeTextView extends android.support.v7.widget.AppCompatTextView {
+public class MarqueeTextView extends androidx.appcompat.widget.AppCompatTextView {
     public MarqueeTextView(Context context) {
         this(context, null);
     }

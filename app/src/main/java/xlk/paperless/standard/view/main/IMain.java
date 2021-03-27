@@ -3,10 +3,12 @@ package xlk.paperless.standard.view.main;
 import android.graphics.drawable.Drawable;
 
 import com.mogujie.tt.protobuf.InterfaceAdmin;
+import com.mogujie.tt.protobuf.InterfaceBase;
 import com.mogujie.tt.protobuf.InterfaceDevice;
 import com.mogujie.tt.protobuf.InterfaceFaceconfig;
 import com.mogujie.tt.protobuf.InterfaceMember;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -80,4 +82,11 @@ public interface IMain {
      */
     void loginStatus(InterfaceAdmin.pbui_Type_AdminLogonStatus info);
 
+    /**
+     * 展示升级弹窗
+     *
+     * @param content 升级说明内容
+     * @param info    升级通知信息
+     */
+    void showUpgradeDialog(String content, InterfaceBase.pbui_Type_MeetUpdateNotify info);
 }

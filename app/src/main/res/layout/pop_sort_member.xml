@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_blue_rect"
+    android:orientation="vertical">
+
+    <include layout="@layout/item_admin_member" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_member_sort"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_move_up"
+            style="@style/btn_pressed_style"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:text="@string/move_up" />
+
+        <Button
+            android:id="@+id/btn_move_down"
+            style="@style/btn_pressed_style"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:text="@string/move_down" />
+
+        <Button
+            android:id="@+id/btn_save"
+            style="@style/btn_pressed_style"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:text="@string/save" />
+
+        <Button
+            android:id="@+id/btn_close"
+            style="@style/btn_pressed_style"
+            android:layout_width="wrap_content"
+            android:text="@string/close" />
+    </LinearLayout>
+</LinearLayout>

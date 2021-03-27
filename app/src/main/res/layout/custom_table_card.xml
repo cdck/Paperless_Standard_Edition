@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/table_card_rl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#89FFA7B0">
+
+    <TextView
+        android:id="@+id/table_card_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="会议室名称" />
+</RelativeLayout>

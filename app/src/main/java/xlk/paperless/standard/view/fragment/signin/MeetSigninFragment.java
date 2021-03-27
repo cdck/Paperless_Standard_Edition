@@ -2,12 +2,11 @@ package xlk.paperless.standard.view.fragment.signin;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,9 +72,9 @@ public class MeetSigninFragment extends BaseFragment implements IMeetSignin {
     }
 
     private void start() {
-//        presenter.queryMeetRoomBg();
-        presenter.queryInterFaceConfiguration();
-//        presenter.queryMember();
+        presenter.queryMeetRoomBg();
+//        presenter.queryInterFaceConfiguration();
+//        presenter.queryMember(); 192.168.1.208
     }
 
     private void initView(View inflate) {

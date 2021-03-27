@@ -1,10 +1,10 @@
 package xlk.paperless.standard.adapter;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.widget.CheckBox;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.mogujie.tt.protobuf.InterfaceMacro;
 import com.mogujie.tt.protobuf.InterfaceMember;
 
@@ -37,26 +37,26 @@ public class VoteManageMemberAdapter extends BaseQuickAdapter<InterfaceMember.pb
         int facestatus = item.getFacestatus();
         String state;
         if (item.getDevid() == 0) {
-            state = mContext.getString(R.string.not_bind_dev);
+            state = getContext().getString(R.string.not_bind_dev);
         } else {
             if (isonline) {
-                state = mContext.getString(R.string.online);
+                state = getContext().getString(R.string.online);
                 if (facestatus != InterfaceMacro.Pb_MeetFaceStatus.Pb_MemState_MemFace_VALUE) {
-                    state += " / " + mContext.getString(R.string.not_on_meet);
+                    state += " / " + getContext().getString(R.string.not_on_meet);
                 }
                 if (ishas) {//有权限
                     isCan = true;
                 }
             } else {
-                state = mContext.getString(R.string.offline);
+                state = getContext().getString(R.string.offline);
             }
         }
         helper.setText(R.id.item_vote_member_number, String.valueOf(helper.getLayoutPosition() + 1))
                 .setText(R.id.item_vote_member_name, item.getMembername().toStringUtf8())
                 .setText(R.id.item_vote_member_seat, item.getDevname().toStringUtf8())
                 .setText(R.id.item_vote_member_state, state)
-                .setText(R.id.item_vote_member_permissions, ishas ? "√" : mContext.getResources().getString(R.string.no_permission));
-        int textColor = isCan ? mContext.getResources().getColor(R.color.text_blue) : mContext.getResources().getColor(R.color.text_color_black);
+                .setText(R.id.item_vote_member_permissions, ishas ? "√" : getContext().getResources().getString(R.string.no_permission));
+        int textColor = isCan ? getContext().getResources().getColor(R.color.text_blue) : getContext().getResources().getColor(R.color.text_color_black);
         helper.setTextColor(R.id.item_vote_member_number, textColor)
                 .setTextColor(R.id.item_vote_member_name, textColor)
                 .setTextColor(R.id.item_vote_member_seat, textColor)
@@ -69,8 +69,8 @@ public class VoteManageMemberAdapter extends BaseQuickAdapter<InterfaceMember.pb
     public void notifyChoose() {
         List<Integer> temps = new ArrayList<>();
         canChooseInfos.clear();
-        for (int i = 0; i < mData.size(); i++) {
-            InterfaceMember.pbui_Item_MeetMemberDetailInfo info = mData.get(i);
+        for (int i = 0; i < getData().size(); i++) {
+            InterfaceMember.pbui_Item_MeetMemberDetailInfo info = getData().get(i);
             if (isCanChoose(info)) {
                 canChooseInfos.add(info);
                 if (ids.contains(info.getMemberid())) {
@@ -96,8 +96,8 @@ public class VoteManageMemberAdapter extends BaseQuickAdapter<InterfaceMember.pb
             ids.remove(ids.indexOf(memberId));
         } else {
             boolean isCan = false;
-            for (int i = 0; i < mData.size(); i++) {
-                InterfaceMember.pbui_Item_MeetMemberDetailInfo info = mData.get(i);
+            for (int i = 0; i < getData().size(); i++) {
+                InterfaceMember.pbui_Item_MeetMemberDetailInfo info = getData().get(i);
                 if (memberId == info.getMemberid()) {
                     isCan = isCanChoose(info);
                     break;

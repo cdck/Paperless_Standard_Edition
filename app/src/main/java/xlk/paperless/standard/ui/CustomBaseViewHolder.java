@@ -1,6 +1,7 @@
 package xlk.paperless.standard.ui;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -8,6 +9,7 @@ import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import xlk.paperless.standard.R;
@@ -18,9 +20,33 @@ import xlk.paperless.standard.R;
  * @desc
  */
 public class CustomBaseViewHolder {
+
+    public static class NoteViewHolder {
+        public View rootView;
+        public ImageView iv_close;
+        public ImageView iv_min;
+        public RelativeLayout top_layout;
+        public EditText edt_note;
+        public Button btn_export_note;
+        public Button btn_save_local;
+        public Button btn_back;
+
+        public NoteViewHolder(View rootView) {
+            this.rootView = rootView;
+            this.iv_close = (ImageView) rootView.findViewById(R.id.iv_close);
+            this.iv_min = (ImageView) rootView.findViewById(R.id.iv_min);
+            this.top_layout = (RelativeLayout) rootView.findViewById(R.id.top_layout);
+            this.edt_note = (EditText) rootView.findViewById(R.id.edt_note);
+            this.btn_export_note = (Button) rootView.findViewById(R.id.btn_export_note);
+            this.btn_save_local = (Button) rootView.findViewById(R.id.btn_save_local);
+            this.btn_back = (Button) rootView.findViewById(R.id.btn_back);
+        }
+
+    }
+
     public static class MenuViewHolder {
         public View rootView;
-//        public Button wm_menu_note;
+        //        public Button wm_menu_note;
 //        public Button wm_menu_soft;
 //        public Button wm_menu_hand;
         public Button wm_menu_service;
@@ -53,12 +79,12 @@ public class CustomBaseViewHolder {
         public View rootView;
         public TextView textView;
         public ImageView wm_service_close;
-        public Button wm_service_pen;
-        public Button wm_service_pager;
-        public Button wm_service_tea;
-        public Button wm_service_calculate;
-        public Button wm_service_waiter;
-        public Button wm_service_clean;
+        public ImageView wm_service_pen;
+        public ImageView wm_service_pager;
+        public ImageView wm_service_tea;
+        public ImageView wm_service_calculate;
+        public ImageView wm_service_waiter;
+        public ImageView wm_service_clean;
         public EditText wm_service_edt;
         public Button wm_service_send;
 
@@ -66,12 +92,12 @@ public class CustomBaseViewHolder {
             this.rootView = rootView;
             this.textView = (TextView) rootView.findViewById(R.id.textView);
             this.wm_service_close = (ImageView) rootView.findViewById(R.id.wm_service_close);
-            this.wm_service_pen = (Button) rootView.findViewById(R.id.wm_service_pen);
-            this.wm_service_pager = (Button) rootView.findViewById(R.id.wm_service_pager);
-            this.wm_service_tea = (Button) rootView.findViewById(R.id.wm_service_tea);
-            this.wm_service_calculate = (Button) rootView.findViewById(R.id.wm_service_calculate);
-            this.wm_service_waiter = (Button) rootView.findViewById(R.id.wm_service_waiter);
-            this.wm_service_clean = (Button) rootView.findViewById(R.id.wm_service_clean);
+            this.wm_service_pen = (ImageView) rootView.findViewById(R.id.wm_service_pen);
+            this.wm_service_pager = (ImageView) rootView.findViewById(R.id.wm_service_pager);
+            this.wm_service_tea = (ImageView) rootView.findViewById(R.id.wm_service_tea);
+            this.wm_service_calculate = (ImageView) rootView.findViewById(R.id.wm_service_calculate);
+            this.wm_service_waiter = (ImageView) rootView.findViewById(R.id.wm_service_waiter);
+            this.wm_service_clean = (ImageView) rootView.findViewById(R.id.wm_service_clean);
             this.wm_service_edt = (EditText) rootView.findViewById(R.id.wm_service_edt);
             this.wm_service_send = (Button) rootView.findViewById(R.id.wm_service_send);
         }
@@ -184,6 +210,46 @@ public class CustomBaseViewHolder {
             this.rootView = rootView;
             this.vote_submit_ensure = (Button) rootView.findViewById(R.id.vote_submit_ensure);
             this.vote_submit_cancel = (Button) rootView.findViewById(R.id.vote_submit_cancel);
+        }
+
+    }
+
+    /**
+     * 会前设置-参会人员-参会人权限popupView
+     */
+    public static class PermissionViewHolder {
+        public View rootView;
+        public CheckBox item_tv_1;
+        public RecyclerView rv_member_permission;
+        public Button btn_add_screen;
+        public Button btn_add_projection;
+        public Button btn_add_upload;
+        public Button btn_add_download;
+        public Button btn_add_vote;
+        public Button btn_save;
+        public Button btn_del_screen;
+        public Button btn_del_projection;
+        public Button btn_del_upload;
+        public Button btn_del_download;
+        public Button btn_del_vote;
+        public Button btn_back;
+
+        public PermissionViewHolder(View rootView) {
+            this.rootView = rootView;
+            this.item_tv_1 = (CheckBox) rootView.findViewById(R.id.item_tv_1);
+            this.rv_member_permission = (RecyclerView) rootView.findViewById(R.id.rv_member_permission);
+            this.btn_add_screen = (Button) rootView.findViewById(R.id.btn_add_screen);
+            this.btn_add_projection = (Button) rootView.findViewById(R.id.btn_add_projection);
+            this.btn_add_upload = (Button) rootView.findViewById(R.id.btn_add_upload);
+            this.btn_add_download = (Button) rootView.findViewById(R.id.btn_add_download);
+            this.btn_add_vote = (Button) rootView.findViewById(R.id.btn_add_vote);
+            this.btn_save = (Button) rootView.findViewById(R.id.btn_save);
+            this.btn_del_screen = (Button) rootView.findViewById(R.id.btn_del_screen);
+            this.btn_del_projection = (Button) rootView.findViewById(R.id.btn_del_projection);
+            this.btn_del_upload = (Button) rootView.findViewById(R.id.btn_del_upload);
+            this.btn_del_download = (Button) rootView.findViewById(R.id.btn_del_download);
+            this.btn_del_vote = (Button) rootView.findViewById(R.id.btn_del_vote);
+            this.btn_back = (Button) rootView.findViewById(R.id.btn_back);
         }
 
     }

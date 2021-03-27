@@ -1,10 +1,10 @@
 package xlk.paperless.standard.adapter;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.widget.ImageView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class AdminRvAdapter extends BaseQuickAdapter<AdminFunctionBean, BaseView
     private int selectedPosition = 0;
 
     public AdminRvAdapter(@Nullable List<AdminFunctionBean> data) {
-        super(R.layout.item_admin_function, data);
+        super(R.layout.item_admin_meun, data);
     }
 
     public void setSelect(int position) {
@@ -31,7 +31,7 @@ public class AdminRvAdapter extends BaseQuickAdapter<AdminFunctionBean, BaseView
     protected void convert(BaseViewHolder helper, AdminFunctionBean item) {
 //        TextView item_tv = helper.getView(R.id.item_tv);
 //        item_tv.setText(item.getName());
-//        Drawable drawable = mContext.getDrawable(item.getDrawableResId());
+//        Drawable drawable = getContext().getDrawable(item.getDrawableResId());
 //        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
 //        item_tv.setCompoundDrawables(drawable, null, null, null);
 //        item_tv.setCompoundDrawablePadding(5);

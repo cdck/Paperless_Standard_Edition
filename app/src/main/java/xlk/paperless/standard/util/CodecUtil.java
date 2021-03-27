@@ -64,4 +64,18 @@ public class CodecUtil {
                 return false;
         }
     }
+
+
+    /**
+     * 用于将是奇数的宽高改成偶数
+     * @param size
+     * @return
+     */
+    public static int getSupporSize(int size) {
+        //判断是否是奇数
+        if ((size & 1) == 1) {
+            return size - 1;
+        }
+        return size;
+    }
 }

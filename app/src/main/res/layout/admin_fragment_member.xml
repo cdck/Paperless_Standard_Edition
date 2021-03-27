@@ -12,7 +12,7 @@
 
         <include layout="@layout/item_admin_member" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_member"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -161,36 +161,80 @@
                 android:id="@+id/btn_increase"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginEnd="@dimen/dp_5"
                 android:text="@string/increase" />
 
             <Button
                 android:id="@+id/btn_modify"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginEnd="@dimen/dp_5"
                 android:text="@string/modify" />
 
             <Button
                 android:id="@+id/btn_delete"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginEnd="@dimen/dp_5"
                 android:text="@string/delete" />
+
+            <Button
+                android:id="@+id/btn_sort"
+                style="@style/btn_pressed_style"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:text="@string/sort" />
+            <Button
+                android:id="@+id/btn_member_permission"
+                style="@style/btn_pressed_style"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:text="@string/member_permission" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:layout_height="wrap_content">
+
 
             <Button
                 android:id="@+id/btn_import"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginEnd="@dimen/dp_5"
                 android:text="@string/import_excel" />
 
             <Button
                 android:id="@+id/btn_export"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginEnd="@dimen/dp_5"
                 android:text="@string/export_excel" />
+
+            <Button
+                android:id="@+id/btn_import_frequently"
+                style="@style/btn_pressed_style"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:text="@string/import_from_frequently" />
+            <Button
+                android:id="@+id/btn_export_frequently"
+                style="@style/btn_pressed_style"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:text="@string/export_frequently" />
+
+            <Button
+                android:id="@+id/btn_member_role"
+                style="@style/btn_pressed_style"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:text="@string/member_role" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -20,6 +20,8 @@ import xlk.paperless.standard.data.bean.DevMember;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.base.BasePresenter;
 
+import static xlk.paperless.standard.view.fragment.other.screen.ScreenFragment.isAdminPage;
+
 /**
  * @author xlk
  * @date 2020/4/8
@@ -39,11 +41,6 @@ public class ScreenPresenter extends BasePresenter {
         super();
         this.cxt = context;
         this.view = view;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 
     @Override
@@ -99,13 +96,14 @@ public class ScreenPresenter extends BasePresenter {
 //                    continue;
 //                }
                 if (netstate == 1) {//在线
-                    if (Constant.isThisDevType(InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetProjective_VALUE,devcieid)) {//在线的投影机
+                    if (Constant.isThisDevType(InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetProjective_VALUE, devcieid)) {//在线的投影机
                         onLineProjectors.add(dev);
                     } else {
-                        if (facestate == 1) {
-                            for (int j = 0; j < memberDetailInfos.size(); j++) {
-                                InterfaceMember.pbui_Item_MemberDetailInfo member = memberDetailInfos.get(j);
-                                if (member.getPersonid() == memberid) {
+                        for (int j = 0; j < memberDetailInfos.size(); j++) {
+                            InterfaceMember.pbui_Item_MemberDetailInfo member = memberDetailInfos.get(j);
+                            if (member.getPersonid() == memberid) {
+                                //isAdminPage表示是否是后台管理界面启动的
+                                if (facestate == 1 || isAdminPage) {
                                     sourceMembers.add(new DevMember(dev, member));
                                     targetMembers.add(new DevMember(dev, member));
                                     break;

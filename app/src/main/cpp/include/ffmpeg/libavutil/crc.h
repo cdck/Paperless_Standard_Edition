@@ -88,7 +88,7 @@ const AVCRC *av_crc_get_table(AVCRCId crc_id);
 
 /**
  * Calculate the CRC of a block.
- * @param crc CRC of previous blocks if any or initialization value for CRC
+ * @param crc CRC of previous blocks if any or initial value for CRC
  * @return CRC updated with the data from the given block
  *
  * @see av_crc_init() "le" parameter

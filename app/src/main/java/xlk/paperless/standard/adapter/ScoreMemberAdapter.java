@@ -1,11 +1,11 @@
 package xlk.paperless.standard.adapter;
 
-import android.support.annotation.Nullable;
-import android.view.View;
+import androidx.annotation.Nullable;
+
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.mogujie.tt.protobuf.InterfaceFilescorevote;
 
 import java.math.BigDecimal;
@@ -58,7 +58,7 @@ public class ScoreMemberAdapter extends BaseQuickAdapter<ScoreMember, BaseViewHo
                 .setText(R.id.item_score_total, String.valueOf(total))
                 .setText(R.id.item_score_average, String.valueOf(average));
         boolean selected = item.getMember().getPersonid() == chooseid;
-        int color = selected ? mContext.getResources().getColor(R.color.table_selected) : mContext.getResources().getColor(R.color.white);
+        int color = selected ? getContext().getResources().getColor(R.color.table_selected) : getContext().getResources().getColor(R.color.white);
         helper.setBackgroundColor(R.id.item_score_member, color)
                 .setBackgroundColor(R.id.item_score_option1, color)
                 .setBackgroundColor(R.id.item_score_option2, color)
@@ -70,8 +70,8 @@ public class ScoreMemberAdapter extends BaseQuickAdapter<ScoreMember, BaseViewHo
 
     public void notifyChoose() {
         int temp = -1;
-        for (int i = 0; i < mData.size(); i++) {
-            if (mData.get(i).getMember().getPersonid() == chooseid) {
+        for (int i = 0; i < getData().size(); i++) {
+            if (getData().get(i).getMember().getPersonid() == chooseid) {
                 temp = chooseid;
             }
         }
@@ -80,8 +80,8 @@ public class ScoreMemberAdapter extends BaseQuickAdapter<ScoreMember, BaseViewHo
     }
 
     public String getOpinion() {
-        for (int i = 0; i < mData.size(); i++) {
-            ScoreMember scoreMember = mData.get(i);
+        for (int i = 0; i < getData().size(); i++) {
+            ScoreMember scoreMember = getData().get(i);
             if (scoreMember.getMember().getPersonid() == chooseid) {
                 return scoreMember.getScore().getContent().toStringUtf8();
             }

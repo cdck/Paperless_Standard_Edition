@@ -202,7 +202,7 @@ public class VideoPresenter extends BasePresenter {
         if (packet != null) {
             lastPushTime = System.currentTimeMillis();
             length = packet.length;
-            //LogUtil.d(TAG, "getEventMessage :  mimeType --> " + mimeType + "，宽高：" + width + "," + height + ", pts=" + pts);
+            LogUtil.d(TAG, "getEventMessage :  mimeType --> " + mimeType + "，宽高：" + width + "," + height + ", pts=" + pts);
             if (!saveMimeType.equals(mimeType) || initW != width || initH != height || mediaCodec == null) {
                 if (mediaCodec != null) {
                     //调用stop方法使其进入 uninitialzed 状态，这样才可以重新配置MediaCodec
@@ -557,7 +557,6 @@ public class VideoPresenter extends BasePresenter {
         }
         return "";
     }
-
 
     class releaseThread extends Thread {
 

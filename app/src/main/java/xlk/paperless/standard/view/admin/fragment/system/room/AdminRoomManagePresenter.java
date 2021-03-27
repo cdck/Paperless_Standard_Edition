@@ -30,9 +30,18 @@ public class AdminRoomManagePresenter extends BasePresenter {
     private List<InterfaceRoom.pbui_Item_MeetRoomDetailInfo> rooms = new ArrayList<>();
     private List<InterfaceDevice.pbui_Item_DeviceDetailInfo> roomDevices = new ArrayList<>();
     private List<InterfaceDevice.pbui_Item_DeviceDetailInfo> allDevices = new ArrayList<>();
-    private HashMap<Integer, List<Integer>> roomDevIds = new HashMap<>();//所有会议室的设备id
-    private int currentRoomId;//当前选中的会议室id
-    private int leftDevId, rightDevId;//选中的的会议室设备id和所有设备id
+    /**
+     * 所有会议室的设备id
+     */
+    private HashMap<Integer, List<Integer>> roomDevIds = new HashMap<>();
+    /**
+     * 当前选中的会议室id
+     */
+    private int currentRoomId = 0;
+    /**
+     * 选中的的会议室设备id和所有设备id
+     */
+    private int leftDevId, rightDevId;
 
     public AdminRoomManagePresenter(Context context, AdminRoomManageInterface view) {
         super();
@@ -47,9 +56,11 @@ public class AdminRoomManagePresenter extends BasePresenter {
             List<InterfaceRoom.pbui_Item_MeetRoomDetailInfo> itemList = info.getItemList();
             for (int i = 0; i < itemList.size(); i++) {
                 InterfaceRoom.pbui_Item_MeetRoomDetailInfo item = itemList.get(i);
-                LogUtil.i(TAG, "queryRoom id=" + item.getRoomid() + ",name=" + item.getName().toStringUtf8());
+                LogUtil.i(TAG, "queryRoom 会场id=" + item.getRoomid() + ",会场名称=" + item.getName().toStringUtf8());
+                if (!item.getName().toStringUtf8().isEmpty()) {
+                    rooms.add(item);
+                }
             }
-            rooms.addAll(itemList);
         }
         view.get().updateRoomRv(rooms);
         for (InterfaceRoom.pbui_Item_MeetRoomDetailInfo item : rooms) {
@@ -79,6 +90,7 @@ public class AdminRoomManagePresenter extends BasePresenter {
     }
 
     void queryAllDevice(int roomId) {
+        LogUtil.i(TAG, "queryAllDevice roomId=" + roomId);
         try {
             currentRoomId = roomId;
             InterfaceDevice.pbui_Type_DeviceDetailInfo info = jni.queryDeviceInfo();
@@ -96,10 +108,13 @@ public class AdminRoomManagePresenter extends BasePresenter {
                     List<InterfaceDevice.pbui_Item_DeviceDetailInfo> pdevList = info.getPdevList();
                     for (InterfaceDevice.pbui_Item_DeviceDetailInfo item : pdevList) {
                         int devcieid = item.getDevcieid();
-                        if (currentRoomIds.contains(devcieid)) {//当前设备存在于当前会议室中
+                        //当前设备存在于当前会议室中
+                        if (currentRoomIds.contains(devcieid)) {
                             roomDevices.add(item);
-                        } else if (!judgeIds.contains(devcieid)) {//当前设备不存在于任何会议室中
-                            if (!Constant.getDeviceTypeName(context.get(), devcieid).isEmpty()//过滤掉未识别的设备（服务器）
+                            //当前设备不存在于任何会议室中
+                        } else if (!judgeIds.contains(devcieid)) {
+                            //过滤掉未识别的设备（服务器）
+                            if (!Constant.getDeviceTypeName(context.get(), devcieid).isEmpty()
                                     //过滤掉会议数据库设备
                                     && !Constant.isThisDevType(InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetDBServer_VALUE, devcieid)
                                     //过滤掉茶水设备
@@ -244,6 +259,8 @@ public class AdminRoomManagePresenter extends BasePresenter {
                 }
                 break;
             }
+            default:
+                break;
         }
     }
 }

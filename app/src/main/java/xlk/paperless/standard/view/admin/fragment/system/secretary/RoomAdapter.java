@@ -1,9 +1,9 @@
 package xlk.paperless.standard.view.admin.fragment.system.secretary;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.mogujie.tt.protobuf.InterfaceRoom;
 
 import java.util.List;
@@ -27,12 +27,12 @@ public class RoomAdapter extends BaseQuickAdapter<InterfaceRoom.pbui_Item_MeetRo
                 .setText(R.id.item_table3_tv_2, item.getName().toStringUtf8())
                 .setText(R.id.item_table3_tv_3, item.getAddr().toStringUtf8());
 
-        int textColor = (selectId == item.getRoomid()) ? mContext.getColor(R.color.white) : mContext.getColor(R.color.black);
+        int textColor = (selectId == item.getRoomid()) ? getContext().getColor(R.color.white) : getContext().getColor(R.color.light_black);
         helper.setTextColor(R.id.item_table3_tv_1, textColor)
                 .setTextColor(R.id.item_table3_tv_2, textColor)
                 .setTextColor(R.id.item_table3_tv_3, textColor);
 
-        int color = (selectId == item.getRoomid()) ? mContext.getColor(R.color.light_blue) : mContext.getColor(R.color.white);
+        int color = (selectId == item.getRoomid()) ? getContext().getColor(R.color.light_blue) : getContext().getColor(R.color.white);
         helper.setBackgroundColor(R.id.item_table3_tv_1, color)
                 .setBackgroundColor(R.id.item_table3_tv_2, color)
                 .setBackgroundColor(R.id.item_table3_tv_3, color);

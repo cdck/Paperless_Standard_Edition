@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -119,19 +119,22 @@ public class BulletinActivity extends BaseActivity implements INotice, View.OnCl
         if (!TextUtils.isEmpty(fontName)) {
             switch (fontName) {
                 case "楷体":
-                    kt_typeface = Typeface.createFromAsset(getAssets(), "kt.ttf");
-                    break;
-                case "宋体":
-                    kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "kaiti.ttf");
                     break;
                 case "隶书":
-                    kt_typeface = Typeface.createFromAsset(getAssets(), "ls.ttf");
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "lishu.ttf");
                     break;
                 case "微软雅黑":
-                    kt_typeface = Typeface.createFromAsset(getAssets(), "wryh.ttf");
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "weiruanyahei.ttf");
+                    break;
+                case "黑体":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "heiti.ttf");
+                    break;
+                case "小楷":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "xiaokai.ttf");
                     break;
                 default:
-                    kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "fangsong.ttf");
                     break;
             }
             btn.setTypeface(kt_typeface);
@@ -183,19 +186,22 @@ public class BulletinActivity extends BaseActivity implements INotice, View.OnCl
         if (!TextUtils.isEmpty(fontName)) {
             switch (fontName) {
                 case "楷体":
-                    kt_typeface = Typeface.createFromAsset(getAssets(), "kt.ttf");
-                    break;
-                case "宋体":
-                    kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "kaiti.ttf");
                     break;
                 case "隶书":
-                    kt_typeface = Typeface.createFromAsset(getAssets(), "ls.ttf");
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "lishu.ttf");
                     break;
                 case "微软雅黑":
-                    kt_typeface = Typeface.createFromAsset(getAssets(), "wryh.ttf");
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "weiruanyahei.ttf");
+                    break;
+                case "黑体":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "heiti.ttf");
+                    break;
+                case "小楷":
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "xiaokai.ttf");
                     break;
                 default:
-                    kt_typeface = Typeface.createFromAsset(getAssets(), "fs.ttf");
+                    kt_typeface = Typeface.createFromAsset(getAssets(), "fangsong.ttf");
                     break;
             }
             tv.setTypeface(kt_typeface);

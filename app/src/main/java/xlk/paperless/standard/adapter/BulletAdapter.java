@@ -1,10 +1,10 @@
 package xlk.paperless.standard.adapter;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.widget.LinearLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.mogujie.tt.protobuf.InterfaceBullet;
 
 import java.util.List;
@@ -28,15 +28,15 @@ public class BulletAdapter extends BaseQuickAdapter<InterfaceBullet.pbui_Item_Bu
         helper.setText(R.id.item_bullet_number, String.valueOf(helper.getLayoutPosition() + 1))
                 .setText(R.id.item_bullet_title, item.getTitle().toStringUtf8())
                 .setText(R.id.item_bullet_content, item.getContent().toStringUtf8());
-        int color = (chooseId == item.getBulletid()) ? mContext.getResources().getColor(R.color.bullet_select_t) : mContext.getResources().getColor(R.color.bullet_select_f);
+        int color = (chooseId == item.getBulletid()) ? getContext().getResources().getColor(R.color.bullet_select_t) : getContext().getResources().getColor(R.color.bullet_select_f);
         LinearLayout view = helper.getView(R.id.item_bullet_root);
         view.setBackgroundColor(color);
     }
 
     public InterfaceBullet.pbui_Item_BulletDetailInfo getChoose() {
-        for (int i = 0; i < mData.size(); i++) {
-            if (mData.get(i).getBulletid() == chooseId) {
-                return mData.get(i);
+        for (int i = 0; i < getData().size(); i++) {
+            if (getData().get(i).getBulletid() == chooseId) {
+                return getData().get(i);
             }
         }
         return null;
@@ -44,8 +44,8 @@ public class BulletAdapter extends BaseQuickAdapter<InterfaceBullet.pbui_Item_Bu
 
     public void notifyChoose() {
         int temp = -1;
-        for (int i = 0; i < mData.size(); i++) {
-            if (chooseId == mData.get(i).getBulletid()) {
+        for (int i = 0; i < getData().size(); i++) {
+            if (chooseId == getData().get(i).getBulletid()) {
                 temp = chooseId;
             }
         }

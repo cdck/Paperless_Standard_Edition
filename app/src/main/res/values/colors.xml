@@ -4,6 +4,10 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
+    <color name="btn_bg_normal">#FFFFFF</color>
+    <color name="btn_bg_pressed">#1F8ADE</color>
+    <color name="btn_bg_selected">#00A3B8</color>
+
     <color name="video_pop_bg">#99000000</color>
 
     <color name="table_line_color">#c0dcf2</color>
@@ -12,18 +16,24 @@
 
     <color name="vote_selected">#5ad2fa</color>
     <color name="text_blue">#0000fa</color>
+    <color name="draw_tool_text_color">#808080</color>
 
+    <color name="gray">#76F2F2F2</color>
     <color name="red">#ce081c</color>
-    <color name="green">#08cc77</color>
+    <color name="green">#00FF26</color>
     <color name="yellow">#d8c81b</color>
     <color name="white">#ffffff</color>
     <color name="blue">#4ea7eb</color>
     <color name="light_blue">#77AAD3</color>
-    <color name="black">#28282d</color>
+    <color name="light_black">#28282d</color>
+    <color name="black">#000000</color>
     <color name="pink">#d931e8</color>
+    <color name="online">#005EFF</color>
 
     <color name="meet_fragment_bg">#cfcfcf</color>
     <color name="wm_view_bg">#FFFFFF</color>
+
+    <color name="div_line">#5A5A5A</color>
 
     <color name="enable_t">#a0a0a0</color>
     <color name="enable_f">#b9d6d6d6</color>
@@ -44,7 +54,8 @@
     <color name="transparent">#00ffffff</color>
 
     <drawable name="text_color_white">#ffffff</drawable>
-    <drawable name="text_color_black">#4a4a4a</drawable>
+    <drawable name="text_color_gray">#4a4a4a</drawable>
+    <drawable name="text_color_black">#000000</drawable>
 
     <color name="text_color_white">#FFFFFF</color>
     <color name="text_color_black">#4a4a4a</color>
@@ -69,4 +80,11 @@
     
     <color name="text_color_red">#E10000</color>
     <color name="text_color_green">#008400</color>
+
+    <drawable name="table_text_color">#FFFFFF</drawable>
+    <drawable name="table_background">#738494</drawable>
+
+    <color name="enable_false_color">#989CA3</color>
+    <color name="gray_bg">#C8C8C8</color>
+    <color name="fab_menu_bg_color">#E61E5888</color>
 </resources>

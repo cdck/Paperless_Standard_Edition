@@ -1,132 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="@drawable/shape_wm_bg"
     android:gravity="center"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@drawable/icon_meet_bg"
     android:orientation="vertical"
     android:padding="@dimen/dp_5">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/wm_menu_note"
-            style="@style/btn_pressed_style"
-            android:layout_width="0dp"
-            android:layout_margin="@dimen/dp_5"
-            android:layout_weight="1"
-            android:text="会议笔记" />
-
-        <Button
-            android:id="@+id/wm_menu_soft"
-            style="@style/btn_pressed_style"
-            android:layout_width="0dp"
-            android:layout_margin="@dimen/dp_5"
-            android:layout_weight="1"
-            android:text="软键盘" />
-
-        <Button
-            android:id="@+id/wm_menu_hand"
-            style="@style/btn_pressed_style"
-            android:layout_width="0dp"
-            android:layout_margin="@dimen/dp_5"
-            android:layout_weight="1"
-            android:text="手写输入" />
-
-        <Button
-            android:id="@+id/wm_menu_service"
-            style="@style/btn_pressed_style"
-            android:layout_width="0dp"
-            android:layout_margin="@dimen/dp_5"
-            android:layout_weight="1"
-            android:text="@string/Call_service" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/dp_10"
-        android:layout_marginBottom="@dimen/dp_10"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/wm_menu_start_projection"
-            style="@style/btn_pressed_style"
-            android:layout_width="0dp"
-            android:layout_margin="@dimen/dp_5"
-            android:layout_weight="1"
-            android:text="@string/Initiate_projection" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_5"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/wm_menu_back"
-                style="@style/btn_pressed_style"
-                android:layout_width="wrap_content"
-                android:gravity="center"
-                android:text="@string/back" />
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/wm_menu_stop_projection"
-            style="@style/btn_pressed_style"
-            android:layout_width="0dp"
-            android:layout_margin="@dimen/dp_5"
-            android:layout_weight="1"
-            android:text="@string/End_projection" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/wm_menu_start_screen"
-            style="@style/btn_pressed_style"
-            android:layout_width="0dp"
-            android:layout_margin="@dimen/dp_5"
-            android:layout_weight="1"
-            android:text="@string/Initiate_the_same_screen" />
-
-        <Button
-            android:id="@+id/wm_menu_join_screen"
-            style="@style/btn_pressed_style"
-            android:layout_width="0dp"
-            android:layout_margin="@dimen/dp_5"
-            android:layout_weight="1"
-            android:text="@string/Join_screen" />
-
-        <Button
-            android:id="@+id/wm_menu_stop_screen"
-            style="@style/btn_pressed_style"
-            android:layout_width="0dp"
-            android:layout_margin="@dimen/dp_5"
-            android:layout_weight="1"
-            android:text="@string/End_screen" />
-
-        <Button
-            android:id="@+id/wm_menu_screenshot"
-            style="@style/btn_pressed_style"
-            android:layout_width="0dp"
-            android:layout_margin="@dimen/dp_5"
-            android:layout_weight="1"
-            android:text="@string/Screenshot_annotation" />
-    </LinearLayout>
+    <xlk.paperless.standard.ui.CircularMenu
+        android:id="@+id/custom_menu"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        app:colorUnPressed="#C87E46"
+        app:spacingAngle="2" />
 </LinearLayout>

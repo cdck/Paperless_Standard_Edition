@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/dp_2"
     android:orientation="vertical">
@@ -11,8 +11,8 @@
         style="@style/btn_selected_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:lines="2"
-        android:ellipsize="end"
         android:clickable="false"
+        android:ellipsize="end"
+        android:lines="2"
         tools:text="张三" />
 </LinearLayout>

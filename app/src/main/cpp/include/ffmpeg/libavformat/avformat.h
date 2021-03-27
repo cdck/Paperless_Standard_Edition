@@ -1691,7 +1691,7 @@ typedef struct AVFormatContext {
     enum AVDurationEstimationMethod duration_estimation_method;
 
     /**
-     * Skip initialization bytes when opening stream
+     * Skip initial bytes when opening stream
      * - encoding: unused
      * - decoding: Set by user via AVOptions (NO direct access)
      */

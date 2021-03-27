@@ -50,8 +50,12 @@ public class IniUtil {
     }
 
     public String get(String sectionName, String optionName) {
-        if (ini == null || file == null) return null;
-        return ini.get(sectionName, optionName);
+        if (ini == null || file == null) return "";
+        String s = ini.get(sectionName, optionName);
+        if (s == null) {
+            s = "";
+        }
+        return s;
     }
 
     public void put(String sectionName, String optionName, Object value) {

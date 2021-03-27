@@ -13,7 +13,6 @@ import xlk.paperless.standard.util.LogUtil;
  * @desc 可以上下左右自由拖拽的AbsoluteLayout
  */
 public class CustomAbsoluteLayout extends AbsoluteLayout {
-    private final String TAG = "CustomAbsoluteLayout-->";
     private int width = 1300, height = 760;//底图宽高
     private int viewWidth, viewHeight;//显示区域的宽高
 
@@ -50,7 +49,6 @@ public class CustomAbsoluteLayout extends AbsoluteLayout {
         int width = MeasureSpec.getSize(widthMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
         setMeasuredDimension(width, height);
-        LogUtil.e(TAG, "onMeasure : --> width= " + width + ", height= " + height);
         this.width = width;
         this.height = height;
     }
@@ -62,7 +60,6 @@ public class CustomAbsoluteLayout extends AbsoluteLayout {
         this.t = t;
         this.r = r;
         this.b = b;
-        LogUtil.d(TAG, "更新位置 -->onLayout= " + l + "," + t + "," + r + "," + b);
     }
 
     private float downX, downY;//拖动时按下
@@ -74,11 +71,8 @@ public class CustomAbsoluteLayout extends AbsoluteLayout {
         boolean canMoveX = !(viewWidth >= width);
         //是否可以上下拖动
         boolean canMoveY = !(viewHeight >= height);
-        LogUtil.i(TAG, "onTouchEvent 显示宽高：" + viewWidth + "," + viewHeight +
-                ",底图宽高：" + width + "," + height + ",是否可以拖动：" + canMoveX + "," + canMoveY);
         if (!canMoveY && !canMoveX) {
             //已经可以完全显示底图
-            LogUtil.i(TAG, "onTouchEvent 已经可以完全显示底图");
             return false;
         }
         switch (event.getAction()) {
@@ -92,12 +86,10 @@ public class CustomAbsoluteLayout extends AbsoluteLayout {
 //                LogUtil.d(TAG, "触摸点 -->" + moveX+","+moveY+", 按压点: "+downX+","+downY);
                 float dx = moveX - downX;//负数,说明是向左滑动
                 float dy = moveY - downY;//负数,说明是向上滑动
-                LogUtil.d(TAG, "滑动距离 -->" + dx + "," + dy);
                 int left = getLeft();
                 int top = getTop();
                 int right = getRight();
                 int bottom = getBottom();
-                LogUtil.i(TAG, "四边 -->左：" + left + ",上：" + top + ",右：" + right + ",下：" + bottom);
                 if (canMoveX) {
                     //左
                     if (left == 0) {//当前左边已经封顶了
@@ -146,7 +138,6 @@ public class CustomAbsoluteLayout extends AbsoluteLayout {
                     t = 0;
                     b = height;
                 }
-                LogUtil.d(TAG, "更新位置 -->" + l + "," + t + "," + r + "," + b);
                 this.layout(l, t, r, b);
                 break;
         }

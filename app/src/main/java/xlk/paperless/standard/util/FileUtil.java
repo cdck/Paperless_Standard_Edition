@@ -1,28 +1,26 @@
 package xlk.paperless.standard.util;
 
 import android.content.ActivityNotFoundException;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
+import android.util.Log;
+
+import androidx.core.content.FileProvider;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.InputStreamReader;
 import java.text.DecimalFormat;
-import java.util.Objects;
 
 import xlk.paperless.standard.BuildConfig;
 import xlk.paperless.standard.R;
@@ -31,6 +29,7 @@ import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.data.WpsModel;
+import xlk.paperless.standard.view.MyApplication;
 
 /**
  * @author xlk
@@ -104,6 +103,23 @@ public class FileUtil {
         return fileSizeString;
     }
 
+    /**
+     * 根据文件名判断文件类型
+     *
+     * @param context  上下文
+     * @param fileName 文件名
+     */
+    public static String getFileType(Context context, String fileName) {
+        if (isDocumentFile(fileName)) {
+            return context.getString(R.string.documentation);
+        } else if (isPictureFile(fileName)) {
+            return context.getString(R.string.picture);
+        } else if (isAudioAndVideoFile(fileName)) {
+            return context.getString(R.string.video);
+        } else {
+            return context.getString(R.string.other);
+        }
+    }
 
     /**
      * 判断是否为除文档、视频、图片外的其它类文件
@@ -113,16 +129,51 @@ public class FileUtil {
      */
     public static boolean isOtherFile(String fileName) {
         //除去文档/视频/图片其它的后缀名文件
-        return !isDocumentFile(fileName) && !isVideoFile(fileName) && !isPictureFile(fileName);
+        return !isDocumentFile(fileName) && !isAudioAndVideoFile(fileName) && !isPictureFile(fileName);
     }
 
+    public static boolean isVideoFile(String fileName){
+        if (!fileName.contains(".")) {//该文件没有后缀
+            return false;
+        }
+        //获取文件的扩展名  mp3/mp4...
+        String fileEnd = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+        return fileEnd.equals("mp4")
+                || fileEnd.equals("3gp")
+//                || fileEnd.equals("wav")
+//                || fileEnd.equals("mp3")
+//                || fileEnd.equals("wmv")
+//                || fileEnd.equals("ts")
+                || fileEnd.equals("rmvb")
+                || fileEnd.equals("mov")
+                || fileEnd.equals("m4v")
+                || fileEnd.equals("avi")
+                || fileEnd.equals("m3u8")
+                || fileEnd.equals("3gpp")
+                || fileEnd.equals("3gpp2")
+                || fileEnd.equals("mkv")
+                || fileEnd.equals("flv")
+                || fileEnd.equals("divx")
+                || fileEnd.equals("f4v")
+                || fileEnd.equals("rm")
+                || fileEnd.equals("asf")
+                || fileEnd.equals("ram")
+                || fileEnd.equals("mpg")
+                || fileEnd.equals("v8")
+                || fileEnd.equals("swf")
+                || fileEnd.equals("m2v")
+                || fileEnd.equals("asx")
+                || fileEnd.equals("ra")
+                || fileEnd.equals("naivx")
+                || fileEnd.equals("xvid");
+    }
     /**
      * 判断是否为视频文件
      *
      * @param fileName
      * @return
      */
-    public static boolean isVideoFile(String fileName) {
+    public static boolean isAudioAndVideoFile(String fileName) {
         if (!fileName.contains(".")) {//该文件没有后缀
             return false;
         }
@@ -219,7 +270,8 @@ public class FileUtil {
         File file = new File(pathname);
         if (!file.exists()) {
             LogUtil.d(TAG, "openFile -->" + "下载将要打开的文件 pathname= " + pathname);
-            JniHandler.getInstance().creationFileDownload(pathname, mediaid, 1, 0, Constant.DOWNLOAD_SHOULD_OPEN_FILE);
+            JniHandler.getInstance().creationFileDownload(pathname, mediaid, 1, 0,
+                    Constant.DOWNLOAD_SHOULD_OPEN_FILE);
         } else {
             if (Values.downloadingFiles.contains(mediaid)) {
                 ToastUtil.show(R.string.currently_downloading);
@@ -239,7 +291,7 @@ public class FileUtil {
         LogUtil.e(TAG, "openFile :   --> " + file.getAbsolutePath());
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
-        if (FileUtil.isVideoFile(filename)) {
+        if (FileUtil.isAudioAndVideoFile(filename)) {
             return;
         } else if (FileUtil.isPictureFile(filename)) {
             EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_PREVIEW_IMAGE).objects(file.getAbsolutePath()).build());
@@ -267,6 +319,7 @@ public class FileUtil {
         uriX(context, intent, file);
     }
 
+
     /**
      * 抽取成工具方法
      *
@@ -292,157 +345,49 @@ public class FileUtil {
         }
     }
 
-    //获取文件真实路径
-    public static String getRealPath(Context cxt, Uri uri) {
-        String path;
-        if ("file".equalsIgnoreCase(uri.getScheme())) //使用第三方应用打开
-            path = uri.getPath();
-        else if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) //4.4以后
-            path = getPath(cxt, uri);
-        else //4.4以下系统调用方法
-            path = getRealPathFromURI(cxt, uri);
-        return path;
-    }
-
-    // 返回文件选择的全路径
-    private static String getRealPathFromURI(Context cxt, Uri contentUri) {
-        String res = null;
-        String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor = cxt.getContentResolver().query(contentUri, proj, null, null, null);
-        if (null != cursor && cursor.moveToFirst()) {
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            res = cursor.getString(column_index);
-            cursor.close();
-        }
-        return res;
-    }
 
     /**
-     * 专为Android4.4设计的从Uri获取文件绝对路径，以前的方法已不好使
-     */
-    private static String getPath(final Context context, final Uri uri) {
-        final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
-        // DocumentProvider
-        if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
-            // ExternalStorageProvider
-            if (isExternalStorageDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-
-                if ("primary".equalsIgnoreCase(type)) {
-                    return Environment.getExternalStorageDirectory() + "/" + split[1];
-                }
-            }
-            // DownloadsProvider
-            else if (isDownloadsDocument(uri)) {
-
-                final String id = DocumentsContract.getDocumentId(uri);
-                final Uri contentUri = ContentUris.withAppendedId(
-                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
-
-                return getDataColumn(context, contentUri, null, null);
-            }
-            // MediaProvider
-            else if (isMediaDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-
-                Uri contentUri = null;
-                if ("image".equals(type)) {
-                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                } else if ("video".equals(type)) {
-                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                } else if ("audio".equals(type)) {
-                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                }
-
-                final String selection = "_id=?";
-                final String[] selectionArgs = new String[]{split[1]};
-
-                return getDataColumn(context, contentUri, selection, selectionArgs);
-            }
-        }
-        // MediaStore (and general)
-        else if ("content".equalsIgnoreCase(uri.getScheme())) {
-            return getDataColumn(context, uri, null, null);
-        }
-        // File
-        else if ("file".equalsIgnoreCase(uri.getScheme())) {
-            return uri.getPath();
-        }
-        return null;
-    }
-
-    /**
-     * Get the value of the data column for this Uri. This is useful for
-     * MediaStore Uris, and other file-based ContentProviders.
+     * 读取文件内容
      *
-     * @param context       The context.
-     * @param uri           The Uri to query.
-     * @param selection     (Optional) Filter used in the query.
-     * @param selectionArgs (Optional) Selection arguments used in the query.
-     * @return The value of the _data column, which is typically a file path.
+     * @param action      读取完成后EventBus发送时的type
+     * @param strFilePath txt文件的路径
      */
-    private static String getDataColumn(Context context, Uri uri, String selection,
-                                        String[] selectionArgs) {
-        final String column = "_data";
-        final String[] projection = {column};
-        try (Cursor cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null)) {
-            if (cursor != null && cursor.moveToFirst()) {
-                final int column_index = cursor.getColumnIndexOrThrow(column);
-                return cursor.getString(column_index);
-            }
-        }
-        return null;
-    }
-
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is ExternalStorageProvider.
-     */
-    private static boolean isExternalStorageDocument(Uri uri) {
-        return "com.android.externalstorage.documents".equals(uri.getAuthority());
-    }
-
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is DownloadsProvider.
-     */
-    private static boolean isDownloadsDocument(Uri uri) {
-        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
-    }
-
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is MediaProvider.
-     */
-    private static boolean isMediaDocument(Uri uri) {
-        return "com.android.providers.media.documents".equals(uri.getAuthority());
-    }
-
-    /**
-     * 获取字符串的前/后缀名
-     *
-     * @param filepath 字符串
-     * @param type     =0 获取后缀 =1获取前缀
-     *                 eg: a\b\c.txt  =0
-     * @return
-     */
-    public static String getCutStr(String filepath, int type) {
-        if ((filepath != null) && (filepath.length() > 0)) {
-            int dot = filepath.lastIndexOf('.');
-            //该文件名有.符号  且不能是最后一个字符
-            if ((dot > -1) && (dot < (filepath.length() - 1))) {
-                if (type == 0) {//获取后缀
-                    return filepath.substring(dot + 1);
-                } else {//获取前缀名称
-                    return filepath.substring(0, dot);
+    public static void readTxtFile(int action, String strFilePath) {
+        MyApplication.threadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+                long l = System.currentTimeMillis();
+                String path = strFilePath;
+                //文件内容字符串
+                String content = "";
+                //打开文件
+                File file = new File(path);
+                //如果path是传递过来的参数，可以做一个非目录的判断
+                if (file.isDirectory()) {
+                    Log.d(TAG, "readTxtFile The File doesn't not exist.");
+                } else {
+                    try {
+                        InputStream instream = new FileInputStream(file);
+                        if (instream != null) {
+                            InputStreamReader inputreader = new InputStreamReader(instream);
+                            BufferedReader buffreader = new BufferedReader(inputreader);
+                            String line;
+                            //分行读取
+                            while ((line = buffreader.readLine()) != null) {
+                                content += line + "\n";
+                            }
+                            instream.close();
+                        }
+                    } catch (java.io.FileNotFoundException e) {
+                        Log.d(TAG, "readTxtFile The File doesn't not exist.");
+                    } catch (IOException e) {
+                        Log.d(TAG, "readTxtFile " + e.getMessage());
+                    }
                 }
+                LogUtil.i(TAG, "readTxtFile 用时：" + (System.currentTimeMillis() - l));
+                EventBus.getDefault().post(new EventMessage.Builder().type(action).object(content).build());
             }
-        }
-        return filepath;
+        });
     }
 
     /**
@@ -456,47 +401,6 @@ public class FileUtil {
         return fileName.matches(regex);
     }
 
-
-    public static String getDiskCacheDir(Context context) {
-        String cachePath = null;
-        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
-                || !Environment.isExternalStorageRemovable()) {
-            cachePath = Objects.requireNonNull(context.getExternalCacheDir()).getPath();
-        } else {
-            cachePath = context.getCacheDir().getPath();
-        }
-        return cachePath;
-    }
-
-    public static File createTemporalFileFrom(Context context, InputStream inputStream, String fileName)
-            throws IOException {
-        File targetFile = null;
-
-        if (inputStream != null) {
-            int read;
-            byte[] buffer = new byte[8 * 1024];
-            //自己定义拷贝文件路径
-            targetFile = new File(getDiskCacheDir(context), fileName);
-            if (targetFile.exists()) {
-                targetFile.delete();
-            }
-            OutputStream outputStream = new FileOutputStream(targetFile);
-
-            while ((read = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, read);
-            }
-            outputStream.flush();
-
-            try {
-                outputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return targetFile;
-    }
-
     /**
      * 根据路径删除文件或目录
      *
@@ -504,9 +408,31 @@ public class FileUtil {
      */
     public static void delFileByPath(String pathName) {
         File file = new File(pathName);
-        if (file.exists()) {
+        if (file.isFile() && file.exists()) {
             LogUtil.d(TAG, "delFileByPath -->" + "删除文件：" + pathName);
             file.delete();
         }
+    }
+
+    /**
+     * 删除文件、删除目录和子目录文件
+     * @param filePath 文件或目录路径
+     */
+    public static void delDirFile(String filePath) {
+        File file = new File(filePath);
+        if(!file.exists()){
+            return;
+        }
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (File subFile : files) {
+                delDirFile(subFile.getAbsolutePath());
+            }
+            file.delete();
+        } else {
+            file.delete();
+//            delFileByPath(filePath);
+        }
+        LogUtil.i(TAG, "delDirFile 删除成功=" + filePath);
     }
 }

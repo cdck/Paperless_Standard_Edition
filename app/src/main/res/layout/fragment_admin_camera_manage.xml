@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginBottom="@dimen/dp_10"
+                android:text="@string/meet_available_camera"
+                android:textSize="@dimen/sp_18" />
+
+            <include layout="@layout/item_admin_camera" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_available_camera"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/dp_5"
+            android:layout_marginEnd="@dimen/dp_5"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_add"
+                style="@style/btn_pressed_style"
+                android:layout_width="wrap_content"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:text="@string/add_" />
+
+            <Button
+                android:id="@+id/btn_remove"
+                style="@style/btn_pressed_style"
+                android:layout_width="wrap_content"
+                android:text="@string/remove_" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginBottom="@dimen/dp_10"
+                android:text="@string/meet_available_camera"
+                android:textSize="@dimen/sp_18" />
+
+            <include layout="@layout/item_admin_camera" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_all_camera"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center_vertical"
+        android:layout_margin="@dimen/dp_10"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/name" />
+
+        <EditText
+            android:id="@+id/edt_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_5"
+            android:layout_marginEnd="@dimen/dp_5"
+            android:background="@drawable/shape_edt_black"
+            android:lines="1"
+            android:minWidth="@dimen/dp_200"
+            android:singleLine="true" />
+
+        <Button
+            android:id="@+id/btn_modify"
+            style="@style/btn_pressed_style"
+            android:layout_width="wrap_content"
+            android:text="@string/modify" />
+    </LinearLayout>
+</LinearLayout>

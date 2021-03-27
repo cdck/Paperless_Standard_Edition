@@ -6,5 +6,6 @@ package xlk.paperless.standard.view.fragment.web;
  * @desc
  */
 public interface IMeetWeb {
-    void loadUrl(String urlAddr);
+
+    void updateUrlRv();
 }

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/dp_2">
+
+    <CheckBox
+        android:id="@+id/cb_file"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_20"
+        android:text="@string/agenda_file"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_choose_file"
+        style="@style/btn_pressed_style"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_20"
+        android:text="@string/choose_file"
+        app:layout_constraintStart_toEndOf="@+id/cb_file"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/edt_file_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@drawable/shape_enable_false"
+        android:ellipsize="end"
+        android:enabled="false"
+        android:lines="1"
+        android:minWidth="@dimen/dp_200"
+        android:padding="@dimen/dp_2"
+        android:singleLine="true"
+        android:textColor="@color/light_black"
+        app:layout_constraintStart_toStartOf="@+id/btn_choose_file"
+        app:layout_constraintTop_toBottomOf="@+id/btn_choose_file"
+        tools:hint="速度快解放了快捷" />
+
+    <CheckBox
+        android:id="@+id/cb_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_10"
+        android:text="@string/agenda_edit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edt_file_name" />
+
+    <Button
+        android:id="@+id/btn_import_agenda"
+        style="@style/btn_pressed_style"
+        android:layout_width="wrap_content"
+        android:text="@string/import_agenda"
+        app:layout_constraintBottom_toBottomOf="@+id/cb_edit"
+        app:layout_constraintStart_toStartOf="@+id/btn_choose_file"
+        app:layout_constraintTop_toTopOf="@+id/cb_edit" />
+
+    <EditText
+        android:id="@+id/edt_agenda_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/dp_5"
+        android:layout_marginEnd="@dimen/dp_5"
+        android:layout_marginBottom="@dimen/dp_5"
+        android:background="@drawable/shape_edt_black"
+        android:gravity="start|top"
+        android:padding="@dimen/dp_2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_import_agenda"
+        app:layout_constraintTop_toTopOf="@+id/btn_import_agenda"
+        tools:hint="速度快解放了快捷" />
+
+    <Button
+        android:id="@+id/btn_save_agenda"
+        style="@style/btn_pressed_style"
+        android:layout_width="@dimen/dp_200"
+        android:text="@string/save_agenda"
+        app:layout_constraintEnd_toEndOf="@+id/edt_agenda_content"
+        app:layout_constraintStart_toStartOf="@+id/edt_agenda_content"
+        app:layout_constraintTop_toTopOf="@+id/btn_choose_file" />
+
+    <RelativeLayout
+        android:id="@+id/progress_bar_rl"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

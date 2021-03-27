@@ -16,4 +16,9 @@ public interface AdminDeviceManageInterface extends BaseInterface {
      * 更新设备列表
      */
     void updateDeviceRv(List<InterfaceDevice.pbui_Item_DeviceDetailInfo> deviceInfos);
+
+    /**
+     * 更新会议终端设备列表
+     */
+    void updateClientRv();
 }

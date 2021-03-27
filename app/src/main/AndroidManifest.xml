@@ -6,31 +6,44 @@
      显示顶层浮窗 需要在清单文件中注册的原因是：要让设备识别是否需要该权限，
     如果不在清单文件中注册，那么在跳转到开启悬浮窗权限时，应用列表中就找不到当前应用
     -->
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 帧缓存权限 -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <!-- 帧缓存权限 -->
     <uses-permission
         android:name="android.permission.READ_FRAME_BUFFER"
-        tools:ignore="ProtectedPermissions" /> <!-- 正常权限（Normal Permissions） -->
+        tools:ignore="ProtectedPermissions" />
+    <!-- 正常权限（Normal Permissions） -->
     <!-- 网络权限 -->
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- 允许读取网络状态 -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 允许读取wifi网络状态 -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 唤醒和锁屏权限 -->
-    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- 修改音频参数权限 -->
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" /> <!-- 访问系统开机事件的权限 -->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- 请求安装包权限 -->
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /> <!-- 危险权限（Dangerous Permissions） -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 允许读取网络状态 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 允许读取wifi网络状态 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 唤醒和锁屏权限 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- 修改音频参数权限 -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <!-- 访问系统开机事件的权限 -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- 请求安装包权限 -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <!-- 危险权限（Dangerous Permissions） -->
     <!-- 文件的读写权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- 录音权限 -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- 摄像头权限 -->
-    <uses-permission android:name="android.permission.CAMERA" /> <!-- 读取手机状态权限 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- 录音权限 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- 摄像头权限 -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- 读取手机状态权限 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:name=".view.MyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/app_icon"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/app_icon"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
@@ -80,14 +93,15 @@
             android:theme="@style/Transparent" />
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
-        </provider> <!-- autosize屏幕适配 -->
+        </provider>
+        <!-- autosize屏幕适配 -->
         <meta-data
             android:name="design_width_in_dp"
             android:value="960" />

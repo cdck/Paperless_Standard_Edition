@@ -2,19 +2,26 @@ package xlk.paperless.standard.view.fragment.web;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.mogujie.tt.protobuf.InterfaceBase;
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
 import com.tencent.smtt.sdk.WebView;
 import com.wang.avi.AVLoadingIndicatorView;
 
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.ui.X5WebView;
 import xlk.paperless.standard.util.LogUtil;
@@ -36,6 +43,8 @@ public class MeetWebFragment extends BaseFragment implements View.OnClickListene
     private X5WebView f_web_x5view;
     private MeetWebPresenter presenter;
     private final String HOME_URL = "http://www.baidu.com/";
+    private RecyclerView rv_web;
+    private UrlAdapter urlAdapter;
 
     @Nullable
     @Override
@@ -54,6 +63,8 @@ public class MeetWebFragment extends BaseFragment implements View.OnClickListene
         f_web_home = (ImageView) inflate.findViewById(R.id.f_web_home);
         f_web_edt = (EditText) inflate.findViewById(R.id.f_web_edt);
         f_web_go = (Button) inflate.findViewById(R.id.f_web_go);
+        rv_web = (RecyclerView) inflate.findViewById(R.id.rv_web);
+
         f_web_loading = (AVLoadingIndicatorView) inflate.findViewById(R.id.f_web_loading);
         f_web_x5view = (X5WebView) inflate.findViewById(R.id.f_web_x5view);
 
@@ -64,8 +75,21 @@ public class MeetWebFragment extends BaseFragment implements View.OnClickListene
     }
 
     @Override
-    public void loadUrl(String urlAddr) {
-        f_web_x5view.loadUrl(uriHttpFirst(urlAddr));
+    public void updateUrlRv() {
+        if (urlAdapter == null) {
+            urlAdapter = new UrlAdapter(R.layout.item_web, presenter.urlLists);
+            rv_web.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
+            rv_web.setAdapter(urlAdapter);
+            urlAdapter.setOnItemClickListener((adapter, view, position) -> {
+                InterfaceBase.pbui_Item_UrlDetailInfo item = presenter.urlLists.get(position);
+                String addr = item.getAddr().toStringUtf8();
+                f_web_x5view.loadUrl(uriHttpFirst(addr));
+                rv_web.setVisibility(View.GONE);
+                f_web_x5view.setVisibility(View.VISIBLE);
+            });
+        } else {
+            urlAdapter.notifyDataSetChanged();
+        }
     }
 
     //地址HTTP协议判断，无HTTP打头的，增加http://，并返回。
@@ -158,7 +182,9 @@ public class MeetWebFragment extends BaseFragment implements View.OnClickListene
                 f_web_x5view.goForward();
                 break;
             case R.id.f_web_home:
-                f_web_x5view.loadUrl(HOME_URL);
+//                f_web_x5view.loadUrl(HOME_URL);
+                rv_web.setVisibility(View.VISIBLE);
+                f_web_x5view.setVisibility(View.GONE);
                 break;
             case R.id.f_web_go:
                 String url = f_web_edt.getText().toString();

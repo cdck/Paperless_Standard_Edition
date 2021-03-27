@@ -10,11 +10,14 @@ import android.util.Log;
 import android.util.Range;
 import android.view.Surface;
 
+import com.blankj.utilcode.util.LogUtils;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import xlk.paperless.standard.data.JniHandler;
+import xlk.paperless.standard.util.CodecUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.MathUtil;
 
@@ -24,7 +27,7 @@ import xlk.paperless.standard.util.MathUtil;
 public class ScreenRecorder extends Thread {
     private final String TAG = "ScreenRecorder-->";
     /**
-     *  h.264编码
+     * h.264编码
      */
     private static final String MIME_TYPE = "video/avc";
     /**
@@ -62,11 +65,25 @@ public class ScreenRecorder extends Thread {
         jni.InitAndCapture(0, channelIndex);
         this.width = width;
         this.height = height;
+        checkSize(width, height);
         this.bitrate = bitrate;
         this.dpi = dpi;
         this.projection = projection;
         this.savePath = savePath;
     }
+
+    /**
+     * 检查宽高，如果宽高是奇数，则会抛出异常：android.media.MediaCodec$CodecException: Error 0xfffffc0e
+     *
+     * @param width
+     * @param height
+     */
+    private void checkSize(int width, int height) {
+        this.width = CodecUtil.getSupporSize(width);
+        this.height = CodecUtil.getSupporSize(height);
+        LogUtils.i(TAG, "checkSize 宽高=" + this.width + "," + this.height);
+    }
+
 
     public void quit() {
         quit.set(true);
@@ -109,8 +126,8 @@ public class ScreenRecorder extends Thread {
         // TODO: 2020/9/26 解决宽高不适配的问题 Fix:android.media.MediaCodec$CodecException: Error 0xfffffc0e
         width = supportedWidths.clamp(width);
         height = supportedHeights.clamp(height);
+        checkSize(width, height);
         Log.e(TAG, "prepareEncoder 录制时使用的宽高：width=" + width + ",height=" + height + ",bitrate=" + bitrate);
-
 
         MediaFormat format = MediaFormat.createVideoFormat(MIME_TYPE, width, height);
         // 码率 越高越清晰 仅编码器需要设置

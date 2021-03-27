@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dialog_bottom_holo_light"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/dp_2"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <include layout="@layout/item_table_2" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_meeting"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/dp_2"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <include layout="@layout/item_id_dir" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_dir"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:orientation="vertical">
+
+            <include layout="@layout/item_sort_file" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_file"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginBottom="@dimen/dp_5">
+
+        <Button
+            android:id="@+id/btn_confirm_import"
+            style="@style/btn_pressed_style"
+            android:layout_width="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/confirm_import" />
+
+        <Button
+            android:id="@+id/btn_exit"
+            style="@style/btn_pressed_style"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_toRightOf="@+id/btn_confirm_import"
+            android:text="@string/exit" />
+    </RelativeLayout>
+</LinearLayout>

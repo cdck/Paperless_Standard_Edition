@@ -17,7 +17,10 @@ import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Process;
 import android.os.SystemClock;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -29,7 +32,10 @@ import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.google.protobuf.ByteString;
 import com.mogujie.tt.protobuf.InterfaceDevice;
 import com.mogujie.tt.protobuf.InterfaceMacro;
@@ -37,11 +43,13 @@ import com.mogujie.tt.protobuf.InterfaceVote;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import cc.shinichi.library.tool.file.FileUtil;
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.adapter.WmCanJoinMemberAdapter;
 import xlk.paperless.standard.adapter.WmCanJoinProAdapter;
@@ -51,6 +59,7 @@ import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.data.Values;
+import xlk.paperless.standard.ui.CircularMenu;
 import xlk.paperless.standard.ui.CustomBaseViewHolder;
 import xlk.paperless.standard.util.AppUtil;
 import xlk.paperless.standard.util.DialogUtil;
@@ -86,7 +95,7 @@ public class FabService extends Service implements IFab {
     private int mTouchStartX, mTouchStartY;
     private WindowManager.LayoutParams mParams, defaultParams, fullParams, wrapParams;
     private boolean hoverButtonIsShowing, menuViewIsShowing, serviceViewIsShowing, screenViewIsShowing,
-            joinViewIsShowing, proViewIsShowing, voteViewIsShowing, voteEnsureViewIsShowing;
+            joinViewIsShowing, proViewIsShowing, voteViewIsShowing, voteEnsureViewIsShowing, noteViewIsShowing;
     private ImageView hoverButton;
     private View menuView, serviceView, screenView, joinView, proView, voteView, voteEnsureView;
     private FabPresenter presenter;
@@ -104,6 +113,7 @@ public class FabService extends Service implements IFab {
     private int currentChooseCount = 0;//当前投票已经选中的选项个数
     private View cameraView;
     private int windowWidth, windowHeight;
+    private View noteView;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -163,9 +173,9 @@ public class FabService extends Service implements IFab {
                 case MotionEvent.ACTION_UP:
                     upTime = System.currentTimeMillis();
                     if (upTime - downTime > 150) {
-                        mParams.x = windowWidth - hoverButton.getWidth();
-                        mParams.y = mTouchStartY - hoverButton.getHeight();
-                        wm.updateViewLayout(hoverButton, mParams);
+//                        mParams.x = windowWidth - hoverButton.getWidth();
+//                        mParams.y = mTouchStartY - hoverButton.getHeight();
+//                        wm.updateViewLayout(hoverButton, mParams);
                     } else {
                         showMenuView();
                     }
@@ -215,18 +225,18 @@ public class FabService extends Service implements IFab {
         mParams.gravity = Gravity.START | Gravity.TOP;
         mParams.width = FrameLayout.LayoutParams.WRAP_CONTENT;
         mParams.height = FrameLayout.LayoutParams.WRAP_CONTENT;
-        mParams.x = windowWidth-hoverButton.getWidth();
-        mParams.y = windowHeight;//使用windowHeight在首次拖动的时候才会有效
+        LogUtil.i(TAG, "initParams 屏幕宽高=" + windowWidth + "," + windowHeight
+                + ",悬浮按钮宽高=" + hoverButton.getWidth() + "," + hoverButton.getHeight());
+        mParams.x = windowWidth - 150;
+        mParams.y = windowHeight - 150;//使用windowHeight在首次拖动的时候才会有效
         mParams.windowAnimations = R.style.pop_Animation;
         /** **** **  弹框  ** **** **/
         defaultParams = new WindowManager.LayoutParams();
         setParamsType(defaultParams);
         defaultParams.format = PixelFormat.RGBA_8888;
         defaultParams.gravity = Gravity.CENTER;
-//        defaultParams.width = FrameLayout.LayoutParams.WRAP_CONTENT;
-//        defaultParams.height = FrameLayout.LayoutParams.WRAP_CONTENT;
-        defaultParams.width = Values.screen_width / 2;
-        defaultParams.height = Values.screen_height / 2;
+        defaultParams.width = Values.half_width;
+        defaultParams.height = Values.half_height;
         defaultParams.windowAnimations = R.style.pop_Animation;
         /** **** **  充满屏幕  ** **** **/
         fullParams = new WindowManager.LayoutParams();
@@ -258,11 +268,128 @@ public class FabService extends Service implements IFab {
 
     //菜单视图
     private void showMenuView() {
-        menuView = LayoutInflater.from(cxt).inflate(R.layout.wm_menu_view_new, null);
+        menuView = LayoutInflater.from(cxt).inflate(R.layout.wm_menu_view, null);
         menuView.setTag("menuView");
-        CustomBaseViewHolder.MenuViewHolder menuViewHolder = new CustomBaseViewHolder.MenuViewHolder(menuView);
-        menuViewHolderEvent(menuViewHolder);
-        showPop(hoverButton, menuView, wrapParams);
+        CircularMenu custom_menu = menuView.findViewById(R.id.custom_menu);
+        custom_menu.setListener(index -> {
+            switch (index) {
+                //结束投影
+                case 0: {
+                    if (Constant.hasPermission(permission_code_projection)) {
+                        showProView(2);
+                    } else {
+                        ToastUtils.showShort(R.string.err_NoPermission);
+                    }
+                    break;
+                }
+                //截图批注
+                case 1: {
+                    screenshot();
+                    break;
+                }
+                //结束同屏
+                case 2: {
+                    if (Constant.hasPermission(permission_code_screen)) {
+                        showScreenView(2);
+                    } else {
+                        ToastUtils.showShort(R.string.err_NoPermission);
+                    }
+                    break;
+                }
+                //加入同屏
+                case 3: {
+                    presenter.queryCanJoin();
+                    showJoinView();
+                    break;
+                }
+                //发起同屏
+                case 4: {
+                    if (Constant.hasPermission(permission_code_screen)) {
+                        showScreenView(1);
+                    } else {
+                        ToastUtils.showShort(R.string.err_NoPermission);
+                    }
+                    break;
+                }
+                //发起投影
+                case 5: {
+                    if (Constant.hasPermission(permission_code_projection)) {
+                        showProView(1);
+                    } else {
+                        ToastUtils.showShort(R.string.err_NoPermission);
+                    }
+                    break;
+                }
+                //会议笔记
+                case 6: {
+                    showNoteView(menuView, saveNoteContent);
+                    break;
+                }
+                //呼叫服务
+                case 7: {
+                    showServiceView();
+                    break;
+                }
+                //返回
+                case 8: {
+                    showPop(menuView, hoverButton, mParams);
+                    break;
+                }
+                default:
+                    break;
+            }
+        });
+//        CustomBaseViewHolder.MenuViewHolder menuViewHolder = new CustomBaseViewHolder.MenuViewHolder(menuView);
+//        menuViewHolderEvent(menuViewHolder);
+        showPop(hoverButton, menuView, fullParams);
+    }
+
+    private String saveNoteContent = "";
+
+    @Override
+    public void updateNoteContent(String content) {
+        showNoteView(hoverButton, content);
+    }
+
+    //会议笔记视图
+    private void showNoteView(View removeView, String content) {
+        saveNoteContent = content;
+        noteView = LayoutInflater.from(this).inflate(R.layout.fab_note_view, null);
+        noteView.setTag("noteView");
+        CustomBaseViewHolder.NoteViewHolder holder = new CustomBaseViewHolder.NoteViewHolder(noteView);
+        noteViewHolderEvent(holder);
+        showPop(removeView, noteView);
+    }
+
+    private void noteViewHolderEvent(CustomBaseViewHolder.NoteViewHolder holder) {
+        holder.btn_back.setOnClickListener(v -> {
+            saveNoteContent = holder.edt_note.getText().toString();
+            showPop(noteView, hoverButton, mParams);
+        });
+        holder.iv_min.setOnClickListener(v -> {
+            saveNoteContent = holder.edt_note.getText().toString();
+            showPop(noteView, hoverButton, mParams);
+        });
+        holder.edt_note.setText(saveNoteContent);
+        holder.edt_note.setSelection(saveNoteContent.length());
+        holder.iv_close.setOnClickListener(v -> {
+            saveNoteContent = "";
+            showPop(noteView, hoverButton, mParams);
+        });
+        holder.btn_export_note.setOnClickListener(v -> {
+            saveNoteContent = holder.edt_note.getText().toString();
+            showPop(noteView, hoverButton, mParams);
+            EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_CHOOSE_NOTE_FILE).build());
+        });
+        holder.btn_save_local.setOnClickListener(v -> {
+            String content = holder.edt_note.getText().toString();
+            String filePath = Constant.DIR_CACHE + "会议笔记.txt";
+            File file = new File(filePath);
+            FileUtils.createOrExistsFile(file);
+            if (FileUtil.writeFileFromString(file, content)) {
+                ToastUtils.showShort(R.string.save_successful);
+            }
+        });
     }
 
     //菜单视图事件
@@ -393,17 +520,17 @@ public class FabService extends Service implements IFab {
         holder.wm_screen_launch.setText(cxt.getString(R.string.join_screen));
         holder.wm_screen_rv_attendee.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
         holder.wm_screen_rv_attendee.setAdapter(joinMemberAdapter);
-        joinMemberAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        joinMemberAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 joinMemberAdapter.choose(presenter.canJoinMembers.get(position).getDevceid());
             }
         });
         holder.wm_screen_rv_projector.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         holder.wm_screen_rv_projector.setAdapter(joinProAdapter);
-        joinProAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        joinProAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 joinProAdapter.choose(presenter.canJoinPros.get(position).getResPlay().getDevceid());
             }
         });
@@ -990,6 +1117,7 @@ public class FabService extends Service implements IFab {
         if (proViewIsShowing) wm.removeView(proView);
         if (voteViewIsShowing) wm.removeView(voteView);
         if (voteEnsureViewIsShowing) wm.removeView(voteEnsureView);
+        if (noteViewIsShowing) wm.removeView(noteView);
     }
 
     private void setIsShowing(View remove, View add) {
@@ -1020,6 +1148,9 @@ public class FabService extends Service implements IFab {
             case "voteEnsureView":
                 voteEnsureViewIsShowing = false;
                 break;
+            case "noteView":
+                noteViewIsShowing = false;
+                break;
         }
         switch (addTag) {
             case "hoverButton":
@@ -1045,6 +1176,9 @@ public class FabService extends Service implements IFab {
                 break;
             case "voteEnsureView":
                 voteEnsureViewIsShowing = true;
+                break;
+            case "noteView":
+                noteViewIsShowing = true;
                 break;
         }
     }

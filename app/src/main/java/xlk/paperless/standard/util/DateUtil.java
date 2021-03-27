@@ -16,11 +16,10 @@ public class DateUtil {
     /**
      * 将当前获取的时间戳转换成详细日期时间
      *
-     * @param time
-     * @return
+     * @return 返回格式 2020-10-29 17:48:35
      */
-    public static String nowDate(long time) {
-        Date tTime = new Date(time);
+    public static String nowDate() {
+        Date tTime = new Date(System.currentTimeMillis());
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return format.format(tTime);
     }
@@ -59,7 +58,7 @@ public class DateUtil {
     }
 
     /**
-     * 转成时分秒 00::00:00
+     * 转成时分秒 00:00:00
      *
      * @param ms 单位：毫秒
      * @return
@@ -94,5 +93,36 @@ public class DateUtil {
             standardTime = String.format(Locale.getDefault(), "%02d:%02d:%02d", seconds / 3600, seconds % 3600 / 60, seconds % 60);
         }
         return standardTime;
+    }
+
+    /**
+     * 转换成 2020/07/22 09:40
+     *
+     * @param seconds 单位:秒
+     */
+    public static String secondFormatDateTime(long seconds) {
+        return millisecondFormatDateTime(seconds * 1000);
+    }
+
+    /**
+     * 转换成 2020/07/22 09:40
+     *
+     * @param ms 单位:毫秒
+     */
+    public static String millisecondFormatDateTime(long ms) {
+        Date date = new Date(ms);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        return format.format(date);
+    }
+
+    /**
+     * 转换成 2020-07-22 09:40:00
+     *
+     * @param ms 单位:毫秒
+     */
+    public static String millisecondFormatDetailedTime(long ms) {
+        Date date = new Date(ms);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return format.format(date);
     }
 }

@@ -1,11 +1,12 @@
 package xlk.paperless.standard.adapter;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
+
 import android.view.View;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.mogujie.tt.protobuf.InterfaceMacro;
 import com.mogujie.tt.protobuf.InterfaceVote;
 
@@ -20,7 +21,7 @@ import xlk.paperless.standard.R;
  * @desc
  */
 public class VoteManageAdapter extends BaseQuickAdapter<InterfaceVote.pbui_Item_MeetVoteDetailInfo, BaseViewHolder> {
-    InterfaceVote.pbui_Item_MeetVoteDetailInfo selectedVote = null;
+    int selectedVoteId;
 
     public VoteManageAdapter(int layoutResId, @Nullable List<InterfaceVote.pbui_Item_MeetVoteDetailInfo> data) {
         super(layoutResId, data);
@@ -29,9 +30,7 @@ public class VoteManageAdapter extends BaseQuickAdapter<InterfaceVote.pbui_Item_
     @Override
     protected void convert(BaseViewHolder helper, InterfaceVote.pbui_Item_MeetVoteDetailInfo item) {
         View view = helper.getView(R.id.item_vote_manage_root);
-        if (selectedVote != null) {
-            view.setSelected(selectedVote.getVoteid() == item.getVoteid());
-        }
+        view.setSelected(selectedVoteId == item.getVoteid());
         TextView option1 = helper.getView(R.id.item_vote_manage_answer1);
         TextView option2 = helper.getView(R.id.item_vote_manage_answer2);
         TextView option3 = helper.getView(R.id.item_vote_manage_answer3);
@@ -69,7 +68,6 @@ public class VoteManageAdapter extends BaseQuickAdapter<InterfaceVote.pbui_Item_
                 .setText(R.id.item_vote_manage_title, getTitle(item))
                 .setText(R.id.item_vote_manage_state, getState(item.getVotestate()));
     }
-
     //去除掉答案是空文本的选项
     private List<InterfaceVote.pbui_SubItem_VoteItemInfo> disposeItemList(List<InterfaceVote.pbui_SubItem_VoteItemInfo> infos) {
         List<InterfaceVote.pbui_SubItem_VoteItemInfo> items = new ArrayList<>();
@@ -83,36 +81,27 @@ public class VoteManageAdapter extends BaseQuickAdapter<InterfaceVote.pbui_Item_
         return items;
     }
 
-    public void notitySelect() {
-        InterfaceVote.pbui_Item_MeetVoteDetailInfo temp = null;
-        if (selectedVote != null) {
-            for (int i = 0; i < mData.size(); i++) {
-                if (selectedVote.getVoteid() == mData.get(i).getVoteid()) {
-                    temp = mData.get(i);
-                    break;
-                }
+    public InterfaceVote.pbui_Item_MeetVoteDetailInfo getSelectedVote() {
+        for (int i = 0; i < getData().size(); i++) {
+            if (getData().get(i).getVoteid() == selectedVoteId) {
+                return getData().get(i);
             }
         }
-        selectedVote = temp;
-        notifyDataSetChanged();
+        return null;
     }
 
-    public InterfaceVote.pbui_Item_MeetVoteDetailInfo getSelectedVote() {
-        return selectedVote;
-    }
-
-    public void setSelect(InterfaceVote.pbui_Item_MeetVoteDetailInfo vote) {
-        selectedVote = vote;
+    public void setSelect(int id) {
+        selectedVoteId = id;
         notifyDataSetChanged();
     }
 
     private String getState(int votestate) {
         if (votestate == InterfaceMacro.Pb_MeetVoteStatus.Pb_vote_notvote_VALUE) {
-            return mContext.getString(R.string.state_not_initiated);
+            return getContext().getString(R.string.state_not_initiated);
         } else if (votestate == InterfaceMacro.Pb_MeetVoteStatus.Pb_vote_voteing_VALUE) {
-            return mContext.getString(R.string.state_ongoing);
+            return getContext().getString(R.string.state_ongoing);
         } else {
-            return mContext.getString(R.string.state_has_ended);
+            return getContext().getString(R.string.state_has_ended);
         }
     }
 
@@ -121,25 +110,25 @@ public class VoteManageAdapter extends BaseQuickAdapter<InterfaceVote.pbui_Item_
         voteTitle += "（";
         switch (item.getType()) {
             case InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_SINGLE_VALUE://单选
-                voteTitle += mContext.getString(R.string.type_single) + "，";
+                voteTitle += getContext().getString(R.string.type_single) + "，";
                 break;
             case InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_4_5_VALUE://5选4
-                voteTitle += mContext.getString(R.string.type_4_5) + "，";
+                voteTitle += getContext().getString(R.string.type_4_5) + "，";
                 break;
             case InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_3_5_VALUE:
-                voteTitle += mContext.getString(R.string.type_3_5) + "，";
+                voteTitle += getContext().getString(R.string.type_3_5) + "，";
                 break;
             case InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_2_5_VALUE:
-                voteTitle += mContext.getString(R.string.type_2_5) + "，";
+                voteTitle += getContext().getString(R.string.type_2_5) + "，";
                 break;
             case InterfaceMacro.Pb_MeetVote_SelType.Pb_VOTE_TYPE_2_3_VALUE:
-                voteTitle += mContext.getString(R.string.type_2_3) + "，";
+                voteTitle += getContext().getString(R.string.type_2_3) + "，";
                 break;
         }
         if (item.getMode() == InterfaceMacro.Pb_MeetVoteMode.Pb_VOTEMODE_agonymous_VALUE) {//匿名
-            voteTitle += mContext.getString(R.string.mode_anonymous);
+            voteTitle += getContext().getString(R.string.mode_anonymous);
         } else {
-            voteTitle += mContext.getString(R.string.mode_register);
+            voteTitle += getContext().getString(R.string.mode_register);
         }
         voteTitle += "）";
         return voteTitle;

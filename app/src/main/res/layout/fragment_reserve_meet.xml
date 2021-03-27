@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/dp_5"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginEnd="@dimen/dp_20"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/choose_meeting_room" />
+
+        <Spinner
+            android:id="@+id/sp_room"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <include layout="@layout/item_reserve_meeting" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_meet"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_10"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reserve_meet_name" />
+
+            <EditText
+                android:id="@+id/edt_meet_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/shape_edt_black"
+                android:lines="1"
+                android:singleLine="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_10"
+                android:text="@string/confidential_" />
+
+            <Spinner
+                android:id="@+id/sp_secret"
+                android:layout_width="@dimen/dp_100"
+                android:layout_height="wrap_content"
+                android:entries="@array/confidential_spinner" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/dp_10"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="@dimen/dp_100"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:text="@string/reserve_start_time" />
+
+            <TextView
+                android:id="@+id/tv_start_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/shape_edt_black"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_10"
+                android:text="@string/reserve_stop_time" />
+
+            <TextView
+                android:id="@+id/tv_end_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/shape_edt_black"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_10"
+                android:text="@string/reservation_person_" />
+
+            <EditText
+                android:id="@+id/edt_reservation_person"
+                android:layout_width="@dimen/dp_100"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_edt_black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp_10"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_create_reserve"
+                style="@style/btn_pressed_style"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:text="@string/create_reserve" />
+
+            <Button
+                android:id="@+id/btn_modify_reserve"
+                style="@style/btn_pressed_style"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:text="@string/modify_reserve" />
+
+            <Button
+                android:id="@+id/btn_delete_reserve"
+                style="@style/btn_pressed_style"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:text="@string/delete_reserve" />
+
+            <Button
+                android:id="@+id/btn_inform_start"
+                style="@style/btn_pressed_style"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:text="@string/inform_start" />
+
+            <Button
+                android:id="@+id/btn_inform_extension"
+                style="@style/btn_pressed_style"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:text="@string/inform_extension" />
+
+            <Button
+                android:id="@+id/btn_inform_cancel"
+                style="@style/btn_pressed_style"
+                android:layout_width="wrap_content"
+                android:text="@string/inform_cancel" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
