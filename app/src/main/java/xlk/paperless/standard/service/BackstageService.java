@@ -398,6 +398,7 @@ public class BackstageService extends Service {
                 isMandatoryPlaying = isMandatory;
                 EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_MANDATORY).build());
             }
+            EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_HIDE_FAB).build());
             Values.haveNewPlayInform = true;
 //            if (!isVideoPlaying) {
             startActivity(new Intent(this, VideoActivity.class)

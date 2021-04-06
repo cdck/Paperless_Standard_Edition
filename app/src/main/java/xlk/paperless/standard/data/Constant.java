@@ -152,7 +152,6 @@ public class Constant {
     public static final String UPLOAD_UPGRADE_FILE = "upload_upgrade_file";
 
 
-
     //Intent#putExtra的字符tag
 
     /**
@@ -334,6 +333,8 @@ public class Constant {
      */
     public static final int BUS_CHOOSE_NOTE_FILE = BUS_BASE + 28;
     public static final int BUS_EXPORT_NOTE_CONTENT = BUS_BASE + 29;
+    public static final int BUS_HIDE_FAB = BUS_BASE + 30;
+    public static final int BUS_SHOW_FAB = BUS_BASE + 31;
 
 
     //会议功能码

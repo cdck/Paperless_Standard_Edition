@@ -27,4 +27,8 @@ public interface IFab extends BaseInterface {
     void applyPermissionsInform(InterfaceDevice.pbui_Type_MeetRequestPrivilegeNotify info);
 
     void updateNoteContent(String content);
+
+    void showFabButton();
+
+    void hideAllWindow();
 }

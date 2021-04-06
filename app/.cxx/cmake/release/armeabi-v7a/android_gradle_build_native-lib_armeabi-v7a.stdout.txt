@@ -1,13 +1,2 @@
 ninja: Entering directory `F:\work\Paperless_Standard_Edition\app\.cxx\cmake\release\armeabi-v7a'
-[1/4] Building CXX object CMakeFiles/native-lib.dir/src/main/cpp/wallet_net.cpp.o
-[2/4] Building C object CMakeFiles/native-lib.dir/src/main/cpp/helpers.c.o
-[3/4] Building CXX object CMakeFiles/native-lib.dir/src/main/cpp/jni_wallet_netinit.cpp.o
-In file included from ../../../../src/main/cpp/jni_wallet_netinit.cpp:8:
-../../../../src/main/cpp/include\meetc/meetinterface_type.h:4319:9: warning: 'MEET_FACEID_MAINBG' macro redefined [-Wmacro-redefined]
-#define MEET_FACEID_MAINBG                      1  //<D6><F7><BD><E7><C3><E6> png  //<BD><F6>ID
-        ^
-../../../../src/main/cpp/include\meetc/meetinterface_type.h:4315:9: note: previous definition is here
-#define MEET_FACEID_MAINBG
-        ^
-1 warning generated.
-[4/4] Linking CXX shared library ..\..\..\..\build\intermediates\cmake\release\obj\armeabi-v7a\libnative-lib.so
+ninja: no work to do.

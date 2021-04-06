@@ -33,6 +33,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
@@ -141,10 +142,27 @@ public class FabService extends Service implements IFab {
         wm.getDefaultDisplay().getMetrics(metrics);
         mScreenDensity = metrics.densityDpi;
         mImageReader = ImageReader.newInstance(Values.screen_width, Values.screen_height, 0x1, 2);
-        initHoverButton();
         initParams();
+        showFabButton();
+    }
+
+    @Override
+    public void showFabButton() {
+        LogUtils.e("showFabButton");
+        hideAllWindow();
+        initHoverButton();
         hoverButtonIsShowing = true;
         wm.addView(hoverButton, mParams);
+    }
+
+    @Override
+    public void hideAllWindow() {
+        LogUtils.e("hideAllWindow");
+        try{
+            delAllView();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -225,8 +243,7 @@ public class FabService extends Service implements IFab {
         mParams.gravity = Gravity.START | Gravity.TOP;
         mParams.width = FrameLayout.LayoutParams.WRAP_CONTENT;
         mParams.height = FrameLayout.LayoutParams.WRAP_CONTENT;
-        LogUtil.i(TAG, "initParams 屏幕宽高=" + windowWidth + "," + windowHeight
-                + ",悬浮按钮宽高=" + hoverButton.getWidth() + "," + hoverButton.getHeight());
+        LogUtil.i(TAG, "initParams 屏幕宽高=" + windowWidth + "," + windowHeight);
         mParams.x = windowWidth - 150;
         mParams.y = windowHeight - 150;//使用windowHeight在首次拖动的时候才会有效
         mParams.windowAnimations = R.style.pop_Animation;

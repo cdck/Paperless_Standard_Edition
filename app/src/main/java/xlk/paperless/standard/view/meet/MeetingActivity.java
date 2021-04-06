@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.gcssloop.widget.PagerGridLayoutManager;
@@ -110,6 +111,7 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
     private RelativeLayout rl_feature_page;
     private LinearLayout meet_fun_all_ll;
     private PagerGridLayoutManager pagerGridLayoutManager;
+    private boolean alreadyShow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -337,6 +339,23 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
         meet_time.setText(time);
     }
 
+    /**
+     * 首次进入会议时直接打开会议议程界面
+     * @param functions 后台设置的功能
+     */
+    private void showAgendaPage(List<InterfaceMeetfunction.pbui_Item_MeetFunConfigDetailInfo> functions) {
+        LogUtils.i("showAgendaPage alreadyShow=" + alreadyShow);
+        if (alreadyShow) return;
+        for (int i = 0; i < functions.size(); i++) {
+            InterfaceMeetfunction.pbui_Item_MeetFunConfigDetailInfo item = functions.get(i);
+            int code = item.getFuncode();
+            if (code == FUN_CODE_AGENDA_BULLETIN) {
+                showFragment(FUN_CODE_AGENDA_BULLETIN);
+                alreadyShow = true;
+            }
+        }
+    }
+
     @Override
     public void updateFunction(List<InterfaceMeetfunction.pbui_Item_MeetFunConfigDetailInfo> functions) {
         if (featureAdapter == null) {
@@ -362,6 +381,7 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
         } else {
             featureAdapter.notifyDataSetChanged();
         }
+        showAgendaPage(functions);
     }
 
 

@@ -5,7 +5,7 @@
     android:id="@+id/meet_root_id"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/icon_meet_bg"
+    android:background="@drawable/icon_main_bg"
     tools:context=".view.meet.MeetingActivity">
 
     <LinearLayout
@@ -145,7 +145,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@color/meet_top_bar"
+            android:background="#800091EA"
             android:gravity="center"
             android:orientation="horizontal"
             android:visibility="visible">
@@ -155,6 +155,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
+                android:textSize="@dimen/sp_18"
                 tools:text="第一次人大代表大会" />
         </LinearLayout>
 
@@ -163,7 +164,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="8"
-            android:background="@color/meet_content"
             android:orientation="horizontal"
             android:visibility="visible">
 

@@ -388,6 +388,7 @@ public class VideoActivity extends BaseActivity implements IVideo, WlOnGlSurface
         presenter.stopPlay();
         presenter.releaseMediaRes();
         presenter.releasePlay();
+        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_SHOW_FAB).build());
     }
 
     @Override
