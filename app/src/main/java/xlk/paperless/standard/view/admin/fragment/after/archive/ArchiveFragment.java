@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.base.BaseFragment;
 import xlk.paperless.standard.util.ToastUtil;
-import xlk.paperless.standard.view.MyApplication;
+import xlk.paperless.standard.view.App;
 
 /**
  * @author Created by xlk on 2020/10/27.
@@ -160,7 +160,7 @@ public class ArchiveFragment extends BaseFragment implements ArchiveInterface, V
             ToastUtil.show(R.string.please_wait_archive_complete_first);
             return;
         }
-        MyApplication.threadPool.execute(() -> {
+        App.threadPool.execute(() -> {
             boolean isEncryption = cb_encryption.isChecked();
             presenter.setEncryption(isEncryption);
             if (cb_check_all.isChecked()) {

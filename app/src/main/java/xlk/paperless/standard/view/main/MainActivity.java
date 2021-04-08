@@ -12,8 +12,6 @@ import android.hardware.Camera;
 import android.media.MediaCodec;
 import android.media.MediaFormat;
 import android.media.projection.MediaProjectionManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 
@@ -27,12 +25,10 @@ import com.blankj.utilcode.util.RegexUtils;
 import com.google.android.material.textfield.TextInputEditText;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,13 +37,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.acker.simplezxing.activity.CaptureActivity;
-import com.google.protobuf.ByteString;
 import com.hjq.permissions.OnPermission;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
@@ -63,7 +57,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import xlk.paperless.standard.BuildConfig;
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.adapter.MainBindMemberAdapter;
 import xlk.paperless.standard.data.Constant;
@@ -77,7 +70,7 @@ import xlk.paperless.standard.util.IniUtil;
 import xlk.paperless.standard.util.PopUtil;
 import xlk.paperless.standard.util.ToastUtil;
 import xlk.paperless.standard.base.BaseActivity;
-import xlk.paperless.standard.view.MyApplication;
+import xlk.paperless.standard.view.App;
 import xlk.paperless.standard.view.admin.AdminActivity;
 import xlk.paperless.standard.view.meet.MeetingActivity;
 
@@ -87,11 +80,11 @@ import static xlk.paperless.standard.data.Constant.EXTRA_ADMIN_PASSWORD;
 import static xlk.paperless.standard.data.Values.camera_height;
 import static xlk.paperless.standard.data.Values.camera_width;
 import static xlk.paperless.standard.util.ConvertUtil.s2b;
-import static xlk.paperless.standard.view.MyApplication.MAX_HEIGHT;
-import static xlk.paperless.standard.view.MyApplication.MAX_WIDTH;
-import static xlk.paperless.standard.view.MyApplication.mIntent;
-import static xlk.paperless.standard.view.MyApplication.mMediaProjectionManager;
-import static xlk.paperless.standard.view.MyApplication.mResult;
+import static xlk.paperless.standard.view.App.MAX_HEIGHT;
+import static xlk.paperless.standard.view.App.MAX_WIDTH;
+import static xlk.paperless.standard.view.App.mIntent;
+import static xlk.paperless.standard.view.App.mMediaProjectionManager;
+import static xlk.paperless.standard.view.App.mResult;
 
 /**
  * @author xlk
@@ -179,7 +172,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
 
     private void start() {
         LogUtils.d(TAG, "start --> 开始 ");
-        ((MyApplication) getApplication()).openBackstageService(true);
+        ((App) getApplication()).openBackstageService(true);
         presenter = new MainPresenter(this, this);
         request();
     }
@@ -392,7 +385,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
                     mResult = result;
                     mIntent = intent;
                     //保存 MediaProjection 对象,解决每次录制屏幕时需要权限的问题
-                    MyApplication.mMediaProjection = mMediaProjectionManager.getMediaProjection(mResult, mIntent);
+                    App.mMediaProjection = mMediaProjectionManager.getMediaProjection(mResult, mIntent);
                     LogUtils.d(TAG, "onActivityResult :  用户同意捕获屏幕.. ");
                     initial();
                 }
@@ -421,8 +414,8 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
             if (System.currentTimeMillis() - lastClickTime < 500) {
                 count++;
                 if (count == 5) {
-                    LogUtils.i(TAG, "initView canLoginAdmin=" + MyApplication.canLoginAdmin);
-                    MyApplication.canLoginAdmin = !MyApplication.canLoginAdmin;
+                    LogUtils.i(TAG, "initView canLoginAdmin=" + App.canLoginAdmin);
+                    App.canLoginAdmin = !App.canLoginAdmin;
                     count = 1;
                 }
             } else {
@@ -439,8 +432,8 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
             @Override
             public boolean onLongClick(View v) {
                 LogUtils.i(TAG, "onLongClick 激活长按");
-                MyApplication.canLoginAdmin = !MyApplication.canLoginAdmin;
-                if (MyApplication.canLoginAdmin) {
+                App.canLoginAdmin = !App.canLoginAdmin;
+                if (App.canLoginAdmin) {
                     ToastUtil.show(R.string.login_backstage_is_enabled);
                 } else {
                     ToastUtil.show(R.string.login_backstage_is_closed);
@@ -922,7 +915,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
     }
 
     private void exit() {
-        ((MyApplication) getApplication()).onDestroy();
+        ((App) getApplication()).onDestroy();
         finish();
         System.exit(0);
     }
@@ -950,7 +943,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
 //                setConfiguration();
                 break;
             case R.id.iv_set_main:
-                if (MyApplication.canLoginAdmin) {
+                if (App.canLoginAdmin) {
                     showLoginPop();
                 } else {
                     setConfiguration();

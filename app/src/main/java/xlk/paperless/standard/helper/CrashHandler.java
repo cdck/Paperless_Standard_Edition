@@ -23,7 +23,7 @@ import java.util.Map;
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.ToastUtil;
-import xlk.paperless.standard.view.MyApplication;
+import xlk.paperless.standard.view.App;
 
 /**
  * Created by Administrator on 2018/2/25.
@@ -91,7 +91,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         if (ex == null) {
             return false;
         }
-        MyApplication.threadPool.execute(() -> {
+        App.threadPool.execute(() -> {
 //        new Thread() {
             Looper.prepare();
             ToastUtil.show("很抱歉,程序出现异常,即将退出");

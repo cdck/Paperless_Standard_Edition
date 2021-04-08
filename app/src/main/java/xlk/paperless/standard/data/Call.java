@@ -7,7 +7,7 @@ import com.mogujie.tt.protobuf.InterfaceMacro;
 import org.greenrobot.eventbus.EventBus;
 
 import xlk.paperless.standard.util.LogUtil;
-import xlk.paperless.standard.view.MyApplication;
+import xlk.paperless.standard.view.App;
 
 import static xlk.paperless.standard.data.Values.lbm;
 
@@ -90,7 +90,7 @@ public class Call {
 //                return 1920;1836
                 switch (type) {
                     case 2:
-                        return MyApplication.width;
+                        return App.width;
 //                        return 1280;
                     case 3:
                         return Values.camera_width;
@@ -102,7 +102,7 @@ public class Call {
 //                return 1080;1200
                 switch (type) {
                     case 2:
-                        return MyApplication.height;
+                        return App.height;
 //                        return 720;
                     case 3:
                         return Values.camera_height;

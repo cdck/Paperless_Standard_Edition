@@ -220,7 +220,7 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
         } else {
             fileAdapter.notifyDataSetChanged();
         }
-        fileAdapter.addChildClickViewIds(R.id.i_m_d_file_view,R.id.i_m_d_file_download);
+        fileAdapter.addChildClickViewIds(R.id.i_m_d_file_name,R.id.i_m_d_file_download);
         fileAdapter.setOnItemClickListener((adapter, view, position) -> {
             fileAdapter.setChoose(typeFileDetailInfos.get(position).getMediaid());
         });
@@ -232,7 +232,7 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
                 } else {
                     ToastUtil.show(R.string.err_NoPermission);
                 }
-            } else if (view.getId() == R.id.i_m_d_file_view) {
+            } else if (view.getId() == R.id.i_m_d_file_name) {
                 LogUtil.d(TAG, "rvFile -->" + "查看文件");
 //                if (Constant.isVideo(info.getMediaid())) {
                 if (FileUtil.isAudioAndVideoFile(info.getName().toStringUtf8())) {

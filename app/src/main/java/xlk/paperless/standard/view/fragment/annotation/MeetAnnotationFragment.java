@@ -272,11 +272,11 @@ public class MeetAnnotationFragment extends BaseFragment implements View.OnClick
             fileAdapter = new MeetDataFileAdapter(R.layout.item_meet_data_file, currentFiles);
             f_annotation_file_rv.setLayoutManager(new LinearLayoutManager(getContext()));
             f_annotation_file_rv.setAdapter(fileAdapter);
-            fileAdapter.addChildClickViewIds(R.id.i_m_d_file_view,R.id.i_m_d_file_download);
+            fileAdapter.addChildClickViewIds(R.id.i_m_d_file_name,R.id.i_m_d_file_download);
             fileAdapter.setOnItemChildClickListener((adapter, view, position) -> {
                 if (view.getId() == R.id.i_m_d_file_download) {
                     presenter.downloadFile(currentFiles.get(position));
-                } else if (view.getId() == R.id.i_m_d_file_view) {
+                } else if (view.getId() == R.id.i_m_d_file_name) {
                     presenter.preViewFile(currentFiles.get(position));
                 }
             });

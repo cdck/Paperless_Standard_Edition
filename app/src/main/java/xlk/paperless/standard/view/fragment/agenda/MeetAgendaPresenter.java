@@ -2,6 +2,7 @@ package xlk.paperless.standard.view.fragment.agenda;
 
 import android.content.Context;
 
+import com.blankj.utilcode.util.NetworkUtils;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mogujie.tt.protobuf.InterfaceAgenda;
 import com.mogujie.tt.protobuf.InterfaceBase;

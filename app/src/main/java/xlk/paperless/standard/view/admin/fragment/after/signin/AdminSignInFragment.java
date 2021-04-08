@@ -1,6 +1,5 @@
 package xlk.paperless.standard.view.admin.fragment.after.signin;
 
-import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +30,6 @@ import com.mogujie.tt.protobuf.InterfaceMember;
 import com.mogujie.tt.protobuf.InterfaceRoom;
 import com.mogujie.tt.protobuf.InterfaceSignin;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -50,7 +48,7 @@ import xlk.paperless.standard.util.DateUtil;
 import xlk.paperless.standard.util.FileUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.ToastUtil;
-import xlk.paperless.standard.view.MyApplication;
+import xlk.paperless.standard.view.App;
 import xlk.paperless.standard.view.admin.fragment.after.archive.PdfSignBean;
 
 /**
@@ -125,7 +123,7 @@ public class AdminSignInFragment extends BaseFragment implements AdminSignInInte
      * @param pdfSignBean 签到数据和会议数据
      */
     private void exportPdf(PdfSignBean pdfSignBean) {
-        MyApplication.threadPool.execute(() -> {
+        App.threadPool.execute(() -> {
             try {
                 long l = System.currentTimeMillis();
                 InterfaceMeet.pbui_Item_MeetMeetInfo meetInfo = pdfSignBean.getMeetInfo();

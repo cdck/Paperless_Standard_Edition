@@ -44,10 +44,8 @@ import xlk.paperless.standard.util.AppUtil;
 import xlk.paperless.standard.util.CodecUtil;
 import xlk.paperless.standard.util.FileUtil;
 import xlk.paperless.standard.util.IniUtil;
-import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.ToastUtil;
-import xlk.paperless.standard.base.BasePresenter;
-import xlk.paperless.standard.view.MyApplication;
+import xlk.paperless.standard.view.App;
 
 import static xlk.paperless.standard.data.Values.localDeviceId;
 
@@ -131,7 +129,7 @@ public class MainPresenter {
         if (iniUtil.loadFile(IniUtil.iniFile)) {
             String s = iniUtil.get("OtherConfiguration", "maxBitRate");
             try {
-                MyApplication.maxBitRate = Integer.parseInt(s) * 1000;
+                App.maxBitRate = Integer.parseInt(s) * 1000;
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
@@ -198,7 +196,7 @@ public class MainPresenter {
     }
 
     public void initialization() {
-        MyApplication.threadPool.execute(() -> {
+        App.threadPool.execute(() -> {
             jni.javaInitSys(AppUtil.getUniqueId(cxt.get()));
         });
     }

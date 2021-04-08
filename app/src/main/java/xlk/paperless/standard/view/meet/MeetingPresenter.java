@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.os.CountDownTimer;
 
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.mogujie.tt.protobuf.InterfaceAgenda;
 import com.mogujie.tt.protobuf.InterfaceBase;
 import com.mogujie.tt.protobuf.InterfaceDevice;
 import com.mogujie.tt.protobuf.InterfaceFaceconfig;
@@ -41,6 +42,7 @@ public class MeetingPresenter extends BasePresenter {
     private JniHandler jni = JniHandler.getInstance();
     private List<InterfaceMeetfunction.pbui_Item_MeetFunConfigDetailInfo> functions = new ArrayList<>();
     private CountDownTimer countDownTimer;
+    private boolean hasAgenda = false;
 
     public MeetingPresenter(Context cxt, IMeet view) {
         super();
@@ -48,14 +50,13 @@ public class MeetingPresenter extends BasePresenter {
         this.view = view;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
 
     @Override
     public void busEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETAGENDA_VALUE://议程变更通知
+                queryAgenda();
+                break;
             case Constant.BUS_NET_WORK:
                 int isAvailable = (int) msg.getObjects()[0];
                 LogUtil.d(TAG, "网络变更通知 -->" + Values.isOneline);
@@ -147,7 +148,8 @@ public class MeetingPresenter extends BasePresenter {
                 }
                 previewImage(index);
                 break;
-            default:break;
+            default:
+                break;
         }
     }
 
@@ -416,5 +418,18 @@ public class MeetingPresenter extends BasePresenter {
         jni.releaseVideoRes(RESOURCE_0);
         jni.releaseVideoRes(RESOURCE_10);
         jni.releaseVideoRes(RESOURCE_11);
+    }
+
+    public boolean hasAgenda() {
+        return hasAgenda;
+    }
+
+    public void queryAgenda() {
+        try {
+            InterfaceAgenda.pbui_meetAgenda pbui_meetAgenda = jni.queryAgenda();
+            hasAgenda = pbui_meetAgenda != null;
+        } catch (InvalidProtocolBufferException e) {
+            e.printStackTrace();
+        }
     }
 }

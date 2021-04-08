@@ -3,6 +3,7 @@ package xlk.paperless.standard.data;
 import android.content.Context;
 import android.os.Environment;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.mogujie.tt.protobuf.InterfaceMacro;
 
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.List;
 
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.util.FileUtil;
-import xlk.paperless.standard.view.MyApplication;
+import xlk.paperless.standard.view.App;
 
 import static xlk.paperless.standard.data.Values.hasAllPermissions;
 import static xlk.paperless.standard.data.Values.localPermission;
@@ -889,13 +890,13 @@ public class Constant {
     public static String getMeetSignInTypeName(int type) {
         switch (type) {
             case InterfaceMacro.Pb_MeetSignType.Pb_signin_psw_VALUE:
-                return MyApplication.applicationContext.getString(R.string.personal_pwd_signin);
+                return App.applicationContext.getString(R.string.personal_pwd_signin);
             case InterfaceMacro.Pb_MeetSignType.Pb_signin_photo_VALUE:
-                return MyApplication.applicationContext.getString(R.string.handwriting_signin);
+                return App.applicationContext.getString(R.string.handwriting_signin);
             case InterfaceMacro.Pb_MeetSignType.Pb_signin_onepsw_VALUE:
-                return MyApplication.applicationContext.getString(R.string.meeting_pwd_signin);
+                return App.applicationContext.getString(R.string.meeting_pwd_signin);
             default:
-                return MyApplication.applicationContext.getString(R.string.direct_signin);
+                return App.applicationContext.getString(R.string.direct_signin);
         }
     }
 
@@ -906,6 +907,7 @@ public class Constant {
      * @param funCode 会议功能码
      */
     public static String getFunctionString(Context context, int funCode) {
+        LogUtils.i("会议功能码=" + funCode);
         switch (funCode) {
             case InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_AGENDA_BULLETIN_VALUE:
                 return context.getString(R.string.meeting_agenda);

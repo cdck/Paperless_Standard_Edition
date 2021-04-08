@@ -23,7 +23,7 @@ import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.ToastUtil;
 
 import static xlk.paperless.standard.data.Values.initX5Finished;
-import static xlk.paperless.standard.view.MyApplication.applicationContext;
+import static xlk.paperless.standard.view.App.applicationContext;
 
 
 /**
@@ -75,7 +75,7 @@ public class MeetAgendaFragment extends Fragment implements IMeetAgenda, TbsRead
 
     @Override
     public void initDefault() {
-        f_agenda_tv.setText("");
+        f_agenda_tv.setText("当前没有议程");
         if (tbsReaderView != null) {
             f_agenda_root.removeView(tbsReaderView);
             tbsReaderView.onStop();

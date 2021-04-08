@@ -1,6 +1,5 @@
 package xlk.paperless.standard.util;
 
-import android.content.Context;
 import android.text.TextUtils;
 import android.widget.Toast;
 
@@ -8,7 +7,7 @@ import com.mogujie.tt.protobuf.InterfaceMacro;
 
 import xlk.paperless.standard.R;
 
-import static xlk.paperless.standard.view.MyApplication.applicationContext;
+import static xlk.paperless.standard.view.App.applicationContext;
 
 
 /**

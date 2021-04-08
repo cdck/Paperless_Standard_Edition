@@ -29,7 +29,7 @@ import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.data.WpsModel;
-import xlk.paperless.standard.view.MyApplication;
+import xlk.paperless.standard.view.App;
 
 /**
  * @author xlk
@@ -353,7 +353,7 @@ public class FileUtil {
      * @param strFilePath txt文件的路径
      */
     public static void readTxtFile(int action, String strFilePath) {
-        MyApplication.threadPool.execute(new Runnable() {
+        App.threadPool.execute(new Runnable() {
             @Override
             public void run() {
                 long l = System.currentTimeMillis();

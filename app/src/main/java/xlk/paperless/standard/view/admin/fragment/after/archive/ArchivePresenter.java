@@ -1,6 +1,5 @@
 package xlk.paperless.standard.view.admin.fragment.after.archive;
 
-import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.ZipUtils;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mogujie.tt.protobuf.InterfaceAdmin;
@@ -25,10 +24,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -41,7 +38,7 @@ import xlk.paperless.standard.util.DateUtil;
 import xlk.paperless.standard.util.FileUtil;
 import xlk.paperless.standard.util.JxlUtil;
 import xlk.paperless.standard.util.LogUtil;
-import xlk.paperless.standard.view.MyApplication;
+import xlk.paperless.standard.view.App;
 import xlk.paperless.standard.view.admin.fragment.after.signin.SignInBean;
 import xlk.paperless.standard.view.admin.fragment.pre.member.MemberRoleBean;
 
@@ -283,7 +280,7 @@ public class ArchivePresenter extends BasePresenter {
 
 
     public void zipArchiveDir() {
-        MyApplication.threadPool.execute(() -> {
+        App.threadPool.execute(() -> {
             try {
                 Thread.sleep(500);
                 if (!archiveTasks.isEmpty()) {

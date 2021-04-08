@@ -78,7 +78,7 @@ import static xlk.paperless.standard.data.Constant.RESOURCE_1;
 import static xlk.paperless.standard.data.Constant.RESOURCE_2;
 import static xlk.paperless.standard.data.Constant.RESOURCE_3;
 import static xlk.paperless.standard.data.Constant.RESOURCE_4;
-import static xlk.paperless.standard.view.MyApplication.mMediaProjection;
+import static xlk.paperless.standard.view.App.mMediaProjection;
 import static xlk.paperless.standard.view.chatonline.ChatVideoActivity.isChatingOpened;
 import static xlk.paperless.standard.view.draw.DrawActivity.isDrawing;
 

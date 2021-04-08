@@ -20,7 +20,7 @@ import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.data.bean.MediaBean;
 import xlk.paperless.standard.util.LogUtil;
-import xlk.paperless.standard.view.MyApplication;
+import xlk.paperless.standard.view.App;
 
 
 /**
@@ -275,7 +275,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
      * 释放资源
      */
     private void releaseMediaCodec() {
-        MyApplication.threadPool.execute(()->{
+        App.threadPool.execute(()->{
             if (mediaCodec != null) {
                 try {
                     LogUtil.e(TAG, "releaseMediaCodec :   --> ");

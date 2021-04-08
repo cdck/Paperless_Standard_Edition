@@ -34,7 +34,7 @@ import xlk.paperless.standard.R;
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.bean.SubmitMember;
 import xlk.paperless.standard.data.exportbean.ExportSubmitMember;
-import xlk.paperless.standard.view.MyApplication;
+import xlk.paperless.standard.view.App;
 import xlk.paperless.standard.view.admin.fragment.after.signin.SignInBean;
 import xlk.paperless.standard.view.admin.fragment.pre.bind.ReadJxlBean;
 import xlk.paperless.standard.view.admin.fragment.pre.member.MemberRoleBean;
@@ -651,7 +651,7 @@ public class JxlUtil {
                 String memberRoleName = "";
                 if (seat != null) {
                     int role = seat.getRole();
-                    memberRoleName = Constant.getMemberRoleName(MyApplication.applicationContext, role);
+                    memberRoleName = Constant.getMemberRoleName(App.applicationContext, role);
                 }
                 label = new Label(8, i + 1, memberRoleName, wc);
                 ws.addCell(label);

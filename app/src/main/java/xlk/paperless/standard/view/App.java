@@ -41,7 +41,7 @@ import static xlk.paperless.standard.data.Values.lbm;
  * @author xlk
  * @date 2020/3/9
  */
-public class MyApplication extends Application {
+public class App extends Application {
 
     static {
         System.loadLibrary("avcodec-57");
@@ -65,13 +65,14 @@ public class MyApplication extends Application {
         System.loadLibrary("z");
     }
 
-    private static final String TAG = "MyApplication-->";
+    private static final String TAG = "App-->";
+    public static boolean read2file = false;
 
     /**
      * 是否写入到文件中
-     */
-    public static final boolean read2file = false;
-    /**
+     * <p>
+     * public static final boolean read2file = false;
+     * /**
      * 是否可以登录到后台管理
      */
     public static boolean canLoginAdmin = false;
@@ -175,7 +176,7 @@ public class MyApplication extends Application {
                     LogUtil.d(TAG, "x5内核 onDownloadProgress -->下载X5内核：" + i);
                 }
             });
-            MyApplication.threadPool.execute(() -> {
+            App.threadPool.execute(() -> {
                 //判断是否要自行下载内核
 //                boolean needDownload = TbsDownloader.needDownload(mContext, TbsDownloader.DOWNLOAD_OVERSEA_TBS);
 //                LogUtil.i(TAG, "loadX5 是否需要自行下载X5内核" + needDownload);

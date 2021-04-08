@@ -24,6 +24,7 @@
         android:layout_height="match_parent"
         android:layout_weight="3"
         android:ellipsize="end"
+        android:clickable="true"
         android:gravity="center_vertical"
         android:lines="2"
         tools:text="无纸化文件.doc" />
@@ -42,6 +43,7 @@
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/dp_5"
         android:layout_marginEnd="@dimen/dp_5"
+        android:visibility="gone"
         android:gravity="center"
         android:src="@drawable/file_view_icon_pressed" />
 

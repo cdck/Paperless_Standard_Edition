@@ -31,17 +31,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import q.rorbin.badgeview.Badge;
 import q.rorbin.badgeview.QBadgeView;
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.data.Constant;
+import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.data.bean.ChatMessage;
 import xlk.paperless.standard.util.DateUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.base.BaseActivity;
-import xlk.paperless.standard.view.MyApplication;
+import xlk.paperless.standard.view.App;
 import xlk.paperless.standard.view.draw.DrawActivity;
 import xlk.paperless.standard.view.fragment.agenda.MeetAgendaFragment;
 import xlk.paperless.standard.view.fragment.annotation.MeetAnnotationFragment;
@@ -122,7 +122,7 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
         presenter.initial();
         presenter.initVideoRes();
         initial();
-        ((MyApplication) getApplication()).openFabService(true);
+        ((App) getApplication()).openFabService(true);
     }
 
     private void initial() {
@@ -130,6 +130,7 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
         presenter.queryInterFaceConfiguration();
         presenter.queryIsOnline();
         presenter.queryDeviceMeetInfo();
+        presenter.queryAgenda();
         presenter.queryMeetFunction();
         presenter.queryPermission();
     }
@@ -197,7 +198,7 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
         super.onDestroy();
         presenter.onDestroy();
         mBadge = null;
-        ((MyApplication) getApplication()).openFabService(false);
+        ((App) getApplication()).openFabService(false);
     }
 
     @Override
@@ -341,18 +342,25 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
 
     /**
      * 首次进入会议时直接打开会议议程界面
+     *
      * @param functions 后台设置的功能
      */
     private void showAgendaPage(List<InterfaceMeetfunction.pbui_Item_MeetFunConfigDetailInfo> functions) {
-        LogUtils.i("showAgendaPage alreadyShow=" + alreadyShow);
-        if (alreadyShow) return;
-        for (int i = 0; i < functions.size(); i++) {
-            InterfaceMeetfunction.pbui_Item_MeetFunConfigDetailInfo item = functions.get(i);
-            int code = item.getFuncode();
-            if (code == FUN_CODE_AGENDA_BULLETIN) {
-                showFragment(FUN_CODE_AGENDA_BULLETIN);
-                alreadyShow = true;
+        if (presenter.hasAgenda()) {
+            LogUtils.i("showAgendaPage alreadyShow=" + alreadyShow);
+            if (alreadyShow) return;
+            for (int i = 0; i < functions.size(); i++) {
+                InterfaceMeetfunction.pbui_Item_MeetFunConfigDetailInfo item = functions.get(i);
+                int code = item.getFuncode();
+                if (code == FUN_CODE_AGENDA_BULLETIN) {
+                    showFragment(FUN_CODE_AGENDA_BULLETIN);
+                    alreadyShow = true;
+                    return;
+                }
             }
+        } else {
+            LogUtils.e("showAgendaPage 当前没有议程");
+            alreadyShow = true;
         }
     }
 

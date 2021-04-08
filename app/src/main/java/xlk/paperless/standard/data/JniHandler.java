@@ -37,7 +37,6 @@ import java.util.List;
 
 import xlk.paperless.standard.util.IniUtil;
 import xlk.paperless.standard.util.LogUtil;
-import xlk.paperless.standard.view.MyApplication;
 
 import static xlk.paperless.standard.data.Values.downloadingFiles;
 import static xlk.paperless.standard.util.ConvertUtil.s2b;

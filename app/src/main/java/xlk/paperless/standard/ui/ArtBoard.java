@@ -25,7 +25,6 @@ import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.util.ConvertUtil;
 import xlk.paperless.standard.util.LogUtil;
-import xlk.paperless.standard.view.MyApplication;
 
 import static xlk.paperless.standard.view.draw.DrawPresenter.launchPersonId;
 import static xlk.paperless.standard.view.draw.DrawPresenter.mSrcmemid;

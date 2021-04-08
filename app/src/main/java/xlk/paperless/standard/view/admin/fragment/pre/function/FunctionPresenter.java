@@ -59,38 +59,6 @@ public class FunctionPresenter extends BasePresenter {
                     break;
             }
             allMeetFunction.add(item);
-//            InterfaceMeetfunction.pbui_Item_MeetFunConfigDetailInfo.Builder builder = InterfaceMeetfunction.pbui_Item_MeetFunConfigDetailInfo.newBuilder();
-//            builder.setPosition(i);
-//            switch (i) {
-//                case 0:
-//                    builder.setFuncode(InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_AGENDA_BULLETIN_VALUE);
-//                    break;
-//                case 1:
-//                    builder.setFuncode(InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_MATERIAL_VALUE);
-//                    break;
-//                case 2:
-//                    builder.setFuncode(InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_POSTIL_VALUE);
-//                    break;
-//                case 3:
-//                    builder.setFuncode(InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_MESSAGE_VALUE);
-//                    break;
-//                case 4:
-//                    builder.setFuncode(InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_VIDEOSTREAM_VALUE);
-//                    break;
-//                case 5:
-//                    builder.setFuncode(InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_WHITEBOARD_VALUE);
-//                    break;
-//                case 6:
-//                    builder.setFuncode(InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_WEBBROWSER_VALUE);
-//                    break;
-//                case 7:
-//                    builder.setFuncode(InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_SIGNINRESULT_VALUE);
-//                    break;
-//                default:
-//                    break;
-//            }
-//            InterfaceMeetfunction.pbui_Item_MeetFunConfigDetailInfo build = builder.build();
-//            allMeetFunction.add(build);
         }
     }
 
@@ -104,20 +72,20 @@ public class FunctionPresenter extends BasePresenter {
                     InterfaceMeetfunction.pbui_Item_MeetFunConfigDetailInfo item = info.getItemList().get(i);
                     meetFunction.add(new FunctionBean(item.getFuncode(), item.getPosition()));
                 }
-                for (int i = 0; i < allMeetFunction.size(); i++) {
-                    FunctionBean item = allMeetFunction.get(i);
-                    boolean isHide = true;
-                    for (int j = 0; j < meetFunction.size(); j++) {
-                        if (meetFunction.get(j).getFuncode() == item.getFuncode()) {
-                            isHide = false;
-                            break;
-                        }
+            }
+            for (int i = 0; i < allMeetFunction.size(); i++) {
+                FunctionBean item = allMeetFunction.get(i);
+                boolean isHide = true;
+                for (int j = 0; j < meetFunction.size(); j++) {
+                    if (meetFunction.get(j).getFuncode() == item.getFuncode()) {
+                        isHide = false;
+                        break;
                     }
-                    LogUtil.e(TAG, "queryFunction isHide=" + isHide);
-                    if (isHide) {
-                        item.setPosition(hideMeetFunction.size());
-                        hideMeetFunction.add(item);
-                    }
+                }
+                LogUtil.e(TAG, "queryFunction isHide=" + isHide);
+                if (isHide) {
+                    item.setPosition(hideMeetFunction.size());
+                    hideMeetFunction.add(item);
                 }
             }
             view.updateFunctionRv(meetFunction, hideMeetFunction);

@@ -35,13 +35,13 @@ import xlk.paperless.standard.data.bean.MediaBean;
 import xlk.paperless.standard.util.DateUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.base.BasePresenter;
-import xlk.paperless.standard.view.MyApplication;
+import xlk.paperless.standard.view.App;
 
 import static xlk.paperless.standard.data.Constant.BUS_VIDEO_DECODE;
 import static xlk.paperless.standard.data.Constant.BUS_YUV_DISPLAY;
 import static xlk.paperless.standard.data.Constant.getMimeType;
 import static xlk.paperless.standard.data.Constant.RESOURCE_0;
-import static xlk.paperless.standard.view.MyApplication.read2file;
+import static xlk.paperless.standard.view.App.read2file;
 
 /**
  * @author xlk
@@ -445,7 +445,7 @@ public class VideoPresenter extends BasePresenter {
      * 释放资源
      */
     private void releaseMediaCodec() {
-        MyApplication.threadPool.execute(() -> {
+        App.threadPool.execute(() -> {
             if (mediaCodec != null) {
                 try {
                     LogUtil.e(TAG, "releaseMediaCodec :   --> ");

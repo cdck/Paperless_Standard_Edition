@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import xlk.paperless.standard.data.Call;
-import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.util.CodecUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.MathUtil;
@@ -126,7 +125,7 @@ class AvcEncoder {
 
     public void startEncoderThread() {
         LogUtil.d(TAG, "startEncoderThread -->");
-        MyApplication.threadPool.execute(()->{
+        App.threadPool.execute(()->{
 //        Thread encoderThread = new Thread(() -> {
             isRuning = true;
             byte[] input = null;

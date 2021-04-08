@@ -6,7 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +25,7 @@ import xlk.paperless.standard.R;
 import xlk.paperless.standard.ui.CustomAbsoluteLayout;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.base.BaseFragment;
-import xlk.paperless.standard.view.MyApplication;
+import xlk.paperless.standard.view.App;
 
 /**
  * @author xlk
@@ -191,8 +191,8 @@ public class MeetSigninFragment extends BaseFragment implements IMeetSignin {
         if (!TextUtils.isEmpty(memberName)) {
             item_seat_member.setText(memberName);
             item_seat_member.setTextColor((item.getIssignin() == 1)
-                    ? MyApplication.applicationContext.getColor(R.color.text_color_green)
-                    : MyApplication.applicationContext.getColor(R.color.text_color_red)
+                    ? App.applicationContext.getColor(R.color.text_color_green)
+                    : App.applicationContext.getColor(R.color.text_color_red)
             );
         } else {
             item_seat_member.setVisibility(View.GONE);
