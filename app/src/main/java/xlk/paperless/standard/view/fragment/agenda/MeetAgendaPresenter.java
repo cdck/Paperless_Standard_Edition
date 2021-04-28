@@ -9,6 +9,7 @@ import com.mogujie.tt.protobuf.InterfaceBase;
 import com.mogujie.tt.protobuf.InterfaceMacro;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import xlk.paperless.standard.R;
@@ -30,6 +31,7 @@ public class MeetAgendaPresenter extends BasePresenter {
     private final String TAG = "MeetAgendaPresenter-->";
     private final Context cxt;
     private final IMeetAgenda view;
+    public List<InterfaceAgenda.pbui_ItemAgendaTimeInfo> agendaLists = new ArrayList<>();
 
     public MeetAgendaPresenter(Context cxt, IMeetAgenda view) {
         super();
@@ -86,14 +88,10 @@ public class MeetAgendaPresenter extends BasePresenter {
                     jni.creationFileDownload(Constant.DIR_CACHE + fileName, mediaid, 1, 0, Constant.DOWNLOAD_AGENDA_FILE);
                 }
             } else if (agendatype == InterfaceMacro.Pb_AgendaType.Pb_MEET_AGENDA_TYPE_TIME.getNumber()) {//时间轴式议程
-                List<InterfaceAgenda.pbui_ItemAgendaTimeInfo> itemList = meetAgenda.getItemList();
-                for (InterfaceAgenda.pbui_ItemAgendaTimeInfo item : itemList) {
-                    int dirid = item.getDirid();
-                    int agendaid = item.getAgendaid();
-                    String content = item.getDesctext().toStringUtf8();
-                    int status = item.getStatus();
-                    LogUtil.i(TAG, "fun_queryAgenda 获取到时间轴式议程 -->" + dirid + ", content: " + content + ", status: " + status);
-                }
+                agendaLists.clear();
+                agendaLists.addAll(meetAgenda.getItemList());
+                view.showTimeAgenda();
+//                view.displayFile(Constant.DIR_DATA_FILE+"得胜无纸化会议系统-参会人端-功能测试报告.xlsx");
             }
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();

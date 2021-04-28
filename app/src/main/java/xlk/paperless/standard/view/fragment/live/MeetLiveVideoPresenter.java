@@ -2,8 +2,11 @@ package xlk.paperless.standard.view.fragment.live;
 
 import android.content.Context;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.mogujie.tt.protobuf.InterfaceBase;
 import com.mogujie.tt.protobuf.InterfaceDevice;
+import com.mogujie.tt.protobuf.InterfaceFile;
 import com.mogujie.tt.protobuf.InterfaceMacro;
 import com.mogujie.tt.protobuf.InterfaceMember;
 import com.mogujie.tt.protobuf.InterfaceStop;
@@ -18,6 +21,7 @@ import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.data.bean.DevMember;
 import xlk.paperless.standard.data.bean.VideoDev;
+import xlk.paperless.standard.util.FileUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.base.BasePresenter;
 
@@ -41,6 +45,7 @@ public class MeetLiveVideoPresenter extends BasePresenter {
     public List<InterfaceMember.pbui_Item_MemberDetailInfo> memberDetailInfos = new ArrayList<>();
     public List<InterfaceDevice.pbui_Item_DeviceDetailInfo> onLineProjectors = new ArrayList<>();
     public List<DevMember> onLineMember = new ArrayList<>();
+    public List<InterfaceFile.pbui_Item_MeetDirFileDetailInfo> fileLists = new ArrayList<>();
 
     public MeetLiveVideoPresenter(Context cxt, IMeetLiveVideo view) {
         this.cxt = cxt;
@@ -55,6 +60,20 @@ public class MeetLiveVideoPresenter extends BasePresenter {
     @Override
     public void busEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
+            //会议目录
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETDIRECTORY_VALUE: {
+                queryAllFile();
+                break;
+            }
+            //会议目录文件
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETDIRECTORYFILE_VALUE: {
+                byte[] bytes = (byte[]) msg.getObjects()[0];
+                InterfaceBase.pbui_MeetNotifyMsgForDouble data = InterfaceBase.pbui_MeetNotifyMsgForDouble.parseFrom(bytes);
+                int id = data.getId();
+                LogUtils.d(TAG, "BusEvent -->" + "会议目录文件变更通知 id=" + id);
+                queryAllFile();
+                break;
+            }
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETVIDEO_VALUE://会议视频变更通知
                 queryMeetVedio();
                 break;
@@ -212,6 +231,38 @@ public class MeetLiveVideoPresenter extends BasePresenter {
                 }
             }
             view.notifyOnLineAdapter();
+        } catch (InvalidProtocolBufferException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void queryAllFile() {
+        try {
+            InterfaceFile.pbui_Type_MeetDirDetailInfo dirInfo = jni.queryMeetDir();
+            fileLists.clear();
+            if (dirInfo != null) {
+                List<InterfaceFile.pbui_Item_MeetDirDetailInfo> itemList = dirInfo.getItemList();
+                for (int i = 0; i < itemList.size(); i++) {
+                    InterfaceFile.pbui_Item_MeetDirDetailInfo item = itemList.get(i);
+                    InterfaceFile.pbui_Type_MeetDirFileDetailInfo fileInfo = jni.queryMeetDirFile(item.getId());
+                    if (fileInfo != null) {
+                        for (int j = 0; j < fileInfo.getItemList().size(); j++) {
+                            InterfaceFile.pbui_Item_MeetDirFileDetailInfo file = fileInfo.getItemList().get(j);
+                            if (FileUtil.isVideoFile(file.getName().toStringUtf8())) {
+                                boolean canAdd = true;
+                                for (int k = 0; k < fileLists.size(); k++) {
+                                    if (fileLists.get(k).getMediaid() == file.getMediaid()) {
+                                        canAdd = false;
+                                        break;
+                                    }
+                                }
+                                if (canAdd) fileLists.add(file);
+                            }
+                        }
+                    }
+                }
+            }
+            view.updateVideoFileList();
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }

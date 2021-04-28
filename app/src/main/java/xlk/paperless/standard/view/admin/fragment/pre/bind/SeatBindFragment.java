@@ -62,7 +62,8 @@ public class SeatBindFragment extends BaseFragment implements SeatBindInterface,
         initView(inflate);
         presenter = new SeatBindPresenter(this);
         bind_seat_view.setChooseSingle(true);
-        bind_seat_view.setCanDrag(false);
+        bind_seat_view.setCanDrag(true);
+        bind_seat_view.setCanDragSeat(false);
         bind_seat_view.post(() -> {
             bind_seat_view.setViewSize(bind_seat_view.getWidth(), bind_seat_view.getHeight());
             presenter.queryMember();
@@ -249,8 +250,8 @@ public class SeatBindFragment extends BaseFragment implements SeatBindInterface,
         rv_member_role.setLayoutManager(new LinearLayoutManager(getContext()));
         rv_member_role.setAdapter(memberRoleAdapter);
         memberRoleAdapter.setOnItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+            @Override
+            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 MemberRoleBean item = devSeatInfos.get(position);
                 memberRoleAdapter.setSelected(item.getMember().getPersonid());
                 int index;

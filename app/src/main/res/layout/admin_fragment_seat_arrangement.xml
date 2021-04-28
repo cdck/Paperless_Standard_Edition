@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/dp_5"
+    android:layout_margin="5dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -31,7 +31,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/dp_5"
+            android:layout_marginStart="5dp"
             android:layout_weight="5">
 
             <xlk.paperless.standard.ui.CustomSeatView
@@ -58,8 +58,8 @@
             <CheckBox
                 android:id="@+id/cb_show_pic"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_25"
-                android:layout_marginBottom="@dimen/dp_5"
+                android:layout_height="25dp"
+                android:layout_marginBottom="5dp"
                 android:text="@string/display_icon" />
 
             <Button
@@ -73,9 +73,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/dp_5"
-            android:layout_marginStart="@dimen/dp_5"
-            android:layout_marginBottom="@dimen/dp_5"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_weight="5"
             android:orientation="vertical">
 
@@ -83,28 +83,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/dp_5"
+                android:layout_marginBottom="5dp"
                 android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/btn_up"
                     style="@style/btn_pressed_style"
                     android:layout_width="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_5"
+                    android:layout_marginEnd="5dp"
                     android:text="@string/up" />
 
                 <Button
                     android:id="@+id/btn_down"
                     style="@style/btn_pressed_style"
                     android:layout_width="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_5"
+                    android:layout_marginEnd="5dp"
                     android:text="@string/down" />
 
                 <Button
                     android:id="@+id/btn_left"
                     style="@style/btn_pressed_style"
                     android:layout_width="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_5"
+                    android:layout_marginEnd="5dp"
                     android:text="@string/left" />
 
                 <Button
@@ -118,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="end"
-                    android:textSize="@dimen/sp_12"
+                    android:textSize="@dimen/text_size_small"
                     android:text="@string/default_specification" />
             </LinearLayout>
 
@@ -131,28 +131,28 @@
                     android:id="@+id/btn_preview"
                     style="@style/btn_pressed_style"
                     android:layout_width="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_5"
+                    android:layout_marginEnd="5dp"
                     android:text="@string/preview_room_picture" />
 
                 <Button
                     android:id="@+id/btn_save_picture"
                     style="@style/btn_pressed_style"
                     android:layout_width="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_5"
+                    android:layout_marginEnd="5dp"
                     android:text="@string/save_room_picture" />
 
                 <Button
                     android:id="@+id/btn_align_left"
                     style="@style/btn_pressed_style"
                     android:layout_width="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_5"
+                    android:layout_marginEnd="5dp"
                     android:text="@string/align_left" />
 
                 <Button
                     android:id="@+id/btn_align_bottom"
                     style="@style/btn_pressed_style"
                     android:layout_width="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_5"
+                    android:layout_marginEnd="5dp"
                     android:text="@string/align_bottom" />
 
                 <Button

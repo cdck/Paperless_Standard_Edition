@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/dp_5"
+            android:layout_margin="5dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -97,7 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/dp_5"
+            android:layout_margin="5dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -153,43 +153,43 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/dp_5"
-            android:layout_marginBottom="@dimen/dp_10"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
             android:gravity="center">
 
             <Button
                 android:id="@+id/btn_increase"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginEnd="10dp"
                 android:text="@string/increase" />
 
             <Button
                 android:id="@+id/btn_modify"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginEnd="10dp"
                 android:text="@string/modify" />
 
             <Button
                 android:id="@+id/btn_delete"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginEnd="10dp"
                 android:text="@string/delete" />
 
             <Button
                 android:id="@+id/btn_import"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginEnd="10dp"
                 android:text="@string/import_excel" />
 
             <Button
                 android:id="@+id/btn_export"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginEnd="10dp"
                 android:text="@string/export_excel" />
         </LinearLayout>
     </LinearLayout>

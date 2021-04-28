@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/dp_5"
+    android:layout_margin="5dp"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/dp_5"
+            android:layout_margin="5dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -39,7 +39,7 @@
                 android:id="@+id/btn_refresh_task"
                 style="@style/btn_pressed_style"
                 android:layout_width="0dp"
-                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginEnd="5dp"
                 android:layout_weight="1"
                 android:text="@string/refresh_task" />
 
@@ -47,7 +47,7 @@
                 android:id="@+id/btn_delete_task"
                 style="@style/btn_pressed_style"
                 android:layout_width="0dp"
-                android:layout_marginStart="@dimen/dp_5"
+                android:layout_marginStart="5dp"
                 android:layout_weight="1"
                 android:text="@string/delete_task" />
         </LinearLayout>
@@ -68,8 +68,8 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/dp_5"
-                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -86,7 +86,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_margin="@dimen/dp_5"
+                    android:layout_margin="5dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -94,14 +94,14 @@
                         android:id="@+id/btn_add_media"
                         style="@style/btn_pressed_style"
                         android:layout_width="wrap_content"
-                        android:layout_marginEnd="@dimen/dp_5"
+                        android:layout_marginEnd="5dp"
                         android:text="@string/add_media" />
 
                     <Button
                         android:id="@+id/btn_remove_media"
                         style="@style/btn_pressed_style"
                         android:layout_width="wrap_content"
-                        android:layout_marginStart="@dimen/dp_5"
+                        android:layout_marginStart="5dp"
                         android:text="@string/remove_media" />
                 </LinearLayout>
             </LinearLayout>
@@ -125,7 +125,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_margin="@dimen/dp_5"
+                    android:layout_margin="5dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -133,14 +133,14 @@
                         android:id="@+id/btn_add_device"
                         style="@style/btn_pressed_style"
                         android:layout_width="wrap_content"
-                        android:layout_marginEnd="@dimen/dp_5"
+                        android:layout_marginEnd="5dp"
                         android:text="@string/add_device" />
 
                     <Button
                         android:id="@+id/btn_remove_device"
                         style="@style/btn_pressed_style"
                         android:layout_width="wrap_content"
-                        android:layout_marginStart="@dimen/dp_5"
+                        android:layout_marginStart="5dp"
                         android:text="@string/remove_device" />
                 </LinearLayout>
             </LinearLayout>
@@ -156,7 +156,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dp_5"
+                android:layout_margin="5dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -168,27 +168,27 @@
                     android:id="@+id/edt_task_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp_5"
-                    android:layout_marginEnd="@dimen/dp_5"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/shape_edt_black"
                     android:lines="1"
-                    android:paddingStart="@dimen/dp_2"
+                    android:paddingStart="2dp"
                     android:singleLine="true"
-                    android:textSize="@dimen/sp_14" />
+                    android:textSize="@dimen/text_size_normal" />
 
                 <CheckBox
                     android:id="@+id/cb_shuffle_playback"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_5"
+                    android:layout_marginEnd="5dp"
                     android:text="@string/shuffle_playback" />
 
                 <CheckBox
                     android:id="@+id/cb_play_order"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_5"
+                    android:layout_marginEnd="5dp"
                     android:text="@string/play_in_order" />
             </LinearLayout>
 
@@ -196,7 +196,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="@dimen/dp_5"
+                android:layout_margin="5dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -204,21 +204,21 @@
                     android:id="@+id/btn_add_task"
                     style="@style/btn_pressed_style"
                     android:layout_width="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_5"
+                    android:layout_marginEnd="5dp"
                     android:text="@string/add_task" />
 
                 <Button
                     android:id="@+id/btn_modify_task"
                     style="@style/btn_pressed_style"
                     android:layout_width="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_5"
+                    android:layout_marginEnd="5dp"
                     android:text="@string/modify_task" />
 
                 <Button
                     android:id="@+id/btn_start_task"
                     style="@style/btn_pressed_style"
                     android:layout_width="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_5"
+                    android:layout_marginEnd="5dp"
                     android:text="@string/start_task" />
 
                 <Button

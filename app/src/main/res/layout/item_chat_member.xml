@@ -4,9 +4,9 @@
     android:id="@+id/i_m_c_m_ll"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/dp_2"
-    android:layout_marginTop="@dimen/dp_2"
-    android:layout_marginEnd="@dimen/dp_2"
+    android:layout_marginStart="2dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginEnd="2dp"
     android:background="@drawable/blue_white_s"
     android:gravity="center_vertical"
     android:orientation="horizontal">
@@ -15,14 +15,14 @@
         android:id="@+id/i_m_c_m_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/dp_5"
+        android:layout_marginEnd="5dp"
         android:background="@drawable/user_s" />
 
     <TextView
         android:id="@+id/i_m_c_m_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/sp_10"
+        android:textSize="@dimen/text_size_smallest"
         android:textColor="@drawable/white_black_text_selected"
         tools:text="参会人" />
 

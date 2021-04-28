@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="@dimen/dp_360"
+    android:layout_width="360dp"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:background="@drawable/shape_wm_bg"
@@ -15,7 +15,7 @@
         android:gravity="center"
         android:text="@string/operation_tips"
         android:textColor="@color/light_black"
-        android:textSize="@dimen/sp_20"
+        android:textSize="@dimen/text_size_larger"
         android:textStyle="bold" />
 
     <TextView
@@ -28,13 +28,13 @@
         android:paddingBottom="20dp"
         android:text="@string/submit_tip"
         android:textColor="@color/light_black"
-        android:textSize="@dimen/sp_18"
+        android:textSize="@dimen/text_size_slightly_larger"
         android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dp_5"
+        android:layout_margin="5dp"
         android:orientation="horizontal">
 
         <Button

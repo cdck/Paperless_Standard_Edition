@@ -1,15 +1,19 @@
 package xlk.paperless.standard.view.fragment.live;
 
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.PopupWindow;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -51,7 +55,7 @@ import static xlk.paperless.standard.data.Constant.RESOURCE_4;
  * @date 2020/3/13
  * @desc 视频直播
  */
-public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVideo, ViewClickListener, View.OnClickListener {
+public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVideo, ViewClickListener, View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private final String TAG = "MeetLiveVideoFragment-->";
     private RecyclerView f_l_v_rv;
     private Button f_l_v_watch;
@@ -70,6 +74,9 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
     private WmScreenMemberAdapter memberAdapter;
     private WmProjectorAdapter projectorAdapter;
     private PopupWindow screenPop, proPop;
+    private RecyclerView rv_file;
+    private CheckBox cb_live, cb_file;
+    private VideoFileAdapter fileAdapter;
 
     @Nullable
     @Override
@@ -100,6 +107,7 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
         presenter.initVideoRes(pvWidth, pvHeight);
         f_l_v_v.createView(ids);
         presenter.queryDeviceInfo();
+        presenter.queryAllFile();
     }
 
     private void stop() {
@@ -119,6 +127,12 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
     }
 
     private void initView(View inflate) {
+        rv_file = (RecyclerView) inflate.findViewById(R.id.rv_file);
+        cb_live = inflate.findViewById(R.id.cb_live);
+        cb_file = inflate.findViewById(R.id.cb_file);
+        cb_live.setOnCheckedChangeListener(this);
+        cb_file.setOnCheckedChangeListener(this);
+
         f_l_v_rv = (RecyclerView) inflate.findViewById(R.id.f_l_v_rv);
         f_l_v_watch = (Button) inflate.findViewById(R.id.f_l_v_watch);
         f_l_v_stop = (Button) inflate.findViewById(R.id.f_l_v_stop);
@@ -141,27 +155,45 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.f_l_v_watch:
-                if (adapter != null) {
-                    VideoDev videoDev = adapter.getSelected();
-                    if (videoDev != null) {
+                if (cb_live.isChecked()) {
+                    if (adapter != null) {
+                        VideoDev videoDev = adapter.getSelected();
+                        if (videoDev != null) {
+                            int selectResId = f_l_v_v.getSelectResId();
+                            if (selectResId != -1) {
+                                presenter.stopResource(selectResId);
+                                new Timer().schedule(new TimerTask() {
+                                    @Override
+                                    public void run() {
+                                        presenter.watch(videoDev, selectResId);
+                                    }
+                                }, 500);
+                            } else {
+                                ToastUtil.show(R.string.please_choose_view);
+                            }
+                        } else {
+                            ToastUtil.show(R.string.please_choose_video_show);
+                        }
+                    }
+                } else {
+                    if (fileAdapter != null) {
                         int selectResId = f_l_v_v.getSelectResId();
                         if (selectResId != -1) {
-                            presenter.stopResource(selectResId);
-                            new Timer().schedule(new TimerTask() {
-                                @Override
-                                public void run() {
-                                    presenter.watch(videoDev, selectResId);
-                                }
-                            }, 500);
+                            int mediaId = fileAdapter.getSelectedId();
+                            if (mediaId != -1) {
+                                List<Integer> ids = new ArrayList<>();
+                                ids.add(Values.localDeviceId);
+                                jni.mediaPlayOperate(mediaId, ids, 0, selectResId, 0, 0);
+                            } else {
+                                ToastUtil.show(R.string.please_choose_video_file);
+                            }
                         } else {
                             ToastUtil.show(R.string.please_choose_view);
                         }
-                    } else {
-                        ToastUtil.show(R.string.please_choose_video_show);
                     }
                 }
                 break;
-            case R.id.f_l_v_stop:
+            case R.id.f_l_v_stop: {
                 int selectResId = f_l_v_v.getSelectResId();
                 if (selectResId != -1) {
                     presenter.stopResource(selectResId);
@@ -169,7 +201,8 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                     ToastUtil.show(R.string.please_choose_stop_view);
                 }
                 break;
-            case R.id.f_l_v_stop_pro:
+            }
+            case R.id.f_l_v_stop_pro: {
                 if (adapter != null && adapter.getSelected() != null) {
                     if (Constant.hasPermission(permission_code_projection)) {
                         showProPop(false, adapter.getSelected());
@@ -178,7 +211,8 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                     }
                 }
                 break;
-            case R.id.f_l_v_start_pro:
+            }
+            case R.id.f_l_v_start_pro: {
                 if (adapter != null && adapter.getSelected() != null) {
                     if (Constant.hasPermission(permission_code_projection)) {
                         showProPop(true, adapter.getSelected());
@@ -187,7 +221,8 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                     }
                 }
                 break;
-            case R.id.f_l_v_stop_screen:
+            }
+            case R.id.f_l_v_stop_screen: {
                 if (adapter != null && adapter.getSelected() != null) {
                     if (Constant.hasPermission(permission_code_screen)) {
                         showScreenPop(false, adapter.getSelected());
@@ -196,7 +231,8 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                     }
                 }
                 break;
-            case R.id.f_l_v_start_screen:
+            }
+            case R.id.f_l_v_start_screen: {
                 if (adapter != null && adapter.getSelected() != null) {
                     if (Constant.hasPermission(permission_code_screen)) {
                         showScreenPop(true, adapter.getSelected());
@@ -205,7 +241,9 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                     }
                 }
                 break;
-            default:break;
+            }
+            default:
+                break;
         }
     }
 
@@ -348,6 +386,23 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
     }
 
     @Override
+    public void updateVideoFileList() {
+        if (fileAdapter == null) {
+            fileAdapter = new VideoFileAdapter(presenter.fileLists);
+            rv_file.setLayoutManager(new LinearLayoutManager(getContext()));
+            rv_file.setAdapter(fileAdapter);
+            fileAdapter.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+                    fileAdapter.choose(presenter.fileLists.get(position).getMediaid());
+                }
+            });
+        } else {
+            fileAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
     public void updateRv(List<VideoDev> videoDevs) {
         if (adapter == null) {
             adapter = new MeetLiveVideoAdapter(R.layout.item_meet_video, videoDevs);
@@ -432,5 +487,22 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
             start();
         }
         super.onHiddenChanged(hidden);
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (buttonView.getId() == R.id.cb_live) {
+            cb_file.setChecked(!isChecked);
+            if (isChecked) {
+                f_l_v_rv.setVisibility(View.VISIBLE);
+                rv_file.setVisibility(View.GONE);
+            }
+        } else {
+            cb_live.setChecked(!isChecked);
+            if (isChecked) {
+                rv_file.setVisibility(View.VISIBLE);
+                f_l_v_rv.setVisibility(View.GONE);
+            }
+        }
     }
 }

@@ -15,8 +15,8 @@
 <!--        android:drawablePadding="5dp"-->
 <!--        android:gravity="center"-->
 <!--        android:visibility="gone"-->
-<!--        android:paddingStart="@dimen/dp_3"-->
-<!--        android:paddingEnd="@dimen/dp_3"-->
+<!--        android:paddingStart="3dp"-->
+<!--        android:paddingEnd="3dp"-->
 <!--        android:textColor="@color/white"-->
 <!--        tools:drawableStart="@drawable/icon_admin_set"-->
 <!--        tools:text="系统设置" />-->

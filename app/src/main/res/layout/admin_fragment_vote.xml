@@ -16,13 +16,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dp_10"
+        android:layout_margin="10dp"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_10"
+            android:layout_margin="10dp"
             android:text="@string/vote_manage_title"
             android:textColor="@color/red" />
 
@@ -36,8 +36,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_10"
-                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:text="@string/vote_content" />
 
             <EditText
@@ -53,8 +53,8 @@
                 android:id="@+id/sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_10"
-                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:entries="@array/confidential_spinner" />
         </LinearLayout>
 
@@ -62,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -70,29 +70,29 @@
                 android:id="@+id/btn_add"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginEnd="10dp"
                 android:text="@string/add" />
 
             <Button
                 android:id="@+id/btn_modify"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginEnd="10dp"
                 android:text="@string/modify" />
 
             <Button
                 android:id="@+id/btn_delete"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginEnd="10dp"
                 android:text="@string/delete" />
 
             <Button
                 android:id="@+id/btn_export"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_marginStart="@dimen/dp_10"
-                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:text="@string/export_excel" />
 
             <Button

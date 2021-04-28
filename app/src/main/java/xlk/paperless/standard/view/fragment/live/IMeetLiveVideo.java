@@ -19,4 +19,6 @@ public interface IMeetLiveVideo {
     void stopResWork(int resid);
 
     void notifyOnLineAdapter();
+
+    void updateVideoFileList();
 }

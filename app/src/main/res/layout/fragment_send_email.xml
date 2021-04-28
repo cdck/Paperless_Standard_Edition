@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/dp_10"
+    android:layout_margin="10dp"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -32,7 +32,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/dp_5"
+        android:layout_marginStart="5dp"
         android:layout_weight="3"
         android:orientation="vertical">
 
@@ -42,7 +42,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="@dimen/dp_100"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="end"
@@ -58,15 +58,15 @@
                 android:background="@drawable/shape_edt_black"
                 android:hint="@string/hint_email_address"
                 android:lines="1"
-                android:padding="@dimen/dp_2"
+                android:padding="2dp"
                 android:singleLine="true"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/text_size_normal" />
 
             <TextView
-                android:layout_width="@dimen/dp_100"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/dp_5"
+                android:layout_marginStart="5dp"
                 android:gravity="end"
                 android:text="@string/password_code"
                 app:layout_constraintStart_toStartOf="parent"
@@ -81,19 +81,19 @@
                 android:hint="@string/hint_password"
                 android:lines="1"
                 android:inputType="textPassword"
-                android:padding="@dimen/dp_2"
+                android:padding="2dp"
                 android:singleLine="true"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/text_size_normal" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="@dimen/dp_100"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="end"
@@ -109,15 +109,15 @@
                 android:background="@drawable/shape_edt_black"
                 android:hint="@string/hint_send_name"
                 android:lines="1"
-                android:padding="@dimen/dp_2"
+                android:padding="2dp"
                 android:singleLine="true"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/text_size_normal" />
 
             <TextView
-                android:layout_width="@dimen/dp_100"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/dp_5"
+                android:layout_marginStart="5dp"
                 android:gravity="end"
                 android:text="@string/sender_email"
                 app:layout_constraintStart_toStartOf="parent"
@@ -131,19 +131,19 @@
                 android:background="@drawable/shape_edt_black"
                 android:hint="@string/hint_sender_email"
                 android:lines="1"
-                android:padding="@dimen/dp_2"
+                android:padding="2dp"
                 android:singleLine="true"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/text_size_normal" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="@dimen/dp_100"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="end"
@@ -159,19 +159,19 @@
                 android:background="@drawable/shape_edt_black"
                 android:hint="@string/hint_recipient"
                 android:lines="1"
-                android:padding="@dimen/dp_2"
+                android:padding="2dp"
                 android:singleLine="true"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/text_size_normal" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="@dimen/dp_100"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="end"
@@ -187,20 +187,20 @@
                 android:background="@drawable/shape_edt_black"
                 android:hint="@string/hint_theme_content"
                 android:lines="1"
-                android:padding="@dimen/dp_2"
+                android:padding="2dp"
                 android:singleLine="true"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/text_size_normal" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="@dimen/dp_100"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:text="@string/content_"
@@ -215,14 +215,14 @@
                 android:background="@drawable/shape_edt_black"
                 android:gravity="start"
                 android:hint="@string/hint_content"
-                android:padding="@dimen/dp_2"
-                android:textSize="@dimen/sp_14" />
+                android:padding="2dp"
+                android:textSize="@dimen/text_size_normal" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -241,7 +241,7 @@
                     style="@style/btn_pressed_style"
                     android:layout_width="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/dp_5"
+                    android:layout_marginEnd="5dp"
                     android:layout_toLeftOf="@+id/btn_add_file"
                     android:text="@string/delete_file" />
 
@@ -258,7 +258,7 @@
                 android:id="@+id/rv_file"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:background="@drawable/shape_edt_black" />
 
@@ -266,7 +266,7 @@
                 android:id="@+id/btn_send_email"
                 style="@style/btn_pressed_style"
                 android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginTop="10dp"
                 android:text="@string/btn_send_email" />
         </LinearLayout>
     </LinearLayout>

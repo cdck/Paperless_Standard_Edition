@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right|center_vertical"
-        android:layout_marginEnd="@dimen/dp_5"
+        android:layout_marginEnd="5dp"
         tools:text="参会人【16:40】" />
 
     <TextView
@@ -20,6 +20,6 @@
         android:gravity="right|center_vertical"
         android:layout_below="@+id/i_m_c_r_message_title"
         android:layout_marginEnd="15dp"
-        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginTop="5dp"
         tools:text="了开始的解放路可接受的了方块精灵盛典会计分录圣诞节福利控件的弗兰克姐夫的脸孔" />
 </RelativeLayout>

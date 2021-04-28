@@ -42,6 +42,7 @@ import xlk.paperless.standard.util.DateUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.base.BaseActivity;
 import xlk.paperless.standard.view.App;
+import xlk.paperless.standard.view.admin.fragment.after.signin.AdminSignInFragment;
 import xlk.paperless.standard.view.draw.DrawActivity;
 import xlk.paperless.standard.view.fragment.agenda.MeetAgendaFragment;
 import xlk.paperless.standard.view.fragment.annotation.MeetAnnotationFragment;
@@ -63,6 +64,7 @@ import static xlk.paperless.standard.data.Constant.FUN_CODE_MEET_FILE;
 import static xlk.paperless.standard.data.Constant.FUN_CODE_MESSAGE;
 import static xlk.paperless.standard.data.Constant.FUN_CODE_POSTIL_FILE;
 import static xlk.paperless.standard.data.Constant.FUN_CODE_SIGNIN_RESULT;
+import static xlk.paperless.standard.data.Constant.FUN_CODE_SIGN_IN_SEAT;
 import static xlk.paperless.standard.data.Constant.FUN_CODE_VIDEO_STREAM;
 import static xlk.paperless.standard.data.Constant.FUN_CODE_WEB_BROWSER;
 import static xlk.paperless.standard.data.Constant.FUN_CODE_WHITEBOARD;
@@ -112,6 +114,7 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
     private LinearLayout meet_fun_all_ll;
     private PagerGridLayoutManager pagerGridLayoutManager;
     private boolean alreadyShow;
+    private AdminSignInFragment adminSignInFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -393,6 +396,11 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
     }
 
 
+    @Override
+    public void changeSignInPage(boolean toListPage) {
+        showFragment(toListPage ? FUN_CODE_SIGNIN_RESULT : FUN_CODE_SIGN_IN_SEAT);
+    }
+
     /**
      * 根据功能码展示相应Fragment
      *
@@ -446,13 +454,24 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
                 }
                 ft.show(meetWebFragment);
                 break;
-            case FUN_CODE_SIGNIN_RESULT://签到信息
+            //签到列表
+            case FUN_CODE_SIGNIN_RESULT: {
+                if (adminSignInFragment == null) {
+                    adminSignInFragment = new AdminSignInFragment();
+                    ft.add(R.id.meet_frame_layout, adminSignInFragment);
+                }
+                ft.show(adminSignInFragment);
+                break;
+            }
+            //签到席位
+            case FUN_CODE_SIGN_IN_SEAT: {
                 if (meetSigninFragment == null) {
                     meetSigninFragment = new MeetSigninFragment();
                     ft.add(R.id.meet_frame_layout, meetSigninFragment);
                 }
                 ft.show(meetSigninFragment);
                 break;
+            }
             case 31://评分查看
                 isScoreManage = false;
                 if (meetScoreFragment == null) {
@@ -526,6 +545,7 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
         if (meetChatFragment != null) ft.hide(meetChatFragment);
         if (meetLiveVideoFragment != null) ft.hide(meetLiveVideoFragment);
         if (meetWebFragment != null) ft.hide(meetWebFragment);
+        if (adminSignInFragment != null) ft.hide(adminSignInFragment);
         if (meetSigninFragment != null) ft.hide(meetSigninFragment);
         if (meetScoreFragment != null) ft.hide(meetScoreFragment);
         if (deviceControlFragment != null) ft.hide(deviceControlFragment);

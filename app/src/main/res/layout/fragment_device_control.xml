@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/dp_5"
+    android:layout_margin="5dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -22,8 +22,8 @@
             android:id="@+id/dev_control_all_ab"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/dp_1"
-            android:layout_marginBottom="@dimen/dp_1"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
             android:layout_weight="1"
             android:background="@color/white"
             android:text="@string/number" />
@@ -31,9 +31,9 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/dp_1"
-            android:layout_marginTop="@dimen/dp_1"
-            android:layout_marginBottom="@dimen/dp_1"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
             android:layout_weight="1"
             android:background="@color/white"
             android:gravity="center"
@@ -42,9 +42,9 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/dp_1"
-            android:layout_marginTop="@dimen/dp_1"
-            android:layout_marginBottom="@dimen/dp_1"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
             android:layout_weight="1"
             android:background="@color/white"
             android:gravity="center"
@@ -53,9 +53,9 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/dp_1"
-            android:layout_marginTop="@dimen/dp_1"
-            android:layout_marginBottom="@dimen/dp_1"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
             android:layout_weight="1"
             android:background="@color/white"
             android:gravity="center"
@@ -64,9 +64,9 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/dp_1"
-            android:layout_marginTop="@dimen/dp_1"
-            android:layout_marginBottom="@dimen/dp_1"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
             android:layout_weight="1"
             android:background="@color/white"
             android:gravity="center"
@@ -75,9 +75,9 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/dp_1"
-            android:layout_marginTop="@dimen/dp_1"
-            android:layout_marginBottom="@dimen/dp_1"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
             android:layout_weight="1"
             android:background="@color/white"
             android:gravity="center"
@@ -86,9 +86,9 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/dp_1"
-            android:layout_marginTop="@dimen/dp_1"
-            android:layout_marginBottom="@dimen/dp_1"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
             android:layout_weight="1"
             android:background="@color/white"
             android:gravity="center"
@@ -97,10 +97,10 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/dp_1"
-            android:layout_marginTop="@dimen/dp_1"
-            android:layout_marginEnd="@dimen/dp_1"
-            android:layout_marginBottom="@dimen/dp_1"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp"
             android:visibility="gone"
             android:layout_weight="1"
             android:background="@color/white"
@@ -112,7 +112,7 @@
         android:id="@+id/f_dev_control_rv"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="@dimen/dp_1"
+        android:layout_margin="1dp"
         app:layout_constraintBottom_toTopOf="@+id/dev_control_signin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -121,7 +121,7 @@
     <Button
         android:id="@+id/dev_control_rise"
         style="@style/btn_pressed_style"
-        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginEnd="8dp"
         android:text="@string/rise"
         app:layout_constraintBaseline_toBaselineOf="@+id/dev_control_signin"
         app:layout_constraintEnd_toStartOf="@+id/dev_control_stop" />
@@ -129,7 +129,7 @@
     <Button
         android:id="@+id/dev_control_stop"
         style="@style/btn_pressed_style"
-        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginEnd="8dp"
         android:text="@string/stop"
         app:layout_constraintBaseline_toBaselineOf="@+id/dev_control_signin"
         app:layout_constraintEnd_toStartOf="@+id/dev_control_decline" />
@@ -145,7 +145,7 @@
     <Button
         android:id="@+id/dev_control_app_restart"
         style="@style/btn_pressed_style"
-        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginEnd="8dp"
         android:text="@string/app_restart"
         app:layout_constraintBaseline_toBaselineOf="@+id/dev_control_signin"
         app:layout_constraintEnd_toStartOf="@+id/dev_control_terminal_restart" />
@@ -153,7 +153,7 @@
     <Button
         android:id="@+id/dev_control_terminal_restart"
         style="@style/btn_pressed_style"
-        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginEnd="8dp"
         android:text="@string/terminal_restart"
         app:layout_constraintBaseline_toBaselineOf="@+id/dev_control_signin"
         app:layout_constraintStart_toStartOf="@+id/dev_control_set_role" />
@@ -169,7 +169,7 @@
     <Button
         android:id="@+id/dev_control_wake_on"
         style="@style/btn_pressed_style"
-        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginEnd="8dp"
         android:visibility="visible"
         android:text="@string/wake_on_lan"
         app:layout_constraintBaseline_toBaselineOf="@+id/dev_control_open_document"
@@ -178,7 +178,7 @@
     <Button
         android:id="@+id/dev_control_open_document"
         style="@style/btn_pressed_style"
-        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginEnd="8dp"
         android:text="@string/open_document_externally"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -186,8 +186,8 @@
     <Button
         android:id="@+id/dev_control_signin"
         style="@style/btn_pressed_style"
-        android:layout_marginEnd="@dimen/dp_8"
-        android:layout_marginBottom="@dimen/dp_8"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/secondary_signin"
         app:layout_constraintBottom_toTopOf="@+id/dev_control_open_document"
         app:layout_constraintStart_toStartOf="@+id/dev_control_open_document" />
@@ -195,7 +195,7 @@
     <Button
         android:id="@+id/dev_control_set_role"
         style="@style/btn_pressed_style"
-        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginEnd="8dp"
         android:text="@string/set_role"
         app:layout_constraintBaseline_toBaselineOf="@+id/dev_control_open_document"
         app:layout_constraintEnd_toStartOf="@+id/dev_control_wake_on" />
@@ -204,7 +204,7 @@
         android:id="@+id/dev_control_elevator_cb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_8"
+        android:layout_marginStart="8dp"
         android:text="@string/elevator"
         app:layout_constraintBaseline_toBaselineOf="@+id/dev_control_signin"
         app:layout_constraintStart_toStartOf="parent" />
@@ -213,8 +213,8 @@
         android:id="@+id/dev_control_microphone_cb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_8"
-        android:layout_marginTop="@dimen/dp_8"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="@string/microphone"
         app:layout_constraintBaseline_toBaselineOf="@+id/dev_control_signin"
         app:layout_constraintStart_toEndOf="@+id/dev_control_elevator_cb" />

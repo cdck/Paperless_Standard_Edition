@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/shape_blue_rect"
     android:orientation="vertical"
-    android:padding="@dimen/dp_2">
+    android:padding="2dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_1"
+            android:layout_margin="1dp"
             android:layout_weight="1"
             android:background="@color/white"
             android:gravity="center"
@@ -27,9 +27,9 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_1"
-            android:layout_marginEnd="@dimen/dp_1"
-            android:layout_marginBottom="@dimen/dp_1"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp"
             android:layout_weight="2"
             android:background="@color/white"
             android:gravity="center"
@@ -39,9 +39,9 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_1"
-            android:layout_marginEnd="@dimen/dp_1"
-            android:layout_marginBottom="@dimen/dp_1"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp"
             android:layout_weight="4"
             android:background="@color/white"
             android:gravity="center"
@@ -59,7 +59,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dp_5">
+        android:layout_margin="5dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -70,7 +70,7 @@
             <Button
                 android:id="@+id/submit_member_back"
                 style="@style/btn_pressed_style"
-                android:layout_marginEnd="@dimen/dp_50"
+                android:layout_marginEnd="50dp"
                 android:text="@string/back" />
 
             <Button

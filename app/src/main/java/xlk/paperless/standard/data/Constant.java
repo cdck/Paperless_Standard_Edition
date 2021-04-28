@@ -30,7 +30,7 @@ public class Constant {
     public static final String DEV_FILE_PATH = ROOT_DIR + "/" + DEV_NAME;
 
 
-    private static final String DIR_FILES = ROOT_DIR + "File/";
+    public static final String DIR_FILES = ROOT_DIR + "File/";
     public static final String DIR_CRASH_LOG = ROOT_DIR + "Log/";
     public static final String DIR_PICTURE = DIR_FILES + "图片/";
     public static final String DIR_DATA_FILE = DIR_FILES + "会议资料/";
@@ -336,6 +336,14 @@ public class Constant {
     public static final int BUS_EXPORT_NOTE_CONTENT = BUS_BASE + 29;
     public static final int BUS_HIDE_FAB = BUS_BASE + 30;
     public static final int BUS_SHOW_FAB = BUS_BASE + 31;
+    /**
+     * 通知打开U盘
+     */
+    public static final int BUS_OPEN_UDISK = BUS_BASE + 32;
+    /**
+     * 通知更换签到页面
+     */
+    public static final int BUS_SIGN_IN_LIST_PAGE = BUS_BASE + 33;
 
 
     //会议功能码
@@ -388,6 +396,7 @@ public class Constant {
     //自定义其它功能的功能码
 
     public static final int FUN_CODE = 200000;
+    public static final int FUN_CODE_SIGN_IN_SEAT = FUN_CODE - 1;//签到席位
     public static final int FUN_CODE_TERMINAL = FUN_CODE + 1;
     public static final int FUN_CODE_VOTE = FUN_CODE + 2;
     public static final int FUN_CODE_ELECTION = FUN_CODE + 3;

@@ -4,6 +4,7 @@ import com.mogujie.tt.protobuf.InterfaceDevice;
 import com.mogujie.tt.protobuf.InterfaceVote;
 
 import xlk.paperless.standard.base.BaseInterface;
+import xlk.paperless.standard.data.bean.MeetingInformation;
 
 /**
  * @author xlk
@@ -31,4 +32,6 @@ public interface IFab extends BaseInterface {
     void showFabButton();
 
     void hideAllWindow();
+
+    void showMeetInfo(MeetingInformation meetingInformation);
 }

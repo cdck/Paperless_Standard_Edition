@@ -36,7 +36,7 @@
                 <!--android:maxWidth="200dp"-->
                 <!--<ImageView-->
                 <!--android:id="@+id/meet_logo"-->
-                <!--android:layout_width="@dimen/dp_110"-->
+                <!--android:layout_width="110dp"-->
                 <!--android:layout_height="wrap_content"-->
                 <!--android:scaleType="centerCrop" />-->
 
@@ -44,38 +44,38 @@
                     android:id="@+id/meet_member"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_100"
+                    android:layout_marginEnd="100dp"
                     android:gravity="center"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/sp_18"
+                    android:textSize="@dimen/text_size_slightly_larger"
                     tools:text="参会人：张三" />
 
                 <ImageView
                     android:id="@+id/meet_chat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_10"
+                    android:layout_marginEnd="10dp"
                     android:src="@drawable/icon_chat" />
 
                 <TextView
                     android:id="@+id/meet_online"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_10"
+                    android:layout_marginEnd="10dp"
                     android:textColor="@color/white"
                     tools:text="在线" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_10">
+                    android:layout_marginEnd="10dp">
 
                     <TextView
                         android:id="@+id/meet_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/dp_5"
+                        android:layout_marginEnd="5dp"
                         android:textColor="@color/white"
                         tools:text="15:09" />
 
@@ -113,7 +113,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/dp_10"
+                    android:layout_marginEnd="10dp"
                     android:layout_toStartOf="@+id/meet_min"
                     android:scaleType="fitXY"
                     android:src="@drawable/icon_home_pressed" />
@@ -123,7 +123,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/dp_10"
+                    android:layout_marginEnd="10dp"
+                    android:visibility="gone"
                     android:layout_toStartOf="@+id/meet_close"
                     android:scaleType="fitXY"
                     android:src="@drawable/icon_min_pressed" />
@@ -134,7 +135,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/dp_10"
+                    android:layout_marginEnd="10dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/icon_close_pressed" />
             </RelativeLayout>
@@ -155,7 +156,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_18"
+                android:textSize="@dimen/text_size_slightly_larger"
                 tools:text="第一次人大代表大会" />
         </LinearLayout>
 
@@ -190,7 +191,7 @@
                     android:layout_marginStart="50dp"
                     android:layout_marginTop="30dp"
                     android:layout_marginEnd="50dp"
-                    android:layout_marginBottom="@dimen/dp_10"
+                    android:layout_marginBottom="10dp"
                     android:layout_weight="1"
                     android:visibility="visible" />
                 <!--主持人功能-->
@@ -199,7 +200,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="@dimen/dp_10"
+                    android:layout_marginBottom="10dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 

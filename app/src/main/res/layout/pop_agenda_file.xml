@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/dp_5"
+        android:layout_margin="5dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -26,21 +26,21 @@
             android:id="@+id/btn_increase"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:text="@string/increase" />
 
         <Button
             android:id="@+id/btn_delete"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:text="@string/delete" />
 
         <Button
             android:id="@+id/btn_determine"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:text="@string/determine" />
 
         <Button

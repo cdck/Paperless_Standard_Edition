@@ -3,34 +3,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/dp_5"
+    android:layout_margin="5dp"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginTop="5dp"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_filter_current"
             style="@style/btn_selected_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:text="@string/current_meeting" />
 
         <Button
             android:id="@+id/btn_filter_history"
             style="@style/btn_selected_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:text="@string/history_meeting" />
 
         <Button
             android:id="@+id/btn_filter_template"
             style="@style/btn_selected_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:text="@string/template_meeting" />
 
         <Button
@@ -43,8 +43,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dp_5"
-        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -57,7 +57,7 @@
 
         <EditText
             android:id="@+id/edt_search_meeting"
-            android:layout_width="@dimen/dp_250"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/iv_search"
@@ -76,7 +76,7 @@
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:layout_toLeftOf="@+id/btn_copy_meeting"
             android:text="@string/switch_meeting" />
 
@@ -111,12 +111,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginTop="5dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="@dimen/dp_100"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:text="@string/meeting_name_" />
@@ -129,12 +129,12 @@
                 android:background="@drawable/shape_edt_statue"
                 android:lines="1"
                 android:singleLine="true"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/text_size_normal" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginStart="10dp"
                 android:text="@string/meeting_room_" />
 
             <Spinner
@@ -145,7 +145,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginStart="10dp"
                 android:text="@string/confidential_" />
 
             <Spinner
@@ -159,12 +159,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginTop="5dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="@dimen/dp_100"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:text="@string/start_time_" />
@@ -175,12 +175,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/shape_edt_black"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/text_size_normal" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginStart="10dp"
                 android:text="@string/end_time_" />
 
             <TextView
@@ -189,19 +189,19 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/shape_edt_black"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/text_size_normal" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginTop="5dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="@dimen/dp_100"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:text="@string/singn_in_type_" />
@@ -219,31 +219,31 @@
 
             <EditText
                 android:id="@+id/edt_meet_booker"
-                android:layout_width="@dimen/dp_200"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_edt_statue"
                 android:lines="1"
                 android:singleLine="true"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/text_size_normal" />
         </LinearLayout>
 
         <!--        <LinearLayout-->
         <!--            android:layout_width="match_parent"-->
         <!--            android:layout_height="wrap_content"-->
         <!--            android:layout_gravity="center_vertical"-->
-        <!--            android:layout_marginTop="@dimen/dp_5"-->
+        <!--            android:layout_marginTop="5dp"-->
         <!--            android:gravity="center_vertical"-->
         <!--            android:orientation="horizontal">-->
 
         <!--            <TextView-->
-        <!--                android:layout_width="@dimen/dp_100"-->
+        <!--                android:layout_width="100dp"-->
         <!--                android:layout_height="wrap_content"-->
         <!--                android:gravity="end"-->
         <!--                android:text="@string/meet_booker_" />-->
 
         <!--            <EditText-->
         <!--                android:id="@+id/edt_meet_booker"-->
-        <!--                android:layout_width="@dimen/dp_200"-->
+        <!--                android:layout_width="200dp"-->
         <!--                android:layout_height="wrap_content"-->
         <!--                android:background="@drawable/shape_edt_statue"-->
         <!--                android:textSize="@dimen/sp_14" />-->
@@ -252,8 +252,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_10"
-            android:layout_marginBottom="@dimen/dp_5"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -268,14 +268,14 @@
                     android:id="@+id/btn_increase"
                     style="@style/btn_pressed_style"
                     android:layout_width="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_2"
+                    android:layout_marginEnd="2dp"
                     android:text="@string/increase" />
 
                 <Button
                     android:id="@+id/btn_modify"
                     style="@style/btn_pressed_style"
                     android:layout_width="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_2"
+                    android:layout_marginEnd="2dp"
                     android:text="@string/modify" />
 
                 <Button
@@ -299,21 +299,21 @@
                     android:id="@+id/btn_start_meet"
                     style="@style/btn_pressed_style"
                     android:layout_width="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_2"
+                    android:layout_marginEnd="2dp"
                     android:text="@string/start_meet" />
 
                 <Button
                     android:id="@+id/btn_end_meet"
                     style="@style/btn_pressed_style"
                     android:layout_width="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_2"
+                    android:layout_marginEnd="2dp"
                     android:text="@string/end_meet" />
 
                 <Button
                     android:id="@+id/btn_pause_meet"
                     style="@style/btn_pressed_style"
                     android:layout_width="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_2"
+                    android:layout_marginEnd="2dp"
                     android:text="@string/pause_meet" />
 
                 <Button

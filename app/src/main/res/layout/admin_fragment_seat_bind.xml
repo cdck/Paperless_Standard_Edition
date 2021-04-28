@@ -29,7 +29,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/dp_5"
+            android:layout_marginStart="5dp"
             android:layout_weight="5">
 
             <xlk.paperless.standard.ui.CustomSeatView
@@ -44,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/dp_5"
+        android:layout_margin="5dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -52,42 +52,42 @@
             android:id="@+id/btn_member_role"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:text="@string/member_role" />
 
         <Button
             android:id="@+id/btn_bind"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:text="@string/bind" />
 
         <Button
             android:id="@+id/btn_unbind"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:text="@string/unbind" />
 
         <Button
             android:id="@+id/btn_random_bind"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:text="@string/random_bind" />
 
         <Button
             android:id="@+id/btn_dismiss"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:text="@string/all_dismiss" />
 
         <Button
             android:id="@+id/btn_import"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:text="@string/import_" />
 
         <Button

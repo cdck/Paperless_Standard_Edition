@@ -8,7 +8,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:background="@drawable/icon_meet_bg"
     android:orientation="vertical"
-    android:padding="@dimen/dp_5">
+    android:padding="5dp">
 
     <xlk.paperless.standard.ui.CircularMenu
         android:id="@+id/custom_menu"

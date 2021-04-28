@@ -109,5 +109,11 @@ public class Values {
     /**
      * 通过WPS打开文档是否从管理员后台打开
      */
-    public static boolean isFromAdminOpenWps;
+    public static boolean isFromAdminOpenWps = false;
+    /**
+     * 是否是后台管理界面
+     */
+    public static boolean isAdminPage = false;
+    public static int theme_type = 0;
+    public static float fontScale = 1.0f;
 }

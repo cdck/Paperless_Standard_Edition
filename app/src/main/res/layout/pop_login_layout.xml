@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:layout_margin="@dimen/dp_5"
+    android:layout_margin="5dp"
     android:background="@drawable/dialog_full_holo_light"
     android:gravity="center"
     android:orientation="vertical">
@@ -15,8 +15,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:layout_marginTop="@dimen/dp_5"
-        android:layout_marginEnd="@dimen/dp_5"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
         android:src="@drawable/icon_close_t" />
 
     <ScrollView
@@ -35,8 +35,8 @@
                 android:id="@+id/login_til_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_10"
-                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 app:errorEnabled="true"
                 app:hintAnimationEnabled="true"
                 app:hintEnabled="true"
@@ -47,7 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/icon_user"
-                    android:drawablePadding="@dimen/dp_5"
+                    android:drawablePadding="5dp"
                     android:hint="@string/user_name"
                     android:imeOptions="actionNext"
                     android:lines="1"
@@ -59,8 +59,8 @@
                 android:id="@+id/login_til_pwd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_10"
-                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 app:errorEnabled="true"
                 app:hintAnimationEnabled="true"
                 app:hintEnabled="true"
@@ -72,7 +72,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/icon_pwd"
-                    android:drawablePadding="@dimen/dp_5"
+                    android:drawablePadding="5dp"
                     android:hint="@string/password"
                     android:imeOptions="actionNext"
                     android:inputType="textPassword"
@@ -86,8 +86,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginTop="@dimen/dp_5"
-                android:layout_marginEnd="@dimen/dp_20"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
                 android:text="@string/remember_password"
                 app:layout_constraintEnd_toStartOf="@+id/login_btn_set"
                 app:layout_constraintStart_toStartOf="parent"
@@ -100,10 +100,10 @@
     <!--    <Button-->
     <!--        android:id="@+id/login_btn"-->
     <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="@dimen/dp_30"-->
-    <!--        android:layout_marginStart="@dimen/dp_10"-->
-    <!--        android:layout_marginTop="@dimen/dp_10"-->
-    <!--        android:layout_marginEnd="@dimen/dp_10"-->
+    <!--        android:layout_height="30dp"-->
+    <!--        android:layout_marginStart="10dp"-->
+    <!--        android:layout_marginTop="10dp"-->
+    <!--        android:layout_marginEnd="10dp"-->
     <!--        android:background="@drawable/shape_btn_pressed"-->
     <!--        android:text="@string/login" />-->
 
@@ -111,22 +111,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/dp_10"
+        android:layout_marginBottom="10dp"
         android:gravity="center"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/login_btn_set"
             style="@style/btn_pressed_style"
-            android:layout_width="@dimen/dp_150"
-            android:layout_marginEnd="@dimen/dp_10"
+            android:layout_width="150dp"
+            android:layout_marginEnd="10dp"
             android:text="@string/system_settings" />
 
         <Button
             android:id="@+id/login_btn"
             style="@style/btn_pressed_style"
-            android:layout_width="@dimen/dp_150"
-            android:layout_marginStart="@dimen/dp_10"
+            android:layout_width="150dp"
+            android:layout_marginStart="10dp"
             android:text="@string/login" />
     </LinearLayout>
 </LinearLayout>

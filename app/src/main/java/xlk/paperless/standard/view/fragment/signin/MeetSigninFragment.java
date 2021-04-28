@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -17,15 +18,19 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.mogujie.tt.protobuf.InterfaceRoom;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
 import xlk.paperless.standard.R;
+import xlk.paperless.standard.data.Constant;
+import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.ui.CustomAbsoluteLayout;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.base.BaseFragment;
-import xlk.paperless.standard.view.App;
 
 /**
  * @author xlk
@@ -49,6 +54,7 @@ public class MeetSigninFragment extends BaseFragment implements IMeetSignin {
      * 表示显示区域的宽高,是不变的
      */
     private int viewWidth, viewHeight;
+    private LinearLayout ll_seat;
 
     @Nullable
     @Override
@@ -59,6 +65,7 @@ public class MeetSigninFragment extends BaseFragment implements IMeetSignin {
         seat_root_ll.post(() -> {
             viewWidth = seat_root_ll.getWidth();
             viewHeight = seat_root_ll.getHeight();
+            LogUtils.e("显示宽高=" + viewWidth + "," + viewHeight);
             f_s_absolute.setScreen(viewWidth, viewHeight);
             start();
         });
@@ -78,11 +85,17 @@ public class MeetSigninFragment extends BaseFragment implements IMeetSignin {
     }
 
     private void initView(View inflate) {
-        seat_root_ll = inflate.findViewById(R.id.seat_root_ll);
-        f_s_absolute = inflate.findViewById(R.id.f_s_absolute);
         f_s_yd = inflate.findViewById(R.id.f_s_yd);
         f_s_yqd = inflate.findViewById(R.id.f_s_yqd);
         f_s_wqd = inflate.findViewById(R.id.f_s_wqd);
+
+        seat_root_ll = inflate.findViewById(R.id.seat_root_ll);
+        f_s_absolute = inflate.findViewById(R.id.f_s_absolute);
+        ll_seat = inflate.findViewById(R.id.ll_seat);
+
+        inflate.findViewById(R.id.btn_seat).setOnClickListener(v -> {
+            EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_SIGN_IN_LIST_PAGE).object(true).build());
+        });
     }
 
     @Override
@@ -135,70 +148,39 @@ public class MeetSigninFragment extends BaseFragment implements IMeetSignin {
 
     private void addSeat(InterfaceRoom.pbui_Item_MeetRoomDevSeatDetailInfo item, boolean isShow) {
         View inflate = LayoutInflater.from(getContext()).inflate(R.layout.item_seat, null);
-        RelativeLayout.LayoutParams ivParams = new RelativeLayout.LayoutParams(30, 30);
-//                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams deviceLayoutParams = new RelativeLayout.LayoutParams(120, 20);
         RelativeLayout.LayoutParams seatLinearParams = new RelativeLayout.LayoutParams(120, 40);
         ImageView item_seat_iv = inflate.findViewById(R.id.item_seat_iv);
-        LinearLayout item_seat_ll = inflate.findViewById(R.id.item_seat_ll);
+//        item_seat_iv.setVisibility(isShow ? View.VISIBLE : View.GONE);
         TextView item_seat_device = inflate.findViewById(R.id.item_seat_device);
+        item_seat_device.setTextSize(7);
+        LinearLayout item_seat_ll = inflate.findViewById(R.id.item_seat_ll);
         TextView item_seat_member = inflate.findViewById(R.id.item_seat_member);
-        switch (item.getDirection()) {
-            //上
-            case 0:
-                item_seat_iv.setImageResource(R.drawable.icon_seat_bottom);
-                ivParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-                ivParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                seatLinearParams.addRule(RelativeLayout.BELOW, item_seat_iv.getId());
-                seatLinearParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                break;
-            //下
-            case 1:
-                item_seat_iv.setImageResource(R.drawable.icon_seat_top);
-                seatLinearParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-                seatLinearParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                ivParams.addRule(RelativeLayout.BELOW, item_seat_ll.getId());
-                ivParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                break;
-            //左
-            case 2:
-                item_seat_iv.setImageResource(R.drawable.icon_seat_right);
-                ivParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-                ivParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                seatLinearParams.addRule(RelativeLayout.BELOW, item_seat_iv.getId());
-                seatLinearParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                break;
-            //右
-            case 3:
-                item_seat_iv.setImageResource(R.drawable.icon_seat_left);
-                ivParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-                ivParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                seatLinearParams.addRule(RelativeLayout.BELOW, item_seat_iv.getId());
-                seatLinearParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                break;
-            default:
-                break;
-        }
-        item_seat_iv.setVisibility(isShow ? View.VISIBLE : View.GONE);
+        item_seat_member.setTextSize(7);
 
         String devName = item.getDevname().toStringUtf8();
         if (!TextUtils.isEmpty(devName)) {
             item_seat_device.setText(devName);
         } else {
-            item_seat_device.setVisibility(View.GONE);
+            item_seat_device.setVisibility(View.INVISIBLE);
         }
-
+        boolean isChecked = item.getIssignin() == 1;
+        item_seat_iv.setImageResource(isChecked ? R.drawable.icon_signin : R.drawable.icon_un_signin);
+        item_seat_device.setSelected(isChecked);
+        item_seat_ll.setSelected(isChecked);
         String memberName = item.getMembername().toStringUtf8();
         if (!TextUtils.isEmpty(memberName)) {
             item_seat_member.setText(memberName);
-            item_seat_member.setTextColor((item.getIssignin() == 1)
-                    ? App.applicationContext.getColor(R.color.text_color_green)
-                    : App.applicationContext.getColor(R.color.text_color_red)
-            );
         } else {
-            item_seat_member.setVisibility(View.GONE);
+            item_seat_member.setVisibility(View.INVISIBLE);
         }
 
-        item_seat_iv.setLayoutParams(ivParams);
+        deviceLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        deviceLayoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        seatLinearParams.addRule(RelativeLayout.BELOW, item_seat_device.getId());
+        seatLinearParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+        item_seat_device.setLayoutParams(deviceLayoutParams);
         item_seat_ll.setLayoutParams(seatLinearParams);
         //左上角x坐标
         float x1 = item.getX();
@@ -217,10 +199,7 @@ public class MeetSigninFragment extends BaseFragment implements IMeetSignin {
         int x = (int) (x1 * width);
         int y = (int) (y1 * height);
 
-        AbsoluteLayout.LayoutParams params = new AbsoluteLayout.LayoutParams(
-//                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT,
-                120, 70,
-                x, y);
+        AbsoluteLayout.LayoutParams params = new AbsoluteLayout.LayoutParams(120, 60, x, y);
         inflate.setLayoutParams(params);
         f_s_absolute.addView(inflate);
     }

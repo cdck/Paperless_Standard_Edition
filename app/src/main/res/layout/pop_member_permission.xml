@@ -17,7 +17,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginTop="5dp"
         android:layout_gravity="center"
         android:gravity="center"
         android:orientation="horizontal">
@@ -26,42 +26,42 @@
             android:id="@+id/btn_add_screen"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:text="@string/add_screen_permission" />
 
         <Button
             android:id="@+id/btn_add_projection"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:text="@string/add_projection_permission" />
 
         <Button
             android:id="@+id/btn_add_upload"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:text="@string/add_upload_permission" />
 
         <Button
             android:id="@+id/btn_add_download"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:text="@string/add_download_permission" />
 
         <Button
             android:id="@+id/btn_add_vote"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:text="@string/add_vote_permission" />
 
         <Button
             android:id="@+id/btn_save"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:text="@string/save" />
     </LinearLayout>
 
@@ -69,8 +69,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/dp_10"
-        android:layout_marginBottom="@dimen/dp_10"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -78,42 +78,42 @@
             android:id="@+id/btn_del_screen"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:text="@string/del_screen_permission" />
 
         <Button
             android:id="@+id/btn_del_projection"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:text="@string/del_projection_permission" />
 
         <Button
             android:id="@+id/btn_del_upload"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:text="@string/del_upload_permission" />
 
         <Button
             android:id="@+id/btn_del_download"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:text="@string/del_download_permission" />
 
         <Button
             android:id="@+id/btn_del_vote"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:text="@string/del_vote_permission" />
 
         <Button
             android:id="@+id/btn_back"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:text="@string/back" />
     </LinearLayout>
 </LinearLayout>

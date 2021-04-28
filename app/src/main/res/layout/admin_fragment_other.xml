@@ -9,22 +9,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/dp_10"
+        android:layout_margin="10dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="@dimen/dp_100"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:gravity="end|center_vertical"
             android:text="@string/URL" />
 
         <EditText
             android:id="@+id/edt_url"
-            android:layout_width="@dimen/dp_200"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:background="@drawable/shape_edt_black"
             style="@style/EditTextStyle" />
 
@@ -38,7 +38,7 @@
             android:id="@+id/btn_update"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginStart="20dp"
             android:text="@string/device_update" />
     </LinearLayout>
 
@@ -46,22 +46,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/dp_10"
+        android:layout_margin="10dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="@dimen/dp_100"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:gravity="end|center_vertical"
             android:text="@string/company_name" />
 
         <EditText
             android:id="@+id/edt_company"
-            android:layout_width="@dimen/dp_200"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:background="@drawable/shape_edt_black"
             style="@style/EditTextStyle"
             tools:text="九五软件科技有限公司" />
@@ -78,22 +78,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/dp_10"
+        android:layout_margin="10dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="@dimen/dp_100"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:gravity="end|center_vertical"
             android:text="@string/meet_push_file" />
 
         <EditText
             android:id="@+id/edt_file"
-            android:layout_width="@dimen/dp_200"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:background="@drawable/shape_edt_black"
             style="@style/EditTextStyle"
             tools:text="九五软件科技有限公司" />
@@ -122,16 +122,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dp_20"
+                android:layout_margin="20dp"
                 android:text="@string/modify_local_password" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/dp_20"
-                android:layout_marginEnd="@dimen/dp_20"
-                android:layout_marginBottom="@dimen/dp_20"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
                 android:layout_weight="1"
                 android:background="#E7E7E7"
                 android:gravity="center"
@@ -141,21 +141,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/dp_20"
-                    android:layout_marginBottom="@dimen/dp_20"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="@dimen/dp_100"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/dp_10"
+                        android:layout_marginEnd="10dp"
                         android:gravity="center_vertical|end"
                         android:text="@string/enter_old_password" />
 
                     <EditText
                         android:id="@+id/edt_old_pwd"
-                        android:layout_width="@dimen/dp_150"
+                        android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:background="@drawable/shape_edt_black"
                         android:ellipsize="end"
@@ -167,20 +167,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="@dimen/dp_20"
+                    android:layout_marginBottom="20dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="@dimen/dp_100"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/dp_10"
+                        android:layout_marginEnd="10dp"
                         android:gravity="center_vertical|end"
                         android:text="@string/enter_new_password" />
 
                     <EditText
                         android:id="@+id/edt_new_pwd"
-                        android:layout_width="@dimen/dp_150"
+                        android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:background="@drawable/shape_edt_black"
                         android:ellipsize="end"
@@ -192,20 +192,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="@dimen/dp_20"
+                    android:layout_marginBottom="20dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="@dimen/dp_100"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/dp_10"
+                        android:layout_marginEnd="10dp"
                         android:gravity="center_vertical|end"
                         android:text="@string/confirm_new_password" />
 
                     <EditText
                         android:id="@+id/edt_confirm_pwd"
-                        android:layout_width="@dimen/dp_150"
+                        android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:background="@drawable/shape_edt_black"
                         android:ellipsize="end"
@@ -216,8 +216,8 @@
                 <Button
                     android:id="@+id/btn_submit_modify"
                     style="@style/btn_pressed_style"
-                    android:layout_width="@dimen/dp_150"
-                    android:layout_marginBottom="@dimen/dp_20"
+                    android:layout_width="150dp"
+                    android:layout_marginBottom="20dp"
                     android:text="@string/submit_modify" />
             </LinearLayout>
         </LinearLayout>
@@ -233,16 +233,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dp_20"
+                android:layout_margin="20dp"
                 android:text="@string/change_interface" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/dp_20"
-                android:layout_marginEnd="@dimen/dp_20"
-                android:layout_marginBottom="@dimen/dp_20"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
                 android:layout_weight="1"
                 android:background="#E7E7E7"
                 android:gravity="center"
@@ -251,23 +251,23 @@
                 <Button
                     android:id="@+id/btn_change_home"
                     style="@style/btn_pressed_style"
-                    android:layout_width="@dimen/dp_150"
-                    android:layout_marginTop="@dimen/dp_20"
-                    android:layout_marginBottom="@dimen/dp_20"
+                    android:layout_width="150dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
                     android:text="@string/change_home_interface" />
 
                 <Button
                     android:id="@+id/btn_change_pro"
                     style="@style/btn_pressed_style"
-                    android:layout_width="@dimen/dp_150"
-                    android:layout_marginBottom="@dimen/dp_20"
+                    android:layout_width="150dp"
+                    android:layout_marginBottom="20dp"
                     android:text="@string/change_pro_interface" />
 
                 <Button
                     android:id="@+id/btn_change_bulletin"
                     style="@style/btn_pressed_style"
-                    android:layout_width="@dimen/dp_150"
-                    android:layout_marginBottom="@dimen/dp_20"
+                    android:layout_width="150dp"
+                    android:layout_marginBottom="20dp"
                     android:text="@string/change_bulletin_interface" />
             </LinearLayout>
         </LinearLayout>

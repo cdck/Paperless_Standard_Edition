@@ -4,10 +4,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 
+import com.blankj.utilcode.util.LogUtils;
+import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mogujie.tt.protobuf.InterfaceBase;
 import com.mogujie.tt.protobuf.InterfaceDevice;
 import com.mogujie.tt.protobuf.InterfaceMacro;
+import com.mogujie.tt.protobuf.InterfaceMeet;
 import com.mogujie.tt.protobuf.InterfaceMember;
 import com.mogujie.tt.protobuf.InterfaceVote;
 import com.mogujie.tt.protobuf.InterfaceWhiteboard;
@@ -21,8 +24,10 @@ import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.data.bean.DevMember;
 import xlk.paperless.standard.data.bean.JoinPro;
+import xlk.paperless.standard.data.bean.MeetingInformation;
 import xlk.paperless.standard.ui.ArtBoard;
 import xlk.paperless.standard.util.AppUtil;
+import xlk.paperless.standard.util.DateUtil;
 import xlk.paperless.standard.util.DialogUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.ToastUtil;
@@ -72,15 +77,15 @@ public class FabPresenter extends BasePresenter {
     @Override
     public void busEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
-            case Constant.BUS_HIDE_FAB:{
+            case Constant.BUS_HIDE_FAB: {
                 view.hideAllWindow();
                 break;
             }
-            case Constant.BUS_SHOW_FAB:{
+            case Constant.BUS_SHOW_FAB: {
                 view.showFabButton();
                 break;
             }
-            case Constant.BUS_EXPORT_NOTE_CONTENT:{
+            case Constant.BUS_EXPORT_NOTE_CONTENT: {
                 String content = (String) msg.getObjects()[0];
                 view.updateNoteContent(content);
                 break;
@@ -128,6 +133,7 @@ public class FabPresenter extends BasePresenter {
                 int type = (int) msg.getObjects()[0];
                 LogUtil.i(TAG, "BusEvent -->" + "收到开始采集摄像头通知 type= " + type);
                 if (AppUtil.checkCamera(cxt, 1)) {
+                    LogUtils.i("打开前置摄像头");
                     ToastUtil.show(R.string.opening_camera);
                     Intent intent = new Intent(cxt, CameraActivity.class);
                     intent.putExtra(Constant.EXTRA_CAMERA_TYPE, 1);
@@ -135,6 +141,7 @@ public class FabPresenter extends BasePresenter {
                     cxt.startActivity(intent);
                 } else if (AppUtil.checkCamera(cxt, 0)) {
                     ToastUtil.show(R.string.opening_camera);
+                    LogUtils.i("打开后置摄像头");
                     Intent intent = new Intent(cxt, CameraActivity.class);
                     intent.putExtra(Constant.EXTRA_CAMERA_TYPE, 0);
                     intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
@@ -205,7 +212,6 @@ public class FabPresenter extends BasePresenter {
             e.printStackTrace();
         }
     }
-
 
     private void openArtBoardInform(EventMessage msg) throws InvalidProtocolBufferException {
         byte[] o = (byte[]) msg.getObjects()[0];
@@ -284,7 +290,8 @@ public class FabPresenter extends BasePresenter {
             if (attendPeople == null) {
                 return;
             }
-            memberDetailInfos = attendPeople.getItemList();
+            memberDetailInfos.clear();
+            memberDetailInfos.addAll(attendPeople.getItemList());
             queryDevice();
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
@@ -360,5 +367,66 @@ public class FabPresenter extends BasePresenter {
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
+    }
+
+    public void queryCurrentMeeting() {
+        InterfaceMeet.pbui_Type_MeetMeetInfo meeting = jni.queryMeetingById(Values.localMeetingId);
+        InterfaceMeet.pbui_Item_MeetMeetInfo info = meeting.getItem(0);
+        MeetingInformation meetingInformation = new MeetingInformation(info);
+        String meetingName = info.getName().toStringUtf8();
+        String roomName = info.getRoomname().toStringUtf8();
+        String secrecy = info.getSecrecy() == 1 ? cxt.getString(R.string.yes) : cxt.getString(R.string.no);
+        String startTime = DateUtil.secondFormatDateTime(info.getStartTime());
+        String endTime = DateUtil.secondFormatDateTime(info.getEndTime());
+        String orderMemberName = info.getOrdername().toStringUtf8();
+        StringBuilder logSb = new StringBuilder();
+        logSb.append("会议名称：").append(meetingName);
+        logSb.append("\n");
+        logSb.append("会议室：").append(roomName);
+        logSb.append("\n");
+        logSb.append("是否保密：").append(secrecy);
+        logSb.append("\n");
+        logSb.append("会议时间：").append(startTime).append(" - ").append(endTime);
+        logSb.append("\n");
+        if (!orderMemberName.isEmpty()) {
+            logSb.append("会议预约人：").append(orderMemberName);
+            logSb.append("\n");
+        }
+        String hostMemberName = "无";
+        int hostMemberId = -1;
+        InterfaceBase.pbui_CommonInt32uProperty pbui_commonInt32uProperty = jni.queryMeetRankingProperty(
+                InterfaceMacro.Pb_MeetSeatPropertyID.Pb_MEETSEAT_PROPERTY_MEMBERIDBYROLE_VALUE
+                , InterfaceMacro.Pb_MeetMemberRole.Pb_role_member_compere_VALUE);
+        if (pbui_commonInt32uProperty != null) {
+            hostMemberId = pbui_commonInt32uProperty.getPropertyval();
+            InterfaceMember.pbui_Item_MemberDetailInfo hostMember = jni.queryMemberById(hostMemberId);
+            meetingInformation.setHostInfo(hostMember);
+            hostMemberName = hostMember.getName().toStringUtf8();
+        }
+        logSb.append("主持人：").append(hostMemberName);
+        logSb.append("\n");
+        logSb.append("参会人员：");
+        logSb.append("\n\u3000\u3000\u3000\u3000");
+        StringBuilder memberSb = new StringBuilder();
+        int tag = 0;
+        for (int i = 0; i < memberDetailInfos.size(); i++) {
+            InterfaceMember.pbui_Item_MemberDetailInfo item = memberDetailInfos.get(i);
+            if (item.getPersonid() == hostMemberId) {
+                if (i == 0) {
+                    tag = 1;
+                }
+                continue;
+            }
+            String name = item.getName().toStringUtf8();
+            if (i != tag) {
+                logSb.append("、");
+                memberSb.append("、");
+            }
+            logSb.append(name);
+            memberSb.append(name);
+        }
+        meetingInformation.setMembers(memberSb.toString());
+        LogUtils.e(logSb.toString());
+        view.showMeetInfo(meetingInformation);
     }
 }

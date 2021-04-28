@@ -3,11 +3,14 @@ package xlk.paperless.standard.util;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.mogujie.tt.protobuf.InterfaceMacro;
 
 import xlk.paperless.standard.R;
 
 import static xlk.paperless.standard.view.App.applicationContext;
+import static xlk.paperless.standard.view.App.mMediaProjectionManager;
 
 
 /**
@@ -23,33 +26,36 @@ public class ToastUtil {
     private static long oneTime;
 
     public static void show(String msg) {
-        try {
-            LogUtil.d("ToastUtil", "showToast： " + msg);
-            if (toast == null) {
-                toast = Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT);
-                toast.show();
-                oneTime = System.currentTimeMillis();
-            } else {
-                if (System.currentTimeMillis() - oneTime >= 1500) {
-                    toast.cancel();
-                    toast = Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT);
-                    toast.show();
-                    oneTime = System.currentTimeMillis();
-                } else {
-                    toast.setText(msg);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ToastUtils.showShort(msg);
+//        try {
+//            LogUtils.d("ToastUtil", "showToast： " + msg);
+//            if (toast == null) {
+//                toast = Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT);
+//                toast.show();
+//                oneTime = System.currentTimeMillis();
+//            } else {
+//                if (System.currentTimeMillis() - oneTime >= 1500) {
+//                    toast.cancel();
+//                    toast = Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT);
+//                    toast.show();
+//                    oneTime = System.currentTimeMillis();
+//                } else {
+//                    toast.setText(msg);
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     public static void show(int resid) {
-        show(applicationContext.getResources().getString(resid));
+        ToastUtils.showShort(resid);
+//        show(applicationContext.getResources().getString(resid));
     }
 
     public static void show(int resid, Object... values) {
-        show(applicationContext.getResources().getString(resid, values));
+        ToastUtils.showShort(resid,values);
+//        show(applicationContext.getResources().getString(resid, values));
     }
 
     /**
@@ -101,7 +107,8 @@ public class ToastUtil {
                 break;
         }
         if (!msg.isEmpty()) {
-            show(msg);
+            LogUtils.e("errorToast:"+msg);
+            ToastUtils.showLong(msg);
         }
     }
 

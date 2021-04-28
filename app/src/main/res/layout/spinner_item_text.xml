@@ -6,6 +6,6 @@
     android:gravity="center"
     android:singleLine="true"
     android:textColor="@color/light_black"
-    android:padding="@dimen/dp_3">
+    android:padding="3dp">
 
 </CheckedTextView>

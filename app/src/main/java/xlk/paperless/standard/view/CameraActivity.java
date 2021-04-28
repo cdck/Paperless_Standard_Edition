@@ -15,6 +15,8 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.blankj.utilcode.util.LogUtils;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -29,6 +31,7 @@ import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.util.LogUtil;
 
 import static android.media.MediaCodecList.ALL_CODECS;
+import static xlk.paperless.standard.data.Constant.EXTRA_CAMERA_TYPE;
 import static xlk.paperless.standard.data.Values.camera_height;
 import static xlk.paperless.standard.data.Values.camera_width;
 
@@ -41,7 +44,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback,
     private Camera camera;
     private Parameters parameters;
 
-    private int framerate = 18;
+    private int framerate = 15;
     private int imageFormat = -1;
     private static int yuvqueuesize = 10;
 
@@ -55,8 +58,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
-        Intent intent = getIntent();
-        camera_type = intent.getIntExtra("camera_type", 0);//默认是0,后置摄像头
+        camera_type = getIntent().getIntExtra(EXTRA_CAMERA_TYPE, 0);//默认是0,后置摄像头
         surfaceview = findViewById(R.id.surfaceview);
         surfaceHolder = surfaceview.getHolder();
         surfaceHolder.addCallback(this);
@@ -69,12 +71,13 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback,
         camera = getBackCamera(camera_type);
         startcamera(camera);
         try {
-            avcCodec = new AvcEncoder(camera_width, camera_height, framerate, camera_width * camera_height, imageFormat);
+//            camera_width * camera_height
+            avcCodec = new AvcEncoder(camera_width, camera_height, framerate, 500 * 1000, imageFormat);
+            LogUtils.d(TAG, "surfaceCreated -->");
+            avcCodec.startEncoderThread();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        LogUtil.d(TAG, "surfaceCreated -->");
-        avcCodec.startEncoderThread();
     }
 
     @Override
@@ -150,10 +153,12 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback,
                 if (camera_type == 0)
                     parameters.setFocusMode(Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
                 checkSupportColorFormat();
+                logParameters(parameters);
                 LogUtil.d(TAG, "startcamera Camera PreviewFormat=" + (imageFormat == ImageFormat.NV21 ? "NV21" : imageFormat == ImageFormat.YV12 ? "YV12" : imageFormat));
                 parameters.setPreviewFrameRate(framerate);
                 parameters.setPreviewFormat(imageFormat);//NV21 YV12
                 parameters.setPreviewSize(camera_width, camera_height);
+
                 boolean supported = parameters.isVideoStabilizationSupported();
                 if (supported) {
                     //这个方法可以帮助提高录制视频的稳定性。使用的时候通过 #isVideoStabilizationSupported 来判断是否可以使用。
@@ -170,6 +175,50 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback,
                 e.printStackTrace();
             }
         }
+    }
+
+    private void logParameters(Parameters parameters) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("支持的色彩效果:");
+        List<String> supportedColorEffects = parameters.getSupportedColorEffects();
+        for (String s : supportedColorEffects) {
+            sb.append(s).append("、");
+        }
+        sb.append("\n");
+        sb.append("视频录制的首选或推荐的预览大小:");
+        Camera.Size preferredPreviewSizeForVideo = parameters.getPreferredPreviewSizeForVideo();
+        sb.append(preferredPreviewSizeForVideo.width).append("-").append(preferredPreviewSizeForVideo.height);
+        sb.append("\n");
+        sb.append("支持的预览fps（每秒帧数）范围:");
+        List<int[]> supportedPreviewFpsRange = parameters.getSupportedPreviewFpsRange();
+        for (int[] i : supportedPreviewFpsRange) {
+            for (int j = 0; j < i.length; j++) {
+                sb.append(i[j]).append("#");
+            }
+            sb.append("、");
+        }
+        sb.append("\n");
+        sb.append("获取支持的预览格式:");
+        List<Integer> supportedPreviewFormats = parameters.getSupportedPreviewFormats();
+        for (int i : supportedPreviewFormats) {
+            sb.append(i).append("、");
+        }
+        sb.append("\n");
+        sb.append("获取MediaRecorder可以使用的支持的视频帧大小:");
+        List<Camera.Size> supportedVideoSizes = parameters.getSupportedVideoSizes();
+        for (Camera.Size i : supportedVideoSizes) {
+            sb.append(i.width).append("-").append(i.height).append("、");
+        }
+        List<Integer> supportedPreviewFrameRates = parameters.getSupportedPreviewFrameRates();
+        sb.append("\n");
+        sb.append("获取支持的预览帧速率:");
+        for (int i : supportedPreviewFrameRates) {
+            sb.append(i).append("、");
+        }
+
+
+
+        LogUtils.e(TAG,"打印Parameters信息：\n" + sb.toString());
     }
 
     private void checkSupportColorFormat() {

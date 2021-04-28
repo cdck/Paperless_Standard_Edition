@@ -57,6 +57,8 @@ public class AdminSignInAdapter extends BaseQuickAdapter<SignInBean, BaseViewHol
                 .setText(R.id.item_view_4, isSignIn ? getContext().getString(R.string.checked_in) : getContext().getString(R.string.not_checked_in))
         ;
         Button item_view_5 = helper.getView(R.id.item_view_5);
+        item_view_5.setText("");
+        item_view_5.setTextColor(getContext().getColor(R.color.light_black));
         item_view_5.setBackgroundColor(Color.WHITE);
         item_view_5.setEnabled(false);
         if (isSignIn) {
@@ -64,11 +66,11 @@ public class AdminSignInAdapter extends BaseQuickAdapter<SignInBean, BaseViewHol
             switch (signinType) {
                 case InterfaceMacro.Pb_MeetSignType.Pb_signin_direct_VALUE:
                     item_view_5.setText(getContext().getString(R.string.direct_signin));
-                    item_view_5.setTextColor(getContext().getColor(R.color.light_black));
+//                    item_view_5.setTextColor(getContext().getColor(R.color.light_black));
                     break;
                 case InterfaceMacro.Pb_MeetSignType.Pb_signin_psw_VALUE:
                     item_view_5.setText(getContext().getString(R.string.personal_pwd_signin));
-                    item_view_5.setTextColor(getContext().getColor(R.color.light_black));
+//                    item_view_5.setTextColor(getContext().getColor(R.color.light_black));
                     break;
                 case InterfaceMacro.Pb_MeetSignType.Pb_signin_photo_VALUE:
                     Bitmap bitmap = ConvertUtil.bs2bmp(sign.getPsigndata());
@@ -78,7 +80,7 @@ public class AdminSignInAdapter extends BaseQuickAdapter<SignInBean, BaseViewHol
                     break;
                 case InterfaceMacro.Pb_MeetSignType.Pb_signin_onepsw_VALUE:
                     item_view_5.setText(getContext().getString(R.string.meeting_pwd_signin));
-                    item_view_5.setTextColor(getContext().getColor(R.color.light_black));
+//                    item_view_5.setTextColor(getContext().getColor(R.color.light_black));
                     break;
                 default:
                     item_view_5.setText("");

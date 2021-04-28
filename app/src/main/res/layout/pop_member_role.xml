@@ -9,11 +9,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/dp_5"
+        android:layout_margin="5dp"
         android:gravity="center"
         android:text="@string/modify_member_role"
         android:textColor="@color/light_black"
-        android:textSize="@dimen/sp_16" />
+        android:textSize="@dimen/text_size_medium" />
 
     <include layout="@layout/item_member_role" />
 
@@ -27,7 +27,7 @@
         android:id="@+id/sp_role"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginStart="20dp"
         android:spinnerMode="dialog"
         android:entries="@array/role" />
 
@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/dp_5"
+        android:layout_margin="5dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -43,14 +43,14 @@
             android:id="@+id/btn_confirm"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_10"
+            android:layout_marginEnd="10dp"
             android:text="@string/confirm_modify" />
 
         <Button
             android:id="@+id/btn_cancel"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginStart="10dp"
             android:text="@string/cancel" />
     </LinearLayout>
 </LinearLayout>

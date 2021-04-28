@@ -63,7 +63,7 @@
         android:background="@color/video_pop_bg"
         android:gravity="center"
         android:textColor="@color/video_time"
-        android:textSize="16sp"
+        android:textSize="@dimen/text_size_medium"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

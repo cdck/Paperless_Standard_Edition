@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Paperless</string>
+    <string name="app_name">FionTuPaperless</string>
     <string name="set_name_">Seat:%1$s</string>
     <string name="err_download">File download error</string>
     <string name="determine">Determine</string>
@@ -854,10 +854,22 @@
     <string name="password_format_error">密码格式错误</string>
     <string name="login_backstage_is_enabled">已开启后台登录</string>
     <string name="login_backstage_is_closed">已关闭后台登录</string>
-    <string name="export_note">导入笔记</string>
-    <string name="meeting_note">会议笔记</string>
-    <string name="please_choose_txt_file">请选择文本文件</string>
-    <string name="please_check_network">请检查网络配置</string>
+    <string name="export_note">Import notes</string>
+    <string name="meeting_note">Meeting notes</string>
+    <string name="please_choose_txt_file">Please select a text file</string>
+    <string name="please_check_network">Please check the network configuration</string>
+    <string name="temporary_materials">Temporary Materials</string>
+    <string name="meeting_information">Meeting Information</string>
+    <string name="please_insert_udisk_first">please insert UDisk first</string>
+    <string name="time_">Time：%1$s</string>
+    <string name="location_">location：%1$s</string>
+    <string name="host_name_">Host：%1$s</string>
+    <string name="members_">参会人员：\n　　　　%1$s</string>
+    <string name="sign_in_seat">签到席位图</string>
+    <string name="sign_in_list">签到列表</string>
+    <string name="start">开始</string>
+    <string name="end">结束</string>
+
     <string-array name="role">
         <item>None</item>
         <item>Ordinary participants</item>

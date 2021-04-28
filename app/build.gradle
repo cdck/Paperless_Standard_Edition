@@ -22,7 +22,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 28
         versionCode 2
-        versionName "1.1"
+        versionName "1.1.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
@@ -35,6 +35,11 @@ android {
         main {
             jniLibs.srcDirs = ['src/main/jniLibs']     //设置目标的so存放路径
             jni.srcDirs = [] //禁用自动调用ndk-build
+//            res.srcDirs = [
+//                    'src/main/res',
+//                    'src/main/one_res',
+//                    'src/main/two_res'
+//            ]
         }
     }
     externalNativeBuild {
@@ -53,12 +58,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-//    //指定打包后应用名称
-//    applicationVariants.all { variant ->
-//        variant.outputs.all {
-//            outputFileName = "无纸化标准版-V${variant.versionName}.apk"
-//        }
-//    }
+    //指定打包后应用名称
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "无纸化标准版-V${variant.versionName}.apk"
+        }
+    }
     //解决API 28只创建arm64目录，导致找不到库的问题
     splits {
         abi {
@@ -68,6 +73,10 @@ android {
             universalApk false
         }
     }
+    // Kotlin Parcelable 支持
+//    androidExtensions {
+//        experimental = true
+//    }
 }
 
 dependencies {
@@ -158,4 +167,19 @@ dependencies {
 
     //分页RecyclerView：https://github.com/GcsSloop/pager-layoutmanager
     implementation 'com.gcssloop.recyclerview:pagerlayoutmanager:2.3.8'
+
+//    //更换皮肤：https://github.com/ximsfei/Android-skin-support
+//    implementation 'skin.support:skin-support:4.0.5'                   // skin-support
+//    implementation 'skin.support:skin-support-appcompat:4.0.5'         // skin-support 基础控件支持
+//    implementation 'skin.support:skin-support-design:4.0.5'
+//    // skin-support-design material design 控件支持[可选]
+//    implementation 'skin.support:skin-support-cardview:4.0.5'
+//    // skin-support-cardview CardView 控件支持[可选]
+//    implementation 'skin.support:skin-support-constraint-layout:4.0.5'
+//    // skin-support-constraint-layout ConstraintLayout 控件支持[可选]
+
+    //android播放器：https://github.com/wanliyang1990/wlmedia
+//    implementation 'ywl.ywl5320:wlmedia:1.1.5'
+    //文档查看器：https://github.com/barteksc/AndroidPdfViewer
+    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
 }

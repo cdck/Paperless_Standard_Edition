@@ -16,14 +16,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dp_10"
+        android:layout_margin="10dp"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/dp_5"
+            android:layout_margin="5dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -36,8 +36,8 @@
                 android:id="@+id/edt_election_content"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_5"
-                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
                 android:layout_weight="1"
                 android:background="@drawable/shape_edt_black"
                 android:lines="1"
@@ -46,7 +46,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginEnd="5dp"
                 android:text="@string/election_type" />
 
             <Spinner
@@ -58,7 +58,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginEnd="5dp"
                 android:text="@string/register" />
 
             <Spinner
@@ -72,7 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/dp_5"
+            android:layout_margin="5dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -85,7 +85,7 @@
                 android:id="@+id/edt_option1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/dp_2"
+                android:layout_marginEnd="2dp"
                 android:layout_weight="1"
                 android:background="@drawable/shape_edt_black"
                 android:lines="1"
@@ -100,7 +100,7 @@
                 android:id="@+id/edt_option2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/dp_2"
+                android:layout_marginEnd="2dp"
                 android:layout_weight="1"
                 android:background="@drawable/shape_edt_black"
                 android:lines="1"
@@ -115,7 +115,7 @@
                 android:id="@+id/edt_option3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/dp_2"
+                android:layout_marginEnd="2dp"
                 android:layout_weight="1"
                 android:background="@drawable/shape_edt_black"
                 android:lines="1"
@@ -130,7 +130,7 @@
                 android:id="@+id/edt_option4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/dp_2"
+                android:layout_marginEnd="2dp"
                 android:layout_weight="1"
                 android:background="@drawable/shape_edt_black"
                 android:lines="1"
@@ -155,7 +155,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginTop="5dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -163,29 +163,29 @@
                 android:id="@+id/btn_add"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginEnd="10dp"
                 android:text="@string/add" />
 
             <Button
                 android:id="@+id/btn_modify"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginEnd="10dp"
                 android:text="@string/modify" />
 
             <Button
                 android:id="@+id/btn_delete"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginEnd="10dp"
                 android:text="@string/delete" />
 
             <Button
                 android:id="@+id/btn_export"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_marginStart="@dimen/dp_10"
-                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:text="@string/export_excel" />
 
             <Button

@@ -105,7 +105,7 @@ public class MainPresenter {
      * 复制ini、dev文件
      */
     public void initConfFile() {
-        LogUtils.d(TAG,"initConfFile");
+        LogUtils.d(TAG, "initConfFile");
         //拷贝配置文件
         if (!IniUtil.iniFile.exists()) {
             LogUtils.d(TAG, "initConfFile :  拷贝配置文件 --> ");

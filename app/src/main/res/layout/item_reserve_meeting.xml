@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dp_30"
+    android:layout_height="30dp"
     android:background="@color/table_line_color"
     android:gravity="center"
     android:orientation="horizontal">
@@ -15,7 +15,7 @@
         android:background="@color/admin_table_title_bg"
         android:text="@string/meeting_id"
         android:textColor="@color/white"
-        android:textSize="@dimen/sp_12" />
+        android:textSize="@dimen/text_size_small" />
 
     <TextView
         android:id="@+id/item_view_2"
@@ -24,7 +24,7 @@
         android:background="@color/admin_table_title_bg"
         android:text="@string/meeting_name"
         android:textColor="@color/white"
-        android:textSize="@dimen/sp_12" />
+        android:textSize="@dimen/text_size_small" />
 
     <TextView
         android:id="@+id/item_view_3"
@@ -33,7 +33,7 @@
         android:background="@color/admin_table_title_bg"
         android:text="@string/meeting_status"
         android:textColor="@color/white"
-        android:textSize="@dimen/sp_12" />
+        android:textSize="@dimen/text_size_small" />
 
     <TextView
         android:id="@+id/item_view_4"
@@ -42,7 +42,7 @@
         android:background="@color/admin_table_title_bg"
         android:text="@string/confidential"
         android:textColor="@color/white"
-        android:textSize="@dimen/sp_12" />
+        android:textSize="@dimen/text_size_small" />
 
     <TextView
         android:id="@+id/item_view_5"
@@ -51,7 +51,7 @@
         android:background="@color/admin_table_title_bg"
         android:text="@string/start_time"
         android:textColor="@color/white"
-        android:textSize="@dimen/sp_12" />
+        android:textSize="@dimen/text_size_small" />
 
     <TextView
         android:id="@+id/item_view_6"
@@ -60,7 +60,7 @@
         android:background="@color/admin_table_title_bg"
         android:text="@string/end_time"
         android:textColor="@color/white"
-        android:textSize="@dimen/sp_12" />
+        android:textSize="@dimen/text_size_small" />
 
     <TextView
         android:id="@+id/item_view_7"
@@ -69,5 +69,5 @@
         android:background="@color/admin_table_title_bg"
         android:text="@string/reservation_person"
         android:textColor="@color/white"
-        android:textSize="@dimen/sp_12" />
+        android:textSize="@dimen/text_size_small" />
 </LinearLayout>

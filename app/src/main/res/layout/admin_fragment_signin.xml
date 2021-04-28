@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/dp_5"
+    android:layout_margin="5dp"
     android:orientation="vertical">
 
     <include layout="@layout/item_admin_signin" />
@@ -38,29 +38,42 @@
                 android:id="@+id/tv_yqd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_15"
+                android:layout_marginStart="15dp"
                 tools:text="已签到：3人" />
 
             <TextView
                 android:id="@+id/tv_wqd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_15"
+                android:layout_marginStart="15dp"
                 tools:text="未签到：2人" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_seat"
+            style="@style/btn_pressed_style"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="@string/sign_in_seat" />
 
         <Button
             android:id="@+id/btn_delete"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:gravity="center"
             android:text="@string/delete_signIn_record" />
 
         <Button
             android:id="@+id/btn_export_pdf"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginStart="@dimen/dp_10"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:gravity="center"
             android:text="@string/export_pdf" />
     </LinearLayout>
 </LinearLayout>

@@ -1,94 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:padding="@dimen/dp_5">
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/f_l_v_rv"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/dp_8"
-        android:layout_marginEnd="@dimen/dp_8"
-        android:layout_marginBottom="@dimen/dp_8"
-        android:layout_weight="1"
-        android:background="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/f_l_v_stop"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/f_l_v_watch"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <Button
-        android:id="@+id/f_l_v_watch"
-        style="@style/btn_pressed_style"
-        android:layout_marginEnd="@dimen/dp_8"
-        android:text="@string/watch_video"
-        app:layout_constraintBaseline_toBaselineOf="@+id/f_l_v_stop"
-        app:layout_constraintEnd_toStartOf="@+id/f_l_v_stop" />
-
-    <Button
-        android:id="@+id/f_l_v_stop"
-        style="@style/btn_pressed_style"
-        android:layout_marginEnd="@dimen/dp_8"
-        android:layout_marginBottom="@dimen/dp_8"
-        android:text="@string/stop_watch"
-        app:layout_constraintBottom_toTopOf="@+id/f_l_v_stop_screen"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
-        android:id="@+id/f_l_v_stop_pro"
-        style="@style/btn_pressed_style"
-        android:layout_marginEnd="@dimen/dp_8"
-        android:layout_marginBottom="@dimen/dp_8"
-        android:text="@string/stop_pro"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
-        android:id="@+id/f_l_v_start_pro"
-        style="@style/btn_pressed_style"
-        android:layout_marginEnd="@dimen/dp_8"
-        android:text="@string/pro_video"
-        android:visibility="gone"
-        app:layout_constraintBaseline_toBaselineOf="@+id/f_l_v_stop_pro"
-        app:layout_constraintEnd_toStartOf="@+id/f_l_v_stop_pro" />
-
-    <Button
-        android:id="@+id/f_l_v_stop_screen"
-        style="@style/btn_pressed_style"
-        android:layout_marginEnd="@dimen/dp_8"
-        android:layout_marginBottom="@dimen/dp_8"
-        android:text="@string/stop_screen"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/f_l_v_stop_pro"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
-        android:id="@+id/f_l_v_start_screen"
-        style="@style/btn_pressed_style"
-        android:layout_marginEnd="@dimen/dp_8"
-        android:text="@string/screen_video"
-        android:visibility="gone"
-        app:layout_constraintBaseline_toBaselineOf="@+id/f_l_v_stop_screen"
-        app:layout_constraintEnd_toStartOf="@+id/f_l_v_stop_screen" />
-
+    android:padding="5dp">
 
     <xlk.paperless.standard.ui.video.CustomVideoView
         android:id="@+id/f_l_v_v"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="@dimen/dp_8"
-        android:layout_marginTop="@dimen/dp_8"
-        android:layout_marginEnd="@dimen/dp_8"
-        android:layout_marginBottom="@dimen/dp_8"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/f_l_v_watch"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <CheckBox
+                android:id="@+id/cb_live"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:checked="true"
+                android:gravity="center"
+                android:text="点播视频" />
+
+            <CheckBox
+                android:id="@+id/cb_file"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="直播视频" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/f_l_v_rv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:visibility="visible" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_file"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/f_l_v_watch"
+                style="@style/btn_pressed_style"
+                android:layout_width="0dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:text="@string/watch_video" />
+
+            <Button
+                android:id="@+id/f_l_v_stop"
+                style="@style/btn_pressed_style"
+                android:layout_width="0dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="1"
+                android:text="@string/stop_watch" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/f_l_v_stop_pro"
+                style="@style/btn_pressed_style"
+                android:layout_width="0dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="1"
+                android:text="@string/stop_pro"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/f_l_v_start_pro"
+                style="@style/btn_pressed_style"
+                android:layout_width="0dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:text="@string/pro_video"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/f_l_v_stop_screen"
+                style="@style/btn_pressed_style"
+                android:layout_width="0dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="1"
+                android:text="@string/stop_screen"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/f_l_v_start_screen"
+                style="@style/btn_pressed_style"
+                android:layout_width="0dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:text="@string/screen_video"
+                android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

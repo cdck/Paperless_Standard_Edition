@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_margin="@dimen/dp_4"
+    android:layout_margin="4dp"
     android:background="@drawable/blue_transparent_s"
     android:gravity="center_vertical"
     android:orientation="horizontal">
@@ -41,8 +41,8 @@
         android:id="@+id/i_m_d_file_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/dp_5"
-        android:layout_marginEnd="@dimen/dp_5"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         android:visibility="gone"
         android:gravity="center"
         android:src="@drawable/file_view_icon_pressed" />
@@ -51,7 +51,7 @@
         android:id="@+id/i_m_d_file_download"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginEnd="@dimen/dp_5"
+        android:layout_marginEnd="5dp"
         android:gravity="center"
         android:src="@drawable/file_download_icon_pressed" />
 </LinearLayout>

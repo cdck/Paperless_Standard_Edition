@@ -17,7 +17,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dp_5"
+        android:layout_margin="5dp"
         android:orientation="horizontal">
 
         <TextView
@@ -32,14 +32,14 @@
             android:layout_weight="1"
             android:background="@drawable/shape_edt_black"
             android:lines="1"
-            android:paddingStart="@dimen/dp_2"
+            android:paddingStart="2dp"
             android:singleLine="true"
-            android:textSize="@dimen/sp_14" />
+            android:textSize="@dimen/text_size_normal" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginStart="10dp"
             android:text="@string/URL_" />
 
         <EditText
@@ -49,17 +49,17 @@
             android:layout_weight="1"
             android:background="@drawable/shape_edt_black"
             android:lines="1"
-            android:paddingStart="@dimen/dp_2"
+            android:paddingStart="2dp"
             android:singleLine="true"
-            android:textSize="@dimen/sp_14" />
+            android:textSize="@dimen/text_size_normal" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/dp_5"
-        android:layout_marginBottom="@dimen/dp_10"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -67,21 +67,21 @@
             android:id="@+id/btn_pop_add"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:text="@string/add" />
 
         <Button
             android:id="@+id/btn_pop_modify"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:text="@string/modify" />
 
         <Button
             android:id="@+id/btn_pop_delete"
             style="@style/btn_pressed_style"
             android:layout_width="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginEnd="5dp"
             android:text="@string/delete" />
 
         <Button

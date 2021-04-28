@@ -30,6 +30,8 @@ import com.mogujie.tt.protobuf.InterfaceMember;
 import com.mogujie.tt.protobuf.InterfaceRoom;
 import com.mogujie.tt.protobuf.InterfaceSignin;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -43,6 +45,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.base.BaseFragment;
 import xlk.paperless.standard.data.Constant;
+import xlk.paperless.standard.data.EventMessage;
+import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.util.ConvertUtil;
 import xlk.paperless.standard.util.DateUtil;
 import xlk.paperless.standard.util.FileUtil;
@@ -63,6 +67,7 @@ public class AdminSignInFragment extends BaseFragment implements AdminSignInInte
     private TextView tv_yd;
     private TextView tv_yqd;
     private TextView tv_wqd;
+    private Button btn_seat;
     private Button btn_delete;
     private Button btn_export_pdf;
 
@@ -87,14 +92,16 @@ public class AdminSignInFragment extends BaseFragment implements AdminSignInInte
         presenter.queryAttendPeople();
     }
 
-
     public void initView(View rootView) {
         this.rv_signIn = (RecyclerView) rootView.findViewById(R.id.rv_signIn);
         this.tv_yd = (TextView) rootView.findViewById(R.id.tv_yd);
         this.tv_yqd = (TextView) rootView.findViewById(R.id.tv_yqd);
         this.tv_wqd = (TextView) rootView.findViewById(R.id.tv_wqd);
+        this.btn_seat = (Button) rootView.findViewById(R.id.btn_seat);
         this.btn_delete = (Button) rootView.findViewById(R.id.btn_delete);
         this.btn_export_pdf = (Button) rootView.findViewById(R.id.btn_export_pdf);
+        btn_seat.setVisibility(Values.isAdminPage ? View.GONE : View.VISIBLE);
+        btn_seat.setOnClickListener(this);
         btn_delete.setOnClickListener(this);
         btn_export_pdf.setOnClickListener(this);
     }
@@ -102,6 +109,10 @@ public class AdminSignInFragment extends BaseFragment implements AdminSignInInte
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.btn_seat: {
+                EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_SIGN_IN_LIST_PAGE).object(false).build());
+                break;
+            }
             case R.id.btn_delete:
                 if (signInAdapter == null || signInAdapter.getChecks().isEmpty()) {
                     ToastUtil.show(R.string.please_choose_member);
@@ -120,6 +131,7 @@ public class AdminSignInFragment extends BaseFragment implements AdminSignInInte
 
     /**
      * 将签到信息导出成PDF文件到本地
+     *
      * @param pdfSignBean 签到数据和会议数据
      */
     private void exportPdf(PdfSignBean pdfSignBean) {

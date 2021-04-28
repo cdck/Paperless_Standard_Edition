@@ -5,44 +5,46 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="@drawable/seat_color_s"
     android:focusable="false"
     android:gravity="center">
 
-    <ImageView
-        android:id="@+id/item_seat_iv"
+    <TextView
+        android:id="@+id/item_seat_device"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        tools:src="@drawable/icon_seat_bottom" />
+        android:background="@drawable/shape_set_top"
+        android:ellipsize="middle"
+        android:gravity="center"
+        android:singleLine="true"
+        tools:text="设备名称"
+        android:textColor="@color/white" />
 
     <LinearLayout
         android:id="@+id/item_seat_ll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/item_seat_iv"
+        android:layout_below="@+id/item_seat_device"
         android:layout_centerHorizontal="true"
+        android:background="@drawable/shape_set_bottom"
         android:gravity="center"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/item_seat_device"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:lines="1"
-            android:textSize="14px"
-            tools:text="设备名称" />
+        <ImageView
+            android:id="@+id/item_seat_iv"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center"
+            android:src="@drawable/icon_seat_top" />
 
         <TextView
             android:id="@+id/item_seat_member"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
+            android:ellipsize="middle"
             android:gravity="center"
-            android:lines="1"
-            android:textSize="14px"
-            tools:text="参会人名称" />
+            android:singleLine="true"
+            tools:text="张三"
+            android:textColor="@color/text_color_black" />
     </LinearLayout>
+
 </RelativeLayout>

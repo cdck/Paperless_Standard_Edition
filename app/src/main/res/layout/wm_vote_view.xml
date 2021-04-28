@@ -20,7 +20,7 @@
             android:id="@+id/wm_vote_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/sp_12"
+            android:textSize="@dimen/text_size_small"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="测试投票" />
@@ -41,8 +41,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="@dimen/dp_10"
-        android:layout_marginBottom="@dimen/dp_10"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_weight="1"
         android:orientation="vertical"
         android:visibility="gone">
@@ -51,8 +51,8 @@
             android:id="@+id/checkBox1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginStart="@dimen/dp_8"
-            android:layout_marginTop="@dimen/dp_8"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:layout_weight="1"
             android:clickable="false"
             tools:text="A默认答案圣诞节疯狂了决胜巅峰" />
@@ -61,8 +61,8 @@
             android:id="@+id/checkBox2"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginStart="@dimen/dp_8"
-            android:layout_marginTop="@dimen/dp_8"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:layout_weight="1"
             android:clickable="false"
             tools:text="B默认答案圣诞节疯狂了决胜巅峰" />
@@ -71,8 +71,8 @@
             android:id="@+id/checkBox3"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginStart="@dimen/dp_8"
-            android:layout_marginTop="@dimen/dp_8"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:layout_weight="1"
             android:clickable="false"
             tools:text="C速度快解放离开家第三方" />
@@ -81,8 +81,8 @@
             android:id="@+id/checkBox4"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginStart="@dimen/dp_8"
-            android:layout_marginTop="@dimen/dp_8"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:layout_weight="1"
             android:clickable="false"
             tools:text="D默认答案圣诞节疯狂了决胜巅峰" />
@@ -91,9 +91,9 @@
             android:id="@+id/checkBox5"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginStart="@dimen/dp_8"
-            android:layout_marginTop="@dimen/dp_8"
-            android:layout_marginBottom="@dimen/dp_8"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_weight="1"
             android:clickable="false"
             tools:text="E默认答案圣诞节疯狂了决胜巅峰" />
@@ -173,7 +173,7 @@
         <Button
             android:id="@+id/wm_vote_submit"
             style="@style/btn_pressed_style"
-            android:layout_width="@dimen/dp_140"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:text="@string/submit" />
@@ -188,11 +188,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/dp_8"
+                android:layout_marginBottom="8dp"
                 android:gravity="center"
                 android:text="@string/count_down"
                 android:textColor="@color/blue"
-                android:textSize="@dimen/sp_16" />
+                android:textSize="@dimen/text_size_medium" />
 
             <Chronometer
                 android:id="@+id/wm_vote_chronometer"
@@ -203,7 +203,7 @@
                 android:format="00"
                 android:gravity="center"
                 android:textColor="@color/blue"
-                android:textSize="@dimen/sp_16" />
+                android:textSize="@dimen/text_size_medium" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

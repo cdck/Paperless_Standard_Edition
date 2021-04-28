@@ -1,6 +1,7 @@
 package xlk.paperless.standard.service;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,6 +32,7 @@ import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.LogUtils;
@@ -60,9 +62,10 @@ import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.data.Values;
-import xlk.paperless.standard.ui.CircularMenu;
+import xlk.paperless.standard.data.bean.MeetingInformation;
 import xlk.paperless.standard.ui.CustomBaseViewHolder;
 import xlk.paperless.standard.util.AppUtil;
+import xlk.paperless.standard.util.DateUtil;
 import xlk.paperless.standard.util.DialogUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.ToastUtil;
@@ -158,9 +161,9 @@ public class FabService extends Service implements IFab {
     @Override
     public void hideAllWindow() {
         LogUtils.e("hideAllWindow");
-        try{
+        try {
             delAllView();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -285,9 +288,73 @@ public class FabService extends Service implements IFab {
 
     //菜单视图
     private void showMenuView() {
-        menuView = LayoutInflater.from(cxt).inflate(R.layout.wm_menu_view, null);
+        menuView = LayoutInflater.from(cxt).inflate(R.layout.wm_menu_view1, null);
+//        menuView = LayoutInflater.from(cxt).inflate(R.layout.wm_menu_view, null);
         menuView.setTag("menuView");
-        CircularMenu custom_menu = menuView.findViewById(R.id.custom_menu);
+        //返回
+        menuView.findViewById(R.id.iv_back).setOnClickListener(v -> {
+            showPop(menuView, hoverButton, mParams);
+        });
+        //结束投影
+        menuView.findViewById(R.id.iv_stop_pro).setOnClickListener(v -> {
+            if (Constant.hasPermission(permission_code_projection)) {
+                showProView(2);
+            } else {
+                ToastUtils.showShort(R.string.err_NoPermission);
+            }
+        });
+        //截图批注
+        menuView.findViewById(R.id.iv_screenshot).setOnClickListener(v -> {
+            screenshot();
+        });
+        //结束同屏
+        menuView.findViewById(R.id.iv_stop_screen).setOnClickListener(v -> {
+            if (Constant.hasPermission(permission_code_screen)) {
+                showScreenView(2);
+            } else {
+                ToastUtils.showShort(R.string.err_NoPermission);
+            }
+        });
+        //加入同屏
+        menuView.findViewById(R.id.iv_join_screen).setOnClickListener(v -> {
+            presenter.queryCanJoin();
+            showJoinView();
+        });
+        //发起同屏
+        menuView.findViewById(R.id.iv_launch_screen).setOnClickListener(v -> {
+            if (Constant.hasPermission(permission_code_screen)) {
+                showScreenView(1);
+            } else {
+                ToastUtils.showShort(R.string.err_NoPermission);
+            }
+        });
+        //呼叫服务
+        menuView.findViewById(R.id.iv_call_service).setOnClickListener(v -> {
+            showServiceView();
+        });
+        //发起投影
+        menuView.findViewById(R.id.iv_launch_pro).setOnClickListener(v -> {
+            if (Constant.hasPermission(permission_code_projection)) {
+                showProView(1);
+            } else {
+                ToastUtils.showShort(R.string.err_NoPermission);
+            }
+        });
+        //会议笔记
+        menuView.findViewById(R.id.iv_meet_note).setOnClickListener(v -> {
+            showNoteView(menuView, saveNoteContent);
+        });
+        //临时材料
+        menuView.findViewById(R.id.iv_usb).setOnClickListener(v -> {
+            EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_OPEN_UDISK).build());
+            showPop(menuView, hoverButton, mParams);
+        });
+        //会议信息
+        menuView.findViewById(R.id.iv_meet_info).setOnClickListener(v -> {
+            presenter.queryCurrentMeeting();
+            showPop(menuView, hoverButton, mParams);
+        });
+        /*CircularMenu custom_menu = menuView.findViewById(R.id.custom_menu);
         custom_menu.setListener(index -> {
             switch (index) {
                 //结束投影
@@ -358,7 +425,35 @@ public class FabService extends Service implements IFab {
         });
 //        CustomBaseViewHolder.MenuViewHolder menuViewHolder = new CustomBaseViewHolder.MenuViewHolder(menuView);
 //        menuViewHolderEvent(menuViewHolder);
-        showPop(hoverButton, menuView, fullParams);
+         */
+        showPop(hoverButton, menuView, wrapParams);
+    }
+
+    @Override
+    public void showMeetInfo(MeetingInformation info) {
+        AlertDialog dialog = DialogUtil.createDialog(cxt, R.layout.dialog_meeting_info, Values.width_2_3, Values.height_2_3);
+        dialog.findViewById(R.id.iv_close).setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+        TextView tv_meet_name = dialog.findViewById(R.id.tv_meet_name);
+        TextView tv_meet_time = dialog.findViewById(R.id.tv_meet_time);
+        TextView tv_meet_room = dialog.findViewById(R.id.tv_meet_room);
+        TextView tv_host_name = dialog.findViewById(R.id.tv_host_name);
+        TextView tv_members = dialog.findViewById(R.id.tv_members);
+        String meetingName = info.getMeetInfo().getName().toStringUtf8();
+        String roomName = info.getMeetInfo().getRoomname().toStringUtf8();
+        String secrecy = info.getMeetInfo().getSecrecy() == 1 ? cxt.getString(R.string.yes) : cxt.getString(R.string.no);
+        String startTime = DateUtil.secondFormatDateTime(info.getMeetInfo().getStartTime());
+        String endTime = DateUtil.secondFormatDateTime(info.getMeetInfo().getEndTime());
+        String orderMemberName = info.getMeetInfo().getOrdername().toStringUtf8();
+        tv_meet_name.setText(meetingName);
+        tv_meet_time.setText(getString(R.string.time_, startTime));
+        tv_meet_room.setText(getString(R.string.location_, roomName));
+        tv_host_name.setText(getString(R.string.host_name_,
+                info.getHostInfo() != null ? info.getHostInfo().getName().toStringUtf8() : getString(R.string.none)
+        ));
+        tv_members.setText(getString(R.string.members_, info.getMembers()));
+
     }
 
     private String saveNoteContent = "";

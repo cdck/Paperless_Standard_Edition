@@ -14,6 +14,11 @@ import xlk.paperless.standard.data.Values;
  * @desc
  */
 public class PopUtil {
+
+    public static PopupWindow create(View contentView, View parent) {
+        return create(contentView, Values.half_width, Values.half_height, parent);
+    }
+
     /**
      * @param contentView 弹框布局
      * @param w           宽
@@ -22,41 +27,19 @@ public class PopUtil {
      * @return PopupWindow
      */
     public static PopupWindow create(View contentView, int w, int h, View parent) {
-        PopupWindow popupWindow = new PopupWindow(contentView, w, h);
-        popupWindow.setBackgroundDrawable(new BitmapDrawable());
-        // 设置popWindow弹出窗体可点击，这句话必须添加，并且是true
-        popupWindow.setTouchable(true);
-        // true:设置触摸外面时消失
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setFocusable(true);
-        popupWindow.setAnimationStyle(R.style.pop_Animation);
-        popupWindow.showAtLocation(parent, Gravity.CENTER, 0, 0);
-        return popupWindow;
+        return create(contentView, w, h, true, parent, Gravity.CENTER, 0, 0);
     }
 
-    public static PopupWindow create(View contentView, View parent) {
-        PopupWindow popupWindow = new PopupWindow(contentView, Values.half_width, Values.half_height);
-        popupWindow.setBackgroundDrawable(new BitmapDrawable());
-        // 设置popWindow弹出窗体可点击，这句话必须添加，并且是true
-        popupWindow.setTouchable(true);
-        // true:设置触摸外面时消失
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setFocusable(true);
-        popupWindow.setAnimationStyle(R.style.pop_Animation);
-        popupWindow.showAtLocation(parent, Gravity.CENTER, 0, 0);
-        return popupWindow;
-    }
-
-    public static PopupWindow create(View contentView, int width, int height, View parent, int gravity) {
+    public static PopupWindow create(View contentView, int width, int height, boolean outside, View parent, int gravity, int x, int y) {
         PopupWindow popupWindow = new PopupWindow(contentView, width, height);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
         // 设置popWindow弹出窗体可点击，这句话必须添加，并且是true
-        popupWindow.setTouchable(true);
+        popupWindow.setTouchable(outside);
         // true:设置触摸外面时消失
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(outside);
+        popupWindow.setFocusable(outside);
         popupWindow.setAnimationStyle(R.style.pop_Animation);
-        popupWindow.showAtLocation(parent, gravity, 0, 0);
+        popupWindow.showAtLocation(parent, gravity, x, y);
         return popupWindow;
     }
 

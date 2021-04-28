@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">无纸化标准版</string>
+    <string name="app_name">无纸化</string>
     <string name="set_name_">席位：%1$s</string>
     <string name="err_download">文件下载出错</string>
     <string name="determine">确定</string>
@@ -544,7 +544,7 @@
     <string name="start_time">开始时间</string>
     <string name="end_time">结束时间</string>
     <string name="reservation_person">预约人</string>
-    <string name="Ongoing">正在进行</string>
+    <string name="Ongoing">进行中</string>
     <string name="not_started">未开始</string>
     <string name="over">已结束</string>
     <string name="meet_pause">会议暂停</string>
@@ -858,5 +858,16 @@
     <string name="meeting_note">会议笔记</string>
     <string name="please_choose_txt_file">请选择文本文件</string>
     <string name="please_check_network">请检查网络配置</string>
+    <string name="temporary_materials">临时材料</string>
+    <string name="meeting_information">会议信息</string>
+    <string name="please_insert_udisk_first">请先插入U盘</string>
+    <string name="time_">时间：%1$s</string>
+    <string name="location_">地点：%1$s</string>
+    <string name="host_name_">主持人：%1$s</string>
+    <string name="members_">出席人员：\n　　　　%1$s</string>
+    <string name="sign_in_seat">签到席位</string>
+    <string name="sign_in_list">签到列表</string>
+    <string name="start">开始</string>
+    <string name="end">结束</string>
 
 </resources>

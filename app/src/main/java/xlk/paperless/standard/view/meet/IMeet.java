@@ -40,4 +40,6 @@ public interface IMeet {
     void updateMemberRole(String roleStr);
 
     void updateLogoSize(int logoiv, InterfaceFaceconfig.pbui_Item_FaceTextItemInfo info);
+
+    void changeSignInPage(boolean toListPage);
 }

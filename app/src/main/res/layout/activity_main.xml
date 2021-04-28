@@ -96,7 +96,7 @@
 
     <Button
         android:id="@+id/set_btn_main"
-        android:layout_width="@dimen/dp_150"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_btn_pressed"
         android:text="@string/systemSetting"
@@ -189,7 +189,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 tools:text="12月20日"
-                tools:textSize="12sp" />
+                tools:textSize="@dimen/text_size_small" />
 
             <TextView
                 android:id="@+id/week_tv_main"
@@ -197,7 +197,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 tools:text="星期一"
-                tools:textSize="12sp" />
+                tools:textSize="@dimen/text_size_small" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -205,7 +205,7 @@
         android:id="@+id/icon_ll_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dp_5"
+        android:layout_margin="5dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -214,21 +214,20 @@
             android:id="@+id/iv_set_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dp_5"
-            android:clickable="true"
+            android:layout_marginEnd="5dp"
             android:src="@drawable/icon_set_pressed" />
 
         <ImageView
             android:id="@+id/iv_close_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
+            android:visibility="gone"
             android:src="@drawable/icon_close_pressed" />
     </LinearLayout>
 
     <Button
         android:id="@+id/enter_btn_main"
-        android:layout_width="@dimen/dp_200"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_btn_pressed"
         android:text="@string/enterMeeting"
@@ -242,13 +241,13 @@
 
     <!--<xlk.paperless.standard.ui.SlideView-->
     <!--android:id="@+id/slideview_main"-->
-    <!--android:layout_width="@dimen/dp_150"-->
-    <!--android:layout_height="@dimen/dp_45"-->
+    <!--android:layout_width="150dp"-->
+    <!--android:layout_height="45dp"-->
     <!--android:visibility="gone"-->
     <!--app:bg_text="@string/slide_bg_text"-->
     <!--app:bg_text_color="@color/white"-->
     <!--app:bg_text_complete="@string/slide_text_complete"-->
-    <!--app:bg_text_size="18sp"-->
+    <!--app:bg_text_size="@dimen/text_size_slightly_larger"-->
     <!--app:enable_when_full="true"-->
     <!--app:gradient_color1="#0a0a0a"-->
     <!--app:gradient_color2="#FFFFFF"-->
@@ -261,7 +260,7 @@
     <!--app:layout_constraintRight_toRightOf="parent"-->
     <!--app:layout_constraintTop_toTopOf="parent"-->
     <!--app:layout_constraintVertical_bias="0.9"-->
-    <!--app:min_height="@dimen/dp_45"-->
+    <!--app:min_height="45dp"-->
     <!--app:reset_not_full="true"-->
     <!--app:secondary_color="@color/yellow" />-->
 

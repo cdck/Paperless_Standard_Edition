@@ -2,6 +2,7 @@ package xlk.paperless.standard.base;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 
@@ -18,6 +19,8 @@ import xlk.paperless.standard.R;
 import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.view.meet.MeetingActivity;
+
+import static xlk.paperless.standard.data.Values.fontScale;
 
 /**
  * @author xlk

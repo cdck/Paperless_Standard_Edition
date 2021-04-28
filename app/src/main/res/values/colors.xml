@@ -87,4 +87,20 @@
     <color name="enable_false_color">#989CA3</color>
     <color name="gray_bg">#C8C8C8</color>
     <color name="fab_menu_bg_color">#E61E5888</color>
+
+    <color name="seat_selected_color">#A30000</color>
+    <color name="sign_in_color">#737DF5</color>
+    <color name="un_sign_in_color">#1791FF</color>
+
+    <!--  时间轴议程状态颜色：已结束、进行中、未开始  -->
+    <color name="agenda_over_color">#999999</color>
+    <color name="agenda_processing_color">#28B464</color>
+    <color name="agenda_not_started_color">#1791FF</color>
+
+    <color name="stop_agenda_btn_bg_color">#F36322</color>
+    <color name="start_agenda_btn_bg_color">#1791FF</color>
+    <color name="item_selected_bg_color">#BAFFFE</color>
+
+
+
 </resources>

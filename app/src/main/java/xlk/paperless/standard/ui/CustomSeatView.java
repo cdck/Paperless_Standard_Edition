@@ -2,6 +2,7 @@ package xlk.paperless.standard.ui;
 
 import android.content.Context;
 import android.graphics.Region;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,7 +49,11 @@ public class CustomSeatView extends AbsoluteLayout {
      * 席位的固定宽高
      */
     private final int SEAT_WIDTH = 120;
-    private final int SEAT_HEIGHT = 70;
+    private final int SEAT_HEIGHT = 60;
+    /**
+     * 席位之间的间距
+     */
+    private final int PADDING = 2;
     /**
      * 拖动底图时按下的坐标
      */
@@ -91,12 +96,20 @@ public class CustomSeatView extends AbsoluteLayout {
      */
     private boolean chooseSingle = false;
     /**
-     * 是否可以拖动,默认true可拖动
+     * 是否可以拖动底图,默认true可拖动
      */
     private boolean canDrag = true;
+    /**
+     * 是否可以拖动席位,默认true可拖动
+     */
+    private boolean canDragSeat = true;
 
     public void setCanDrag(boolean drag) {
         canDrag = drag;
+    }
+
+    public void setCanDragSeat(boolean canDragSeat) {
+        this.canDragSeat = canDragSeat;
     }
 
     public void setHideMember(boolean hide) {
@@ -228,7 +241,88 @@ public class CustomSeatView extends AbsoluteLayout {
         for (int i = 0; i < seatBeans.size(); i++) {
             SeatBean seatBean = seatBeans.get(i);
             View inflate = LayoutInflater.from(getContext()).inflate(R.layout.item_seat, null);
-            RelativeLayout.LayoutParams ivParams = new RelativeLayout.LayoutParams(30, 30);
+
+            RelativeLayout.LayoutParams deviceLayoutParams = new RelativeLayout.LayoutParams(120, 20);
+            RelativeLayout.LayoutParams seatLinearParams = new RelativeLayout.LayoutParams(120, 40);
+            ImageView item_seat_iv = inflate.findViewById(R.id.item_seat_iv);
+//        item_seat_iv.setVisibility(isShow ? View.VISIBLE : View.GONE);
+            TextView item_seat_device = inflate.findViewById(R.id.item_seat_device);
+            item_seat_device.setTextSize(7);
+            LinearLayout item_seat_ll = inflate.findViewById(R.id.item_seat_ll);
+            TextView item_seat_member = inflate.findViewById(R.id.item_seat_member);
+            item_seat_member.setTextSize(7);
+
+            String devName = seatBean.getDevName();
+            if (!TextUtils.isEmpty(devName)) {
+                item_seat_device.setText(devName);
+            } else {
+                item_seat_device.setVisibility(View.INVISIBLE);
+            }
+            boolean isChecked = seatBean.getIssignin() == 1;
+            item_seat_iv.setImageResource(isChecked ? R.drawable.icon_signin : R.drawable.icon_un_signin);
+            item_seat_device.setSelected(isChecked);
+            item_seat_ll.setSelected(isChecked);
+            String memberName = seatBean.getMemberName();
+            if (!TextUtils.isEmpty(memberName)) {
+                item_seat_member.setText(memberName);
+            } else {
+                item_seat_member.setVisibility(View.INVISIBLE);
+            }
+
+            deviceLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+            deviceLayoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            seatLinearParams.addRule(RelativeLayout.BELOW, item_seat_device.getId());
+            seatLinearParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+            item_seat_device.setLayoutParams(deviceLayoutParams);
+            item_seat_ll.setLayoutParams(seatLinearParams);
+            //左上角x坐标
+            float x1 = seatBean.getX();
+            //左上角y坐标
+            float y1 = seatBean.getY();
+            if (x1 > 1) {
+                x1 = 1;
+            } else if (x1 < 0) {
+                x1 = 0;
+            }
+            if (y1 > 1) {
+                y1 = 1;
+            } else if (y1 < 0) {
+                y1 = 0;
+            }
+            int x = (int) (x1 * width);
+            int y = (int) (y1 * height);
+            if (x > width - SEAT_WIDTH) {
+                Log.d(TAG, "addSeat :  X轴超过 --> ");
+                x = width - SEAT_WIDTH;
+            }
+            if (y > height - SEAT_HEIGHT) {
+                Log.i(TAG, "addSeat :  Y轴超过 --> ");
+                y = height - SEAT_HEIGHT;
+            }
+            seatBean.setX((float) x / width);
+            seatBean.setY((float) y / height);
+            LayoutParams params = new LayoutParams(
+                    SEAT_WIDTH, SEAT_HEIGHT,
+                    x, y);
+            inflate.setLayoutParams(params);
+            int devId = seatBean.getDevId();
+            inflate.setId(devId);
+            Region region = new Region(x, y, x + SEAT_WIDTH, y + SEAT_HEIGHT);
+            if (selectedIds.contains(devId)) {
+                inflate.setSelected(true);
+            }
+            regions.add(region);
+            subViews.add(inflate);
+            addView(inflate);
+
+//            int x = (int) (x1 * width);
+//            int y = (int) (y1 * height);
+//
+//            AbsoluteLayout.LayoutParams params = new AbsoluteLayout.LayoutParams(120, 60, x, y);
+//            inflate.setLayoutParams(params);
+//            addView(inflate);
+            /*RelativeLayout.LayoutParams ivParams = new RelativeLayout.LayoutParams(30, 30);
             RelativeLayout.LayoutParams seatLinearParams = new RelativeLayout.LayoutParams(SEAT_WIDTH, 40);
             ImageView item_seat_iv = inflate.findViewById(R.id.item_seat_iv);
             LinearLayout item_seat_ll = inflate.findViewById(R.id.item_seat_ll);
@@ -318,6 +412,7 @@ public class CustomSeatView extends AbsoluteLayout {
             regions.add(region);
             subViews.add(inflate);
             addView(inflate);
+             */
         }
     }
 
@@ -406,7 +501,7 @@ public class CustomSeatView extends AbsoluteLayout {
                     float dy = moveY - touchDownY;
                     if (touchSeatIndex == -1) {
                         dragParentView(canDragX, canDragY, dx, dy);
-                    } else {
+                    } else if (canDragSeat) {
                         dragSeatView(moveX, moveY, dx, dy);
                     }
                 }
@@ -538,10 +633,10 @@ public class CustomSeatView extends AbsoluteLayout {
      * 自动排序
      */
     public void autoSort() {
-        //当前最大行数
-        final int rowCount = height / SEAT_HEIGHT;
-        //当前最大列数
-        final int columnCount = width / SEAT_WIDTH;
+        //当前最大行数（加点间距）
+        final int rowCount = height / (SEAT_HEIGHT + PADDING);
+        //当前最大列数（加点间距）
+        final int columnCount = width / (SEAT_WIDTH + PADDING);
         Log.e(TAG, "sort 最大行数和列数=" + rowCount + "," + columnCount + ",seatBeans.size=" + seatBeans.size());
         //记录当前行
         int currentRow = 1;
@@ -567,8 +662,10 @@ public class CustomSeatView extends AbsoluteLayout {
                     currentColumn = 0;
                 }
             }
-            int currentViewX = (currentColumn) * SEAT_WIDTH;
-            int currentViewY = (currentRow - 1) * SEAT_HEIGHT;
+            //当前的左上角X坐标值=当前列数*座位宽度
+            int currentViewX = (currentColumn) * (SEAT_WIDTH + PADDING);
+            //当前的左上角Y坐标值=上一行数*座位高度
+            int currentViewY = (currentRow - 1) * (SEAT_HEIGHT + PADDING);
             layoutParams.x = currentViewX;
             layoutParams.y = currentViewY;
             view.layout(currentViewX, currentViewY, currentViewX + SEAT_WIDTH, currentViewY + SEAT_HEIGHT);

@@ -1,6 +1,7 @@
 package xlk.paperless.standard.view.main;
 
 import android.Manifest;
+import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,16 +13,24 @@ import android.hardware.Camera;
 import android.media.MediaCodec;
 import android.media.MediaFormat;
 import android.media.projection.MediaProjectionManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.storage.StorageManager;
+import android.os.storage.StorageVolume;
 import android.provider.Settings;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.RegexUtils;
+import com.blankj.utilcode.util.UriUtils;
 import com.google.android.material.textfield.TextInputEditText;
 
 import androidx.appcompat.app.AlertDialog;
@@ -40,6 +49,7 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.acker.simplezxing.activity.CaptureActivity;
 import com.hjq.permissions.OnPermission;
@@ -53,8 +63,6 @@ import com.mogujie.tt.protobuf.InterfaceMacro;
 import com.mogujie.tt.protobuf.InterfaceMember;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import xlk.paperless.standard.R;
@@ -77,11 +85,7 @@ import xlk.paperless.standard.view.meet.MeetingActivity;
 import static xlk.paperless.standard.data.Constant.EXTRA_ADMIN_ID;
 import static xlk.paperless.standard.data.Constant.EXTRA_ADMIN_NAME;
 import static xlk.paperless.standard.data.Constant.EXTRA_ADMIN_PASSWORD;
-import static xlk.paperless.standard.data.Values.camera_height;
-import static xlk.paperless.standard.data.Values.camera_width;
 import static xlk.paperless.standard.util.ConvertUtil.s2b;
-import static xlk.paperless.standard.view.App.MAX_HEIGHT;
-import static xlk.paperless.standard.view.App.MAX_WIDTH;
 import static xlk.paperless.standard.view.App.mIntent;
 import static xlk.paperless.standard.view.App.mMediaProjectionManager;
 import static xlk.paperless.standard.view.App.mResult;
@@ -102,7 +106,6 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
     private ConstraintLayout main_root_layout;
 
     private PopupWindow createMemberPop;
-    private long last;
     private PopupWindow bindMemberPop;
     private MainBindMemberAdapter adapter;
     private int result;
@@ -171,19 +174,20 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
     }
 
     private void start() {
-        LogUtils.d(TAG, "start --> 开始 ");
+        LogUtils.d(TAG, "start -->  * **** **  开始  ** **** *");
+        LogUtils.i("本机是否有root权限=" + DeviceUtils.isDeviceRooted());
         ((App) getApplication()).openBackstageService(true);
         presenter = new MainPresenter(this, this);
         request();
     }
 
     private void initial() {
-        try {
-            initCameraSize();
-        } catch (Exception e) {
-            LogUtils.e(TAG, "initial --> 相机使用失败：" + e.toString());
-            e.printStackTrace();
-        }
+//        try {
+//            initCameraSize();
+//        } catch (Exception e) {
+//            LogUtils.e(TAG, "initial --> 相机使用失败：" + e.toString());
+//            e.printStackTrace();
+//        }
         presenter.initConfFile();
         checkNetWork();
     }
@@ -227,6 +231,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
     @Override
     public void checkNetWork() {
         Values.isOneline = AppUtil.isNetworkAvailable(this) ? 1 : 0;
+        LogUtils.e(TAG, "checkNetWork Values.isOneline=" + Values.isOneline);
         if (Values.isOneline == 1) {
             LogUtils.d(TAG, "checkNetWork -->" + "网络可用");
             if (netDialog != null && netDialog.isShowing()) {
@@ -282,7 +287,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
     }
 
     private void initCameraSize() {
-        int type = 1;
+        /*int type = 1;
         LogUtils.d(TAG, "initCameraSize :   --> ");
         //获取摄像机的个数 一般是前/后置两个
         int numberOfCameras = Camera.getNumberOfCameras();
@@ -304,7 +309,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         }
         for (int i = 0; i < param.getSupportedPreviewSizes().size(); i++) {
             int w = param.getSupportedPreviewSizes().get(i).width, h = param.getSupportedPreviewSizes().get(i).height;
-            LogUtils.d(TAG, "initCameraSize: w=" + w + " h=" + h);
+//            LogUtils.d(TAG, "initCameraSize: w=" + w + " h=" + h);
             supportW.add(w);
             supportH.add(h);
         }
@@ -312,7 +317,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
             try {
                 largestW = supportW.get(i);
                 largestH = supportH.get(i);
-                LogUtils.d(TAG, "initCameraSize :   --> largestW= " + largestW + " , largestH=" + largestH);
+//                LogUtils.d(TAG, "initCameraSize :   --> largestW= " + largestW + " , largestH=" + largestH);
                 MediaFormat mediaFormat = MediaFormat.createVideoFormat("video/avc", largestW, largestH);
                 if (MediaCodec.createEncoderByType("video/avc").getCodecInfo().getCapabilitiesForType("video/avc").isFormatSupported(mediaFormat)) {
                     if (largestW * largestH > camera_width * camera_height) {
@@ -331,11 +336,12 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
                 }
             }
         }
-        LogUtils.d(TAG, "initCameraSize -->" + "前置像素：" + camera_width + " X " + camera_height);
+        LogUtils.d(TAG, "initCameraSize -->" + "前置像素：" + camera_width + " X " + camera_height + ",最大1280x720");
         if (camera_width * camera_height > MAX_WIDTH * MAX_HEIGHT) {
             camera_width = MAX_WIDTH;
             camera_height = MAX_HEIGHT;
         }
+        */
     }
 
     private void request() {
@@ -395,9 +401,6 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         }
     }
 
-    private int count = 1;
-    private long lastClickTime = 0;
-
     private void initView() {
         iv_set_main = (ImageView) findViewById(R.id.iv_set_main);
         iv_set_main.setOnClickListener(this);
@@ -410,19 +413,6 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         member_tv_main = (TextView) findViewById(R.id.member_tv_main);
         logo_iv_main = (ImageView) findViewById(R.id.logo_iv_main);
         company_tv_main = (TextView) findViewById(R.id.company_tv_main);
-        seat_tv_main.setOnClickListener(v -> {
-            if (System.currentTimeMillis() - lastClickTime < 500) {
-                count++;
-                if (count == 5) {
-                    LogUtils.i(TAG, "initView canLoginAdmin=" + App.canLoginAdmin);
-                    App.canLoginAdmin = !App.canLoginAdmin;
-                    count = 1;
-                }
-            } else {
-                count = 1;
-            }
-            lastClickTime = System.currentTimeMillis();
-        });
 
 //        slideview_main = (SlideView) findViewById(R.id.slideview_main);
 
@@ -904,14 +894,10 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         presenter = null;
     }
 
+
     @Override
     public void onBackPressed() {
-        if (System.currentTimeMillis() - last < 1500) {
-            exit();
-        } else {
-            last = System.currentTimeMillis();
-            ToastUtil.show(R.string.click_again_exit);
-        }
+//        App.setAppFontSize(Values.fontScale + 0.2f);
     }
 
     private void exit() {

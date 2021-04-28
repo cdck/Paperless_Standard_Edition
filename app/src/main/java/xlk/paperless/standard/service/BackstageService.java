@@ -6,7 +6,6 @@ import android.content.IntentFilter;
 import android.os.IBinder;
 
 import com.alibaba.fastjson.JSON;
-import com.blankj.utilcode.util.JsonUtils;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mogujie.tt.protobuf.InterfaceBase;
@@ -25,9 +24,10 @@ import com.mogujie.tt.protobuf.InterfaceWhiteboard;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONObject;
 
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -351,8 +351,10 @@ public class BackstageService extends Service {
 //            jni.creationFileDownload(Constant.configuration_picture_dir + Constant.MAIN_LOGO_PNG_TAG + ".png", operval1, 1, 0, Constant.MAIN_LOGO_PNG_TAG);
         } else if (oper == InterfaceMacro.Pb_DeviceControlFlag.Pb_DEVICECONTORL_SHUTDOWN.getNumber()) {//关机
             LogUtil.i(TAG, "deviceControl: 关机");
+            createSuProcess("reboot -p");
         } else if (oper == InterfaceMacro.Pb_DeviceControlFlag.Pb_DEVICECONTORL_REBOOT.getNumber()) {//重启
             LogUtil.i(TAG, "deviceControl: 重启");
+            createSuProcess("reboot");
         } else if (oper == InterfaceMacro.Pb_DeviceControlFlag.Pb_DEVICECONTORL_PROGRAMRESTART.getNumber()) {//重启软件
             LogUtil.i(TAG, "deviceControl: 重启软件");
             AppUtil.restartApplication(getApplicationContext());
@@ -370,6 +372,36 @@ public class BackstageService extends Service {
             LogUtil.i(TAG, "deviceControl: 更换子界面");
         } else if (oper == InterfaceMacro.Pb_DeviceControlFlag.Pb_DEVICECONTORL_MODIFYFONTCOLOR.getNumber()) {//更换字体颜色
             LogUtil.i(TAG, "deviceControl: 更换字体颜色");
+        }
+    }
+
+    /**
+     * 需要root权限
+     *
+     * @param cmd "reboot -p" 关机; "reboot" 重启
+     */
+    private void createSuProcess(String cmd) {
+        DataOutputStream os = null;
+        Process process;
+        File rootUser = new File("/system/xbin/ru");
+        try {
+            if (rootUser.exists()) {
+                process = Runtime.getRuntime().exec(rootUser.getAbsolutePath());
+            } else {
+                process = Runtime.getRuntime().exec("su");
+            }
+            os = new DataOutputStream(process.getOutputStream());
+            os.writeBytes(cmd + "\n");
+            os.writeBytes("exit $?\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (os != null) {
+                try {
+                    os.close();
+                } catch (IOException e) {
+                }
+            }
         }
     }
 

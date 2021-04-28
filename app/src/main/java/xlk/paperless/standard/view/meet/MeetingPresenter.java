@@ -54,6 +54,11 @@ public class MeetingPresenter extends BasePresenter {
     @Override
     public void busEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
+            case Constant.BUS_SIGN_IN_LIST_PAGE: {//议程变更通知
+                boolean toListPage = (boolean) msg.getObject();
+                view.changeSignInPage(toListPage);
+                break;
+            }
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEETAGENDA_VALUE://议程变更通知
                 queryAgenda();
                 break;

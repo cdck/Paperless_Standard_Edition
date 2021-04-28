@@ -42,7 +42,7 @@ import xlk.paperless.standard.util.ToastUtil;
 
 /**
  * @author Created by xlk on 2020/11/3.
- * @desc
+ * @desc  座位排布
  */
 public class SeatArrangementFragment extends BaseFragment implements SeatArrangementInterface, View.OnClickListener {
     private RecyclerView rv_room;

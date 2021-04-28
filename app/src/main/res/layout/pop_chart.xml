@@ -10,8 +10,8 @@
         android:id="@+id/pop_chart_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_8"
-        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:src="@drawable/icon_close_t"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -20,8 +20,8 @@
         android:id="@+id/pop_chart_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_8"
-        android:layout_marginTop="@dimen/dp_8"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:textColor="@color/chart_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pop_chart_close"
@@ -31,10 +31,10 @@
         android:id="@+id/pop_chart_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_8"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:textColor="@color/chart_content"
-        android:textSize="@dimen/sp_12"
+        android:textSize="@dimen/text_size_small"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pop_chart_type"
         tools:text="测试投票" />
@@ -43,10 +43,10 @@
         android:id="@+id/pop_chart"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/dp_8"
-        android:layout_marginTop="@dimen/dp_8"
-        android:layout_marginEnd="@dimen/dp_8"
-        android:layout_marginBottom="@dimen/dp_8"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/linearLayout3"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,9 +56,9 @@
         android:id="@+id/linearLayout3"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/dp_8"
-        android:layout_marginEnd="@dimen/dp_8"
-        android:layout_marginBottom="@dimen/dp_8"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:gravity="center_vertical"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -75,15 +75,15 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="@dimen/dp_20"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:background="@color/option_a" />
 
             <TextView
                 android:id="@+id/pop_option_a_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_5"
+                android:layout_marginStart="5dp"
                 tools:text="赞成：2票" />
         </LinearLayout>
 
@@ -96,15 +96,15 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="@dimen/dp_20"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:background="@color/option_b" />
 
             <TextView
                 android:id="@+id/pop_option_b_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_5"
+                android:layout_marginStart="5dp"
                 tools:text="赞成：2票" />
         </LinearLayout>
 
@@ -117,15 +117,15 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="@dimen/dp_20"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:background="@color/option_c" />
 
             <TextView
                 android:id="@+id/pop_option_c_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_5"
+                android:layout_marginStart="5dp"
                 tools:text="赞成：2票" />
         </LinearLayout>
 
@@ -138,15 +138,15 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="@dimen/dp_20"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:background="@color/option_d" />
 
             <TextView
                 android:id="@+id/pop_option_d_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_5"
+                android:layout_marginStart="5dp"
                 tools:text="赞成：2票" />
         </LinearLayout>
 
@@ -159,15 +159,15 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="@dimen/dp_20"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:background="@color/option_e" />
 
             <TextView
                 android:id="@+id/pop_option_e_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_5"
+                android:layout_marginStart="5dp"
                 tools:text="赞成：2票" />
         </LinearLayout>
     </LinearLayout>

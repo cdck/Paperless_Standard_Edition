@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/dp_5"
+    android:layout_margin="5dp"
     android:orientation="vertical">
 
     <include layout="@layout/item_admin_device_coltrol" />
@@ -17,7 +17,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dp_5"
+        android:layout_margin="5dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -30,14 +30,14 @@
                 android:id="@+id/cb_check_all"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginEnd="5dp"
                 android:text="@string/check_all" />
 
             <CheckBox
                 android:id="@+id/cb_check_lift"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginEnd="5dp"
                 android:text="@string/lift" />
 
             <CheckBox
@@ -58,21 +58,21 @@
                 android:id="@+id/btn_restart_app"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginEnd="5dp"
                 android:text="@string/app_restart" />
 
             <Button
                 android:id="@+id/btn_restart"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginEnd="5dp"
                 android:text="@string/terminal_restart" />
 
             <Button
                 android:id="@+id/btn_shutdown"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginEnd="5dp"
                 android:text="@string/terminal_shutdown" />
 
             <Button
@@ -86,7 +86,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dp_5"
+        android:layout_margin="5dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -99,14 +99,14 @@
                 android:id="@+id/btn_rise"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginEnd="5dp"
                 android:text="@string/rise" />
 
             <Button
                 android:id="@+id/btn_stop"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginEnd="5dp"
                 android:text="@string/stop" />
 
             <Button
@@ -127,21 +127,21 @@
                 android:id="@+id/btn_member_role"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginEnd="5dp"
                 android:text="@string/role" />
 
             <Button
                 android:id="@+id/btn_wake_online"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginEnd="5dp"
                 android:text="@string/wake_on_lan" />
 
             <Button
                 android:id="@+id/btn_document"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginEnd="5dp"
                 android:text="@string/open_document_externally" />
 
         </LinearLayout>

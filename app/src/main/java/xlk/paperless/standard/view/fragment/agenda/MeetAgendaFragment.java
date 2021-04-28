@@ -2,9 +2,11 @@ package xlk.paperless.standard.view.fragment.agenda;
 
 import android.os.Bundle;
 import android.os.Environment;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +14,24 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.ToastUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.mogujie.tt.protobuf.InterfaceAgenda;
+import com.mogujie.tt.protobuf.InterfaceMacro;
 import com.tencent.smtt.sdk.TbsDownloader;
 import com.tencent.smtt.sdk.TbsReaderView;
 
 import java.util.Objects;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import xlk.paperless.standard.R;
+import xlk.paperless.standard.base.BaseFragment;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.ToastUtil;
 
@@ -31,7 +44,7 @@ import static xlk.paperless.standard.view.App.applicationContext;
  * @date 2020/3/13
  * @desc 会议议程
  */
-public class MeetAgendaFragment extends Fragment implements IMeetAgenda, TbsReaderView.ReaderCallback {
+public class MeetAgendaFragment extends BaseFragment implements IMeetAgenda, TbsReaderView.ReaderCallback {
 
     private final String TAG = "MeetAgendaFragment-->";
     private ProgressBar f_agenda_bar;
@@ -44,6 +57,9 @@ public class MeetAgendaFragment extends Fragment implements IMeetAgenda, TbsRead
      * =true 加载的是系统内核（默认），=false 加载的是X5内核
      */
     public static boolean isNeedRestart = false;
+    private LinearLayout ll_agenda_list;
+    private RecyclerView rv_agenda, rv_agenda_file;
+    private AgendaAdapter agendaAdapter;
 
     @Nullable
     @Override
@@ -56,25 +72,22 @@ public class MeetAgendaFragment extends Fragment implements IMeetAgenda, TbsRead
     }
 
     private void initView(View inflate) {
-        f_agenda_bar = inflate.findViewById(R.id.f_agenda_bar);
-        f_agenda_tv = inflate.findViewById(R.id.f_agenda_tv);
-        f_agenda_sv = inflate.findViewById(R.id.f_agenda_sv);
         f_agenda_root = inflate.findViewById(R.id.f_agenda_root);
-    }
+        f_agenda_bar = inflate.findViewById(R.id.f_agenda_bar);
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        presenter.onDestroy();
-        //不停止掉，下次进入是打开文件会卡在加载中状态
-        if (tbsReaderView != null) {
-            tbsReaderView.onStop();
-            tbsReaderView = null;
-        }
+        f_agenda_sv = inflate.findViewById(R.id.f_agenda_sv);
+        f_agenda_tv = inflate.findViewById(R.id.f_agenda_tv);
+
+        ll_agenda_list = inflate.findViewById(R.id.ll_agenda_list);
+        rv_agenda = inflate.findViewById(R.id.rv_agenda);
+        rv_agenda_file = inflate.findViewById(R.id.rv_agenda_file);
     }
 
     @Override
     public void initDefault() {
+        ll_agenda_list.setVisibility(View.GONE);
+        f_agenda_bar.setVisibility(View.GONE);
+        f_agenda_sv.setVisibility(View.GONE);
         f_agenda_tv.setText("当前没有议程");
         if (tbsReaderView != null) {
             f_agenda_root.removeView(tbsReaderView);
@@ -84,15 +97,57 @@ public class MeetAgendaFragment extends Fragment implements IMeetAgenda, TbsRead
     }
 
     @Override
+    public void showTimeAgenda() {
+        f_agenda_bar.setVisibility(View.GONE);
+        f_agenda_sv.setVisibility(View.GONE);
+        ll_agenda_list.setVisibility(View.VISIBLE);
+        if (agendaAdapter == null) {
+            agendaAdapter = new AgendaAdapter(presenter.agendaLists);
+            rv_agenda.setLayoutManager(new LinearLayoutManager(getContext()));
+            rv_agenda.setAdapter(agendaAdapter);
+            agendaAdapter.addChildClickViewIds(R.id.btn_agenda);
+            agendaAdapter.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+                    InterfaceAgenda.pbui_ItemAgendaTimeInfo item = presenter.agendaLists.get(position);
+                    int agendaid = item.getAgendaid();
+                    int dirid = item.getDirid();
+//                    agendaAdapter.choose(agendaid);
+                }
+            });
+            agendaAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+                @Override
+                public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
+                    InterfaceAgenda.pbui_ItemAgendaTimeInfo item = presenter.agendaLists.get(position);
+                    int status;
+                    if (item.getStatus() == InterfaceMacro.Pb_AgendaStatus.Pb_MEETAGENDA_STATUS_IDLE_VALUE) {
+                        status = InterfaceMacro.Pb_AgendaStatus.Pb_MEETAGENDA_STATUS_RUNNING_VALUE;
+                    } else /*if (item.getStatus() == InterfaceMacro.Pb_AgendaStatus.Pb_MEETAGENDA_STATUS_RUNNING_VALUE)*/ {
+                        status = InterfaceMacro.Pb_AgendaStatus.Pb_MEETAGENDA_STATUS_END_VALUE;
+                    }
+                    jni.modifyTimeAgendaStatus(item, status);
+                }
+            });
+        } else {
+            agendaAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
     public void setAgendaTv(String text) {
         //也有可能下载X5内核完成，但是议程变成文本类
         f_agenda_bar.setVisibility(View.GONE);
         f_agenda_sv.setVisibility(View.VISIBLE);
+        ll_agenda_list.setVisibility(View.GONE);
         f_agenda_tv.setText(text);
     }
 
     @Override
     public void displayFile(String path) {
+        if (!FileUtils.isFileExists(path)) {
+            Toast.makeText(getContext(), "文件不存在", Toast.LENGTH_SHORT).show();
+            return;
+        }
         f_agenda_sv.setVisibility(View.GONE);
         if (initX5Finished) {
             //加载完成
@@ -151,15 +206,20 @@ public class MeetAgendaFragment extends Fragment implements IMeetAgenda, TbsRead
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public void onHiddenChanged(boolean hidden) {
         if (!hidden) {
             presenter.queryAgenda();
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.onDestroy();
+        //不停止掉，下次进入是打开文件会卡在加载中状态
+        if (tbsReaderView != null) {
+            tbsReaderView.onStop();
+            tbsReaderView = null;
+        }
+    }
 }

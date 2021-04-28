@@ -48,7 +48,7 @@ public class CircularMenu extends CustomView {
     private Region centerRegion;
     private MenuClickListener mListener;
     private final String[] title = new String[]{
-            "结束投影", "截图批注", "结束同屏", "加入同屏", "发起同屏", "发起投影", "会议笔记", "呼叫服务"
+            "结束投影", "截图批注", "结束同屏", "加入同屏", "发起同屏", "发起投影", "会议笔记", "呼叫服务"//,"会议信息","临时材料"
     };
     final String backStr = "返回";
     private List<Bitmap> unPressedBitmaps = new ArrayList<>();
@@ -109,8 +109,8 @@ public class CircularMenu extends CustomView {
         unPressedBitmaps.add(drawableToBitmap(mCurrentContext.getResources().getDrawable(R.drawable.menu_start_screen_t)));
         unPressedBitmaps.add(drawableToBitmap(mCurrentContext.getResources().getDrawable(R.drawable.menu_start_pro_t)));
         unPressedBitmaps.add(drawableToBitmap(mCurrentContext.getResources().getDrawable(R.drawable.menu_meet_note_t)));
-//        unPressedBitmaps.add(drawableToBitmap(mCurrentContext.getResources().getDrawable(R.drawable.menu_keyboard_t)));
-//        unPressedBitmaps.add(drawableToBitmap(mCurrentContext.getResources().getDrawable(R.drawable.menu_handwriting_t)));
+//        unPressedBitmaps.add(drawableToBitmap(mCurrentContext.getResources().getDrawable(R.drawable.menu_usb_t)));
+//        unPressedBitmaps.add(drawableToBitmap(mCurrentContext.getResources().getDrawable(R.drawable.menu_meet_info_t)));
         unPressedBitmaps.add(drawableToBitmap(mCurrentContext.getResources().getDrawable(R.drawable.menu_call_service_t)));
         unPressedBitmaps.add(drawableToBitmap(mCurrentContext.getResources().getDrawable(R.drawable.menu_back_t)));
 
@@ -121,8 +121,8 @@ public class CircularMenu extends CustomView {
         pressedBitmaps.add(drawableToBitmap(mCurrentContext.getResources().getDrawable(R.drawable.menu_start_screen_f)));
         pressedBitmaps.add(drawableToBitmap(mCurrentContext.getResources().getDrawable(R.drawable.menu_start_pro_f)));
         pressedBitmaps.add(drawableToBitmap(mCurrentContext.getResources().getDrawable(R.drawable.menu_meet_note_f)));
-//        pressedBitmaps.add(drawableToBitmap(mCurrentContext.getResources().getDrawable(R.drawable.menu_keyboard_f)));
-//        pressedBitmaps.add(drawableToBitmap(mCurrentContext.getResources().getDrawable(R.drawable.menu_handwriting_f)));
+//        pressedBitmaps.add(drawableToBitmap(mCurrentContext.getResources().getDrawable(R.drawable.menu_usb_f)));
+//        pressedBitmaps.add(drawableToBitmap(mCurrentContext.getResources().getDrawable(R.drawable.menu_meet_info_f)));
         pressedBitmaps.add(drawableToBitmap(mCurrentContext.getResources().getDrawable(R.drawable.menu_call_service_f)));
         pressedBitmaps.add(drawableToBitmap(mCurrentContext.getResources().getDrawable(R.drawable.menu_back_f)));
     }

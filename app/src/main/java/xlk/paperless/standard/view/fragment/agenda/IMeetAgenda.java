@@ -11,4 +11,6 @@ public interface IMeetAgenda {
     void setAgendaTv(String text);
 
     void displayFile(String path);
+
+    void showTimeAgenda();
 }

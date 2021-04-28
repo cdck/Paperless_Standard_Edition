@@ -17,7 +17,7 @@
             android:layout_centerInParent="true"
             android:text="@string/meeting_note"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_size_medium"
             android:textStyle="bold" />
 
         <ImageView
