@@ -42,8 +42,8 @@ public class BaseActivity extends AppCompatActivity {
     protected final String TAG = getClass().getSimpleName() + "-->";
     private NetWorkReceiver netWorkReceiver;
     protected JniHandler jni = JniHandler.getInstance();
-    private final int REQUEST_CODE_EXPORT_NOTE = 1;
-    private final int REQUEST_CODE_OPEN_UDISK = 2;
+    protected final int REQUEST_CODE_EXPORT_NOTE = 1;
+    protected final int REQUEST_CODE_OPEN_UDISK = 2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,7 +66,7 @@ public class BaseActivity extends AppCompatActivity {
                 break;
             }
             case Constant.BUS_OPEN_UDISK: {
-                String uDiskPath = UDiskUtil.getUDiskPath1(this);
+                String uDiskPath = UDiskUtil.getUDiskPath(this);
                 LogUtils.e("收到通知打开U盘 uDiskPath=" + uDiskPath);
                 if (uDiskPath.isEmpty()) {
                     Toast.makeText(this, R.string.please_insert_udisk_first, Toast.LENGTH_LONG).show();

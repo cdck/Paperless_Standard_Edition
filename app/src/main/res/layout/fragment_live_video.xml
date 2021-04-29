@@ -38,7 +38,7 @@
                 android:layout_weight="1"
                 android:checked="true"
                 android:gravity="center"
-                android:text="点播视频" />
+                android:text="直播视频" />
 
             <CheckBox
                 android:id="@+id/cb_file"
@@ -47,7 +47,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="直播视频" />
+                android:text="点播视频" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

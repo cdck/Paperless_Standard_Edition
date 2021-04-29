@@ -35,7 +35,7 @@ public class UDiskUtil {
      * @param context 上下文
      */
     public static void openUDisk(Context context) {
-        String uDiskPath = getUDiskPath1(context);
+        String uDiskPath = getUDiskPath(context);
         if (uDiskPath.isEmpty()) {
             Toast.makeText(context, R.string.please_insert_udisk_first, Toast.LENGTH_SHORT).show();
             return;
@@ -52,30 +52,37 @@ public class UDiskUtil {
         context.startActivity(intent);
     }
 
-    public static String getUDiskPath1(Context context) {
-        String path = "";
+    public static String getUDiskPath(Context context) {
+        String uDiskPath = "";
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            ArrayList<String> uDiskPathApi24 = getUDiskPathApi24(context);
-            if (uDiskPathApi24.size() == 1) {
-                path = uDiskPathApi24.get(0);
-                LogUtils.i(TAG, "getUDiskPath1 U盘路径=" + path);
-            } else if (uDiskPathApi24.size() > 1) {
-                String upaath = uDiskPathApi24.get(0);
-                path = upaath.substring(0, upaath.lastIndexOf("/"));
-                LogUtils.e(TAG, "getUDiskPath1 U盘选取路径=" + path);
+            ArrayList<String> uDiskPathApi24 = getUDiskPathByApi24(context);
+            for (int i = 0; i < uDiskPathApi24.size(); i++) {
+                String path = uDiskPathApi24.get(i);
+                LogUtils.i(TAG, "getUDiskPath U盘路径=" + path);
+                if (i == 0) {
+                    uDiskPath = path;
+                }
             }
+//            if (uDiskPathApi24.size() == 1) {
+//                uDiskPath = uDiskPathApi24.get(0);
+//                LogUtils.i(TAG, "getUDiskPath U盘路径=" + uDiskPath);
+//            } else if (uDiskPathApi24.size() > 1) {
+//                String filePath = uDiskPathApi24.get(0);
+//                uDiskPath = filePath.substring(0, filePath.lastIndexOf("/"));
+//                LogUtils.e(TAG, "getUDiskPath U盘选取路径=" + uDiskPath);
+//            }
         }
-        return path;
+        return uDiskPath;
     }
 
     /**
-     * android7.0及以上系统获取U盘路径
+     * 通过Api24(7.0)及以下版本获取UDisk路径
      *
      * @param context 上下文对象
      * @return U盘的路径集合
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public static ArrayList<String> getUDiskPathApi24(Context context) {
+    public static ArrayList<String> getUDiskPathByApi24(Context context) {
         ArrayList<String> UDiskPaths = new ArrayList<>();
         StorageManager mStorageManager = (StorageManager) context.getSystemService(Context.STORAGE_SERVICE);
         //获取所有挂载的设备（内部sd卡、外部sd卡、挂载的U盘）
@@ -95,6 +102,7 @@ public class UDiskUtil {
                 LogUtils.d("getUDiskPathApi24", " i=" + i + " ,storagePath=" + storagePath
                         + " ,isRemovableResult=" + isRemovableResult + " ,description=" + description);
                 if (isRemovableResult) {
+                    //可移除的说明就是U盘
                     UDiskPaths.add(storagePath);
                 }
             }
@@ -105,12 +113,12 @@ public class UDiskUtil {
     }
 
     /**
-     * Android6.0及以下系统获取U盘路径
+     * 通过Api23(6.0)及以下版本获取UDisk路径
      *
      * @param context 上下文对象
      * @return U盘的路径集合
      */
-    public static ArrayList<String> getUDiskPath(Context context) {
+    public static ArrayList<String> getUDiskPathByApi23AndBelow(Context context) {
         ArrayList<String> data = new ArrayList<>();// include sd and usb devices
         StorageManager storageManager = (StorageManager) context.getSystemService(Context.STORAGE_SERVICE);
         try {

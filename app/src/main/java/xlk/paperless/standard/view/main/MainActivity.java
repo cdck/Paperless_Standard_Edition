@@ -28,6 +28,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.DeviceUtils;
+import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.UriUtils;
@@ -74,10 +75,12 @@ import xlk.paperless.standard.ui.ArtBoard;
 import xlk.paperless.standard.util.AppUtil;
 import xlk.paperless.standard.util.ConvertUtil;
 import xlk.paperless.standard.util.DateUtil;
+import xlk.paperless.standard.util.FileUtil;
 import xlk.paperless.standard.util.IniUtil;
 import xlk.paperless.standard.util.PopUtil;
 import xlk.paperless.standard.util.ToastUtil;
 import xlk.paperless.standard.base.BaseActivity;
+import xlk.paperless.standard.util.UDiskUtil;
 import xlk.paperless.standard.view.App;
 import xlk.paperless.standard.view.admin.AdminActivity;
 import xlk.paperless.standard.view.meet.MeetingActivity;
@@ -894,12 +897,6 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         presenter = null;
     }
 
-
-    @Override
-    public void onBackPressed() {
-//        App.setAppFontSize(Values.fontScale + 0.2f);
-    }
-
     private void exit() {
         ((App) getApplication()).onDestroy();
         finish();
@@ -1365,4 +1362,32 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         finish();
     }
 
+    @Override
+    public void onBackPressed() {
+//        App.setAppFontSize(Values.fontScale + 0.2f);
+
+        String uDiskPath = UDiskUtil.getUDiskPath(this);
+        File file = new File(uDiskPath);
+        LogUtils.e("U盘路径=" + uDiskPath + ",文件是否存在=" + (file.exists()));
+
+        StringBuilder sb = new StringBuilder();
+        String log = FileUtil.logListFiles(sb, 0, uDiskPath);
+        LogUtils.i(log);
+
+//        if (uDiskPath.isEmpty()) {
+//            Toast.makeText(this, R.string.please_insert_udisk_first, Toast.LENGTH_LONG).show();
+//            return;
+//        }
+//        File file = new File(uDiskPath);
+////        File file = new File(Constant.DIR_FILES);
+//        Uri uri = UriUtils.file2Uri(file);
+//        LogUtils.i("uri=" + uri);
+//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//        intent.addCategory(Intent.CATEGORY_DEFAULT);
+////        intent.addCategory(Intent.CATEGORY_OPENABLE);
+//        intent.setDataAndType(uri, "*/*");
+//        //被启动的Activity一旦退出，就不会存在于栈中
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+//        startActivityForResult(intent, REQUEST_CODE_OPEN_UDISK);
+    }
 }

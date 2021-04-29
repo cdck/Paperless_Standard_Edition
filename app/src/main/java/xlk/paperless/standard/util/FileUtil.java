@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.LogUtils;
 
 import androidx.core.content.FileProvider;
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.DecimalFormat;
+import java.util.List;
 
 import xlk.paperless.standard.BuildConfig;
 import xlk.paperless.standard.R;
@@ -42,6 +44,25 @@ import xlk.paperless.standard.view.pdf.PdfViewerActivity;
  */
 public class FileUtil {
     private static final String TAG = "FileUtil-->";
+
+    public static String logListFiles(StringBuilder sb, int level, String dirPath) {
+        List<File> files = FileUtils.listFilesInDir(dirPath);
+        String pre = "";
+//        for (int i = 0; i < level; i++) {
+//            pre += "\u3000\u3000";
+//        }
+        for (File file : files) {
+            if (file.isDirectory()) {
+                sb.append("\n").append(pre).append(file.getAbsolutePath());
+//                LogUtil.i("", "\n" + pre + file.getAbsolutePath());
+                logListFiles(sb, level++, file.getAbsolutePath());
+            } else if (file.isFile()) {
+//                LogUtil.i("", "\n" + pre + file.getAbsolutePath());
+            }
+        }
+        return sb.toString();
+    }
+
 
     /**
      * 多级创建目录

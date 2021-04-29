@@ -43,21 +43,21 @@ public class AgendaAdapter extends BaseQuickAdapter<InterfaceAgenda.pbui_ItemAge
         Button btn_agenda = holder.getView(R.id.btn_agenda);
         int status = item.getStatus();
         if (status == InterfaceMacro.Pb_AgendaStatus.Pb_MEETAGENDA_STATUS_IDLE_VALUE) {
-            iv_status_icon.setImageResource(R.drawable.icon_agenda);
+            iv_status_icon.setImageResource(R.drawable.icon_agenda_notstart);
             tv_agenda_status.setText(R.string.not_started);
             tv_agenda_status.setTextColor(getContext().getColor(R.color.agenda_not_started_color));
             btn_agenda.setVisibility(View.VISIBLE);
             btn_agenda.setSelected(false);
             btn_agenda.setText(getContext().getString(R.string.start));
         } else if (status == InterfaceMacro.Pb_AgendaStatus.Pb_MEETAGENDA_STATUS_RUNNING_VALUE) {
-            iv_status_icon.setImageResource(R.drawable.icon_agenda);
+            iv_status_icon.setImageResource(R.drawable.icon_agenda_ongoing);
             tv_agenda_status.setText(R.string.Ongoing);
             tv_agenda_status.setTextColor(getContext().getColor(R.color.agenda_processing_color));
             btn_agenda.setVisibility(View.VISIBLE);
             btn_agenda.setSelected(true);
             btn_agenda.setText(getContext().getString(R.string.end));
         } else {
-            iv_status_icon.setImageResource(R.drawable.icon_agenda);
+            iv_status_icon.setImageResource(R.drawable.icon_agenda_end);
             tv_agenda_status.setText(R.string.over);
             tv_agenda_status.setTextColor(getContext().getColor(R.color.agenda_over_color));
             btn_agenda.setVisibility(View.INVISIBLE);

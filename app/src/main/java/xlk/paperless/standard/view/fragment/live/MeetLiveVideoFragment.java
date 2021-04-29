@@ -99,10 +99,17 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
     }
 
     private void start() {
-        f_l_v_start_pro.setVisibility(isManage ? View.VISIBLE : View.GONE);
-        f_l_v_stop_pro.setVisibility(isManage ? View.VISIBLE : View.GONE);
-        f_l_v_start_screen.setVisibility(isManage ? View.VISIBLE : View.GONE);
-        f_l_v_stop_screen.setVisibility(isManage ? View.VISIBLE : View.GONE);
+        if (cb_live.isChecked()) {
+            f_l_v_start_pro.setVisibility(isManage ? View.VISIBLE : View.GONE);
+            f_l_v_stop_pro.setVisibility(isManage ? View.VISIBLE : View.GONE);
+            f_l_v_start_screen.setVisibility(isManage ? View.VISIBLE : View.GONE);
+            f_l_v_stop_screen.setVisibility(isManage ? View.VISIBLE : View.GONE);
+        } else {
+            f_l_v_start_pro.setVisibility(View.GONE);
+            f_l_v_stop_pro.setVisibility(View.GONE);
+            f_l_v_start_screen.setVisibility(View.GONE);
+            f_l_v_stop_screen.setVisibility(View.GONE);
+        }
         presenter.register();
         presenter.initVideoRes(pvWidth, pvHeight);
         f_l_v_v.createView(ids);
@@ -154,13 +161,13 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.f_l_v_watch:
-                if (cb_live.isChecked()) {
-                    if (adapter != null) {
-                        VideoDev videoDev = adapter.getSelected();
-                        if (videoDev != null) {
-                            int selectResId = f_l_v_v.getSelectResId();
-                            if (selectResId != -1) {
+            case R.id.f_l_v_watch: {
+                int selectResId = f_l_v_v.getSelectResId();
+                if (selectResId != -1) {
+                    if (cb_live.isChecked()) {
+                        if (adapter != null) {
+                            VideoDev videoDev = adapter.getSelected();
+                            if (videoDev != null) {
                                 presenter.stopResource(selectResId);
                                 new Timer().schedule(new TimerTask() {
                                     @Override
@@ -169,17 +176,12 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                                     }
                                 }, 500);
                             } else {
-                                ToastUtil.show(R.string.please_choose_view);
+                                ToastUtil.show(R.string.please_choose_video_show);
                             }
-                        } else {
-                            ToastUtil.show(R.string.please_choose_video_show);
                         }
-                    }
-                } else {
-                    if (fileAdapter != null) {
-                        int selectResId = f_l_v_v.getSelectResId();
-                        if (selectResId != -1) {
-                            int mediaId = fileAdapter.getSelectedId();
+                    } else {
+                        if (fileAdapter != null) {
+                            int mediaId = fileAdapter.getSelectedMediaId();
                             if (mediaId != -1) {
                                 List<Integer> ids = new ArrayList<>();
                                 ids.add(Values.localDeviceId);
@@ -187,12 +189,13 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                             } else {
                                 ToastUtil.show(R.string.please_choose_video_file);
                             }
-                        } else {
-                            ToastUtil.show(R.string.please_choose_view);
                         }
                     }
+                } else {
+                    ToastUtil.show(R.string.please_choose_view);
                 }
                 break;
+            }
             case R.id.f_l_v_stop: {
                 int selectResId = f_l_v_v.getSelectResId();
                 if (selectResId != -1) {
@@ -203,42 +206,42 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
                 break;
             }
             case R.id.f_l_v_stop_pro: {
+                if (!Constant.hasPermission(permission_code_projection)) {
+                    ToastUtil.show(R.string.err_NoPermission);
+                    break;
+                }
                 if (adapter != null && adapter.getSelected() != null) {
-                    if (Constant.hasPermission(permission_code_projection)) {
-                        showProPop(false, adapter.getSelected());
-                    } else {
-                        ToastUtil.show(R.string.err_NoPermission);
-                    }
+                    showProPop(false, adapter.getSelected());
                 }
                 break;
             }
             case R.id.f_l_v_start_pro: {
+                if (!Constant.hasPermission(permission_code_projection)) {
+                    ToastUtil.show(R.string.err_NoPermission);
+                    break;
+                }
                 if (adapter != null && adapter.getSelected() != null) {
-                    if (Constant.hasPermission(permission_code_projection)) {
-                        showProPop(true, adapter.getSelected());
-                    } else {
-                        ToastUtil.show(R.string.err_NoPermission);
-                    }
+                    showProPop(true, adapter.getSelected());
                 }
                 break;
             }
             case R.id.f_l_v_stop_screen: {
+                if (!Constant.hasPermission(permission_code_projection)) {
+                    ToastUtil.show(R.string.err_NoPermission);
+                    break;
+                }
                 if (adapter != null && adapter.getSelected() != null) {
-                    if (Constant.hasPermission(permission_code_screen)) {
-                        showScreenPop(false, adapter.getSelected());
-                    } else {
-                        ToastUtil.show(R.string.err_NoPermission);
-                    }
+                    showScreenPop(false, adapter.getSelected());
                 }
                 break;
             }
             case R.id.f_l_v_start_screen: {
+                if (!Constant.hasPermission(permission_code_projection)) {
+                    ToastUtil.show(R.string.err_NoPermission);
+                    break;
+                }
                 if (adapter != null && adapter.getSelected() != null) {
-                    if (Constant.hasPermission(permission_code_screen)) {
-                        showScreenPop(true, adapter.getSelected());
-                    } else {
-                        ToastUtil.show(R.string.err_NoPermission);
-                    }
+                    showScreenPop(true, adapter.getSelected());
                 }
                 break;
             }
@@ -494,14 +497,24 @@ public class MeetLiveVideoFragment extends BaseFragment implements IMeetLiveVide
         if (buttonView.getId() == R.id.cb_live) {
             cb_file.setChecked(!isChecked);
             if (isChecked) {
+                //当前是 直播视频被选中
                 f_l_v_rv.setVisibility(View.VISIBLE);
                 rv_file.setVisibility(View.GONE);
+                f_l_v_start_pro.setVisibility(isManage ? View.VISIBLE : View.GONE);
+                f_l_v_stop_pro.setVisibility(isManage ? View.VISIBLE : View.GONE);
+                f_l_v_start_screen.setVisibility(isManage ? View.VISIBLE : View.GONE);
+                f_l_v_stop_screen.setVisibility(isManage ? View.VISIBLE : View.GONE);
             }
         } else {
             cb_live.setChecked(!isChecked);
             if (isChecked) {
+                //当前是 点播视频被选中
                 rv_file.setVisibility(View.VISIBLE);
                 f_l_v_rv.setVisibility(View.GONE);
+                f_l_v_start_pro.setVisibility(View.GONE);
+                f_l_v_stop_pro.setVisibility(View.GONE);
+                f_l_v_start_screen.setVisibility(View.GONE);
+                f_l_v_stop_screen.setVisibility(View.GONE);
             }
         }
     }

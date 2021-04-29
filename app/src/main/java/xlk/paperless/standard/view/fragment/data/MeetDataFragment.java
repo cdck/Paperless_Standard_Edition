@@ -288,7 +288,7 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
             pop_push_projection_rv.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
             pop_push_projection_rv.setAdapter(pushProjectionAdapter);
             pushProjectionAdapter.setOnItemClickListener((adapter, view, position) -> {
-                pushProjectionAdapter.choose(onlineMembers.get(position).getDeviceDetailInfo().getDevcieid());
+                pushProjectionAdapter.choose(onLineProjectors.get(position).getDevcieid());
                 pop_push_projection_cb.setChecked(pushProjectionAdapter.isChooseAll());
             });
             pop_push_projection_cb.setOnClickListener(v -> {

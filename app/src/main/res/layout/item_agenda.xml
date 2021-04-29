@@ -8,14 +8,14 @@
     android:layout_gravity="center"
     app:cardCornerRadius="10dp"
     app:cardElevation="2dp"
-    app:cardBackgroundColor="@color/white"
-    app:contentPadding="5dp"
-    android:layout_margin="5dp">
+    android:layout_margin="5dp"
+    app:cardBackgroundColor="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:layout_margin="5dp"
         android:orientation="horizontal">
 
         <TextView
@@ -71,7 +71,7 @@
                     android:id="@+id/iv_status_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_agenda" />
+                    android:src="@drawable/icon_agenda_notstart" />
 
                 <TextView
                     android:id="@+id/tv_agenda_status"

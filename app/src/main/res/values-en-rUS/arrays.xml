@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="role">
+        <item>None</item>
+        <item>General Participants</item>
+        <item>Moderator</item>
+        <item>Secretary</item>
+        <item>Administrator</item>
+    </string-array>
+
+    <string-array name="countdown_spinner">
+        <item>10 seconds</item>
+        <item>30 seconds</item>
+        <item>60 seconds</item>
+        <item>2 minutes</item>
+        <item>5 minutes</item>
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>None</item>
+    </string-array>
+    <string-array name="type_spinner">
+        <item>Multiple Choice</item>
+        <item>Single choice</item>
+        <item>5Choice4</item>
+        <item>5Choice3</item>
+        <item>5Choice2</item>
+        <item>3Choice2</item>
+    </string-array>
+    <string-array name="confidential_spinner">
+        <item>No</item>
+        <item>Yes</item>
+    </string-array>
+    <string-array name="show_hide">
+        <item>Hide</item>
+        <item>Show</item>
+    </string-array>
+    <string-array name="meet_filter_spinner">
+        <item>All sessions</item>
+        <item>Current Sessions</item>
+        <item>Future Meetings</item>
+        <item>History Sessions</item>
+    </string-array>
+    <string-array name="singin_type_spinner">
+        <item>Direct sign-in</item>
+        <item>Personal password sign-in</item>
+        <item>Photo (handwritten) check-in</item>
+        <item>Conference password sign-in</item>
+    </string-array>
+
+    <string-array name="table_card_title">
+        <item>Session Name</item>
+        <item>Name</item>
+        <item>Position</item>
+        <item>Unit</item>
+        <item>Seat name</item>
+    </string-array>
+    <string-array name="table_card_font">
+        <item>Font</item>
+        <item>bold</item>
+        <item>italic</item>
+        <item>official script</item>
+        <item>Microsoft elegant black</item>
+        <item>Lowercase</item>
+    </string-array>
+    <string-array name="table_card_align">
+        <item>Center Aligned</item>
+        <item>Left Alignment</item>
+        <item>Right Alignment</item>
+    </string-array>
+    <string-array name="coding_mode">
+        <item>High speed encoding mode</item>
+        <item>High performance encoding mode</item>
+        <item>Low speed encoding mode</item>
+    </string-array>
+    <string-array name="coding_size">
+        <item>1080P</item>
+        <item>720P</item>
+        <item>480P</item>
+        <item>320P</item>
+    </string-array>
+    <string-array name="stream_channel">
+        <item>0</item>
+        <item>1</item>
+        <item>Not enabled</item>
+    </string-array>
+</resources>
