@@ -3,6 +3,7 @@ package xlk.paperless.standard.util;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.PopupWindow;
 
 import xlk.paperless.standard.R;
@@ -39,6 +40,8 @@ public class PopUtil {
         popupWindow.setOutsideTouchable(outside);
         popupWindow.setFocusable(outside);
         popupWindow.setAnimationStyle(R.style.pop_Animation);
+        popupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
+        popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         popupWindow.showAtLocation(parent, gravity, x, y);
         return popupWindow;
     }

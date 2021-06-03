@@ -114,6 +114,10 @@ public class Values {
      * 是否是后台管理界面
      */
     public static boolean isAdminPage = false;
-    public static int theme_type = 0;
     public static float fontScale = 1.0f;
+    /**
+     * 本机的设备标志
+     */
+    public static int localDeviceFlag = -1;
+    public static boolean isFirstIn=true;
 }

@@ -50,24 +50,9 @@ public class DialogUtil {
     public static AlertDialog createDialog(Context cxt, String title, String positive, String negative, @NonNull onDialogClickListener listener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(cxt);
         builder.setTitle(title);
-        builder.setPositiveButton(positive, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                listener.positive(dialog);
-            }
-        });
-        builder.setNegativeButton(negative, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                listener.negative(dialog);
-            }
-        });
-        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                listener.dismiss(dialog);
-            }
-        });
+        builder.setPositiveButton(positive, (dialog, which) -> listener.positive(dialog));
+        builder.setNegativeButton(negative, (dialog, which) -> listener.negative(dialog));
+        builder.setOnDismissListener(dialog -> listener.dismiss(dialog));
         AlertDialog dialog = builder.create();
         setParamsType(dialog.getWindow());
         dialog.setCanceledOnTouchOutside(false);//点击外部不消失

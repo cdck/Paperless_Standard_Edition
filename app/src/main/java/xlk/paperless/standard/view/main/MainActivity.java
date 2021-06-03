@@ -530,7 +530,11 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
 
     @Override
     public void updateUI(InterfaceDevice.pbui_Type_DeviceFaceShowDetail devMeetInfo) {
-        LogUtils.d(TAG, "updateUI 参会人id=" + Values.localMemberId + "，会议id=" + Values.localMeetingId);
+        LogUtils.i(TAG, "updateUI 参会人id=" + Values.localMemberId + "，会议id=" + Values.localMeetingId + ",当前设备标志=" + Values.localDeviceFlag);
+        member_tv_main.setText(devMeetInfo.getMembername().toStringUtf8());
+        meet_tv_main.setText(devMeetInfo.getMeetingname().toStringUtf8());
+        unit_tv_main.setText(getString(R.string.unit_name_, devMeetInfo.getCompany().toStringUtf8()));
+        post_tv_main.setText(getString(R.string.job_name_, devMeetInfo.getJob().toStringUtf8()));
         if (Values.localMemberId > 0) {
             if (bindMemberPop != null && bindMemberPop.isShowing()) {
                 LogUtils.d(TAG, "已经绑定了参会人了隐藏掉绑定参会人弹框");
@@ -540,11 +544,14 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
                 LogUtils.d(TAG, "已经绑定了参会人了隐藏掉新建参会人弹框");
                 createMemberPop.dismiss();
             }
+            if (Values.isFirstIn) {
+                Values.isFirstIn = false;
+                if ((Values.localDeviceFlag & InterfaceMacro.Pb_MeetDeviceFlag.Pb_MEETDEVICE_FLAG_DIRECTENTER_VALUE) == InterfaceMacro.Pb_MeetDeviceFlag.Pb_MEETDEVICE_FLAG_DIRECTENTER_VALUE) {
+                    LogUtils.i("当前是免签到模式，直接进入会议");
+                    jump2meet();
+                }
+            }
         }
-        member_tv_main.setText(devMeetInfo.getMembername().toStringUtf8());
-        meet_tv_main.setText(devMeetInfo.getMeetingname().toStringUtf8());
-        unit_tv_main.setText(getString(R.string.unit_name_, devMeetInfo.getCompany().toStringUtf8()));
-        post_tv_main.setText(getString(R.string.job_name_, devMeetInfo.getJob().toStringUtf8()));
     }
 
     @Override

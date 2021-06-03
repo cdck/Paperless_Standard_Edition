@@ -747,11 +747,11 @@ public class MainPresenter {
             return;
         }
         InterfaceDevice.pbui_Type_DeviceDetailInfo devInfoById = jni.queryDevInfoById(Values.localDeviceId);
-        if (devInfoById == null) {
-            return;
+        if (devInfoById != null) {
+            InterfaceDevice.pbui_Item_DeviceDetailInfo info = devInfoById.getPdevList().get(0);
+            Values.localDeviceFlag = info.getDeviceflag();
+            view.get().updateSeatName(info.getDevname().toStringUtf8());
         }
-        InterfaceDevice.pbui_Item_DeviceDetailInfo info = devInfoById.getPdevList().get(0);
-        view.get().updateSeatName(info.getDevname().toStringUtf8());
     }
 
     /**

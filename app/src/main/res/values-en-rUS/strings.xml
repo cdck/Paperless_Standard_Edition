@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FionTuPaperless</string>
+    <string name="app_name">Paperless</string>
     <string name="set_name_">Seat:%1$s</string>
     <string name="err_download">File download error</string>
     <string name="determine">Determine</string>
@@ -747,6 +747,8 @@
     <string name="please_choose_client_dev">Please select the conference terminal device</string>
     <string name="device_mode_choose">Device mode selection</string>
     <string name="device_mode_Introduction">Confirm to configure the device as guest mode? \nYes: Use guest mode \nNo: Use normal binding mode</string>
+    <string name="visa_waiver_choose">Check in mode selection</string>
+    <string name="visa_waiver_tips">Confirm that you want to configure the device for visa-free mode?\n yes：Use visa free mode\n no：Use normal mode</string>
     <string name="online_device_param_config">Online device parameter setting</string>
     <string name="server_ip_">Server IP.</string>
     <string name="cache_dir">Cache location.</string>

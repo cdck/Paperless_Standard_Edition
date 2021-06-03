@@ -17,6 +17,11 @@ import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.ui.CustomInterface.ViewClickListener;
 import xlk.paperless.standard.util.LogUtil;
 
+import static xlk.paperless.standard.data.Constant.RESOURCE_1;
+import static xlk.paperless.standard.data.Constant.RESOURCE_2;
+import static xlk.paperless.standard.data.Constant.RESOURCE_3;
+import static xlk.paperless.standard.data.Constant.RESOURCE_4;
+
 /**
  * @author xlk
  * @date 2020/3/19
@@ -202,6 +207,15 @@ public class CustomVideoView extends ViewGroup {
         requestLayout();
     }
 
+    public void createView() {
+        List<Integer> resIds = new ArrayList<>();
+        resIds.add(RESOURCE_1);
+        resIds.add(RESOURCE_2);
+        resIds.add(RESOURCE_3);
+        resIds.add(RESOURCE_4);
+        createView(resIds);
+    }
+
     public void createView(List<Integer> resIds) {
         resids.addAll(resIds);
         for (int i = 0; i < resIds.size(); i++) {
@@ -323,67 +337,8 @@ public class CustomVideoView extends ViewGroup {
     public void zoom(int resId) {
         LogUtil.d(TAG, "zoom -->" + "isEnlarge = " + isEnlarge + ", resId= " + resId);
         largeResId = isEnlarge ? -1 : resId;
-        if (isEnlarge) {
-            isEnlarge = false;
-            shrink(resId);
-        } else {
-            isEnlarge = true;
-            enlarge(resId);
-        }
+        isEnlarge = !isEnlarge;
         reDraw();
-    }
-
-    //缩小
-    private void shrink(int resId) {
-        /*
-        //进入该方法时：目前界面上只有一个view，shrinkSfvs集合中有其它的三个view
-        resids.clear();
-        long l = System.currentTimeMillis();
-        MyGLSurfaceView childAt = (MyGLSurfaceView) getChildAt(0);
-        shrinkSfvs.add(childAt);
-        LogUtils.i("shrink size=" + shrinkSfvs.size());
-//        removeView(childAt);
-        List<MyGLSurfaceView> temps = new ArrayList<>(shrinkSfvs);
-        for (int i = 0; i < shrinkSfvs.size(); i++) {
-            MyGLSurfaceView child = shrinkSfvs.get(i);
-            int resId1 = child.getResId();
-            resids.add(resId1);
-            temps.set(resId1 - 1, child);
-        }
-        for (MyGLSurfaceView view : temps) {
-            view.setVisibility(VISIBLE);
-//            if (indexOfChild(view) == -1) {
-//                LogUtils.i("没有该子view才进行添加");
-//                addView(view);
-//            }
-        }
-        LogUtil.d(TAG, "shrink -->" + "用时：" + (System.currentTimeMillis() - l));
-         */
-        for (int i = 0; i < getChildCount(); i++) {
-            getChildAt(i).setVisibility(VISIBLE);
-        }
-    }
-
-    //放大
-    private void enlarge(int resId) {
-        /*
-        resids.clear();
-        resids.add(resId);
-        shrinkSfvs.clear();
-        for (int i = 0; i < getChildCount(); i++) {
-            MyGLSurfaceView childAt = (MyGLSurfaceView) getChildAt(i);
-            if (childAt.getResId() != resId) {
-//                childAt.destroy();
-//                childAt.setCodecType(2);
-                shrinkSfvs.add(childAt);
-            }
-        }
-        for (int i = 0; i < shrinkSfvs.size(); i++) {
-            MyGLSurfaceView view = shrinkSfvs.get(i);
-            view.setVisibility(GONE);
-//            removeView(view);
-        }
-         */
     }
 
     public void setViewClickListener(ViewClickListener listener) {

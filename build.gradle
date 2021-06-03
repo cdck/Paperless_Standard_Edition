@@ -23,6 +23,7 @@ allprojects {
         maven { url "https://jitpack.io" }
         // 私有仓库地址
         maven { url "http://lib.gcssloop.com/repository/gcssloop-central/" }
+        mavenCentral()
     }
 }
 

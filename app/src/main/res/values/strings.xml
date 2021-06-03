@@ -747,6 +747,8 @@
     <string name="please_choose_client_dev">请选择会议终端设备</string>
     <string name="device_mode_choose">设备模式选择</string>
     <string name="device_mode_Introduction">确认要配置该设备为访客模式吗？\n是：使用访客模式\n否：使用正常绑定模式</string>
+    <string name="visa_waiver_choose">签到模式选择</string>
+    <string name="visa_waiver_tips">确认要配置该设备为免签模式吗？\n是：使用免签模式\n否：使用正常模式</string>
     <string name="online_device_param_config">在线设备参数设置</string>
     <string name="server_ip_">服务器IP：</string>
     <string name="cache_dir">缓存位置：</string>
@@ -869,5 +871,10 @@
     <string name="sign_in_list">签到列表</string>
     <string name="start">开始</string>
     <string name="end">结束</string>
+    <string name="jump">跳转</string>
+    <string name="cannot_be_larger_than_the_total_number_of_pages">不能大于总页数</string>
+    <string name="please_enter_page_number">请输入页数</string>
+    <string name="visa_waiver">免签</string>
+    <string name="set_visa_waiver">设置免签到</string>
 
 </resources>

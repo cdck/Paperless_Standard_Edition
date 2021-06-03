@@ -102,7 +102,6 @@ public class AdminCameraControlPresenter extends BasePresenter {
         }
     }
 
-
     public void queryDeviceInfo() {
         try {
             InterfaceDevice.pbui_Type_DeviceDetailInfo deviceDetailInfo = jni.queryDeviceInfo();

@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.google.android.material.textfield.TextInputEditText;
@@ -90,6 +91,7 @@ public class AdminDeviceManageFragment extends BaseFragment implements AdminDevi
         btn_visitors = (Button) inflate.findViewById(R.id.btn_visitors);
         btn_deploy = (Button) inflate.findViewById(R.id.btn_deploy);
 
+        inflate.findViewById(R.id.btn_visa_waiver).setOnClickListener(this);
         btn_modify.setOnClickListener(this);
         btn_delete.setOnClickListener(this);
         btn_visitors.setOnClickListener(this);
@@ -100,7 +102,7 @@ public class AdminDeviceManageFragment extends BaseFragment implements AdminDevi
     public void onClick(View v) {
         selectedDevice = deviceAdapter.getSelected();
         switch (v.getId()) {
-            case R.id.btn_modify:
+            case R.id.btn_modify: {
                 if (deviceAdapter == null || deviceAdapter.getSelected() == null) {
                     ToastUtil.show(R.string.please_choose_device_first);
                     break;
@@ -121,7 +123,8 @@ public class AdminDeviceManageFragment extends BaseFragment implements AdminDevi
                         | InterfaceMacro.Pb_DeviceModifyFlag.Pb_DEVICE_MODIFYFLAG_LIFTRES_VALUE;
                 presenter.modifyDevice(modflag, selectedDevice.getDevcieid(), currentDevName, liftId, mikeId, selectedDevice.getDeviceflag(), build);
                 break;
-            case R.id.btn_delete:
+            }
+            case R.id.btn_delete: {
                 if (deviceAdapter == null || deviceAdapter.getSelected() == null) {
                     ToastUtil.show(R.string.please_choose_device_first);
                     break;
@@ -132,6 +135,7 @@ public class AdminDeviceManageFragment extends BaseFragment implements AdminDevi
                     ToastUtil.show(R.string.err_delete_offline);
                 }
                 break;
+            }
             //设置访客模式
             case R.id.btn_visitors: {
                 if (deviceAdapter == null || deviceAdapter.getSelected() == null) {
@@ -155,6 +159,40 @@ public class AdminDeviceManageFragment extends BaseFragment implements AdminDevi
                         if ((deviceflag & InterfaceMacro.Pb_MeetDeviceFlag.Pb_MEETDEVICE_FLAG_GUESTMODE_VALUE)
                                 == InterfaceMacro.Pb_MeetDeviceFlag.Pb_MEETDEVICE_FLAG_GUESTMODE_VALUE) {
                             newFlag -= InterfaceMacro.Pb_MeetDeviceFlag.Pb_MEETDEVICE_FLAG_GUESTMODE_VALUE;
+                        }
+                        jni.modifyDeviceParam(devcieid, newFlag);
+                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                } else {
+                    ToastUtil.show(R.string.please_choose_client_dev);
+                }
+                break;
+            }
+            //设置免签到模式
+            case R.id.btn_visa_waiver:{
+                LogUtils.e("","");
+                if (deviceAdapter == null || deviceAdapter.getSelected() == null) {
+                    ToastUtil.show(R.string.please_choose_device_first);
+                    break;
+                }
+                InterfaceDevice.pbui_Item_DeviceDetailInfo selected = deviceAdapter.getSelected();
+                int devcieid = selected.getDevcieid();
+                if (isThisDevType(InterfaceMacro.Pb_DeviceIDType.Pb_DeviceIDType_MeetClient_VALUE, devcieid)) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle(R.string.visa_waiver_choose);
+                    builder.setMessage(R.string.visa_waiver_tips);
+                    builder.setPositiveButton(R.string.yes, (dialog, which) -> {
+                        int deviceflag = selected.getDeviceflag();
+                        int newFlag = deviceflag | InterfaceMacro.Pb_MeetDeviceFlag.Pb_MEETDEVICE_FLAG_DIRECTENTER_VALUE;
+                        jni.modifyDeviceParam(devcieid, newFlag);
+                    });
+                    builder.setNegativeButton(R.string.no, (dialog, which) -> {
+                        int deviceflag = selected.getDeviceflag();
+                        int newFlag = deviceflag;
+                        if ((deviceflag & InterfaceMacro.Pb_MeetDeviceFlag.Pb_MEETDEVICE_FLAG_DIRECTENTER_VALUE)
+                                == InterfaceMacro.Pb_MeetDeviceFlag.Pb_MEETDEVICE_FLAG_DIRECTENTER_VALUE) {
+                            newFlag -= InterfaceMacro.Pb_MeetDeviceFlag.Pb_MEETDEVICE_FLAG_DIRECTENTER_VALUE;
                         }
                         jni.modifyDeviceParam(devcieid, newFlag);
                     });

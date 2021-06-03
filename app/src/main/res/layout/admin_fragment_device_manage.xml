@@ -138,9 +138,14 @@
                 android:id="@+id/btn_visitors"
                 style="@style/btn_pressed_style"
                 android:layout_width="wrap_content"
-                android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:text="@string/set_visitors_mode" />
+            <Button
+                android:id="@+id/btn_visa_waiver"
+                style="@style/btn_pressed_style"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="@string/set_visa_waiver" />
 
             <Button
                 android:id="@+id/btn_deploy"

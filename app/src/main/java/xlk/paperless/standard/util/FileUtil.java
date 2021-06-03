@@ -323,12 +323,16 @@ public class FileUtil {
             EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_PREVIEW_IMAGE).objects(file.getAbsolutePath()).build());
             return;
         } else if (FileUtil.isDocumentFile(filename)) {
-//            Intent intent1 = new Intent(context, PdfViewerActivity.class);
-//            if (!(context instanceof Activity)) {
-//                intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            }
-//            intent1.putExtra(PdfViewerActivity.FILE_PATH, file.getAbsolutePath());
-//            context.startActivity(intent1);
+            String fileEnd = filename.substring(filename.lastIndexOf(".") + 1, filename.length()).toLowerCase();
+            if (fileEnd.equals("pdf")) {
+                Intent intent1 = new Intent(context, PdfViewerActivity.class);
+                if (!(context instanceof Activity)) {
+                    intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                }
+                intent1.putExtra(PdfViewerActivity.FILE_PATH, file.getAbsolutePath());
+                context.startActivity(intent1);
+                return;
+            }
 //            /*
             //通知注册WPS广播
             EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_WPS_RECEIVER).objects(true).build());
@@ -498,7 +502,7 @@ public class FileUtil {
         if (dotIndex < 0)
             return type;
         /* 获取文件的后缀名 */
-        String fileType = fName.substring(dotIndex, fName.length()).toLowerCase();
+        String fileType = fName.substring(dotIndex).toLowerCase();
         if (fileType == null || "".equals(fileType))
             return type;
         //在MIME和文件类型的匹配表中找到对应的MIME类型。

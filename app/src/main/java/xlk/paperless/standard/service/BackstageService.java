@@ -212,6 +212,9 @@ public class BackstageService extends Service {
                 int deviceid = info.getDeviceid();
                 String jsonText = info.getJsontext().toStringUtf8();
                 JsonBean jsonBean = JSON.parseObject(jsonText, JsonBean.class);
+                if (jsonBean == null) {
+                    break;
+                }
                 int restart = jsonBean.getRestart();
                 LogUtil.i(TAG, "onEventMessage restart=" + restart + ",deviceid=" + deviceid);
                 List<JsonBean.ItemBean> item = jsonBean.getItem();
