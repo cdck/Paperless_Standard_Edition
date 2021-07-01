@@ -1,6 +1,5 @@
 package xlk.paperless.standard.util;
 
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -9,9 +8,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-
-import com.blankj.utilcode.util.FileUtils;
-import com.blankj.utilcode.util.LogUtils;
 
 import androidx.core.content.FileProvider;
 
@@ -25,7 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.DecimalFormat;
-import java.util.List;
 
 import xlk.paperless.standard.BuildConfig;
 import xlk.paperless.standard.R;
@@ -35,7 +30,6 @@ import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.data.WpsModel;
 import xlk.paperless.standard.view.App;
-import xlk.paperless.standard.view.pdf.PdfViewerActivity;
 
 /**
  * @author xlk
@@ -44,25 +38,6 @@ import xlk.paperless.standard.view.pdf.PdfViewerActivity;
  */
 public class FileUtil {
     private static final String TAG = "FileUtil-->";
-
-    public static String logListFiles(StringBuilder sb, int level, String dirPath) {
-        List<File> files = FileUtils.listFilesInDir(dirPath);
-        String pre = "";
-//        for (int i = 0; i < level; i++) {
-//            pre += "\u3000\u3000";
-//        }
-        for (File file : files) {
-            if (file.isDirectory()) {
-                sb.append("\n").append(pre).append(file.getAbsolutePath());
-//                LogUtil.i("", "\n" + pre + file.getAbsolutePath());
-                logListFiles(sb, level++, file.getAbsolutePath());
-            } else if (file.isFile()) {
-//                LogUtil.i("", "\n" + pre + file.getAbsolutePath());
-            }
-        }
-        return sb.toString();
-    }
-
 
     /**
      * 多级创建目录
@@ -157,7 +132,7 @@ public class FileUtil {
         return !isDocumentFile(fileName) && !isAudioAndVideoFile(fileName) && !isPictureFile(fileName);
     }
 
-    public static boolean isVideoFile(String fileName) {
+    public static boolean isVideoFile(String fileName){
         if (!fileName.contains(".")) {//该文件没有后缀
             return false;
         }
@@ -192,7 +167,6 @@ public class FileUtil {
                 || fileEnd.equals("naivx")
                 || fileEnd.equals("xvid");
     }
-
     /**
      * 判断是否为视频文件
      *
@@ -323,28 +297,17 @@ public class FileUtil {
             EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_PREVIEW_IMAGE).objects(file.getAbsolutePath()).build());
             return;
         } else if (FileUtil.isDocumentFile(filename)) {
-            String fileEnd = filename.substring(filename.lastIndexOf(".") + 1, filename.length()).toLowerCase();
-            if (fileEnd.equals("pdf")) {
-                Intent intent1 = new Intent(context, PdfViewerActivity.class);
-                if (!(context instanceof Activity)) {
-                    intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                }
-                intent1.putExtra(PdfViewerActivity.FILE_PATH, file.getAbsolutePath());
-                context.startActivity(intent1);
-                return;
-            }
-//            /*
             //通知注册WPS广播
             EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_WPS_RECEIVER).objects(true).build());
-            //如果是文档类文件并且不是pdf文件，设置只能使用WPS软件打开
+            /** **** **  如果是文档类文件并且不是pdf文件，设置只能使用WPS软件打开  ** **** **/
             Bundle bundle = new Bundle();
             bundle.putString(WpsModel.OPEN_MODE, WpsModel.OpenMode.NORMAL); // 打开模式
 //            bundle.putBoolean(WpsModel.ENTER_REVISE_MODE, true); // 以修订模式打开文档
 
             bundle.putBoolean(WpsModel.SEND_CLOSE_BROAD, true); // 文件关闭时是否发送广播
             bundle.putBoolean(WpsModel.SEND_SAVE_BROAD, true); // 文件保存时是否发送广播
-            bundle.putBoolean(WpsModel.HOMEKEY_DOWN, true); // 单击home键是否发送广播
-            bundle.putBoolean(WpsModel.BACKKEY_DOWN, true); // 单击back键是否发送广播
+            bundle.putBoolean(WpsModel.HOMEKEY_DOWN, true); // 单机home键是否发送广播
+            bundle.putBoolean(WpsModel.BACKKEY_DOWN, true); // 单机back键是否发送广播
 
             bundle.putBoolean(WpsModel.SAVE_PATH, true); // 文件这次保存的路径
             bundle.putString(WpsModel.THIRD_PACKAGE, WpsModel.PackageName.NORMAL); // 第三方应用的包名，用于对改应用合法性的验证
@@ -352,55 +315,36 @@ public class FileUtil {
 //            bundle.putBoolean(CLEAR_FILE, true); //关闭后删除打开文件
             intent.setClassName(WpsModel.PackageName.NORMAL, WpsModel.ClassName.NORMAL);
             intent.putExtras(bundle);
-            if (Build.VERSION.SDK_INT > 23) {//android 7.0以上时，URI不能直接暴露
-                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);//标签，授予目录临时共享权限
-                Uri uriForFile = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileProvider", file);
-                intent.setDataAndType(uriForFile, "application/vnd.android.package-archive");
-            } else {
-                Uri uri = Uri.fromFile(file);
-                intent.setDataAndType(uri, "application/vnd.android.package-archive");
-            }
-            try {
-                if (!(context instanceof Activity)) {
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                }
-                context.startActivity(intent);
-            } catch (ActivityNotFoundException e) {
-                ToastUtil.show(R.string.no_wps_software_found);
-                e.printStackTrace();
-            }
-//             */
+        }
+        uriX(context, intent, file);
+    }
+
+
+    /**
+     * 抽取成工具方法
+     *
+     * @param context
+     * @param intent
+     * @param file
+     */
+    public static void uriX(Context context, Intent intent, File file) {
+        if (Build.VERSION.SDK_INT > 23) {//android 7.0以上时，URI不能直接暴露
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            Uri uriForFile = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileProvider", file);
+            intent.setDataAndType(uriForFile, "application/vnd.android.package-archive");
         } else {
-            openLocalFile(context, file);
+            Uri uri = Uri.fromFile(file);
+            intent.setDataAndType(uri, "application/vnd.android.package-archive");
+        }
+        try {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            ToastUtil.show(R.string.no_wps_software_found);
+            e.printStackTrace();
         }
     }
 
-    /**
-     * 调用系统应用打开指定文件
-     *
-     * @param context 上下文对象
-     * @param file    文件
-     */
-    public static void openLocalFile(Context context, File file) {
-        if (file == null || !file.exists()) {
-            LogUtils.e("将要打开的文件不存在");
-            return;
-        }
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.addCategory(Intent.CATEGORY_DEFAULT);
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {//android 7.0以上时，URI不能直接暴露
-            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);//标签，授予目录临时共享权限
-            Uri uriForFile = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileProvider", file);
-            intent.setDataAndType(uriForFile, getMIMEType(file));
-        } else {
-            Uri uri = Uri.fromFile(file);
-            intent.setDataAndType(uri, getMIMEType(file));
-        }
-        if (!(context instanceof Activity)) {
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        }
-        context.startActivity(intent);
-    }
 
     /**
      * 读取文件内容
@@ -472,12 +416,11 @@ public class FileUtil {
 
     /**
      * 删除文件、删除目录和子目录文件
-     *
      * @param filePath 文件或目录路径
      */
     public static void delDirFile(String filePath) {
         File file = new File(filePath);
-        if (!file.exists()) {
+        if(!file.exists()){
             return;
         }
         if (file.isDirectory()) {
@@ -492,95 +435,4 @@ public class FileUtil {
         }
         LogUtil.i(TAG, "delDirFile 删除成功=" + filePath);
     }
-
-
-    private static String getMIMEType(File file) {
-        String type = "*/*";
-        String fName = file.getName();
-        //获取后缀名前的分隔符"."在fName中的位置。
-        int dotIndex = fName.lastIndexOf(".");
-        if (dotIndex < 0)
-            return type;
-        /* 获取文件的后缀名 */
-        String fileType = fName.substring(dotIndex).toLowerCase();
-        if (fileType == null || "".equals(fileType))
-            return type;
-        //在MIME和文件类型的匹配表中找到对应的MIME类型。
-        for (int i = 0; i < MIMES.length; i++) {
-            if (fileType.equals(MIMES[i][0]))
-                type = MIMES[i][1];
-        }
-        return type;
-    }
-
-    private static final String[][] MIMES = {
-            //{后缀名，    MIME类型}
-            {".3gp", "video/3gpp"},
-            {".apk", "application/vnd.android.package-archive"},
-            {".asf", "video/x-ms-asf"},
-            {".avi", "video/x-msvideo"},
-            {".bin", "application/octet-stream"},
-            {".bmp", "image/bmp"},
-            {".c", "text/plain"},
-            {".class", "application/octet-stream"},
-            {".conf", "text/plain"},
-            {".cpp", "text/plain"},
-            {".doc", "application/msword"},
-            {".docx", "application/msword"},
-            {".exe", "application/octet-stream"},
-            {".gif", "image/gif"},
-            {".gtar", "application/x-gtar"},
-            {".gz", "application/x-gzip"},
-            {".h", "text/plain"},
-            {".htm", "text/html"},
-            {".html", "text/html"},
-            {".jar", "application/java-archive"},
-            {".java", "text/plain"},
-            {".jpeg", "image/jpeg"},
-            {".JPEG", "image/jpeg"},
-            {".jpg", "image/jpeg"},
-            {".js", "application/x-javascript"},
-            {".log", "text/plain"},
-            {".m3u", "audio/x-mpegurl"},
-            {".m4a", "audio/mp4a-latm"},
-            {".m4b", "audio/mp4a-latm"},
-            {".m4p", "audio/mp4a-latm"},
-            {".m4u", "video/vnd.mpegurl"},
-            {".m4v", "video/x-m4v"},
-            {".mov", "video/quicktime"},
-            {".mp2", "audio/x-mpeg"},
-            {".mp3", "audio/x-mpeg"},
-            {".mp4", "video/mp4"},
-            {".mpc", "application/vnd.mpohun.certificate"},
-            {".mpe", "video/mpeg"},
-            {".mpeg", "video/mpeg"},
-            {".mpg", "video/mpeg"},
-            {".mpg4", "video/mp4"},
-            {".mpga", "audio/mpeg"},
-            {".msg", "application/vnd.ms-outlook"},
-            {".ogg", "audio/ogg"},
-            {".pdf", "application/pdf"},
-            {".png", "image/png"},
-            {".pps", "application/vnd.ms-powerpoint"},
-            {".ppt", "application/vnd.ms-powerpoint"},
-            {".pptx", "application/vnd.ms-powerpoint"},
-            {".prop", "text/plain"},
-            {".rar", "application/x-rar-compressed"},
-            {".rc", "text/plain"},
-            {".rmvb", "audio/x-pn-realaudio"},
-            {".rtf", "application/rtf"},
-            {".sh", "text/plain"},
-            {".tar", "application/x-tar"},
-            {".tgz", "application/x-compressed"},
-            {".txt", "text/plain"},
-            {".wav", "audio/x-wav"},
-            {".wma", "audio/x-ms-wma"},
-            {".wmv", "audio/x-ms-wmv"},
-            {".wps", "application/vnd.ms-works"},
-            //{".xml",    "text/xml"},
-            {".xml", "text/plain"},
-            {".z", "application/x-compress"},
-            {".zip", "application/zip"},
-            {"", "*/*"}
-    };
 }

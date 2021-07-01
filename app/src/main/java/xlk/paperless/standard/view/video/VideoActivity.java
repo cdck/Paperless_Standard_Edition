@@ -6,9 +6,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
+import android.os.Handler;
+import android.os.Message;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Surface;
@@ -22,11 +26,17 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import com.blankj.utilcode.util.LogUtils;
 import com.mogujie.tt.protobuf.InterfaceMacro;
+
 import org.greenrobot.eventbus.EventBus;
+
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.adapter.WmProjectorAdapter;
 import xlk.paperless.standard.adapter.WmScreenMemberAdapter;
@@ -71,6 +81,7 @@ public class VideoActivity extends BaseActivity implements IVideo, WlOnGlSurface
     private int lastPer;
     private String lastSec;
     private String lastTotal;
+    private Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,9 +190,35 @@ public class VideoActivity extends BaseActivity implements IVideo, WlOnGlSurface
                 popView.dismiss();
                 return;
             }
-            video_top_title.setVisibility(View.VISIBLE);
             createPop();
         });
+    }
+
+    private void updateHideTimer() {
+        if (timer == null) {
+            timer = new Timer();
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    LogUtils.i("定时隐藏掉弹框");
+                    if (popView != null && popView.isShowing()) {
+                        runOnUiThread(() -> {
+                            video_top_title.setVisibility(View.GONE);
+                            popView.dismiss();
+                        });
+                        timer.cancel();
+                        timer.purge();
+                        timer = null;
+                    }
+                }
+            };
+            timer.schedule(timerTask, 5 * 1000);
+        } else {
+            timer.cancel();
+            timer.purge();
+            timer = null;
+            updateHideTimer();
+        }
     }
 
     private void createPop() {
@@ -195,6 +232,7 @@ public class VideoActivity extends BaseActivity implements IVideo, WlOnGlSurface
         popView.setFocusable(true);
         popView.setAnimationStyle(R.style.pop_Animation);
         popView.showAtLocation(video_root_layout, Gravity.BOTTOM, 0, 0);
+        video_top_title.setVisibility(View.VISIBLE);
         pop_video_current_time = inflate.findViewById(R.id.pop_video_current_time);
         pop_video_time = inflate.findViewById(R.id.pop_video_time);
         seekBar = inflate.findViewById(R.id.pop_video_seekBar);
@@ -205,25 +243,30 @@ public class VideoActivity extends BaseActivity implements IVideo, WlOnGlSurface
         seekBar.setProgress(lastPer);
         pop_video_current_time.setText(lastSec);
         pop_video_time.setText(lastTotal);
-
+        updateHideTimer();
         inflate.findViewById(R.id.pop_video_play).setOnClickListener(v -> {
             presenter.playOrPause();
+            updateHideTimer();
         });
         inflate.findViewById(R.id.pop_video_stop).setOnClickListener(v -> {
             presenter.stopPlay();
             popView.dismiss();
             finish();
+            updateHideTimer();
         });
         inflate.findViewById(R.id.pop_video_screen_shot).setOnClickListener(v -> {
             presenter.cutVideoImg();
             video_view.cutVideoImg();
+            updateHideTimer();
         });
         inflate.findViewById(R.id.pop_video_launch_screen).setOnClickListener(v -> {
             showScreenPop(1);
+            updateHideTimer();
         });
         inflate.findViewById(R.id.pop_video_stop_screen).setOnClickListener(v -> {
 //            showScreenPop(2);
             presenter.stopPlay();
+            updateHideTimer();
         });
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -239,6 +282,7 @@ public class VideoActivity extends BaseActivity implements IVideo, WlOnGlSurface
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 presenter.setPlayPlace(seekBar.getProgress());
+                updateHideTimer();
             }
         });
         popView.setOnDismissListener(() -> video_top_title.setVisibility(View.GONE));
@@ -289,7 +333,7 @@ public class VideoActivity extends BaseActivity implements IVideo, WlOnGlSurface
                 if (type == 1) {//发起
                     int value = cb_mandatory.isChecked() ?
                             InterfaceMacro.Pb_TriggerUsedef.Pb_EXCEC_USERDEF_FLAG_NOCREATEWINOPER_VALUE : 0;
-                    presenter.mediaPlayOperate(ids,value);
+                    presenter.mediaPlayOperate(ids, value);
                 } else {//结束
                     presenter.stopPlay();
                 }
@@ -384,6 +428,7 @@ public class VideoActivity extends BaseActivity implements IVideo, WlOnGlSurface
         super.onDestroy();
         Values.isVideoPlaying = false;
         isMandatoryPlaying = false;
+//        EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_SHOW_FAB).build());
         presenter.onDestroy();
         presenter.stopPlay();
         presenter.releaseMediaRes();

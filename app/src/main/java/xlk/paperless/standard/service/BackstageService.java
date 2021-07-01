@@ -428,6 +428,7 @@ public class BackstageService extends Service {
                     return;
                 }
             }
+//            EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_HIDE_FAB).build());
             if (createdeviceid != Values.localDeviceId) {
                 //是否是强制性播放
                 isMandatoryPlaying = isMandatory;
@@ -435,28 +436,12 @@ public class BackstageService extends Service {
             }
             EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_HIDE_FAB).build());
             Values.haveNewPlayInform = true;
-//            if (!isVideoPlaying) {
             startActivity(new Intent(this, VideoActivity.class)
                     .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                     .putExtra(Constant.EXTRA_VIDEO_ACTION, InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_STREAMPLAY_VALUE)
                     .putExtra(Constant.EXTRA_VIDEO_DEVICE_ID, deviceid)
             );
-//            } else {
-//                if (isMandatoryPlaying) {
-//                    EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_MANDATORY).build());
-//                }
-//            }
         }
-//        else if (res == 11) {
-//            LogUtil.i(TAG, "streamPlayInform -->" + "会议视屏聊天 isChatingOpened= " + isChatingOpened);
-//            if (!isChatingOpened) {
-////                startActivity(new Intent(this, ChatVideoActivity.class)
-////                        .putExtra(Constant.extra_camrea_res, createdeviceid)
-////                        .setFlags(FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
-//            }else {
-//                EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_CHAT_STATE).build());
-//            }
-//        }
     }
 
     private void mediaPlayInform(EventMessage msg) throws InvalidProtocolBufferException {

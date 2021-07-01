@@ -8,7 +8,6 @@ import android.os.Environment;
 import android.util.Range;
 import android.view.Surface;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mogujie.tt.protobuf.InterfaceBase;
 import com.mogujie.tt.protobuf.InterfaceDevice;
@@ -169,21 +168,21 @@ public class VideoPresenter extends BasePresenter {
                     byte[] o = (byte[]) msg.getObjects()[0];
                     InterfaceStop.pbui_Type_MeetStopPlay stopPlay = InterfaceStop.pbui_Type_MeetStopPlay.parseFrom(o);
                     if (stopPlay.getRes() == 0) {
-                        LogUtils.d(TAG, "BusEvent -->" + "停止播放通知");
+                        LogUtil.d(TAG, "BusEvent -->" + "停止播放通知");
                         view.close();
                     }
                 }
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEINFO_VALUE://设备寄存器变更通知
-                LogUtils.d(TAG, "BusEvent -->" + "设备寄存器变更通知");
+                LogUtil.d(TAG, "BusEvent -->" + "设备寄存器变更通知");
                 queryDevice();
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEMBER_VALUE://参会人员变更通知
-                LogUtils.d(TAG, "BusEvent -->" + "参会人员变更通知");
+                LogUtil.d(TAG, "BusEvent -->" + "参会人员变更通知");
                 queryMember();
                 break;
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEMEETSTATUS_VALUE://界面状态变更通知
-                LogUtils.d(TAG, "BusEvent -->" + "界面状态变更通知");
+                LogUtil.d(TAG, "BusEvent -->" + "界面状态变更通知");
                 queryMember();
                 break;
         }
@@ -203,7 +202,7 @@ public class VideoPresenter extends BasePresenter {
         if (packet != null) {
             lastPushTime = System.currentTimeMillis();
             length = packet.length;
-            LogUtils.d(TAG, "getEventMessage :  mimeType --> " + mimeType + "，宽高：" + width + "," + height + ", pts=" + pts);
+            LogUtil.v(TAG, "getEventMessage :  mimeType --> " + mimeType + "，宽高：" + width + "," + height + ", pts=" + pts);
             if (!saveMimeType.equals(mimeType) || initW != width || initH != height || mediaCodec == null) {
                 if (mediaCodec != null) {
                     //调用stop方法使其进入 uninitialzed 状态，这样才可以重新配置MediaCodec
@@ -246,10 +245,10 @@ public class VideoPresenter extends BasePresenter {
             initH = h;
             w = supportedWidths.clamp(w);
             h = supportedHeights.clamp(h);
-            LogUtils.e(TAG, "initCodec :   --> " + upper + ", " + lower + " ,,高：" + upper1 + ", " + lower1);
+            LogUtil.v(TAG, "initCodec :   --> " + upper + ", " + lower + " ,,高：" + upper1 + ", " + lower1);
             initMediaFormat(w, h, codecdata);
             boolean formatSupported = capabilitiesForType.isFormatSupported(mediaFormat);
-            LogUtils.i(TAG, "initCodec :  是否支持 --> " + formatSupported);
+            LogUtil.v(TAG, "initCodec :  是否支持 --> " + formatSupported);
             info = new MediaCodec.BufferInfo();
             try {
                 //2.对编解码器进行配置，这将使编解码器转为配置状态（Configured）
@@ -258,14 +257,14 @@ public class VideoPresenter extends BasePresenter {
                 String message = e.getMessage();
                 String string = e.toString();
                 String localizedMessage = e.getLocalizedMessage();
-                LogUtils.e(TAG, "initCodec  configure方法异常捕获 --> \n" + message + "\n toString: " + string + "\n localizedMessage: " + localizedMessage);
+                LogUtil.v(TAG, "initCodec  configure方法异常捕获 --> \n" + message + "\n toString: " + string + "\n localizedMessage: " + localizedMessage);
                 e.printStackTrace();
             } catch (MediaCodec.CodecException e) {
                 //可能是由于media内容错误、硬件错误、资源枯竭等原因所致
                 //可恢复错误（recoverable errors）：如果isRecoverable() 方法返回true,然后就可以调用stop(),configure(...),以及start()方法进行修复
                 //短暂错误（transient errors）：如果isTransient()方法返回true,资源短时间内不可用，这个方法可能会在一段时间之后重试。
                 //isRecoverable()和isTransient()方法不可能同时都返回true。
-                LogUtils.e(TAG, "initCodec :   -->可恢复错误： " + e.isRecoverable() + ",短暂错误：" + e.isTransient());
+                LogUtil.v(TAG, "initCodec :   -->可恢复错误： " + e.isRecoverable() + ",短暂错误：" + e.isTransient());
             }
             //3.调用start()方法使其转入执行状态（Executing）
             mediaCodec.start();
@@ -298,7 +297,7 @@ public class VideoPresenter extends BasePresenter {
     }
 
     private void initMediaFormat(int w, int h, byte[] codecdata) {
-        LogUtils.e(TAG, "initMediaFormat :   --> " + (mediaFormat == null));
+        LogUtil.v(TAG, "initMediaFormat :   --> " + (mediaFormat == null));
         mediaFormat = MediaFormat.createVideoFormat(saveMimeType, w, h);
         mediaFormat.setInteger(MediaFormat.KEY_WIDTH, w);
         mediaFormat.setInteger(MediaFormat.KEY_HEIGHT, h);
@@ -320,7 +319,7 @@ public class VideoPresenter extends BasePresenter {
             //bytes为null也不能立马返回，需要处理从视频队列中送数据到解码buffer 和 解码好的视频的显示
         }
         int queuesize = queue.size();
-        LogUtils.i(TAG, " mediaCodecDecode -->queuesize: " + queuesize);
+        LogUtil.v(TAG, " mediaCodecDecode -->queuesize: " + queuesize);
         if (queuesize > 500) {
             //当解码速度太慢，导致视频数据积累太多，这种情况下要处理丢包，丢包的策略把前面的关键帧组全部丢包，保留后面两个关键帧组
             //丢帧必须按照I帧P帧连续的丢，否则会造成花屏的情况
@@ -341,7 +340,7 @@ public class VideoPresenter extends BasePresenter {
                         break;
                     }
                 }
-                LogUtils.e(TAG, "mediaCodecDecode 其它帧在此丢掉 -->");
+                LogUtil.v(TAG, "mediaCodecDecode 其它帧在此丢掉 -->");
                 //其它帧在此丢掉,不处理
                 queue.poll();
             }
@@ -381,11 +380,9 @@ public class VideoPresenter extends BasePresenter {
         int index = mediaCodec.dequeueOutputBuffer(info, 0);
         if (index >= 0) {
             ByteBuffer outputBuffer = mediaCodec.getOutputBuffer(index);
-            if (outputBuffer != null) {
-                outputBuffer.position(info.offset);
-                outputBuffer.limit(info.offset + info.size);
-            }
-            LogUtils.i(TAG, "mediaCodecDecode --> dequeueOutputBuffer：查看info：" + index
+            outputBuffer.position(info.offset);
+            outputBuffer.limit(info.offset + info.size);
+            LogUtil.v(TAG, "mediaCodecDecode --> dequeueOutputBuffer：查看info：" + index
                     + "\nflags：" + info.flags + ", offset：" + info.offset + ", size：" + info.size
                     + ", presentationTimeUs：" + info.presentationTimeUs);
 //            mediaCodec.releaseOutputBuffer(index, info.presentationTimeUs);
@@ -426,7 +423,7 @@ public class VideoPresenter extends BasePresenter {
     }
 
     void releaseMediaRes() {
-        LogUtils.e(TAG, "releaseMediaRes :   --> ");
+        LogUtil.e(TAG, "releaseMediaRes :   --> ");
         isStop = true;
         List<Integer> a = new ArrayList<>();
         List<Integer> b = new ArrayList<>();
@@ -451,7 +448,7 @@ public class VideoPresenter extends BasePresenter {
         App.threadPool.execute(() -> {
             if (mediaCodec != null) {
                 try {
-                    LogUtils.e(TAG, "releaseMediaCodec :   --> ");
+                    LogUtil.v(TAG, "releaseMediaCodec :   --> ");
                     mediaCodec.reset();
                     //调用stop()方法使编解码器返回到未初始化状态（Uninitialized），此时这个编解码器可以再次重新配置
                     mediaCodec.stop();
@@ -460,11 +457,11 @@ public class VideoPresenter extends BasePresenter {
                     //使用完编解码器后，你必须调用release()方法释放其资源
                     mediaCodec.release();
                 } catch (MediaCodec.CodecException e) {
-                    LogUtils.e(TAG, "run :  CodecException --> " + e.getMessage());
+                    LogUtil.v(TAG, "run :  CodecException --> " + e.getMessage());
                 } catch (IllegalStateException e) {
-                    LogUtils.e(TAG, "run :  IllegalStateException --> " + e.getMessage());
+                    LogUtil.v(TAG, "run :  IllegalStateException --> " + e.getMessage());
                 } catch (Exception e) {
-                    LogUtils.e(TAG, "run :  Exception --> " + e.getMessage());
+                    LogUtil.v(TAG, "run :  Exception --> " + e.getMessage());
                 }
             }
             mediaCodec = null;
@@ -570,10 +567,10 @@ public class VideoPresenter extends BasePresenter {
                 //距离上次有数据的时间超过了framepersecond毫秒就进行手动发送
                 if (System.currentTimeMillis() - lastPushTime >= framepersecond) {
 //                    if (System.currentTimeMillis() - lastPushTime >= 10 * 1000) {
-//                        LogUtils.d(TAG, "releaseThread -->" + "没有数据的持续时间超过10秒了，执行退出操作");
+//                        LogUtil.d(TAG, "releaseThread -->" + "没有数据的持续时间超过10秒了，执行退出操作");
 //                        view.close();
 //                    } else {
-                    LogUtils.v(TAG, "releaseThread 手动发送空数据 -->");
+                    LogUtil.v(TAG, "releaseThread 手动发送空数据 -->");
                     EventBus.getDefault().post(new EventMessage.Builder()
                             .type(Constant.BUS_VIDEO_DECODE)
                             .objects(0, 0, 0, 0, 0, null, 1L, null)

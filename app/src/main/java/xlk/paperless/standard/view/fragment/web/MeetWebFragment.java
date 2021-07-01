@@ -189,6 +189,8 @@ public class MeetWebFragment extends BaseFragment implements View.OnClickListene
             case R.id.f_web_go:
                 String url = f_web_edt.getText().toString();
                 f_web_x5view.loadUrl(uriHttpFirst(url));
+                rv_web.setVisibility(View.GONE);
+                f_web_x5view.setVisibility(View.VISIBLE);
                 break;
         }
     }

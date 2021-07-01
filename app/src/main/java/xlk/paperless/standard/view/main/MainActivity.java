@@ -1,10 +1,10 @@
 package xlk.paperless.standard.view.main;
 
 import android.Manifest;
-import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
@@ -13,28 +13,23 @@ import android.hardware.Camera;
 import android.media.MediaCodec;
 import android.media.MediaFormat;
 import android.media.projection.MediaProjectionManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.storage.StorageManager;
-import android.os.storage.StorageVolume;
 import android.provider.Settings;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.blankj.utilcode.util.AppUtils;
-import com.blankj.utilcode.util.DeviceUtils;
-import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.RegexUtils;
-import com.blankj.utilcode.util.UriUtils;
+import com.blankj.utilcode.util.ScreenUtils;
 import com.google.android.material.textfield.TextInputEditText;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -50,7 +45,6 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.acker.simplezxing.activity.CaptureActivity;
 import com.hjq.permissions.OnPermission;
@@ -64,6 +58,8 @@ import com.mogujie.tt.protobuf.InterfaceMacro;
 import com.mogujie.tt.protobuf.InterfaceMember;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import xlk.paperless.standard.R;
@@ -75,12 +71,10 @@ import xlk.paperless.standard.ui.ArtBoard;
 import xlk.paperless.standard.util.AppUtil;
 import xlk.paperless.standard.util.ConvertUtil;
 import xlk.paperless.standard.util.DateUtil;
-import xlk.paperless.standard.util.FileUtil;
 import xlk.paperless.standard.util.IniUtil;
 import xlk.paperless.standard.util.PopUtil;
 import xlk.paperless.standard.util.ToastUtil;
 import xlk.paperless.standard.base.BaseActivity;
-import xlk.paperless.standard.util.UDiskUtil;
 import xlk.paperless.standard.view.App;
 import xlk.paperless.standard.view.admin.AdminActivity;
 import xlk.paperless.standard.view.meet.MeetingActivity;
@@ -88,7 +82,11 @@ import xlk.paperless.standard.view.meet.MeetingActivity;
 import static xlk.paperless.standard.data.Constant.EXTRA_ADMIN_ID;
 import static xlk.paperless.standard.data.Constant.EXTRA_ADMIN_NAME;
 import static xlk.paperless.standard.data.Constant.EXTRA_ADMIN_PASSWORD;
+import static xlk.paperless.standard.data.Values.camera_height;
+import static xlk.paperless.standard.data.Values.camera_width;
 import static xlk.paperless.standard.util.ConvertUtil.s2b;
+import static xlk.paperless.standard.view.App.MAX_HEIGHT;
+import static xlk.paperless.standard.view.App.MAX_WIDTH;
 import static xlk.paperless.standard.view.App.mIntent;
 import static xlk.paperless.standard.view.App.mMediaProjectionManager;
 import static xlk.paperless.standard.view.App.mResult;
@@ -109,6 +107,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
     private ConstraintLayout main_root_layout;
 
     private PopupWindow createMemberPop;
+    private long last;
     private PopupWindow bindMemberPop;
     private MainBindMemberAdapter adapter;
     private int result;
@@ -131,9 +130,28 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
     }
 
     private void initPermissions() {
-        XXPermissions.with(this)
+        String[] pers = new String[]{
+                Permission.WRITE_EXTERNAL_STORAGE,
+                Permission.READ_EXTERNAL_STORAGE,
+                Permission.RECORD_AUDIO,
+                Permission.CAMERA,
+                Permission.READ_PHONE_STATE
+        };
+        ArrayList<String> nos = new ArrayList<>();
+        for (String per : pers) {
+            if (ContextCompat.checkSelfPermission(this, per) == PackageManager.PERMISSION_DENIED) {
+                nos.add(per);
+            }
+        }
+        if (!nos.isEmpty()) {
+            String[] applys = nos.toArray(new String[nos.size()]);
+            ActivityCompat.requestPermissions(this, applys, 1);
+        } else {
+            start();
+        }
+
+        /*XXPermissions.with(this)
                 // 可设置被拒绝后继续申请，直到用户授权或者永久拒绝
-                .constantRequest()
                 // 支持请求6.0悬浮窗权限8.0请求安装权限 , Permission.REQUEST_INSTALL_PACKAGES
                 .permission(
                         Permission.WRITE_EXTERNAL_STORAGE,
@@ -154,14 +172,39 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
                         LogUtils.d(TAG, "noPermission -->未获取的权限：" + denied.toString());
                         initPermissions();
                     }
-                });
+                });*/
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            boolean isAllGranted = true;
+            // 判断是否所有的权限都已经授予了
+            for (int grant : grantResults) {
+                if (grant != PackageManager.PERMISSION_GRANTED) {
+                    isAllGranted = false;
+                    break;
+                }
+            }
+            if (isAllGranted) {
+                // 所有的权限都授予了
+                LogUtils.e("所有的权限都授予了");
+            } else {
+                initPermissions();
+                // 弹出对话框告诉用户需要权限的原因, 并引导用户去应用权限管理中手动打开权限按钮
+                //容易判断错
+                //MyDialog("提示", "某些权限未开启,请手动开启", 1) ;
+            }
+        }
     }
 
     /**
      * 申请悬浮窗权限
      */
     private void applyAlertWindowPermission() {
-        XXPermissions.with(this).constantRequest()
+        LogUtils.i("applyAlertWindowPermission");
+        XXPermissions.with(this)
                 .permission(Manifest.permission.SYSTEM_ALERT_WINDOW)
                 .request(new OnPermission() {
                     @Override
@@ -177,20 +220,19 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
     }
 
     private void start() {
-        LogUtils.d(TAG, "start -->  * **** **  开始  ** **** *");
-        LogUtils.i("本机是否有root权限=" + DeviceUtils.isDeviceRooted());
+        LogUtils.d(TAG, "start --> 开始 ");
         ((App) getApplication()).openBackstageService(true);
         presenter = new MainPresenter(this, this);
         request();
     }
 
     private void initial() {
-//        try {
-//            initCameraSize();
-//        } catch (Exception e) {
-//            LogUtils.e(TAG, "initial --> 相机使用失败：" + e.toString());
-//            e.printStackTrace();
-//        }
+        try {
+            initCameraSize();
+        } catch (Exception e) {
+            LogUtils.e(TAG, "initial --> 相机使用失败：" + e.toString());
+            e.printStackTrace();
+        }
         presenter.initConfFile();
         checkNetWork();
     }
@@ -234,7 +276,6 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
     @Override
     public void checkNetWork() {
         Values.isOneline = AppUtil.isNetworkAvailable(this) ? 1 : 0;
-        LogUtils.e(TAG, "checkNetWork Values.isOneline=" + Values.isOneline);
         if (Values.isOneline == 1) {
             LogUtils.d(TAG, "checkNetWork -->" + "网络可用");
             if (netDialog != null && netDialog.isShowing()) {
@@ -290,7 +331,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
     }
 
     private void initCameraSize() {
-        /*int type = 1;
+        int type = 1;
         LogUtils.d(TAG, "initCameraSize :   --> ");
         //获取摄像机的个数 一般是前/后置两个
         int numberOfCameras = Camera.getNumberOfCameras();
@@ -312,7 +353,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         }
         for (int i = 0; i < param.getSupportedPreviewSizes().size(); i++) {
             int w = param.getSupportedPreviewSizes().get(i).width, h = param.getSupportedPreviewSizes().get(i).height;
-//            LogUtils.d(TAG, "initCameraSize: w=" + w + " h=" + h);
+            LogUtils.d(TAG, "initCameraSize: w=" + w + " h=" + h);
             supportW.add(w);
             supportH.add(h);
         }
@@ -320,7 +361,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
             try {
                 largestW = supportW.get(i);
                 largestH = supportH.get(i);
-//                LogUtils.d(TAG, "initCameraSize :   --> largestW= " + largestW + " , largestH=" + largestH);
+                LogUtils.d(TAG, "initCameraSize :   --> largestW= " + largestW + " , largestH=" + largestH);
                 MediaFormat mediaFormat = MediaFormat.createVideoFormat("video/avc", largestW, largestH);
                 if (MediaCodec.createEncoderByType("video/avc").getCodecInfo().getCapabilitiesForType("video/avc").isFormatSupported(mediaFormat)) {
                     if (largestW * largestH > camera_width * camera_height) {
@@ -339,12 +380,11 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
                 }
             }
         }
-        LogUtils.d(TAG, "initCameraSize -->" + "前置像素：" + camera_width + " X " + camera_height + ",最大1280x720");
+        LogUtils.d(TAG, "initCameraSize -->" + "前置像素：" + camera_width + " X " + camera_height);
         if (camera_width * camera_height > MAX_WIDTH * MAX_HEIGHT) {
             camera_width = MAX_WIDTH;
             camera_height = MAX_HEIGHT;
         }
-        */
     }
 
     private void request() {
@@ -404,6 +444,9 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         }
     }
 
+    private int count = 1;
+    private long lastClickTime = 0;
+
     private void initView() {
         iv_set_main = (ImageView) findViewById(R.id.iv_set_main);
         iv_set_main.setOnClickListener(this);
@@ -416,6 +459,19 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         member_tv_main = (TextView) findViewById(R.id.member_tv_main);
         logo_iv_main = (ImageView) findViewById(R.id.logo_iv_main);
         company_tv_main = (TextView) findViewById(R.id.company_tv_main);
+        seat_tv_main.setOnClickListener(v -> {
+            if (System.currentTimeMillis() - lastClickTime < 500) {
+                count++;
+                if (count == 5) {
+                    LogUtils.i(TAG, "initView canLoginAdmin=" + App.canLoginAdmin);
+                    App.canLoginAdmin = !App.canLoginAdmin;
+                    count = 1;
+                }
+            } else {
+                count = 1;
+            }
+            lastClickTime = System.currentTimeMillis();
+        });
 
 //        slideview_main = (SlideView) findViewById(R.id.slideview_main);
 
@@ -448,6 +504,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
 
         date_relative_main = (RelativeLayout) findViewById(R.id.date_relative_main);
         main_root_layout = (ConstraintLayout) findViewById(R.id.main_root_layout);
+        main_root_layout.setBackgroundResource(App.isStandard ? R.drawable.bg_icon_red : R.drawable.bg_icon_blue);
 
     }
 
@@ -530,11 +587,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
 
     @Override
     public void updateUI(InterfaceDevice.pbui_Type_DeviceFaceShowDetail devMeetInfo) {
-        LogUtils.i(TAG, "updateUI 参会人id=" + Values.localMemberId + "，会议id=" + Values.localMeetingId + ",当前设备标志=" + Values.localDeviceFlag);
-        member_tv_main.setText(devMeetInfo.getMembername().toStringUtf8());
-        meet_tv_main.setText(devMeetInfo.getMeetingname().toStringUtf8());
-        unit_tv_main.setText(getString(R.string.unit_name_, devMeetInfo.getCompany().toStringUtf8()));
-        post_tv_main.setText(getString(R.string.job_name_, devMeetInfo.getJob().toStringUtf8()));
+        LogUtils.d(TAG, "updateUI 参会人id=" + Values.localMemberId + "，会议id=" + Values.localMeetingId);
         if (Values.localMemberId > 0) {
             if (bindMemberPop != null && bindMemberPop.isShowing()) {
                 LogUtils.d(TAG, "已经绑定了参会人了隐藏掉绑定参会人弹框");
@@ -544,14 +597,11 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
                 LogUtils.d(TAG, "已经绑定了参会人了隐藏掉新建参会人弹框");
                 createMemberPop.dismiss();
             }
-            if (Values.isFirstIn) {
-                Values.isFirstIn = false;
-                if ((Values.localDeviceFlag & InterfaceMacro.Pb_MeetDeviceFlag.Pb_MEETDEVICE_FLAG_DIRECTENTER_VALUE) == InterfaceMacro.Pb_MeetDeviceFlag.Pb_MEETDEVICE_FLAG_DIRECTENTER_VALUE) {
-                    LogUtils.i("当前是免签到模式，直接进入会议");
-                    jump2meet();
-                }
-            }
         }
+        member_tv_main.setText(devMeetInfo.getMembername().toStringUtf8());
+        meet_tv_main.setText(devMeetInfo.getMeetingname().toStringUtf8());
+        unit_tv_main.setText(getString(R.string.unit_name_, devMeetInfo.getCompany().toStringUtf8()));
+        post_tv_main.setText(getString(R.string.job_name_, devMeetInfo.getJob().toStringUtf8()));
     }
 
     @Override
@@ -904,6 +954,16 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         presenter = null;
     }
 
+    @Override
+    public void onBackPressed() {
+        if (System.currentTimeMillis() - last < 1500) {
+            exit();
+        } else {
+            last = System.currentTimeMillis();
+            ToastUtil.show(R.string.click_again_exit);
+        }
+    }
+
     private void exit() {
         ((App) getApplication()).onDestroy();
         finish();
@@ -915,6 +975,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         switch (v.getId()) {
             case R.id.enter_btn_main:
                 if (AppUtil.isNetworkAvailable(this)) {
+                    LogUtils.i("当前的会议ID=" + Values.localMeetingId + ",当前参会人ID=" + Values.localMemberId);
                     if (Values.localMeetingId == 0) {
 //                    if (meet_tv_main.getText().toString().trim().isEmpty()) {
                         ToastUtil.show(R.string.join_meeting_first);
@@ -1061,7 +1122,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
     private void showConfigurationView() {
         IniUtil iniUtil = IniUtil.getInstance();
         View inflate = LayoutInflater.from(this).inflate(R.layout.pop_config_view, null);
-        configPop = PopUtil.create(inflate, Values.screen_width * 3 / 5, Values.screen_height * 3 / 5, set_btn_main);
+        configPop = PopUtil.create(inflate, ScreenUtils.getScreenWidth() * 3 / 5, ScreenUtils.getScreenHeight() * 3 / 5, set_btn_main);
         EditText pop_config_ip = inflate.findViewById(R.id.pop_config_ip);
         EditText pop_config_port = inflate.findViewById(R.id.pop_config_port);
         EditText pop_config_bitrate = inflate.findViewById(R.id.pop_config_bitrate);
@@ -1369,32 +1430,4 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
         finish();
     }
 
-    @Override
-    public void onBackPressed() {
-//        App.setAppFontSize(Values.fontScale + 0.2f);
-
-        String uDiskPath = UDiskUtil.getUDiskPath(this);
-        File file = new File(uDiskPath);
-        LogUtils.e("U盘路径=" + uDiskPath + ",文件是否存在=" + (file.exists()));
-
-        StringBuilder sb = new StringBuilder();
-        String log = FileUtil.logListFiles(sb, 0, uDiskPath);
-        LogUtils.i(log);
-
-//        if (uDiskPath.isEmpty()) {
-//            Toast.makeText(this, R.string.please_insert_udisk_first, Toast.LENGTH_LONG).show();
-//            return;
-//        }
-//        File file = new File(uDiskPath);
-////        File file = new File(Constant.DIR_FILES);
-//        Uri uri = UriUtils.file2Uri(file);
-//        LogUtils.i("uri=" + uri);
-//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//        intent.addCategory(Intent.CATEGORY_DEFAULT);
-////        intent.addCategory(Intent.CATEGORY_OPENABLE);
-//        intent.setDataAndType(uri, "*/*");
-//        //被启动的Activity一旦退出，就不会存在于栈中
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-//        startActivityForResult(intent, REQUEST_CODE_OPEN_UDISK);
-    }
 }

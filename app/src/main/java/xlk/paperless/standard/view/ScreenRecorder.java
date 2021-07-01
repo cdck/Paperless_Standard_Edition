@@ -12,10 +12,14 @@ import android.view.Surface;
 
 import com.blankj.utilcode.util.LogUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import xlk.paperless.standard.data.Constant;
+import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.util.CodecUtil;
 import xlk.paperless.standard.util.LogUtil;
@@ -102,10 +106,14 @@ public class ScreenRecorder extends Thread {
             // 4:创建VirtualDisplay实例,DisplayManager.VIRTUAL_DISPLAY_FLAG_PUBLIC / DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR
             display = projection.createVirtualDisplay("MainScreen", width, height, dpi,
                     DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR, mSurface, null, null);
-            LogUtil.v(TAG, "created virtual display: " + display);
+            LogUtils.i(TAG, "created virtual display: " + display);
+            LogUtils.i("通知屏幕录制开始");
+            EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_SCREEN_RECORDER).objects(true).build());
             // 录制虚拟屏幕
             recordVirtualDisplay();
         } finally {
+            LogUtils.i("通知屏幕录制结束");
+            EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_SCREEN_RECORDER).objects(false).build());
             release();
         }
     }
@@ -114,7 +122,7 @@ public class ScreenRecorder extends Thread {
      * 初始化编码器
      */
     private void prepareEncoder() throws IOException {
-        LogUtil.v(TAG, "prepareEncoder---------------------------");
+        LogUtil.i(TAG, "prepareEncoder---------------------------");
         // 创建MediaCodec实例 这里创建的是编码器
         encoder = MediaCodec.createEncoderByType(MIME_TYPE);
 
@@ -172,7 +180,7 @@ public class ScreenRecorder extends Thread {
      * 录制虚拟屏幕
      */
     private void recordVirtualDisplay() {
-        LogUtil.v(TAG, "recordVirtualDisplay---------------------------");
+        LogUtil.i(TAG, "recordVirtualDisplay---------------------------");
         while (!quit.get()) {
             //从输出队列中取出编码操作之后的数据
             //输出流队列中取数据索引,返回已成功解码的输出缓冲区的索引
@@ -248,6 +256,4 @@ public class ScreenRecorder extends Thread {
             e.printStackTrace();
         }
     }
-
-
 }

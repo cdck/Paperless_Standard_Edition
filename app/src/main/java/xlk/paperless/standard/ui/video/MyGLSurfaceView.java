@@ -245,10 +245,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
             int index = mediaCodec.dequeueOutputBuffer(info, 0);
             if (index >= 0) {
                 ByteBuffer outputBuffer = mediaCodec.getOutputBuffer(index);
-                if (outputBuffer != null) {
-                    outputBuffer.position(info.offset);
-                    outputBuffer.limit(info.offset + info.size);
-                }
+                outputBuffer.position(info.offset);
+                outputBuffer.limit(info.offset + info.size);
                 //mediaCodec.releaseOutputBuffer(index, info.presentationTimeUs);
                 //如果配置编码器时指定了有效的surface，传true将此输出缓冲区显示在surface
                 mediaCodec.releaseOutputBuffer(index, true);
@@ -277,7 +275,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
      * 释放资源
      */
     private void releaseMediaCodec() {
-        App.threadPool.execute(() -> {
+        App.threadPool.execute(()->{
             if (mediaCodec != null) {
                 try {
                     LogUtil.e(TAG, "releaseMediaCodec :   --> ");

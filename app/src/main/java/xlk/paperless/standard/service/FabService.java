@@ -1,12 +1,12 @@
 package xlk.paperless.standard.service;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.VirtualDisplay;
@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.Process;
 import android.os.SystemClock;
 
@@ -29,10 +30,10 @@ import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.LogUtils;
@@ -51,6 +52,8 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import cc.shinichi.library.tool.file.FileUtil;
 import xlk.paperless.standard.R;
@@ -62,7 +65,7 @@ import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.data.Values;
-import xlk.paperless.standard.data.bean.MeetingInformation;
+import xlk.paperless.standard.ui.CircularMenu;
 import xlk.paperless.standard.ui.CustomBaseViewHolder;
 import xlk.paperless.standard.util.AppUtil;
 import xlk.paperless.standard.util.DateUtil;
@@ -119,6 +122,22 @@ public class FabService extends Service implements IFab {
     private int windowWidth, windowHeight;
     private View noteView;
 
+    private Button timeButton;
+    public boolean timeButtonIsShow;
+    private Timer timeTimer;
+    private int nowTime;
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 1) {
+                String p = (String) msg.obj;
+                timeButton.setText(p);
+            }
+        }
+    };
+    private WindowManager.LayoutParams timeParams;
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -147,25 +166,74 @@ public class FabService extends Service implements IFab {
         mImageReader = ImageReader.newInstance(Values.screen_width, Values.screen_height, 0x1, 2);
         initParams();
         showFabButton();
+
+        /** **** **  时间控件  ** **** **/
+        timeButton = new Button(cxt);
+        timeButton.setTag("timeButton");
+        timeButton.setTextColor(Color.RED);
+        //设置按钮的背景透明，只显示文本
+        timeButton.getBackground().setAlpha(50);
+
+//        initHoverButton();
+//        hoverButtonIsShowing = true;
+//        wm.addView(hoverButton, mParams);
+    }
+
+    @Override
+    public void showTimeButton(boolean show) {
+        try {
+            LogUtils.i("showTimeButton show=" + show + ",timeButtonIsShow=" + timeButtonIsShow);
+            if (show) {
+                if (!timeButtonIsShow) {
+                    nowTime = 0;
+                    timeTimer = new Timer();
+                    timeTimer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            nowTime++;
+                            String time = DateUtil.formatSeconds(nowTime);
+                            Message message = new Message();
+                            message.what = 1;
+                            message.obj = time;
+                            handler.sendMessage(message);
+                        }
+                    }, 0, 1000);
+                    /** **** **  悬浮按钮  ** **** **/
+                    timeParams = new WindowManager.LayoutParams();
+                    //设置view不可点击且不会消费点击事件->不拦截底层view的点击事件
+                    timeParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+                    setParamsType(timeParams);
+                    timeParams.format = PixelFormat.RGBA_8888;
+                    timeParams.gravity = Gravity.LEFT | Gravity.TOP;
+                    timeParams.width = FrameLayout.LayoutParams.WRAP_CONTENT;
+                    timeParams.height = FrameLayout.LayoutParams.WRAP_CONTENT;
+                    timeParams.x = 0;
+                    timeParams.y = 0;
+                    wm.addView(timeButton, timeParams);
+                    timeButtonIsShow = true;
+                }
+            } else {
+                if (timeTimer != null) {
+                    timeTimer.cancel();
+                    timeTimer = null;
+                }
+                if (timeButtonIsShow) {
+                    wm.removeView(timeButton);
+                    timeButtonIsShow = false;
+                }
+                handler.removeCallbacksAndMessages(null);
+                nowTime = 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void showFabButton() {
-        LogUtils.e("showFabButton");
-        hideAllWindow();
         initHoverButton();
         hoverButtonIsShowing = true;
         wm.addView(hoverButton, mParams);
-    }
-
-    @Override
-    public void hideAllWindow() {
-        LogUtils.e("hideAllWindow");
-        try {
-            delAllView();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -246,7 +314,7 @@ public class FabService extends Service implements IFab {
         mParams.gravity = Gravity.START | Gravity.TOP;
         mParams.width = FrameLayout.LayoutParams.WRAP_CONTENT;
         mParams.height = FrameLayout.LayoutParams.WRAP_CONTENT;
-        LogUtil.i(TAG, "initParams 屏幕宽高=" + windowWidth + "," + windowHeight);
+        LogUtils.i(TAG, "initParams 屏幕宽高=" + windowWidth + "," + windowHeight);
         mParams.x = windowWidth - 150;
         mParams.y = windowHeight - 150;//使用windowHeight在首次拖动的时候才会有效
         mParams.windowAnimations = R.style.pop_Animation;
@@ -255,8 +323,8 @@ public class FabService extends Service implements IFab {
         setParamsType(defaultParams);
         defaultParams.format = PixelFormat.RGBA_8888;
         defaultParams.gravity = Gravity.CENTER;
-        defaultParams.width = Values.half_width;
-        defaultParams.height = Values.half_height;
+        defaultParams.width = windowWidth / 2;
+        defaultParams.height = windowHeight / 2;
         defaultParams.windowAnimations = R.style.pop_Animation;
         /** **** **  充满屏幕  ** **** **/
         fullParams = new WindowManager.LayoutParams();
@@ -288,73 +356,9 @@ public class FabService extends Service implements IFab {
 
     //菜单视图
     private void showMenuView() {
-        menuView = LayoutInflater.from(cxt).inflate(R.layout.wm_menu_view1, null);
-//        menuView = LayoutInflater.from(cxt).inflate(R.layout.wm_menu_view, null);
+        menuView = LayoutInflater.from(cxt).inflate(R.layout.wm_menu_view, null);
         menuView.setTag("menuView");
-        //返回
-        menuView.findViewById(R.id.iv_back).setOnClickListener(v -> {
-            showPop(menuView, hoverButton, mParams);
-        });
-        //结束投影
-        menuView.findViewById(R.id.iv_stop_pro).setOnClickListener(v -> {
-            if (Constant.hasPermission(permission_code_projection)) {
-                showProView(2);
-            } else {
-                ToastUtils.showShort(R.string.err_NoPermission);
-            }
-        });
-        //截图批注
-        menuView.findViewById(R.id.iv_screenshot).setOnClickListener(v -> {
-            screenshot();
-        });
-        //结束同屏
-        menuView.findViewById(R.id.iv_stop_screen).setOnClickListener(v -> {
-            if (Constant.hasPermission(permission_code_screen)) {
-                showScreenView(2);
-            } else {
-                ToastUtils.showShort(R.string.err_NoPermission);
-            }
-        });
-        //加入同屏
-        menuView.findViewById(R.id.iv_join_screen).setOnClickListener(v -> {
-            presenter.queryCanJoin();
-            showJoinView();
-        });
-        //发起同屏
-        menuView.findViewById(R.id.iv_launch_screen).setOnClickListener(v -> {
-            if (Constant.hasPermission(permission_code_screen)) {
-                showScreenView(1);
-            } else {
-                ToastUtils.showShort(R.string.err_NoPermission);
-            }
-        });
-        //呼叫服务
-        menuView.findViewById(R.id.iv_call_service).setOnClickListener(v -> {
-            showServiceView();
-        });
-        //发起投影
-        menuView.findViewById(R.id.iv_launch_pro).setOnClickListener(v -> {
-            if (Constant.hasPermission(permission_code_projection)) {
-                showProView(1);
-            } else {
-                ToastUtils.showShort(R.string.err_NoPermission);
-            }
-        });
-        //会议笔记
-        menuView.findViewById(R.id.iv_meet_note).setOnClickListener(v -> {
-            showNoteView(menuView, saveNoteContent);
-        });
-        //临时材料
-        menuView.findViewById(R.id.iv_usb).setOnClickListener(v -> {
-            EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_OPEN_UDISK).build());
-            showPop(menuView, hoverButton, mParams);
-        });
-        //会议信息
-        menuView.findViewById(R.id.iv_meet_info).setOnClickListener(v -> {
-            presenter.queryCurrentMeeting();
-            showPop(menuView, hoverButton, mParams);
-        });
-        /*CircularMenu custom_menu = menuView.findViewById(R.id.custom_menu);
+        CircularMenu custom_menu = menuView.findViewById(R.id.custom_menu);
         custom_menu.setListener(index -> {
             switch (index) {
                 //结束投影
@@ -425,35 +429,7 @@ public class FabService extends Service implements IFab {
         });
 //        CustomBaseViewHolder.MenuViewHolder menuViewHolder = new CustomBaseViewHolder.MenuViewHolder(menuView);
 //        menuViewHolderEvent(menuViewHolder);
-         */
-        showPop(hoverButton, menuView, wrapParams);
-    }
-
-    @Override
-    public void showMeetInfo(MeetingInformation info) {
-        AlertDialog dialog = DialogUtil.createDialog(cxt, R.layout.dialog_meeting_info, Values.width_2_3, Values.height_2_3);
-        dialog.findViewById(R.id.iv_close).setOnClickListener(v -> {
-            dialog.dismiss();
-        });
-        TextView tv_meet_name = dialog.findViewById(R.id.tv_meet_name);
-        TextView tv_meet_time = dialog.findViewById(R.id.tv_meet_time);
-        TextView tv_meet_room = dialog.findViewById(R.id.tv_meet_room);
-        TextView tv_host_name = dialog.findViewById(R.id.tv_host_name);
-        TextView tv_members = dialog.findViewById(R.id.tv_members);
-        String meetingName = info.getMeetInfo().getName().toStringUtf8();
-        String roomName = info.getMeetInfo().getRoomname().toStringUtf8();
-        String secrecy = info.getMeetInfo().getSecrecy() == 1 ? cxt.getString(R.string.yes) : cxt.getString(R.string.no);
-        String startTime = DateUtil.secondFormatDateTime(info.getMeetInfo().getStartTime());
-        String endTime = DateUtil.secondFormatDateTime(info.getMeetInfo().getEndTime());
-        String orderMemberName = info.getMeetInfo().getOrdername().toStringUtf8();
-        tv_meet_name.setText(meetingName);
-        tv_meet_time.setText(getString(R.string.time_, startTime));
-        tv_meet_room.setText(getString(R.string.location_, roomName));
-        tv_host_name.setText(getString(R.string.host_name_,
-                info.getHostInfo() != null ? info.getHostInfo().getName().toStringUtf8() : getString(R.string.none)
-        ));
-        tv_members.setText(getString(R.string.members_, info.getMembers()));
-
+        showPop(hoverButton, menuView, fullParams);
     }
 
     private String saveNoteContent = "";
@@ -1215,12 +1191,17 @@ public class FabService extends Service implements IFab {
     }
 
     private void showPop(View removeView, View addView) {
-        wm.removeView(removeView);
-        wm.addView(addView, defaultParams);
-        setIsShowing(removeView, addView);
+        try {
+            wm.removeView(removeView);
+            wm.addView(addView, defaultParams);
+            setIsShowing(removeView, addView);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    private void delAllView() {
+    @Override
+    public void delAllView() {
         if (hoverButtonIsShowing) wm.removeView(hoverButton);
         if (menuViewIsShowing) wm.removeView(menuView);
         if (serviceViewIsShowing) wm.removeView(serviceView);
@@ -1303,6 +1284,7 @@ public class FabService extends Service implements IFab {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        showTimeButton(false);
         presenter.onDestroy();
         super.onDestroy();
     }

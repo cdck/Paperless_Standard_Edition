@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.gcssloop.widget.PagerGridLayoutManager;
@@ -31,18 +30,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
+
 import q.rorbin.badgeview.Badge;
 import q.rorbin.badgeview.QBadgeView;
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.data.Constant;
-import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.data.bean.ChatMessage;
 import xlk.paperless.standard.util.DateUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.base.BaseActivity;
 import xlk.paperless.standard.view.App;
-import xlk.paperless.standard.view.admin.fragment.after.signin.AdminSignInFragment;
 import xlk.paperless.standard.view.draw.DrawActivity;
 import xlk.paperless.standard.view.fragment.agenda.MeetAgendaFragment;
 import xlk.paperless.standard.view.fragment.annotation.MeetAnnotationFragment;
@@ -64,7 +62,6 @@ import static xlk.paperless.standard.data.Constant.FUN_CODE_MEET_FILE;
 import static xlk.paperless.standard.data.Constant.FUN_CODE_MESSAGE;
 import static xlk.paperless.standard.data.Constant.FUN_CODE_POSTIL_FILE;
 import static xlk.paperless.standard.data.Constant.FUN_CODE_SIGNIN_RESULT;
-import static xlk.paperless.standard.data.Constant.FUN_CODE_SIGN_IN_SEAT;
 import static xlk.paperless.standard.data.Constant.FUN_CODE_VIDEO_STREAM;
 import static xlk.paperless.standard.data.Constant.FUN_CODE_WEB_BROWSER;
 import static xlk.paperless.standard.data.Constant.FUN_CODE_WHITEBOARD;
@@ -113,8 +110,6 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
     private RelativeLayout rl_feature_page;
     private LinearLayout meet_fun_all_ll;
     private PagerGridLayoutManager pagerGridLayoutManager;
-    private boolean alreadyShow;
-    private AdminSignInFragment adminSignInFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,13 +128,14 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
         presenter.queryInterFaceConfiguration();
         presenter.queryIsOnline();
         presenter.queryDeviceMeetInfo();
-        presenter.queryAgenda();
         presenter.queryMeetFunction();
         presenter.queryPermission();
     }
 
     private void initView() {
         meet_root_id = (ConstraintLayout) findViewById(R.id.meet_root_id);
+        meet_root_id.setBackgroundResource(App.isStandard?R.drawable.bg_icon_red :R.drawable.bg_icon_blue);
+
         meet_logo = (ImageView) findViewById(R.id.meet_logo);
         meet_member = (TextView) findViewById(R.id.meet_member);
         meet_chat = (ImageView) findViewById(R.id.meet_chat);
@@ -343,30 +339,6 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
         meet_time.setText(time);
     }
 
-    /**
-     * 首次进入会议时直接打开会议议程界面
-     *
-     * @param functions 后台设置的功能
-     */
-    private void showAgendaPage(List<InterfaceMeetfunction.pbui_Item_MeetFunConfigDetailInfo> functions) {
-        if (presenter.hasAgenda()) {
-            LogUtils.i("showAgendaPage alreadyShow=" + alreadyShow);
-            if (alreadyShow) return;
-            for (int i = 0; i < functions.size(); i++) {
-                InterfaceMeetfunction.pbui_Item_MeetFunConfigDetailInfo item = functions.get(i);
-                int code = item.getFuncode();
-                if (code == FUN_CODE_AGENDA_BULLETIN) {
-                    showFragment(FUN_CODE_AGENDA_BULLETIN);
-                    alreadyShow = true;
-                    return;
-                }
-            }
-        } else {
-            LogUtils.e("showAgendaPage 当前没有议程");
-            alreadyShow = true;
-        }
-    }
-
     @Override
     public void updateFunction(List<InterfaceMeetfunction.pbui_Item_MeetFunConfigDetailInfo> functions) {
         if (featureAdapter == null) {
@@ -378,6 +350,19 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
             pageSnapHelper.attachToRecyclerView(meet_rv_functions);
 //            meet_rv_functions.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
             meet_rv_functions.setAdapter(featureAdapter);
+            if (!App.isStandard) {
+                boolean hasAgenda = false;
+                for (int i = 0; i < functions.size(); i++) {
+                    InterfaceMeetfunction.pbui_Item_MeetFunConfigDetailInfo item = functions.get(i);
+                    if (item.getFuncode() == FUN_CODE_AGENDA_BULLETIN) {
+                        hasAgenda = true;
+                        break;
+                    }
+                }
+                if (hasAgenda) {
+                    showFragment(FUN_CODE_AGENDA_BULLETIN);
+                }
+            }
             featureAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
@@ -392,14 +377,8 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
         } else {
             featureAdapter.notifyDataSetChanged();
         }
-        showAgendaPage(functions);
     }
 
-
-    @Override
-    public void changeSignInPage(boolean toListPage) {
-        showFragment(toListPage ? FUN_CODE_SIGNIN_RESULT : FUN_CODE_SIGN_IN_SEAT);
-    }
 
     /**
      * 根据功能码展示相应Fragment
@@ -454,24 +433,13 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
                 }
                 ft.show(meetWebFragment);
                 break;
-            //签到列表
-            case FUN_CODE_SIGNIN_RESULT: {
-                if (adminSignInFragment == null) {
-                    adminSignInFragment = new AdminSignInFragment();
-                    ft.add(R.id.meet_frame_layout, adminSignInFragment);
-                }
-                ft.show(adminSignInFragment);
-                break;
-            }
-            //签到席位
-            case FUN_CODE_SIGN_IN_SEAT: {
+            case FUN_CODE_SIGNIN_RESULT://签到信息
                 if (meetSigninFragment == null) {
                     meetSigninFragment = new MeetSigninFragment();
                     ft.add(R.id.meet_frame_layout, meetSigninFragment);
                 }
                 ft.show(meetSigninFragment);
                 break;
-            }
             case 31://评分查看
                 isScoreManage = false;
                 if (meetScoreFragment == null) {
@@ -545,7 +513,6 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
         if (meetChatFragment != null) ft.hide(meetChatFragment);
         if (meetLiveVideoFragment != null) ft.hide(meetLiveVideoFragment);
         if (meetWebFragment != null) ft.hide(meetWebFragment);
-        if (adminSignInFragment != null) ft.hide(adminSignInFragment);
         if (meetSigninFragment != null) ft.hide(meetSigninFragment);
         if (meetScoreFragment != null) ft.hide(meetScoreFragment);
         if (deviceControlFragment != null) ft.hide(deviceControlFragment);

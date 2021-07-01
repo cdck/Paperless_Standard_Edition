@@ -3,7 +3,6 @@ package xlk.paperless.standard.data;
 import android.content.Context;
 import android.os.Environment;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.mogujie.tt.protobuf.InterfaceMacro;
 
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class Constant {
     public static final String DEV_FILE_PATH = ROOT_DIR + "/" + DEV_NAME;
 
 
-    public static final String DIR_FILES = ROOT_DIR + "File/";
+    private static final String DIR_FILES = ROOT_DIR + "File/";
     public static final String DIR_CRASH_LOG = ROOT_DIR + "Log/";
     public static final String DIR_PICTURE = DIR_FILES + "图片/";
     public static final String DIR_DATA_FILE = DIR_FILES + "会议资料/";
@@ -334,16 +333,18 @@ public class Constant {
      */
     public static final int BUS_CHOOSE_NOTE_FILE = BUS_BASE + 28;
     public static final int BUS_EXPORT_NOTE_CONTENT = BUS_BASE + 29;
+    /**
+     * 隐藏悬浮窗
+     */
     public static final int BUS_HIDE_FAB = BUS_BASE + 30;
+    /**
+     * 显示悬浮窗
+     */
     public static final int BUS_SHOW_FAB = BUS_BASE + 31;
     /**
-     * 通知打开U盘
+     * 通知屏幕录制
      */
-    public static final int BUS_OPEN_UDISK = BUS_BASE + 32;
-    /**
-     * 通知更换签到页面
-     */
-    public static final int BUS_SIGN_IN_LIST_PAGE = BUS_BASE + 33;
+    public static final int BUS_SCREEN_RECORDER = BUS_BASE + 32;
 
 
     //会议功能码
@@ -396,7 +397,6 @@ public class Constant {
     //自定义其它功能的功能码
 
     public static final int FUN_CODE = 200000;
-    public static final int FUN_CODE_SIGN_IN_SEAT = FUN_CODE - 1;//签到席位
     public static final int FUN_CODE_TERMINAL = FUN_CODE + 1;
     public static final int FUN_CODE_VOTE = FUN_CODE + 2;
     public static final int FUN_CODE_ELECTION = FUN_CODE + 3;
@@ -916,7 +916,6 @@ public class Constant {
      * @param funCode 会议功能码
      */
     public static String getFunctionString(Context context, int funCode) {
-        LogUtils.i("会议功能码=" + funCode);
         switch (funCode) {
             case InterfaceMacro.Pb_Meet_FunctionCode.Pb_MEET_FUNCODE_AGENDA_BULLETIN_VALUE:
                 return context.getString(R.string.meeting_agenda);

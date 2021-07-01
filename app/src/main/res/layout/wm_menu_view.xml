@@ -6,7 +6,7 @@
     android:layout_gravity="center"
     android:gravity="center"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:background="@drawable/icon_meet_bg"
+    tools:background="@drawable/bg_icon_blue"
     android:orientation="vertical"
     android:padding="5dp">
 
