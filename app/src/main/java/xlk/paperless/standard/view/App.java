@@ -19,6 +19,7 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ServiceUtils;
 import com.tencent.smtt.sdk.QbSdk;
 import com.tencent.smtt.sdk.TbsDownloader;
 import com.tencent.smtt.sdk.TbsListener;
@@ -33,6 +34,7 @@ import java.util.concurrent.TimeUnit;
 
 import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
+import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.helper.ActivityStackManager;
 import xlk.paperless.standard.helper.MyRejectedExecutionHandler;
@@ -42,8 +44,10 @@ import xlk.paperless.standard.service.FabService;
 import xlk.paperless.standard.helper.CrashHandler;
 import xlk.paperless.standard.view.admin.AdminActivity;
 import xlk.paperless.standard.view.fragment.agenda.MeetAgendaFragment;
+import xlk.paperless.standard.view.meet.MeetingActivity;
 
 import static xlk.paperless.standard.data.Values.lbm;
+import static xlk.paperless.standard.data.Values.localDeviceId;
 
 /**
  * @author xlk
@@ -78,7 +82,7 @@ public class App extends Application {
      * =true  标准版
      * =false 方图版
      */
-    public static boolean isStandard = false;
+    public static boolean isStandard = true;
     /**
      * 是否写入到文件中
      */
@@ -100,7 +104,7 @@ public class App extends Application {
      * 服务
      */
     private Intent backstageService;
-    private boolean backstageServiceIsOpen;
+    public static boolean backstageServiceIsOpen;
     private Intent fabService;
     private boolean FabServiceIsOpen;
     private ScreenRecorder recorder;
@@ -141,6 +145,8 @@ public class App extends Application {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Constant.ACTION_SCREEN_RECORDING);
         filter.addAction(Constant.ACTION_STOP_SCREEN_RECORDING);
+        filter.addAction(Intent.ACTION_SCREEN_ON);//屏幕亮屏
+        filter.addAction(Intent.ACTION_SCREEN_OFF);//屏幕息屏
         lbm.registerReceiver(receiver, filter);
 //        Values.fontScale = (float) SharedPreferenceHelper.getData(this, "fontScale", 1.0f);
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
@@ -164,6 +170,7 @@ public class App extends Application {
             @Override
             public void onActivityResumed(@NonNull Activity activity) {
                 Values.isAdminPage = activity.getClass().getName().equals(AdminActivity.class.getName());
+                openBackstageService(true);
             }
 
             @Override
@@ -184,6 +191,19 @@ public class App extends Application {
             @Override
             public void onActivityDestroyed(@NonNull Activity activity) {
                 activities.remove(activity);
+                if (activity.getClass().getName().equals(MeetingActivity.class.getName())) {
+                    List<Integer> resIds = new ArrayList<>();
+                    resIds.add(Constant.RESOURCE_0);
+                    resIds.add(Constant.RESOURCE_1);
+                    resIds.add(Constant.RESOURCE_2);
+                    resIds.add(Constant.RESOURCE_3);
+                    resIds.add(Constant.RESOURCE_4);
+                    resIds.add(Constant.RESOURCE_10);
+                    resIds.add(Constant.RESOURCE_11);
+                    List<Integer> devIds = new ArrayList<>();
+                    devIds.add(localDeviceId);
+                    JniHandler.getInstance().stopResourceOperate(resIds, devIds);
+                }
             }
         });
     }
@@ -321,6 +341,18 @@ public class App extends Application {
                     LogUtils.e(TAG, "stopStreamInform :  屏幕录制停止失败 --> ");
                 }
             }
+
+//           else if (Intent.ACTION_SCREEN_ON.equals(action)) {
+//                LogUtils.i(TAG, "屏幕监听-亮屏");
+//                if (!ServiceUtils.isServiceRunning(BackstageService.class)) {
+//                    LogUtils.e("重新开启后台服务");
+//                    openBackstageService(true);
+//                }
+////                EventBus.getDefault().post(new EventMessage(EventType.ACTION_SCREEN_ON));
+//            } else if (Intent.ACTION_SCREEN_OFF.equals(action)) {
+//                LogUtils.i(TAG, "屏幕监听-息屏");
+////                EventBus.getDefault().post(new EventMessage(EventType.ACTION_SCREEN_OFF));
+//            }
         }
     };
 
@@ -354,16 +386,17 @@ public class App extends Application {
 
     public void openBackstageService(boolean open) {
         if (open && !backstageServiceIsOpen) {
-            if (backstageService == null) {
-                backstageService = new Intent(this, BackstageService.class);
+            if (backstageService != null) {
+                backstageService = null;
             }
+            backstageService = new Intent(this, BackstageService.class);
             startService(backstageService);
-            backstageServiceIsOpen = true;
+//            backstageServiceIsOpen = true;
             LogUtils.d(TAG, "openBackstageService -->" + "打开后台服务");
         } else if (!open && backstageServiceIsOpen) {
             if (backstageService != null) {
                 stopService(backstageService);
-                backstageServiceIsOpen = false;
+//                backstageServiceIsOpen = false;
                 LogUtils.d(TAG, "openBackstageService -->" + "关闭后台服务");
             } else {
                 LogUtils.d(TAG, "openBackstageService -->" + "backstageService为空，不需要关闭");

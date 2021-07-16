@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
@@ -53,6 +54,7 @@ import xlk.paperless.standard.util.PopUtil;
 import xlk.paperless.standard.util.ToastUtil;
 import xlk.paperless.standard.util.UriUtil;
 import xlk.paperless.standard.base.BaseFragment;
+import xlk.paperless.standard.view.App;
 
 import static xlk.paperless.standard.data.Constant.permission_code_upload;
 import static xlk.paperless.standard.data.Constant.RESOURCE_0;
@@ -220,7 +222,11 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
         } else {
             fileAdapter.notifyDataSetChanged();
         }
-        fileAdapter.addChildClickViewIds(R.id.i_m_d_file_name,R.id.i_m_d_file_download);
+        if (App.isStandard) {
+            fileAdapter.addChildClickViewIds(R.id.i_m_d_file_download, R.id.i_m_d_file_view);
+        } else {
+            fileAdapter.addChildClickViewIds(R.id.i_m_d_file_name, R.id.i_m_d_file_download);
+        }
         fileAdapter.setOnItemClickListener((adapter, view, position) -> {
             fileAdapter.setChoose(typeFileDetailInfos.get(position).getMediaid());
         });
@@ -232,8 +238,17 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
                 } else {
                     ToastUtil.show(R.string.err_NoPermission);
                 }
+            } else if (view.getId() == R.id.i_m_d_file_view) {
+                LogUtils.i("打开文件："+info.getName().toStringUtf8());
+                if (FileUtil.isAudioAndVideoFile(info.getName().toStringUtf8())) {
+                    List<Integer> devIds = new ArrayList<>();
+                    devIds.add(Values.localDeviceId);
+                    JniHandler.getInstance().mediaPlayOperate(info.getMediaid(), devIds, 0, RESOURCE_0, 0, 0);
+                } else {
+                    FileUtil.openFile(getContext(), Constant.DIR_DATA_FILE, info.getName().toStringUtf8(), info.getMediaid());
+                }
             } else if (view.getId() == R.id.i_m_d_file_name) {
-                LogUtil.d(TAG, "rvFile -->" + "查看文件");
+                LogUtils.d(TAG, "rvFile -->" + "查看文件");
 //                if (Constant.isVideo(info.getMediaid())) {
                 if (FileUtil.isAudioAndVideoFile(info.getName().toStringUtf8())) {
                     List<Integer> devIds = new ArrayList<>();
@@ -409,7 +424,7 @@ public class MeetDataFragment extends BaseFragment implements View.OnClickListen
                 .setPositiveButton(getResources().getString(R.string.determine), (dialogInterface, i) -> {
                     if (!(TextUtils.isEmpty(editText.getText().toString().trim()))) {
                         String shareFileName = editText.getText().toString();
-                        presenter.uploadFile(InterfaceMacro.Pb_Upload_Flag.Pb_MEET_UPLOADFLAG_ONLYENDCALLBACK_VALUE,
+                        presenter.uploadFile(0,
                                 currentDirId, 0, shareFileName + finalSuffix, path,
                                 0, Constant.UPLOAD_CHOOSE_FILE);
                         dialogInterface.dismiss();

@@ -1,5 +1,6 @@
 package xlk.paperless.standard.view.meet;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -17,8 +18,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.gcssloop.widget.PagerGridLayoutManager;
 import com.gcssloop.widget.PagerGridSnapHelper;
+import com.hjq.permissions.OnPermission;
+import com.hjq.permissions.XXPermissions;
 import com.mogujie.tt.protobuf.InterfaceDevice;
 import com.mogujie.tt.protobuf.InterfaceFaceconfig;
 import com.mogujie.tt.protobuf.InterfaceMeetfunction;
@@ -120,7 +124,35 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
         presenter.initial();
         presenter.initVideoRes();
         initial();
-        ((App) getApplication()).openFabService(true);
+//        if (!XXPermissions.hasPermission(this, Manifest.permission.SYSTEM_ALERT_WINDOW)) {
+//            applyAlertWindowPermission();
+//        } else {
+            ((App) getApplication()).openFabService(true);
+//        }
+    }
+
+
+    /**
+     * 申请悬浮窗权限
+     */
+    private void applyAlertWindowPermission() {
+        LogUtils.i("applyAlertWindowPermission");
+        XXPermissions.with(this)
+                .permission(Manifest.permission.SYSTEM_ALERT_WINDOW)
+                .request(new OnPermission() {
+                    @Override
+                    public void hasPermission(List<String> granted, boolean all) {
+                        LogUtils.e(TAG, "useXX hasPermission  -->" + granted);
+                        if(all){
+                            ((App) getApplication()).openFabService(true);
+                        }
+                    }
+
+                    @Override
+                    public void noPermission(List<String> denied, boolean quick) {
+                        LogUtils.e(TAG, "useXX noPermission  -->" + denied);
+                    }
+                });
     }
 
     private void initial() {

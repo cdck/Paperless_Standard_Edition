@@ -322,16 +322,19 @@ public class FileUtil {
             /** **** **  如果是文档类文件并且不是pdf文件，设置只能使用WPS软件打开  ** **** **/
             Bundle bundle = new Bundle();
             bundle.putString(WpsModel.OPEN_MODE, WpsModel.OpenMode.NORMAL); // 打开模式
+//            bundle.putString(WpsModel.OPEN_MODE, WpsModel.OpenMode.READ_ONLY); // 打开模式
 //            bundle.putBoolean(WpsModel.ENTER_REVISE_MODE, true); // 以修订模式打开文档
 
+//            bundle.putBoolean("isShowView", false); // 是否显示wps界面
             bundle.putBoolean(WpsModel.SEND_CLOSE_BROAD, true); // 文件关闭时是否发送广播
             bundle.putBoolean(WpsModel.SEND_SAVE_BROAD, true); // 文件保存时是否发送广播
             bundle.putBoolean(WpsModel.HOMEKEY_DOWN, true); // 单机home键是否发送广播
             bundle.putBoolean(WpsModel.BACKKEY_DOWN, true); // 单机back键是否发送广播
-
+            bundle.putBoolean("SendUnSaveBroad", true); // 单机back键是否发送广播
             bundle.putBoolean(WpsModel.SAVE_PATH, true); // 文件这次保存的路径
             bundle.putString(WpsModel.THIRD_PACKAGE, WpsModel.PackageName.NORMAL); // 第三方应用的包名，用于对改应用合法性的验证
 //            bundle.putBoolean(WpsModel.CLEAR_TRACE, true);// 清除打开记录
+//            bundle.putBoolean(WpsModel.CLEAR_BUFFER, true);// 关闭文件时是否请空临时文件
 //            bundle.putBoolean(CLEAR_FILE, true); //关闭后删除打开文件
             intent.setClassName(WpsModel.PackageName.NORMAL, WpsModel.ClassName.NORMAL);
             intent.putExtras(bundle);

@@ -80,7 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_marginEnd="@dimen/dp_10"
-            android:visibility="gone"
+            android:visibility="visible"
             android:text="@string/launch_screen" />
 
         <Button
@@ -88,7 +88,7 @@
             android:background="@drawable/shape_btn_pressed"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:visibility="gone"
+            android:visibility="visible"
             android:text="@string/stop_screen" />
 
     </LinearLayout>

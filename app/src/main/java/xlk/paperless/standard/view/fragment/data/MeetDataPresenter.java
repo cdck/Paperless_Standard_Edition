@@ -148,7 +148,7 @@ public class MeetDataPresenter extends BasePresenter {
                         && netstate == 1) {
                     onLineProjectors.add(detailInfo);
                 }
-                if (netstate == 1 && facestate == 1 && devcieid != Values.localDeviceId) {
+                if (netstate == 1 && facestate == 1) {
                     for (int j = 0; j < itemList.size(); j++) {
                         InterfaceMember.pbui_Item_MemberDetailInfo memberDetailInfo = itemList.get(j);
                         if (memberDetailInfo.getPersonid() == memberid) {

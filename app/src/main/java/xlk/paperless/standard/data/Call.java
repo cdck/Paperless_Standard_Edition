@@ -2,6 +2,7 @@ package xlk.paperless.standard.data;
 
 import android.content.Intent;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.mogujie.tt.protobuf.InterfaceMacro;
 
 import org.greenrobot.eventbus.EventBus;
@@ -193,6 +194,9 @@ public class Call {
         if (type == InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_UPDATE_VALUE) {
             EventBus.getDefault().postSticky(new EventMessage.Builder().type(type).method(method).objects(data, datalen).build());
         } else {
+            if (type == 45) {
+                LogUtils.i("callback_method type=" + type + ",method=" + method);
+            }
             EventBus.getDefault().post(new EventMessage.Builder().type(type).method(method).objects(data, datalen).build());
         }
         return 0;

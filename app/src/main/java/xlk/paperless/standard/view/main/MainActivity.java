@@ -221,7 +221,7 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
 
     private void start() {
         LogUtils.d(TAG, "start --> 开始 ");
-        ((App) getApplication()).openBackstageService(true);
+//        ((App) getApplication()).openBackstageService(true);
         presenter = new MainPresenter(this, this);
         request();
     }

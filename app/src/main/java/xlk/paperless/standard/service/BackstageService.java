@@ -1,11 +1,16 @@
 package xlk.paperless.standard.service;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
 
 import com.alibaba.fastjson.JSON;
+import com.blankj.utilcode.util.LogUtils;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mogujie.tt.protobuf.InterfaceBase;
@@ -45,6 +50,7 @@ import xlk.paperless.standard.util.AppUtil;
 import xlk.paperless.standard.util.FileUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.ToastUtil;
+import xlk.paperless.standard.view.App;
 import xlk.paperless.standard.view.meet.MeetingActivity;
 import xlk.paperless.standard.view.notice.BulletinActivity;
 import xlk.paperless.standard.view.score.ScoreActivity;
@@ -83,16 +89,38 @@ public class BackstageService extends Service {
     public void onCreate() {
         super.onCreate();
         EventBus.getDefault().register(this);
+        LogUtils.e("onCreate");
+        App.backstageServiceIsOpen=true;
+
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//            NotificationChannel channel = null;
+//            channel = new NotificationChannel(CHANNEL_ID_STRING, getString(R.string.app_name), NotificationManager.IMPORTANCE_HIGH);
+//            notificationManager.createNotificationChannel(channel);
+//            Notification notification = new Notification.Builder(getApplicationContext(), CHANNEL_ID_STRING).build();
+//            startForeground(1, notification);
+//        }
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        LogUtils.e("onStartCommand");
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        App.backstageServiceIsOpen=false;
         EventBus.getDefault().unregister(this);
+        LogUtils.e("onDestroy");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMessage(EventMessage msg) throws InvalidProtocolBufferException {
+        if(msg.getType()==45){
+            LogUtils.i("后台服务接收："+msg.getType()+","+msg.getMethod());
+        }
         switch (msg.getType()) {
             //平台下载
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DOWNLOAD_VALUE:
@@ -448,11 +476,6 @@ public class BackstageService extends Service {
         byte[] datas = (byte[]) msg.getObjects()[0];
         InterfacePlaymedia.pbui_Type_MeetMediaPlay mediaPlay = InterfacePlaymedia.pbui_Type_MeetMediaPlay.parseFrom(datas);
         int res = mediaPlay.getRes();
-        LogUtil.i(TAG, "mediaPlayInform -->" + "媒体播放通知 res= " + res);
-        if (res != 0) {
-            //只处理资源ID为0的播放资源
-            return;
-        }
         int mediaid = mediaPlay.getMediaid();
         int createdeviceid = mediaPlay.getCreatedeviceid();
         int triggerid = mediaPlay.getTriggerid();
@@ -460,21 +483,24 @@ public class BackstageService extends Service {
         boolean isMandatory = triggeruserval == InterfaceMacro.Pb_TriggerUsedef.Pb_EXCEC_USERDEF_FLAG_NOCREATEWINOPER_VALUE;
         int type = mediaid & Constant.MAIN_TYPE_BITMASK;
         int subtype = mediaid & Constant.SUB_TYPE_BITMASK;
+        LogUtils.i(TAG, "mediaPlayInform -->" + "媒体播放通知 res= " + res + ",mediaId=" + mediaid + ",type=" + type + ",subtype=" + subtype);
+        if (res != 0) {
+            //只处理资源ID为0的播放资源
+            return;
+        }
         if (type == Constant.MEDIA_FILE_TYPE_AUDIO || type == Constant.MEDIA_FILE_TYPE_VIDEO) {
-            LogUtil.i(TAG, "mediaPlayInform -->" + "媒体播放通知：isVideoPlaying= " + Values.isVideoPlaying);
+            LogUtils.i(TAG, "mediaPlayInform -->" + "媒体播放通知：isVideoPlaying= " + Values.isVideoPlaying);
             if (createdeviceid != Values.localDeviceId) {
                 isMandatoryPlaying = isMandatory;
             }
             Values.haveNewPlayInform = true;
-//            if (!isVideoPlaying) {
             startActivity(new Intent(this, VideoActivity.class)
                     .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                     .putExtra(Constant.EXTRA_VIDEO_ACTION, InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_MEDIAPLAY_VALUE)
                     .putExtra(Constant.EXTRA_VIDEO_SUBTYPE, subtype)
             );
-//            }
         } else {
-            LogUtil.i(TAG, "mediaPlayInform -->" + "媒体播放通知：下载文件后打开");
+            LogUtils.i(TAG, "mediaPlayInform -->" + "媒体播放通知：下载文件后打开");
             //创建好下载目录
             FileUtil.createDir(Constant.DIR_DATA_FILE);
             /** **** **  查询该媒体ID的文件名  ** **** **/

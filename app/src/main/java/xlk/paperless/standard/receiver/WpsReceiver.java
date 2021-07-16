@@ -4,6 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.blankj.utilcode.util.ActivityUtils;
+import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.LogUtils;
+
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
@@ -30,6 +34,7 @@ public class WpsReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
+        LogUtils.e("wps广播="+action);
         if (action == null) return;
         switch (action) {
             //关闭文件时的广播
@@ -48,13 +53,18 @@ public class WpsReceiver extends BroadcastReceiver {
                 break;
             //保存文件时的广播
             case WpsModel.Reciver.ACTION_SAVE:
+                EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_WPS_RECEIVER).objects(false).build());
                 String openFile = intent.getStringExtra(WpsModel.ReciverExtra.OPENFILE);
                 String thirdPackage = intent.getStringExtra(WpsModel.ReciverExtra.THIRDPACKAGE);
                 String savePath = intent.getStringExtra(WpsModel.ReciverExtra.SAVEPATH);
-                LogUtil.e(TAG, "onReceive :  保存键广播 --> openfile： " + openFile + "\n thirdPackage：" + thirdPackage + "\n savePath：" + savePath);
+                LogUtils.e(TAG, "onReceive :  保存键广播 --> openfile： " + openFile + "\n thirdPackage：" + thirdPackage + "\n savePath：" + savePath);
                 File file = new File(savePath);
                 String fileName = file.getName();
-                JniHandler.getInstance().uploadFile(0, ANNOTATION_FILE_DIRECTORY_ID, 0, fileName, savePath, 0, Constant.UPLOAD_WPS_FILE);
+                File fileByPath = FileUtils.getFileByPath(savePath);
+                if(!fileByPath.getParent().endsWith(".recovery")) {
+                    JniHandler.getInstance().uploadFile(0, ANNOTATION_FILE_DIRECTORY_ID, 0, fileName, savePath, 0, Constant.UPLOAD_WPS_FILE);
+                }
+                jump2meet(context);
                 break;
             default:
                 break;
@@ -63,13 +73,15 @@ public class WpsReceiver extends BroadcastReceiver {
 
 
     private void jump2meet(Context context) {
+        LogUtils.i("jump2meet Values.isFromAdminOpenWps="+Values.isFromAdminOpenWps);
         if (Values.isFromAdminOpenWps) {
             Intent intent = new Intent(context, AdminActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         } else {
+//            ActivityUtils.startActivity(MeetingActivity.class);
             Intent intent = new Intent(context, MeetingActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }
     }

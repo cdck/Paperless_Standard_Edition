@@ -1,6 +1,8 @@
 package xlk.paperless.standard.base;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
@@ -10,9 +12,11 @@ import android.widget.Toast;
 
 import com.blankj.utilcode.util.FileIOUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ServiceUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.UriUtils;
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.mogujie.tt.protobuf.InterfaceBase;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -28,9 +32,11 @@ import xlk.paperless.standard.data.Constant;
 import xlk.paperless.standard.data.EventMessage;
 import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.receiver.NetWorkReceiver;
+import xlk.paperless.standard.service.BackstageService;
 import xlk.paperless.standard.util.FileUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.util.UDiskUtil;
+import xlk.paperless.standard.view.App;
 
 /**
  * @author xlk
@@ -44,6 +50,7 @@ public class BaseActivity extends AppCompatActivity {
     protected JniHandler jni = JniHandler.getInstance();
     protected final int REQUEST_CODE_EXPORT_NOTE = 1;
     protected final int REQUEST_CODE_OPEN_UDISK = 2;
+    private boolean isRegisterScreen;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +60,45 @@ public class BaseActivity extends AppCompatActivity {
             EventBus.getDefault().register(this);
         }
     }
+
+//    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            String action = intent.getAction();
+//            if (action == null) return;
+//            int type = intent.getIntExtra("type", 0);
+//            LogUtil.e(TAG, "onReceive :   --> type= " + type + " , action = " + action);
+//            if (Intent.ACTION_SCREEN_ON.equals(action)) {
+//                LogUtils.i(TAG, "屏幕监听-亮屏");
+//                if (!ServiceUtils.isServiceRunning(BackstageService.class)) {
+//                    LogUtils.e("重新开启后台服务");
+////                    ((App) getApplication()).openBackstageService(true);
+//                }
+////                EventBus.getDefault().post(new EventMessage(EventType.ACTION_SCREEN_ON));
+//            } else if (Intent.ACTION_SCREEN_OFF.equals(action)) {
+//                LogUtils.i(TAG, "屏幕监听-息屏");
+////                EventBus.getDefault().post(new EventMessage(EventType.ACTION_SCREEN_OFF));
+//            }
+//        }
+//
+//    };
+
+//    private void registerDev() {
+//        if (!isRegisterScreen) {
+//            isRegisterScreen = true;
+//            IntentFilter filter = new IntentFilter();
+//            filter.addAction(Intent.ACTION_SCREEN_ON);//屏幕亮屏
+//            filter.addAction(Intent.ACTION_SCREEN_OFF);//屏幕息屏
+//            registerReceiver(broadcastReceiver, filter);
+//        }
+//    }
+
+//    private void unregisterDev() {
+//        if (isRegisterScreen) {
+//            isRegisterScreen = false;
+//            unregisterReceiver(broadcastReceiver);
+//        }
+//    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMessage(EventMessage msg) throws InvalidProtocolBufferException {

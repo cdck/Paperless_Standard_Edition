@@ -1305,6 +1305,19 @@ public class JniHandler {
         jni.call_method(InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_STOPPLAY.getNumber(), InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_CLOSE.getNumber(), build.toByteArray());
         LogUtil.i(TAG, "stopResourceOperate:  停止资源操作  ---> ");
     }
+    /**
+     * 248.停止资源操作
+     *
+     * @return
+     */
+    public void stopResourceOperate(int resId, int devId) {
+        InterfaceStop.pbui_Type_MeetDoStopResWork.Builder builder = InterfaceStop.pbui_Type_MeetDoStopResWork.newBuilder();
+        builder.addRes(resId);
+        builder.addDeviceid(devId);
+        InterfaceStop.pbui_Type_MeetDoStopResWork build = builder.build();
+        jni.call_method(InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_STOPPLAY.getNumber(), InterfaceMacro.Pb_Method.Pb_METHOD_MEET_INTERFACE_CLOSE.getNumber(), build.toByteArray());
+        LogUtil.i(TAG, "stopResourceOperate:  停止资源操作  ---> ");
+    }
 
     /**
      * 254.设置播放暂停
