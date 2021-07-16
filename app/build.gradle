@@ -18,11 +18,15 @@ android {
     compileSdkVersion 29
     buildToolsVersion '29.0.1'
     defaultConfig {
-        applicationId "xlk.paperless.standard"
+        if (isStandard.toBoolean()) {
+            applicationId "xlk.paperless.standard"
+        } else {
+            applicationId "xlk.paperless.fantu"
+        }
         minSdkVersion 23
         targetSdkVersion 28
         versionCode 2
-        versionName "1.2"
+        versionName "1.2.0714"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
@@ -61,7 +65,11 @@ android {
     //指定打包后应用名称
     applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "方图无纸化-V${variant.versionName}.apk"
+            if (isStandard.toBoolean()) {
+                outputFileName = "无纸化标准版-V${variant.versionName}.apk"
+            } else {
+                outputFileName = "方图无纸化-V${variant.versionName}.apk"
+            }
         }
     }
     //解决API 28只创建arm64目录，导致找不到库的问题

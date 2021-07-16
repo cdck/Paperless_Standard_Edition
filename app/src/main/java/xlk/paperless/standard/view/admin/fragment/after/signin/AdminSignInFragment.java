@@ -110,7 +110,7 @@ public class AdminSignInFragment extends BaseFragment implements AdminSignInInte
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_seat: {
-                EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_SIGN_IN_LIST_PAGE).object(false).build());
+                EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_SIGN_IN_LIST_PAGE).objects(false).build());
                 break;
             }
             case R.id.btn_delete:

@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginTop="5dp"
         android:layout_marginStart="@dimen/dp_10"
         android:layout_marginEnd="@dimen/dp_10"
         android:gravity="center"
@@ -54,7 +54,7 @@
             android:id="@+id/pop_video_play"
             android:background="@drawable/shape_btn_pressed"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_35"
+            android:layout_height="35dp"
             android:layout_marginEnd="@dimen/dp_10"
             android:text="@string/play_pause" />
 
@@ -62,7 +62,7 @@
             android:id="@+id/pop_video_stop"
             android:background="@drawable/shape_btn_pressed"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_35"
+            android:layout_height="35dp"
             android:layout_marginEnd="@dimen/dp_10"
             android:text="@string/stop" />
 
@@ -70,7 +70,7 @@
             android:id="@+id/pop_video_screen_shot"
             android:background="@drawable/shape_btn_pressed"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_35"
+            android:layout_height="35dp"
             android:layout_marginEnd="@dimen/dp_10"
             android:text="@string/screen_shot" />
 
@@ -78,7 +78,7 @@
             android:id="@+id/pop_video_launch_screen"
             android:background="@drawable/shape_btn_pressed"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_35"
+            android:layout_height="35dp"
             android:layout_marginEnd="@dimen/dp_10"
             android:visibility="gone"
             android:text="@string/launch_screen" />
@@ -87,7 +87,7 @@
             android:id="@+id/pop_video_stop_screen"
             android:background="@drawable/shape_btn_pressed"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_35"
+            android:layout_height="35dp"
             android:visibility="gone"
             android:text="@string/stop_screen" />
 

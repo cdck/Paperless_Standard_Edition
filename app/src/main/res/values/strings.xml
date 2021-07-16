@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">无纸化</string>
+    <string name="app_name">标准版无纸化</string>
+<!--    <string name="app_name">方图无纸化</string>-->
     <string name="set_name_">席位：%1$s</string>
     <string name="err_download">文件下载出错</string>
     <string name="determine">确定</string>
@@ -876,5 +877,6 @@
     <string name="please_enter_page_number">请输入页数</string>
     <string name="visa_waiver">免签</string>
     <string name="set_visa_waiver">设置免签到</string>
+    <string name="no_application_can_open">找不到打开此文件的应用</string>
 
 </resources>

@@ -345,6 +345,14 @@ public class Constant {
      * 通知屏幕录制
      */
     public static final int BUS_SCREEN_RECORDER = BUS_BASE + 32;
+    /**
+     * 通知打开U盘
+     */
+    public static final int BUS_OPEN_UDISK = BUS_BASE + 33;
+    /**
+     * 切换签到界面
+     */
+    public static final int BUS_SIGN_IN_LIST_PAGE = BUS_BASE + 34;
 
 
     //会议功能码
@@ -404,6 +412,7 @@ public class Constant {
     public static final int FUN_CODE_SCREEN = FUN_CODE + 5;
     public static final int FUN_CODE_BULLETIN = FUN_CODE + 6;
     public static final int FUN_CODE_SCORE = FUN_CODE + 7;
+    public static final int FUN_CODE_SIGN_IN_LIST = FUN_CODE + 8;//签到席位
 
     //资源ID
 

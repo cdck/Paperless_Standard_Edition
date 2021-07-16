@@ -74,16 +74,19 @@ public class App extends Application {
     }
 
     private static final String TAG = "App-->";
-    public static boolean read2file = false;
-
+    /**
+     * =true  标准版
+     * =false 方图版
+     */
+    public static boolean isStandard = false;
     /**
      * 是否写入到文件中
-     * <p>
-     * public static final boolean read2file = false;
-     * /**
+     */
+    public static boolean read2file = false;
+    /**
      * 是否可以登录到后台管理
      */
-    public static boolean canLoginAdmin = false;
+    public static boolean canLoginAdmin = true;
 
     /**
      * 屏幕录制需要的信息

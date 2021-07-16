@@ -8,13 +8,11 @@ package xlk.paperless.standard.data;
 public class EventMessage {
     private int type;
     private int method;
-    private Object object;
     private Object[] objects;
 
     private EventMessage(Builder builder) {
         this.type = builder.type;
         this.method = builder.method;
-        this.object = builder.object;
         this.objects = builder.objects;
     }
 
@@ -24,10 +22,6 @@ public class EventMessage {
 
     public int getMethod() {
         return method;
-    }
-
-    public Object getObject() {
-        return object;
     }
 
     public Object[] getObjects() {
@@ -47,11 +41,6 @@ public class EventMessage {
 
         public Builder method(int method) {
             this.method = method;
-            return this;
-        }
-
-        public Builder object(Object object) {
-            this.object = object;
             return this;
         }
 

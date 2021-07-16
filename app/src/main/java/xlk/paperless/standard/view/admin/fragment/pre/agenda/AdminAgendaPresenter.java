@@ -55,7 +55,7 @@ public class AdminAgendaPresenter extends BasePresenter {
                 }
                 break;
             case Constant.BUS_READ_AGENDA_TXT:
-                String content = (String) msg.getObject();
+                String content = (String) msg.getObjects()[0];
                 view.showProgressBar(false);
                 view.updateAgendaContent(content);
                 break;

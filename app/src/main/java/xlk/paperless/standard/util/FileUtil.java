@@ -1,5 +1,6 @@
 package xlk.paperless.standard.util;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+
+import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ToastUtils;
 
 import androidx.core.content.FileProvider;
 
@@ -30,6 +34,9 @@ import xlk.paperless.standard.data.JniHandler;
 import xlk.paperless.standard.data.Values;
 import xlk.paperless.standard.data.WpsModel;
 import xlk.paperless.standard.view.App;
+import xlk.paperless.standard.view.pdf.PdfViewerActivity;
+
+import static cc.shinichi.library.tool.file.FileUtil.getMIMEType;
 
 /**
  * @author xlk
@@ -132,7 +139,7 @@ public class FileUtil {
         return !isDocumentFile(fileName) && !isAudioAndVideoFile(fileName) && !isPictureFile(fileName);
     }
 
-    public static boolean isVideoFile(String fileName){
+    public static boolean isVideoFile(String fileName) {
         if (!fileName.contains(".")) {//该文件没有后缀
             return false;
         }
@@ -167,6 +174,7 @@ public class FileUtil {
                 || fileEnd.equals("naivx")
                 || fileEnd.equals("xvid");
     }
+
     /**
      * 判断是否为视频文件
      *
@@ -297,6 +305,18 @@ public class FileUtil {
             EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_PREVIEW_IMAGE).objects(file.getAbsolutePath()).build());
             return;
         } else if (FileUtil.isDocumentFile(filename)) {
+            LogUtils.e("当前是【" + (App.isStandard ? "标准版无纸化" : "方图版无纸化") + "】，将要打开=" + file.getAbsolutePath());
+            if (!App.isStandard) {
+                if (filename.endsWith(".pdf")) {
+                    Intent intent1 = new Intent(context, PdfViewerActivity.class);
+                    if (!(context instanceof Activity)) {
+                        intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    }
+                    intent1.putExtra(PdfViewerActivity.FILE_PATH, file.getAbsolutePath());
+                    context.startActivity(intent1);
+                    return;
+                }
+            }
             //通知注册WPS广播
             EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_WPS_RECEIVER).objects(true).build());
             /** **** **  如果是文档类文件并且不是pdf文件，设置只能使用WPS软件打开  ** **** **/
@@ -319,6 +339,37 @@ public class FileUtil {
         uriX(context, intent, file);
     }
 
+    /**
+     * 打开文件
+     */
+    public static void openLocalFile(Context context, File file) {
+        Intent intent = new Intent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //设置intent的Action属性
+        intent.setAction(Intent.ACTION_VIEW);
+        Uri uri = null;
+        //7.0以后，用了Content Uri 替换了原本的File Uri
+        if (Build.VERSION.SDK_INT > 23) {//android 7.0以上时，URI不能直接暴露
+            // 方式一
+//            uri = getImageContentUri(context, file);
+            // 方式二
+            uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileProvider", file);
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        } else {
+            uri = Uri.fromFile(file);
+        }
+        intent.setDataAndType(uri, "application/vnd.android.package-archive");
+        //获取文件file的MIME类型
+        String type = getMIMEType(file);
+        //设置intent的data和Type属性。
+        intent.setDataAndType(uri, type);
+        //跳转
+        try {
+            context.startActivity(intent);
+        } catch (Exception e) {
+            ToastUtils.showShort(R.string.no_application_can_open);
+        }
+    }
 
     /**
      * 抽取成工具方法
@@ -385,7 +436,7 @@ public class FileUtil {
                     }
                 }
                 LogUtil.i(TAG, "readTxtFile 用时：" + (System.currentTimeMillis() - l));
-                EventBus.getDefault().post(new EventMessage.Builder().type(action).object(content).build());
+                EventBus.getDefault().post(new EventMessage.Builder().type(action).objects(content).build());
             }
         });
     }
@@ -416,11 +467,12 @@ public class FileUtil {
 
     /**
      * 删除文件、删除目录和子目录文件
+     *
      * @param filePath 文件或目录路径
      */
     public static void delDirFile(String filePath) {
         File file = new File(filePath);
-        if(!file.exists()){
+        if (!file.exists()) {
             return;
         }
         if (file.isDirectory()) {

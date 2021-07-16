@@ -180,6 +180,7 @@
         style="@style/btn_pressed_style"
         android:layout_marginEnd="8dp"
         android:text="@string/open_document_externally"
+        android:textSize="@dimen/text_size_smallest"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.FragmentTransaction;
@@ -18,8 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.gcssloop.widget.PagerGridLayoutManager;
 import com.gcssloop.widget.PagerGridSnapHelper;
 import com.mogujie.tt.protobuf.InterfaceDevice;
@@ -41,6 +38,7 @@ import xlk.paperless.standard.util.DateUtil;
 import xlk.paperless.standard.util.LogUtil;
 import xlk.paperless.standard.base.BaseActivity;
 import xlk.paperless.standard.view.App;
+import xlk.paperless.standard.view.admin.fragment.after.signin.AdminSignInFragment;
 import xlk.paperless.standard.view.draw.DrawActivity;
 import xlk.paperless.standard.view.fragment.agenda.MeetAgendaFragment;
 import xlk.paperless.standard.view.fragment.annotation.MeetAnnotationFragment;
@@ -62,6 +60,7 @@ import static xlk.paperless.standard.data.Constant.FUN_CODE_MEET_FILE;
 import static xlk.paperless.standard.data.Constant.FUN_CODE_MESSAGE;
 import static xlk.paperless.standard.data.Constant.FUN_CODE_POSTIL_FILE;
 import static xlk.paperless.standard.data.Constant.FUN_CODE_SIGNIN_RESULT;
+import static xlk.paperless.standard.data.Constant.FUN_CODE_SIGN_IN_LIST;
 import static xlk.paperless.standard.data.Constant.FUN_CODE_VIDEO_STREAM;
 import static xlk.paperless.standard.data.Constant.FUN_CODE_WEB_BROWSER;
 import static xlk.paperless.standard.data.Constant.FUN_CODE_WHITEBOARD;
@@ -96,6 +95,7 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
     private MeetScoreFragment meetScoreFragment;
     private MeetSigninFragment meetSigninFragment;
     private MeetWebFragment meetWebFragment;
+    private AdminSignInFragment adminSignInFragment;
     private DeviceControlFragment deviceControlFragment;
     private ElectionManageFragment electionManageFragment;
     private ScreenFragment screenFragment;
@@ -134,7 +134,7 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
 
     private void initView() {
         meet_root_id = (ConstraintLayout) findViewById(R.id.meet_root_id);
-        meet_root_id.setBackgroundResource(App.isStandard?R.drawable.bg_icon_red :R.drawable.bg_icon_blue);
+        meet_root_id.setBackgroundResource(App.isStandard ? R.drawable.bg_icon_red : R.drawable.bg_icon_blue);
 
         meet_logo = (ImageView) findViewById(R.id.meet_logo);
         meet_member = (TextView) findViewById(R.id.meet_member);
@@ -296,6 +296,11 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
     }
 
     @Override
+    public void changeSignInPage(boolean toListPage) {
+        showFragment(toListPage ? FUN_CODE_SIGN_IN_LIST : FUN_CODE_SIGNIN_RESULT);
+    }
+
+    @Override
     public void updateLogo(Drawable drawable) {
         LogUtil.e(TAG, "updateLogo 设置logo图片 -->" + (drawable != null));
         meet_logo.setImageDrawable(drawable);
@@ -363,15 +368,12 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
                     showFragment(FUN_CODE_AGENDA_BULLETIN);
                 }
             }
-            featureAdapter.setOnItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                    int funcode = functions.get(position).getFuncode();
-                    if (funcode == FUN_CODE_WHITEBOARD) {
-                        jump2artBoard();
-                    } else {
-                        showFragment(funcode);
-                    }
+            featureAdapter.setOnItemClickListener((adapter, view, position) -> {
+                int funcode = functions.get(position).getFuncode();
+                if (funcode == FUN_CODE_WHITEBOARD) {
+                    jump2artBoard();
+                } else {
+                    showFragment(funcode);
                 }
             });
         } else {
@@ -433,13 +435,24 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
                 }
                 ft.show(meetWebFragment);
                 break;
-            case FUN_CODE_SIGNIN_RESULT://签到信息
+            //签到信息
+            case FUN_CODE_SIGNIN_RESULT: {
                 if (meetSigninFragment == null) {
                     meetSigninFragment = new MeetSigninFragment();
                     ft.add(R.id.meet_frame_layout, meetSigninFragment);
                 }
                 ft.show(meetSigninFragment);
                 break;
+            }
+            //签到列表
+            case FUN_CODE_SIGN_IN_LIST: {
+                if (adminSignInFragment == null) {
+                    adminSignInFragment = new AdminSignInFragment();
+                    ft.add(R.id.meet_frame_layout, adminSignInFragment);
+                }
+                ft.show(adminSignInFragment);
+                break;
+            }
             case 31://评分查看
                 isScoreManage = false;
                 if (meetScoreFragment == null) {
@@ -520,6 +533,7 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
         if (electionManageFragment != null) ft.hide(electionManageFragment);
         if (screenFragment != null) ft.hide(screenFragment);
         if (bulletinFragment != null) ft.hide(bulletinFragment);
+        if (adminSignInFragment != null) ft.hide(adminSignInFragment);
     }
 
     private void jump2artBoard() {

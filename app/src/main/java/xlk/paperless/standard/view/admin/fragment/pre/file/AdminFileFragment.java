@@ -170,8 +170,8 @@ public class AdminFileFragment extends BaseFragment implements AdminFileInterfac
             rv_history_dir.setAdapter(historyDirAdapter);
             historyDirAdapter.setOnItemClickListener((adapter, view, position) -> {
                 int dirId = dirInfos.get(position).getId();
-                presenter.setCurrentHistoryDirId(dirId);
                 historyDirAdapter.setSelected(dirId);
+                presenter.setCurrentHistoryDirId(dirId);
                 presenter.queryFileByDir(dirId);
             });
             if (!dirInfos.isEmpty()) {
@@ -301,10 +301,12 @@ public class AdminFileFragment extends BaseFragment implements AdminFileInterfac
             }
         });
         inflate.findViewById(R.id.btn_exit).setOnClickListener(v -> {
-            presenter.exit();
             historyPop.dismiss();
         });
-        historyPop.setOnDismissListener(() -> presenter.setCurrentHistoryDirId(0));
+        historyPop.setOnDismissListener(() -> {
+            presenter.setCurrentHistoryDirId(0);
+            presenter.exit();
+        });
     }
 
     @Override
@@ -534,8 +536,8 @@ public class AdminFileFragment extends BaseFragment implements AdminFileInterfac
                 rv_sort_file.setAdapter(fileSortAdapter);
                 fileSortAdapter.addChildClickViewIds(R.id.item_btn_open);
                 fileSortAdapter.setOnItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+                    @Override
+                    public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                         fileSortAdapter.setSelectedId(sortDirFiles.get(position).getMediaid());
                     }
                 });
@@ -625,8 +627,8 @@ public class AdminFileFragment extends BaseFragment implements AdminFileInterfac
         rv_permission_dir.setLayoutManager(new LinearLayoutManager(getContext()));
         rv_permission_dir.setAdapter(dirNameAdapter);
         dirNameAdapter.setOnItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+            @Override
+            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 int dirId = dirInfos.get(position).getId();
                 dirNameAdapter.setSelected(dirId);
                 presenter.queryDirPermission(dirId);
@@ -665,8 +667,8 @@ public class AdminFileFragment extends BaseFragment implements AdminFileInterfac
                 rv_dir_permission_member.setLayoutManager(new LinearLayoutManager(getContext()));
                 rv_dir_permission_member.setAdapter(dirPermissionMemberAdapter);
                 dirPermissionMemberAdapter.setOnItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+                    @Override
+                    public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                         dirPermissionMemberAdapter.setCheck(memberDirPermissionBeans.get(position).getMember().getPersonid());
                         cbAll.setChecked(dirPermissionMemberAdapter.isCheckAll());
                     }

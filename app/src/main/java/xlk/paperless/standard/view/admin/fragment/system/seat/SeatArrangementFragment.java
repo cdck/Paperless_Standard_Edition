@@ -42,7 +42,7 @@ import xlk.paperless.standard.util.ToastUtil;
 
 /**
  * @author Created by xlk on 2020/11/3.
- * @desc  座位排布
+ * @desc 座位排布
  */
 public class SeatArrangementFragment extends BaseFragment implements SeatArrangementInterface, View.OnClickListener {
     private RecyclerView rv_room;
@@ -67,9 +67,11 @@ public class SeatArrangementFragment extends BaseFragment implements SeatArrange
         View inflate = inflater.inflate(R.layout.admin_fragment_seat_arrangement, container, false);
         initView(inflate);
         presenter = new SeatArrangementPresenter(this);
-        presenter.queryRoom();
-        presenter.queryRoomIcon();
-        seat_view.post(() -> seat_view.setViewSize(seat_view.getWidth(), seat_view.getHeight()));
+        seat_view.post(() -> {
+            seat_view.setViewSize(seat_view.getWidth(), seat_view.getHeight());
+            presenter.queryRoom();
+            presenter.queryRoomIcon();
+        });
         return inflate;
     }
 

@@ -103,6 +103,14 @@ public class CustomSeatView extends AbsoluteLayout {
      * 是否可以拖动席位,默认true可拖动
      */
     private boolean canDragSeat = true;
+    /**
+     * 是否可以选中席位
+     */
+    private boolean canChoose = true;
+
+    public void setCanChoose(boolean canChoose) {
+        this.canChoose = canChoose;
+    }
 
     public void setCanDrag(boolean drag) {
         canDrag = drag;
@@ -499,10 +507,10 @@ public class CustomSeatView extends AbsoluteLayout {
                     float moveY = event.getY();
                     float dx = moveX - touchDownX;
                     float dy = moveY - touchDownY;
-                    if (touchSeatIndex == -1) {
-                        dragParentView(canDragX, canDragY, dx, dy);
-                    } else if (canDragSeat) {
+                    if (canDragSeat && touchSeatIndex != -1) {
                         dragSeatView(moveX, moveY, dx, dy);
+                    } else {
+                        dragParentView(canDragX, canDragY, dx, dy);
                     }
                 }
                 break;
@@ -514,7 +522,7 @@ public class CustomSeatView extends AbsoluteLayout {
                 Log.e(TAG, "move up --> " + left + "," + top + "," + right + "," + bottom);
                 if (System.currentTimeMillis() - touchDownTime < 200) {
                     //点击
-                    if (touchSeatIndex != -1) {
+                    if (canChoose && touchSeatIndex != -1) {
                         setSelected(subViews.get(touchSeatIndex).getId());
                     }
                 }
