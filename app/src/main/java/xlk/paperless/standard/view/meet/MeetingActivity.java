@@ -168,6 +168,7 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
         meet_root_id = (ConstraintLayout) findViewById(R.id.meet_root_id);
 //        meet_root_id.setBackgroundResource(App.isStandard ? R.drawable.bg_icon_red : R.drawable.bg_icon_blue);
         if(!App.isStandard) {
+            //只有是方图版本才固定背景图
             meet_root_id.setBackgroundResource(R.drawable.bg_icon_blue);
         }
 
