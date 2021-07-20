@@ -5,7 +5,7 @@
     android:id="@+id/meet_root_id"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/icon_main_bg"
+    android:background="@drawable/bg_center"
     tools:context=".view.meet.MeetingActivity">
 
     <LinearLayout

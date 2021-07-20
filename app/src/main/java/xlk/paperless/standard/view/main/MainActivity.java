@@ -606,7 +606,9 @@ public class MainActivity extends BaseActivity implements IMain, View.OnClickLis
 
     @Override
     public void updateBackground(Drawable drawable) {
-        main_root_layout.setBackground(drawable);
+        if(App.isStandard) {
+            main_root_layout.setBackground(drawable);
+        }
     }
 
     @Override

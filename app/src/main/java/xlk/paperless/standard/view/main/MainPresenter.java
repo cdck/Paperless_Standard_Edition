@@ -312,14 +312,14 @@ public class MainPresenter {
                 }
                 break;
             }
-//            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEMEETSTATUS_VALUE://界面状态变更通知
-//                LogUtils.i(TAG, "BusEvent -->" + "界面状态变更通知");
-//                Object[] objs1 = msg.getObjs();
-//                int datalen = (int) objs1[1];
-//                if (datalen > 0) {
-//                    queryInterFaceConfiguration();
-//                }
-//                break;
+            case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEMEETSTATUS_VALUE://界面状态变更通知
+                LogUtils.i(TAG, "BusEvent -->" + "界面状态变更通知");
+                Object[] objs1 = msg.getObjects();
+                int datalen = (int) objs1[1];
+                if (datalen > 0) {
+                    queryInterFaceConfiguration();
+                }
+                break;
             //设备会议信息变更通知
             case InterfaceMacro.Pb_Type.Pb_TYPE_MEET_INTERFACE_DEVICEFACESHOW_VALUE: {
                 LogUtils.i(TAG, "BusEvent -->" + "设备会议信息变更通知");

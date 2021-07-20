@@ -166,7 +166,10 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
 
     private void initView() {
         meet_root_id = (ConstraintLayout) findViewById(R.id.meet_root_id);
-        meet_root_id.setBackgroundResource(App.isStandard ? R.drawable.bg_icon_red : R.drawable.bg_icon_blue);
+//        meet_root_id.setBackgroundResource(App.isStandard ? R.drawable.bg_icon_red : R.drawable.bg_icon_blue);
+        if(!App.isStandard) {
+            meet_root_id.setBackgroundResource(R.drawable.bg_icon_blue);
+        }
 
         meet_logo = (ImageView) findViewById(R.id.meet_logo);
         meet_member = (TextView) findViewById(R.id.meet_member);
@@ -340,7 +343,9 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
 
     @Override
     public void updateBg(Drawable drawable) {
-//        meet_root_id.setBackground(drawable);
+        if(App.isStandard) {
+            meet_root_id.setBackground(drawable);
+        }
     }
 
     @Override

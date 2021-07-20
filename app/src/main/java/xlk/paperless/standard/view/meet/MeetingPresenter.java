@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.CountDownTimer;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mogujie.tt.protobuf.InterfaceAgenda;
 import com.mogujie.tt.protobuf.InterfaceBase;
@@ -89,8 +90,8 @@ public class MeetingPresenter extends BasePresenter {
                 Drawable drawable = Drawable.createFromPath(o2);
                 view.updateLogo(drawable);
                 break;
-//            case Constant.BUS_SUB_BG://子界面背景图下载完成
-            case Constant.BUS_MAIN_BG://背景图下载完成
+            case Constant.BUS_SUB_BG://子界面背景图下载完成
+//            case Constant.BUS_MAIN_BG://背景图下载完成
                 String o1 = (String) msg.getObjects()[0];
                 Drawable drawable1 = Drawable.createFromPath(o1);
                 view.updateBg(drawable1);
@@ -290,6 +291,7 @@ public class MeetingPresenter extends BasePresenter {
             for (int i = 0; i < pictureList.size(); i++) {
                 InterfaceFaceconfig.pbui_Item_FacePictureItemInfo itemInfo = pictureList.get(i);
                 int faceid = itemInfo.getFaceid();
+                LogUtils.i("界面配置 图片 faceid="+faceid);
                 int flag = itemInfo.getFlag();
                 boolean isShow = (InterfaceMacro.Pb_MeetFaceFlag.Pb_MEET_FACEFLAG_SHOW_VALUE == (flag & InterfaceMacro.Pb_MeetFaceFlag.Pb_MEET_FACEFLAG_SHOW_VALUE));
                 if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_LOGO.getNumber()) {
@@ -303,11 +305,11 @@ public class MeetingPresenter extends BasePresenter {
 //                    FileUtil.createDir(Constant.dir_picture);
 //                    jni.creationFileDownload(Constant.dir_picture + Constant.MAIN_BG_PNG_TAG + ".png", itemInfo.getMediaid(), 1, 0, Constant.MAIN_BG_PNG_TAG);
 //                }
-//                else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_SUBBG_VALUE) {//子界面背景图
-//                    LogUtil.d(TAG, "fun_queryInterFaceConfiguration -->" + "下载子界面背景图");
-//                    FileUtil.createDir(Constant.configuration_picture_dir);
-//                    jni.creationFileDownload(Constant.configuration_picture_dir + Constant.SUB_BG_PNG_TAG + ".png", itemInfo.getMediaid(), 1, 0, Constant.SUB_BG_PNG_TAG);
-//                }
+                else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_SUBBG_VALUE) {//子界面背景图
+                    LogUtil.d(TAG, "fun_queryInterFaceConfiguration -->" + "下载子界面背景图");
+                    FileUtil.createDir(Constant.DIR_PICTURE);
+                    jni.creationFileDownload(Constant.DIR_PICTURE + Constant.SUB_BG_PNG_TAG + ".png", itemInfo.getMediaid(), 1, 0, Constant.SUB_BG_PNG_TAG);
+                }
             }
             for (int i = 0; i < onlytextList.size(); i++) {
                 InterfaceFaceconfig.pbui_Item_FaceOnlyTextItemInfo info = onlytextList.get(i);
