@@ -37,6 +37,7 @@ import java.util.List;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.adapter.File3Adapter;
 import xlk.paperless.standard.data.Constant;
@@ -69,6 +70,7 @@ public class AdminOtherFragment extends BaseFragment implements AdminOtherInterf
     private EditText edt_confirm_pwd;
     private Button btn_submit_modify;
     private Button btn_change_home;
+    private Button btn_change_subbg;
     private Button btn_change_pro;
     private Button btn_change_bulletin;
     private AdminOtherPresenter presenter;
@@ -106,6 +108,8 @@ public class AdminOtherFragment extends BaseFragment implements AdminOtherInterf
     private PopupWindow urlPop;
     private RecyclerView rv_pop_url;
     private UrlAdapter urlAdapter;
+    private PopupWindow subViewPop;
+    private ImageView iv_subview;
 
     @Nullable
     @Override
@@ -145,6 +149,7 @@ public class AdminOtherFragment extends BaseFragment implements AdminOtherInterf
         edt_confirm_pwd = (EditText) inflate.findViewById(R.id.edt_confirm_pwd);
         btn_submit_modify = (Button) inflate.findViewById(R.id.btn_submit_modify);
         btn_change_home = (Button) inflate.findViewById(R.id.btn_change_home);
+        btn_change_subbg = (Button) inflate.findViewById(R.id.btn_change_subbg);
         btn_change_pro = (Button) inflate.findViewById(R.id.btn_change_pro);
         btn_change_bulletin = (Button) inflate.findViewById(R.id.btn_change_bulletin);
 
@@ -154,6 +159,7 @@ public class AdminOtherFragment extends BaseFragment implements AdminOtherInterf
         btn_file_modify.setOnClickListener(this);
         btn_submit_modify.setOnClickListener(this);
         btn_change_home.setOnClickListener(this);
+        btn_change_subbg.setOnClickListener(this);
         btn_change_pro.setOnClickListener(this);
         btn_change_bulletin.setOnClickListener(this);
     }
@@ -192,6 +198,11 @@ public class AdminOtherFragment extends BaseFragment implements AdminOtherInterf
                 presenter.queryInterFaceConfiguration();
                 showInterfacePop(CURRENT_POP_TAG);
                 break;
+            case R.id.btn_change_subbg: {
+                presenter.queryInterFaceConfiguration();
+                showSubViewPop();
+                break;
+            }
             case R.id.btn_change_pro:
                 CURRENT_POP_TAG = POP_TAG_PROJECTIVE;
                 presenter.queryInterFaceConfiguration();
@@ -205,6 +216,24 @@ public class AdminOtherFragment extends BaseFragment implements AdminOtherInterf
             default:
                 break;
         }
+    }
+
+    private void showSubViewPop() {
+        View inflate = LayoutInflater.from(getContext()).inflate(R.layout.pop_subview_interface, null);
+        subViewPop = new PopupWindow(inflate, Values.screen_width * 3 / 4, Values.screen_height * 3 / 4);
+        subViewPop.setBackgroundDrawable(new BitmapDrawable());
+        // 设置popWindow弹出窗体可点击，这句话必须添加，并且是true
+        subViewPop.setTouchable(true);
+        // true:设置触摸外面时消失
+        subViewPop.setOutsideTouchable(true);
+        subViewPop.setFocusable(true);
+        subViewPop.setAnimationStyle(R.style.pop_Animation);
+        subViewPop.showAtLocation(btn_change_subbg, Gravity.CENTER, 0, 0);
+        iv_subview = inflate.findViewById(R.id.iv_subview);
+        inflate.findViewById(R.id.btn_change).setOnClickListener(v -> {
+            showBgFilePop(4,false);
+        });
+
     }
 
     private void showUrlPop() {
@@ -452,7 +481,7 @@ public class AdminOtherFragment extends BaseFragment implements AdminOtherInterf
     /**
      * 展示选择背景图
      *
-     * @param tag    =1主界面，=2投影界面，=3公告界面
+     * @param tag    =1主界面，=2投影界面，=3公告界面,=其它子界面背景图
      * @param isLogo 是否处理登录图片
      */
     private void showBgFilePop(int tag, boolean isLogo) {
@@ -507,6 +536,7 @@ public class AdminOtherFragment extends BaseFragment implements AdminOtherInterf
                         }
                         break;
                     default:
+                        presenter.saveSubViewBg(mediaid);
                         break;
                 }
                 bgFilePop.dismiss();
@@ -787,6 +817,16 @@ public class AdminOtherFragment extends BaseFragment implements AdminOtherInterf
                     Drawable drawable = Drawable.createFromPath(filePath);
                     dragView.setBackground(drawable);
                 }
+            }
+        }
+    }
+
+    @Override
+    public void updateSubviewBgImg(String filePath) {
+        if (subViewPop != null && subViewPop.isShowing()) {
+            if (iv_subview != null) {
+                Drawable drawable = Drawable.createFromPath(filePath);
+                iv_subview.setBackground(drawable);
             }
         }
     }

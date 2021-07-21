@@ -878,5 +878,7 @@
     <string name="visa_waiver">免签</string>
     <string name="set_visa_waiver">设置免签到</string>
     <string name="no_application_can_open">找不到打开此文件的应用</string>
+    <string name="change_home_subView_bg">更换子界面</string>
+    <string name="modify_background">更改背景</string>
 
 </resources>

@@ -124,11 +124,11 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
         presenter.initial();
         presenter.initVideoRes();
         initial();
-//        if (!XXPermissions.hasPermission(this, Manifest.permission.SYSTEM_ALERT_WINDOW)) {
-//            applyAlertWindowPermission();
-//        } else {
+        if (!XXPermissions.hasPermission(this, Manifest.permission.SYSTEM_ALERT_WINDOW)) {
+            applyAlertWindowPermission();
+        } else {
             ((App) getApplication()).openFabService(true);
-//        }
+        }
     }
 
 
@@ -166,12 +166,10 @@ public class MeetingActivity extends BaseActivity implements IMeet, View.OnClick
 
     private void initView() {
         meet_root_id = (ConstraintLayout) findViewById(R.id.meet_root_id);
-//        meet_root_id.setBackgroundResource(App.isStandard ? R.drawable.bg_icon_red : R.drawable.bg_icon_blue);
         if(!App.isStandard) {
             //只有是方图版本才固定背景图
             meet_root_id.setBackgroundResource(R.drawable.bg_icon_blue);
         }
-
         meet_logo = (ImageView) findViewById(R.id.meet_logo);
         meet_member = (TextView) findViewById(R.id.meet_member);
         meet_chat = (ImageView) findViewById(R.id.meet_chat);

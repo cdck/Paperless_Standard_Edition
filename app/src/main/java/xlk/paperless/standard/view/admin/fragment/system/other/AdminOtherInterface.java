@@ -87,4 +87,10 @@ public interface AdminOtherInterface {
     void updateInterface(List<MainInterfaceBean> mainInterfaceBeans, List<MainInterfaceBean> projectiveInterfaceBeans, List<MainInterfaceBean> noticeInterfaceBeans);
 
     void updateCurrentReleaseFileName(String fileName);
+
+    /**
+     * 更新子界面背景图
+     * @param filePath 图片路径
+     */
+    void updateSubviewBgImg(String filePath);
 }

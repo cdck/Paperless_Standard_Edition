@@ -90,7 +90,7 @@ public class BackstageService extends Service {
         super.onCreate();
         EventBus.getDefault().register(this);
         LogUtils.e("onCreate");
-        App.backstageServiceIsOpen=true;
+        App.backstageServiceIsOpen = true;
 
 //        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
 //            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -111,15 +111,15 @@ public class BackstageService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        App.backstageServiceIsOpen=false;
+        App.backstageServiceIsOpen = false;
         EventBus.getDefault().unregister(this);
         LogUtils.e("onDestroy");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMessage(EventMessage msg) throws InvalidProtocolBufferException {
-        if(msg.getType()==45){
-            LogUtils.i("后台服务接收："+msg.getType()+","+msg.getMethod());
+        if (msg.getType() == 45) {
+            LogUtils.i("后台服务接收：" + msg.getType() + "," + msg.getMethod());
         }
         switch (msg.getType()) {
             //平台下载
@@ -551,6 +551,7 @@ public class BackstageService extends Service {
         String filepath = pbui_type_downloadCb.getPathname().toStringUtf8();
         String userStr = pbui_type_downloadCb.getUserstr().toStringUtf8();
         String fileName = filepath.substring(filepath.lastIndexOf("/") + 1).toLowerCase();
+        LogUtils.i("下载进度：filepath=" + filepath + ",netate=" + nstate + ",err=" + err + ",progress=" + progress + ",mediaid=" + mediaid);
         if (userStr.equals(Constant.DOWNLOAD_NO_INFORM)) {
             LogUtil.i(TAG, "downloadInform 无进度通知的下载 filepath=" + filepath);
             return;

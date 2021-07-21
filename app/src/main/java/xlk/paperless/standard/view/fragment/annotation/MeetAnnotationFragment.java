@@ -1,11 +1,13 @@
 package xlk.paperless.standard.view.fragment.annotation;
 
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -147,7 +149,7 @@ public class MeetAnnotationFragment extends BaseFragment implements View.OnClick
         }
         List<InterfaceFile.pbui_Item_MeetDirFileDetailInfo> temps = new ArrayList<>(currentFiles);
         View inflate = LayoutInflater.from(getContext()).inflate(R.layout.pop_export_file, null);
-        PopupWindow exportPop = PopUtil.create(inflate, Values.screen_width / 3 * 2, Values.screen_height / 3 * 2,  f_annotation_export);
+        PopupWindow exportPop = PopUtil.create(inflate, Values.screen_width / 3 * 2, Values.screen_height / 3 * 2, f_annotation_export);
         RecyclerView pop_export_rv = inflate.findViewById(R.id.pop_export_rv);
         Button pop_export_download = inflate.findViewById(R.id.pop_export_download);
         Button pop_export_back = inflate.findViewById(R.id.pop_export_back);
@@ -189,9 +191,9 @@ public class MeetAnnotationFragment extends BaseFragment implements View.OnClick
                 currentType = -1;//设置显示全部
                 int currentDevId = seatMembers.get(position).getSeatDetailInfo().getSeatid();
                 currentMemberId = seatMembers.get(position).getMemberDetailInfo().getPersonid();
-                memberAdapter.setSelect(currentDevId);
+                memberAdapter.setSelect(currentDevId,currentMemberId);
                 LogUtil.i(TAG, "updateMemberRv currentDevId=" + currentDevId + ",currentMemberId=" + currentMemberId);
-                if (presenter.hasPermission(currentDevId)) {
+                if (presenter.hasPermission(currentDevId,currentMemberId)) {
                     showFile();
                 } else {
                     clean();
@@ -227,7 +229,7 @@ public class MeetAnnotationFragment extends BaseFragment implements View.OnClick
             return;
         }
         currentFiles.clear();
-        if (!presenter.hasPermission(memberAdapter.getSelectedDevId())) {
+        if (!presenter.hasPermission(memberAdapter.getSelectedDevId(),memberAdapter.getSelectedMemberId())) {
             clean();
             return;
         }
@@ -272,7 +274,7 @@ public class MeetAnnotationFragment extends BaseFragment implements View.OnClick
             fileAdapter = new MeetDataFileAdapter(R.layout.item_meet_data_file, currentFiles);
             f_annotation_file_rv.setLayoutManager(new LinearLayoutManager(getContext()));
             f_annotation_file_rv.setAdapter(fileAdapter);
-            fileAdapter.addChildClickViewIds(R.id.i_m_d_file_name,R.id.i_m_d_file_download);
+            fileAdapter.addChildClickViewIds(R.id.i_m_d_file_name, R.id.i_m_d_file_download);
             fileAdapter.setOnItemChildClickListener((adapter, view, position) -> {
                 if (view.getId() == R.id.i_m_d_file_download) {
                     presenter.downloadFile(currentFiles.get(position));
@@ -306,7 +308,7 @@ public class MeetAnnotationFragment extends BaseFragment implements View.OnClick
             pushProjectionAdapter.notifyChecks();
         } else {
             View inflate = LayoutInflater.from(getContext()).inflate(R.layout.pop_push_view, null);
-            pushPop = PopUtil.create(inflate,  f_annotation_push);
+            pushPop = PopUtil.create(inflate, f_annotation_push);
             CheckBox pop_push_member_cb = inflate.findViewById(R.id.pop_push_member_cb);
             RecyclerView pop_push_member_rv = inflate.findViewById(R.id.pop_push_member_rv);
             pushMemberAdapter = new PopPushMemberAdapter(R.layout.item_single_button, onlineMembers);

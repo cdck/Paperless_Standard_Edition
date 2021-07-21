@@ -873,5 +873,7 @@
     <string name="start">Start</string>
     <string name="end">End</string>
     <string name="no_application_can_open">The application that opened this file could not be found</string>
+    <string name="change_home_subView_bg">Change sub interface</string>
+    <string name="modify_background">Change background</string>
 
 </resources>

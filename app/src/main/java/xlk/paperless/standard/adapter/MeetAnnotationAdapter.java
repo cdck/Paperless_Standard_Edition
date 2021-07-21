@@ -17,6 +17,7 @@ import xlk.paperless.standard.data.bean.SeatMember;
  */
 public class MeetAnnotationAdapter extends BaseQuickAdapter<SeatMember, BaseViewHolder> {
     int selectedDevId = -1;
+    private int selectedMemberId=-1;
 
     public MeetAnnotationAdapter(int layoutResId, @Nullable List<SeatMember> data) {
         super(layoutResId, data);
@@ -32,8 +33,22 @@ public class MeetAnnotationAdapter extends BaseQuickAdapter<SeatMember, BaseView
     }
 
     public int getSelectedDevId() {
-        return selectedDevId;
+        for (int i = 0; i < getData().size(); i++) {
+            if(getData().get(i).getSeatDetailInfo().getSeatid()==selectedDevId){
+                return selectedDevId;
+            }
+        }
+        return -1;
     }
+    public int getSelectedMemberId() {
+        for (int i = 0; i < getData().size(); i++) {
+            if(getData().get(i).getSeatDetailInfo().getNameId()==selectedMemberId){
+                return selectedMemberId;
+            }
+        }
+        return -1;
+    }
+
 
     public void notifySelect() {
         boolean have = false;
@@ -47,8 +62,9 @@ public class MeetAnnotationAdapter extends BaseQuickAdapter<SeatMember, BaseView
         notifyDataSetChanged();
     }
 
-    public void setSelect(int devid) {
+    public void setSelect(int devid,int memberId) {
         selectedDevId = devid;
+        selectedMemberId=memberId;
         notifyDataSetChanged();
     }
 }

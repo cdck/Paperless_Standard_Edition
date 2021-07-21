@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.text.TextUtils;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mogujie.tt.protobuf.InterfaceAdmin;
 import com.mogujie.tt.protobuf.InterfaceBase;
@@ -78,6 +79,11 @@ public class AdminOtherPresenter extends BasePresenter {
             case Constant.BUS_MAIN_BG: {
                 String filePath = (String) msg.getObjects()[0];
                 view.get().updateMainBgImg(filePath);
+                break;
+            }
+            case Constant.BUS_SUB_BG:{
+                String filePath = (String) msg.getObjects()[0];
+                view.get().updateSubviewBgImg(filePath);
                 break;
             }
             case Constant.BUS_MAIN_LOGO: {
@@ -300,23 +306,27 @@ public class AdminOtherPresenter extends BasePresenter {
                     int mediaid = item.getMediaid();
                     LogUtil.i(TAG, "queryInterFaceConfiguration pictureList faceid=" + faceid + ",mediaid=" + mediaid);
                     String userStr = "";
-                    //主界面背景
                     if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_MAINBG_VALUE) {
+                        //主界面背景
                         userStr = Constant.MAIN_BG_PNG_TAG;
-                        //logo图标
-                    } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_LOGO_VALUE) {
+                    }
+                    else if(faceid==InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_SUBBG_VALUE){
+                        //子界面背景
+                        userStr = Constant.SUB_BG_PNG_TAG;
+                    }else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_LOGO_VALUE) {
                         userStr = Constant.MAIN_LOGO_PNG_TAG;
-                        //投影界面背景图
+                        //logo图标
                     } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_PROJECTIVE_MIANBG_VALUE) {
                         userStr = Constant.PROJECTIVE_BG_PNG_TAG;
-                        //投影界面logo图标
+                        //投影界面背景图
                     } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_PROJECTIVE_LOGO_VALUE) {
                         userStr = Constant.PROJECTIVE_LOGO_PNG_TAG;
-                        //公告背景图
+                        //投影界面logo图标
                     } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACE_BulletinBK_VALUE) {
                         userStr = Constant.NOTICE_BG_PNG_TAG;
-                        //公告logo图标
+                        //公告背景图
                     } else if (faceid == InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACE_BulletinLogo_VALUE) {
+                        //公告logo图标
                         userStr = Constant.NOTICE_LOGO_PNG_TAG;
                     }
                     if (!TextUtils.isEmpty(userStr)) {
@@ -524,6 +534,18 @@ public class AdminOtherPresenter extends BasePresenter {
     public void saveMainLogo(int mediaid) {
         InterfaceFaceconfig.pbui_Item_FacePictureItemInfo build = InterfaceFaceconfig.pbui_Item_FacePictureItemInfo.newBuilder()
                 .setFaceid(InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_LOGO_VALUE)
+                .setMediaid(mediaid)
+                .build();
+        byte[] bytes = InterfaceFaceconfig.pbui_Type_FaceConfigInfo.newBuilder()
+                .addPicture(build)
+                .build().toByteArray();
+        jni.modifyInterfaceConfig(bytes);
+    }
+
+    public void saveSubViewBg(int mediaid) {
+        LogUtils.i("saveSubViewBg 更改子背景图 mediaid="+mediaid);
+        InterfaceFaceconfig.pbui_Item_FacePictureItemInfo build = InterfaceFaceconfig.pbui_Item_FacePictureItemInfo.newBuilder()
+                .setFaceid(InterfaceMacro.Pb_MeetFaceID.Pb_MEET_FACEID_SUBBG_VALUE)
                 .setMediaid(mediaid)
                 .build();
         byte[] bytes = InterfaceFaceconfig.pbui_Type_FaceConfigInfo.newBuilder()

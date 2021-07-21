@@ -2,6 +2,7 @@ package xlk.paperless.standard.view.fragment.annotation;
 
 import android.content.Context;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mogujie.tt.protobuf.InterfaceBase;
 import com.mogujie.tt.protobuf.InterfaceDevice;
@@ -12,7 +13,11 @@ import com.mogujie.tt.protobuf.InterfaceRoom;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import xlk.paperless.standard.R;
 import xlk.paperless.standard.data.Constant;
@@ -39,7 +44,7 @@ public class MeetAnnotationPresenter extends BasePresenter {
     private List<InterfaceMember.pbui_Item_MemberDetailInfo> memberDetailInfos = new ArrayList<>();
     List<InterfaceFile.pbui_Item_MeetDirFileDetailInfo> fileDetailInfos = new ArrayList<>();
     List<SeatMember> seatMembers = new ArrayList<>();
-    List<Integer> saveConsentDevices = new ArrayList<>();
+    Map<Integer, Integer> saveConsentDevices = new HashMap<>();
     List<InterfaceDevice.pbui_Item_DeviceDetailInfo> deviceDetailInfos = new ArrayList<>();
     List<DevMember> onlineMembers = new ArrayList<>();
     List<InterfaceDevice.pbui_Item_DeviceDetailInfo> onLineProjectors = new ArrayList<>();
@@ -89,12 +94,27 @@ public class MeetAnnotationPresenter extends BasePresenter {
                     int deviceid = object.getDeviceid();
                     // 发起请求的人员ID
                     int memberid = object.getMemberid();
-                    LogUtil.i(TAG, "busEvent 收到参会人员权限请求回复 returncode=" + returncode+",deviceid="+deviceid+",memberid="+memberid);
-                    //查看批注文件权限有了
-                    if (returncode == 1) {
-                        if (!saveConsentDevices.contains(deviceid)) {
-                            saveConsentDevices.add(deviceid);
+                    LogUtil.i(TAG, "busEvent 收到参会人员权限请求回复 returncode=" + returncode + ",deviceid=" + deviceid + ",memberid=" + memberid);
+                    if (returncode == 0) {
+                        Set<Map.Entry<Integer, Integer>> entries = saveConsentDevices.entrySet();
+                        Iterator<Map.Entry<Integer, Integer>> iterator = entries.iterator();
+                        while (iterator.hasNext()) {
+                            Map.Entry<Integer, Integer> next = iterator.next();
+                            if (next.getKey() == deviceid) {
+                                LogUtils.i("拒绝了查看批注的权限 删除存储的健值对 deviceId="+deviceid);
+                                iterator.remove();
+                                break;
+                            }
                         }
+                        for (int i = 0; i < memberDetailInfos.size(); i++) {
+                            if (memberDetailInfos.get(i).getPersonid() == memberid) {
+                                String name = memberDetailInfos.get(i).getName().toStringUtf8();
+                                ToastUtil.show(cxt.getString(R.string.reject_postilview, name));
+                                break;
+                            }
+                        }
+                    } else {
+                        saveConsentDevices.put(deviceid, memberid);
                         String name = null;
                         for (int i = 0; i < memberDetailInfos.size(); i++) {
                             if (memberDetailInfos.get(i).getPersonid() == memberid) {
@@ -104,17 +124,6 @@ public class MeetAnnotationPresenter extends BasePresenter {
                             }
                         }
                         queryFile();
-                    } else {
-                        if (saveConsentDevices.contains(deviceid)) {
-                            saveConsentDevices.remove(deviceid);
-                        }
-                        for (int i = 0; i < memberDetailInfos.size(); i++) {
-                            if (memberDetailInfos.get(i).getPersonid() == memberid) {
-                                String name = memberDetailInfos.get(i).getName().toStringUtf8();
-                                ToastUtil.show(cxt.getString(R.string.reject_postilview, name));
-                                break;
-                            }
-                        }
                     }
                 }
                 break;
@@ -179,12 +188,15 @@ public class MeetAnnotationPresenter extends BasePresenter {
         }
     }
 
-    public boolean hasPermission(int devId) {
+    public boolean hasPermission(int devId, int memberid) {
         if (devId == Values.localDeviceId) {
             return true;
         } else {
-            return saveConsentDevices.contains(devId);
+            if (saveConsentDevices.containsKey(devId)) {
+                return saveConsentDevices.get(devId) == memberid;
+            }
         }
+        return false;
     }
 
     public void downloadFile(InterfaceFile.pbui_Item_MeetDirFileDetailInfo fileDetailInfo) {
@@ -263,7 +275,7 @@ public class MeetAnnotationPresenter extends BasePresenter {
         jni.mediaPlayOperate(mediaid, devIds, pos, res, triggeruserval, flag);
     }
 
-    public void stopPush(List<Integer> res, List<Integer> devIds){
-        jni.stopResourceOperate(res,devIds);
+    public void stopPush(List<Integer> res, List<Integer> devIds) {
+        jni.stopResourceOperate(res, devIds);
     }
 }
