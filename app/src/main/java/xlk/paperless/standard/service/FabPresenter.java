@@ -72,14 +72,23 @@ public class FabPresenter extends BasePresenter {
     @Override
     public void busEvent(EventMessage msg) throws InvalidProtocolBufferException {
         switch (msg.getType()) {
-            case Constant.BUS_SCREEN_RECORDER:{
+            case Constant.BUS_SCREEN_RECORDER: {
                 boolean show = (boolean) msg.getObjects()[0];
                 view.showTimeButton(show);
                 break;
             }
-            case Constant.BUS_EXPORT_NOTE_CONTENT:{
+            case Constant.BUS_EXPORT_NOTE_CONTENT: {
                 String content = (String) msg.getObjects()[0];
                 view.updateNoteContent(content);
+                break;
+            }
+            case Constant.BUS_CLOSE_FAB: {
+                boolean isClose = (boolean) msg.getObjects()[0];
+                if (isClose) {
+                    view.delAllView();
+                } else {
+                    view.showFabButton();
+                }
                 break;
             }
 //            case Constant.BUS_HIDE_FAB:{

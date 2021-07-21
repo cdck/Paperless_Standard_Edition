@@ -442,12 +442,6 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
         });
     }
 
-    // TODO: 2020/10/12  虚拟按键显示或隐藏时需要动态改变已经显示的PopupWindow的大小
-    private void updatePopupWindowSize() {
-        if (memberPop != null && memberPop.isShowing()) {
-
-        }
-    }
 
     private void showMember() {
         presenter.queryMember();
@@ -465,7 +459,6 @@ public class VoteManageFragment extends BaseFragment implements View.OnClickList
         memberPop.setFocusable(true);
         memberPop.setAnimationStyle(R.style.pop_Animation);
         memberPop.showAtLocation(vote_manage_stop, Gravity.END | Gravity.BOTTOM, 0, 0);
-
         CheckBox pop_vote_all = inflate.findViewById(R.id.pop_vote_all);
         RecyclerView pop_vote_rv = inflate.findViewById(R.id.pop_vote_rv);
         pop_vote_rv.setLayoutManager(new LinearLayoutManager(getContext()));

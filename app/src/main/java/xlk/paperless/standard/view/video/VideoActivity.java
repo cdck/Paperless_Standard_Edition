@@ -264,8 +264,8 @@ public class VideoActivity extends BaseActivity implements IVideo, WlOnGlSurface
             updateHideTimer();
         });
         inflate.findViewById(R.id.pop_video_stop_screen).setOnClickListener(v -> {
-//            showScreenPop(2);
-            presenter.stopPlay();
+            showScreenPop(2);
+//            presenter.stopPlay();
             updateHideTimer();
         });
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -335,7 +335,7 @@ public class VideoActivity extends BaseActivity implements IVideo, WlOnGlSurface
                             InterfaceMacro.Pb_TriggerUsedef.Pb_EXCEC_USERDEF_FLAG_NOCREATEWINOPER_VALUE : 0;
                     presenter.mediaPlayOperate(ids, value);
                 } else {//结束
-                    presenter.stopPlay();
+                    presenter.stopPlay(ids);
                 }
                 popScreen.dismiss();
             }

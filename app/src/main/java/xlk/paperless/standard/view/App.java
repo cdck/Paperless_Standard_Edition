@@ -44,7 +44,9 @@ import xlk.paperless.standard.service.FabService;
 import xlk.paperless.standard.helper.CrashHandler;
 import xlk.paperless.standard.view.admin.AdminActivity;
 import xlk.paperless.standard.view.fragment.agenda.MeetAgendaFragment;
+import xlk.paperless.standard.view.main.MainActivity;
 import xlk.paperless.standard.view.meet.MeetingActivity;
+import xlk.paperless.standard.view.video.VideoActivity;
 
 import static xlk.paperless.standard.data.Values.lbm;
 import static xlk.paperless.standard.data.Values.localDeviceId;
@@ -171,6 +173,14 @@ public class App extends Application {
             public void onActivityResumed(@NonNull Activity activity) {
                 Values.isAdminPage = activity.getClass().getName().equals(AdminActivity.class.getName());
                 openBackstageService(true);
+                if (activity.getClass().getName().equals(VideoActivity.class.getName())) {
+                    EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_CLOSE_FAB).objects(true).build());
+                }
+                if (!activity.getClass().getName().equals(MainActivity.class.getName())
+                        && !activity.getClass().getName().equals(VideoActivity.class.getName())
+                ) {
+//                    openFabService(true);
+                }
             }
 
             @Override
@@ -203,6 +213,10 @@ public class App extends Application {
                     List<Integer> devIds = new ArrayList<>();
                     devIds.add(localDeviceId);
                     JniHandler.getInstance().stopResourceOperate(resIds, devIds);
+                }
+
+                if (activity.getClass().getName().equals(VideoActivity.class.getName())) {
+                    EventBus.getDefault().post(new EventMessage.Builder().type(Constant.BUS_CLOSE_FAB).objects(false).build());
                 }
             }
         });
@@ -341,7 +355,6 @@ public class App extends Application {
                     LogUtils.e(TAG, "stopStreamInform :  屏幕录制停止失败 --> ");
                 }
             }
-
 //           else if (Intent.ACTION_SCREEN_ON.equals(action)) {
 //                LogUtils.i(TAG, "屏幕监听-亮屏");
 //                if (!ServiceUtils.isServiceRunning(BackstageService.class)) {

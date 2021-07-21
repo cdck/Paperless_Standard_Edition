@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -533,6 +534,21 @@ public class VideoPresenter extends BasePresenter {
             currentShareIds.clear();
             isShareing = false;
         }
+    }
+
+    //停止同屏
+    public void stopPlay(List<Integer> devIds) {
+        List<Integer> res = new ArrayList<>();
+        res.add(RESOURCE_0);
+        Iterator<Integer> iterator = currentShareIds.iterator();
+        while (iterator.hasNext()) {
+            Integer next = iterator.next();
+            if (devIds.contains(next)) {
+                iterator.remove();
+            }
+        }
+        if (currentShareIds.isEmpty()) isShareing = false;
+        jni.stopResourceOperate(res, devIds);
     }
 
     //发起同屏

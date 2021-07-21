@@ -353,6 +353,10 @@ public class Constant {
      * 切换签到界面
      */
     public static final int BUS_SIGN_IN_LIST_PAGE = BUS_BASE + 34;
+    /**
+     * 通知开启关闭悬浮窗=true关闭=false隐藏
+     */
+    public static final int BUS_CLOSE_FAB = BUS_BASE + 35;
 
 
     //会议功能码

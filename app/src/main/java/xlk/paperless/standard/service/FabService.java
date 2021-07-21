@@ -102,9 +102,10 @@ public class FabService extends Service implements IFab {
     private int mTouchStartX, mTouchStartY;
     private WindowManager.LayoutParams mParams, defaultParams, fullParams, wrapParams;
     private boolean hoverButtonIsShowing, menuViewIsShowing, serviceViewIsShowing, screenViewIsShowing,
-            joinViewIsShowing, proViewIsShowing, voteViewIsShowing, voteEnsureViewIsShowing, noteViewIsShowing;
+            joinViewIsShowing, proViewIsShowing, voteViewIsShowing, voteEnsureViewIsShowing, noteViewIsShowing,cameraViewIsShowing;
     private ImageView hoverButton;
-    private View menuView, serviceView, screenView, joinView, proView, voteView, voteEnsureView;
+    private View menuView, serviceView, screenView, joinView, proView, voteView, voteEnsureView,cameraView;
+
     private FabPresenter presenter;
     private int mScreenDensity;
     private ImageReader mImageReader;
@@ -118,7 +119,6 @@ public class FabService extends Service implements IFab {
     private int voteTimeouts;
     private int maxChooseCount = 1;//当前投票最多可以选择答案的个数
     private int currentChooseCount = 0;//当前投票已经选中的选项个数
-    private View cameraView;
     private int windowWidth, windowHeight;
     private View noteView;
 
@@ -854,6 +854,7 @@ public class FabService extends Service implements IFab {
                 intent.putExtra(Constant.EXTRA_CAMERA_TYPE, 1);
                 intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                 cxt.startActivity(intent);
+                cameraViewIsShowing=false;
                 wm.removeView(cameraView);
                 int flag = inviteflag | InterfaceDevice.Pb_DeviceInviteFlag.Pb_DEVICE_INVITECHAT_FLAG_DEAL_VALUE;
                 LogUtil.d(TAG, "强制的则直接同意：" + flag);
@@ -868,6 +869,7 @@ public class FabService extends Service implements IFab {
                 intent.putExtra(Constant.EXTRA_CAMERA_TYPE, 0);
                 intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                 cxt.startActivity(intent);
+                cameraViewIsShowing=false;
                 wm.removeView(cameraView);
                 int flag = inviteflag | InterfaceDevice.Pb_DeviceInviteFlag.Pb_DEVICE_INVITECHAT_FLAG_DEAL_VALUE;
                 LogUtil.d(TAG, "强制的则直接同意：" + flag);
@@ -878,7 +880,9 @@ public class FabService extends Service implements IFab {
         });
         cameraView.findViewById(R.id.wm_camera_reject).setOnClickListener(v -> {
             wm.removeView(cameraView);
+            cameraViewIsShowing=false;
         });
+        cameraViewIsShowing=true;
         wm.addView(cameraView, wrapParams);
     }
 
@@ -1211,6 +1215,7 @@ public class FabService extends Service implements IFab {
         if (voteViewIsShowing) wm.removeView(voteView);
         if (voteEnsureViewIsShowing) wm.removeView(voteEnsureView);
         if (noteViewIsShowing) wm.removeView(noteView);
+        if (cameraViewIsShowing) wm.removeView(cameraView);
     }
 
     private void setIsShowing(View remove, View add) {
