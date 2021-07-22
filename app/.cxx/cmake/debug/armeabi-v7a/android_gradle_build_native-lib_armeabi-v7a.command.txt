@@ -1,7 +1,0 @@
-Executable : /Users/huge/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja
-arguments : 
--C
-/Users/huge/AndroidStudioProjects/Paperless_Standard_Edition/app/.cxx/cmake/debug/armeabi-v7a
-native-lib
-jvmArgs : 
-

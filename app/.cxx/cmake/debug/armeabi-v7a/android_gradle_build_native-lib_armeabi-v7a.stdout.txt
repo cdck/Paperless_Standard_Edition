@@ -1,2 +1,0 @@
-ninja: Entering directory `/Users/huge/AndroidStudioProjects/Paperless_Standard_Edition/app/.cxx/cmake/debug/armeabi-v7a'
-ninja: no work to do.
